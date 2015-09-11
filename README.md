@@ -19,4 +19,4 @@ Network: Vicki
 Save XML/Jack of all trades: Badi 
  - Game Logic
 
-inspiration: Alone I Art  
+inspiration: Alone I Art http://makeaga.me/aloneIart/
