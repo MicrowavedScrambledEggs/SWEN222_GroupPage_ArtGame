@@ -1,0 +1,72 @@
+************ BOARD 1: ************
+Not transcribed yet!
+
+************ BOARD 2: ************
+PRIORITIES: GAME LOGIC
+1. Tiles
+2. Players
+   Guards
+3. Artwork
+   Guards lightcone
+4. Players picking up art
+5. Inventory
+6. Keys & locked doors
+7. Vault puzzles
+
+----------------------------------------------------------
+Network Actions
+- WASD conrols
+- when user presses W...
+	- Key listener in GUI frame sends 'move north' action to client
+	- client passes on action w/ player ID to server
+	- server receives action and calls method on a game logic class for player movement
+	- player movement class checks it's legit, acts accordingly with updating game state
+	- game application renders animation of player moving
+	- client receives its regular updates of game state and passes it on to renderer
+	- renderer updates based on info from client
+- room by room basis (adjacent rooms?)
+
+----------------------------------------------------------
+Game Objects
+- Art works:
+	- Model
+	- Texture
+	- 'Examine' action
+	- Value
+	- Paintings n walls
+	- Sculptures on floors
+	(OPTIONAL: Weight and size restriction)
+Boxes:
+	- Inventory
+- Tiles (interface/superclass):
+	- Model?
+ 	- Texture
+ 	- Types of tiles
+ 		- walls
+ 		- floors
+ 			- spawn points
+ 		- stairs
+ 		- doors (lockable and not)
+ 		- closet/stealth hiding tiles
+- Entities (players and guards):
+	- Model
+	- Position
+	- Direction
+	- 'Examine' action
+	- Move animation
+	- Inventory,  w/ max restrictions
+	- Inventory, other entities' access
+	Guards: Patrol path, light cone
+	
+----------------------------------------------------------
+END GAME:
+- When everyone has exited or lost
+- Highest value inventory wins
+(OPTIONAL: timers!
+	Eg, timer after first player is caught, after first player exits with their loot, after last painting is stolen etc.)
+	
+----------------------------------------------------------
+ Puzzles:
+ 1. keys/codes and locked doors
+ 2. Sokoban puzzles?
+ 
