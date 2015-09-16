@@ -77,14 +77,30 @@ public class Game {
 	public static void main(String[] args) {
 		Game game = new Game();
 		game.initialise();
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		while(game.getFloor().isOnExit()==null){
-			game.floor.printFloor();
+			if(game.getFloor().checkGuards()){
+				game.getPlayer().gotCaught();
+				break;
+			}
+			game.floor.printFloor();//replace with gui display
 			game.printMenu();
 			String s = sc.next();
-			game.doAction(game.getPlayer(),s.charAt(0));
+			game.doAction(game.getPlayer(),s.charAt(0)); //replace with keylistener
 		}
-	}
-
-	
+		if(game.getPlayer().isCaught()){
+			System.out.println("you got arrested");
+		}
+		else{
+			System.out.println("you ran off");
+			int score = 0;
+			for(Item i:game.getPlayer().getInventory()){
+				if(i instanceof Art){
+					score = score + ((Art)i).value;
+				}
+			}
+			System.out.println("you made off with $"+score+" worth of art");
+		}
+	}	
 }
