@@ -16,7 +16,7 @@ public class Game {
 	public void initialise(){
 		floor = new Floor();
 		p = new Player(Direction.EAST,1);
-		floor.addCharacter(p, 2, 2);
+		floor.setCharacter(p, 1, 1);
 	}
 	
 	/**
@@ -40,23 +40,21 @@ public class Game {
 	 * executes a action for the player
 	 */
 	public void doAction(Player p, char id){
-		int currentRow = p.getRow();
-		int currentCol = p.getCol();
 		if(id=='w'){
 			p.setDir(Direction.NORTH);
-			floor.moveCharacter(p, currentRow, currentCol, currentRow-1, currentCol);
+			floor.moveCharacter(p);
 		}
 		else if(id=='a'){
 			p.setDir(Direction.WEST);
-			floor.moveCharacter(p, currentRow, currentCol, currentRow, currentCol-1);
+			floor.moveCharacter(p);
 		}
 		else if(id=='s'){
 			p.setDir(Direction.SOUTH);
-			floor.moveCharacter(p, currentRow, currentCol, currentRow+1, currentCol);
+			floor.moveCharacter(p);
 		}		
 		else if(id=='d'){
 			p.setDir(Direction.EAST);
-			floor.moveCharacter(p, currentRow, currentCol, currentRow, currentCol+1);
+			floor.moveCharacter(p);
 		}		
 		else if(id=='f'){
 			floor.interact(p);

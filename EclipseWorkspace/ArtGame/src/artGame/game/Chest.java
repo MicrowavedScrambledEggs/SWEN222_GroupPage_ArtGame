@@ -1,11 +1,13 @@
 package artGame.game;
 
 public class Chest extends Tile {
+
 	private Item content;
 
-	public Chest(Item content){
-		this.content = content;
+	public Chest(boolean nwall, boolean wwall, boolean swall, boolean ewall) {
+		super(nwall, wwall, swall, ewall);
 	}
+
 	public void takeItem(Player p) {
 		if (content != null) {
 			p.addItem(content);
@@ -13,12 +15,20 @@ public class Chest extends Tile {
 		}
 	}
 
+	public Item getContent() {
+		return content;
+	}
+
+	public void setContent(Item content) {
+		this.content = content;
+	}
+
 	@Override
 	public boolean walkable() {
 		return false;
 	}
 
-	public String toString(){
+	public String toString() {
 		return "C";
 	}
 }

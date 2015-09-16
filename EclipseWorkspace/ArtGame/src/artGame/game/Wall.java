@@ -1,13 +1,26 @@
 package artGame.game;
 
-public class Wall extends Tile {
+public class Wall{
+	private Art art;
 
-	@Override
-	public boolean walkable() {
+	public Wall(Art art){
+		this.art = art;
+	}
+	public Wall(){
+		this.art = null;
+	}
+	
+	public Art getArt() {
+		return art;
+	}
+
+	public void setArt(Art art) {
+		this.art = art;
+	}
+	
+	public boolean passable() {
 		return false;
 	}
 	
-	public String toString(){
-		return "W";
-	}
+
 }

@@ -1,6 +1,6 @@
 package artGame.game;
 
-public class Door extends Tile {
+public class Door extends Wall {
 	private boolean locked;
 	private int keyID;
 	public Door(boolean locked, int keyID) {
@@ -25,14 +25,9 @@ public class Door extends Tile {
 			}
 		}
 	}
-
-	@Override
-	public boolean walkable() {
-		return !locked;
-	}
 	
-	public String toString(){
-		if(locked) return "D";
-		else return "d";
+	@Override
+	public boolean passable(){
+		return !locked;
 	}
 }
