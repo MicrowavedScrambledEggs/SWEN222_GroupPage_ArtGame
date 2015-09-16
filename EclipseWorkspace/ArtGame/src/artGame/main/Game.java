@@ -9,8 +9,9 @@ import artGame.game.Character.Direction;
 public class Game {
 
 
-	private static Floor floor;
-	private static Player p;
+	private Floor floor;
+
+	private Player p;
 	
 	public void initialise(){
 		floor = new Floor();
@@ -21,7 +22,7 @@ public class Game {
 	/**
 	 * prints menu options
 	 */
-	public static void printMenu(){
+	public void printMenu(){
 		Set<Item> playerInv = p.getInventory();
 		System.out.println("Inventory: ");
 		for(Item i:playerInv) {
@@ -38,7 +39,7 @@ public class Game {
 	/**
 	 * executes a action for the player
 	 */
-	public static void doAction(Player p, char id){
+	public void doAction(Player p, char id){
 		int currentRow = p.getRow();
 		int currentCol = p.getCol();
 		if(id=='w'){
@@ -64,15 +65,24 @@ public class Game {
 			
 		}
 	}
+	
+	public Floor getFloor() {
+		return floor;
+	}
+
+	public Player getPlayer() {
+		return p;
+	}
+	
 	public static void main(String[] args) {
 		Game game = new Game();
 		game.initialise();
 		Scanner sc = new Scanner(System.in);
-		while(floor.isOnExit()==null){
-			floor.printFloor();
-			printMenu();
+		while(game.getFloor().isOnExit()==null){
+			game.floor.printFloor();
+			game.printMenu();
 			String s = sc.next();
-			doAction(p,s.charAt(0));
+			game.doAction(game.getPlayer(),s.charAt(0));
 		}
 	}
 
