@@ -33,7 +33,7 @@
             <wall direction = "EAST"  />
         </empty_tile>
     </floor>
-    <player>
+    <player id = "1">
         <position>
             <x value = "0"/>
             <y value = "0"/>
