@@ -20,6 +20,8 @@ public class XMLReader {
 	public static final String EMPTY_TILE_ELEMENT = "empty_tile";
 	public static final String X_COORD_ELEMENT = "x";
 	public static final String Y_COORD_ELEMENT = "y";
+	public static final String PLAYER_ELEMENT = "player";
+	public static final String DIRECTION_ELEMENT = "direction";
 	
 	public static final String DIRECTION_ATTRIBUTE = "direction";
 	public static final String VALUE_ATTRIBUTE = "value";
