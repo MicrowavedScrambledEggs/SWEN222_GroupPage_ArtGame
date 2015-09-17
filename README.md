@@ -20,3 +20,7 @@ Save XML/Jack of all trades: Badi
  - Game Logic
 
 inspiration: Alone I Art http://makeaga.me/aloneIart/
+
+Perspective: 3/4
+
+
