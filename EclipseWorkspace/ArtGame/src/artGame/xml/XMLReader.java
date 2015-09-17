@@ -25,6 +25,7 @@ public class XMLReader {
 	
 	public static final String DIRECTION_ATTRIBUTE = "direction";
 	public static final String VALUE_ATTRIBUTE = "value";
+	public static final String ID_ATTRIBUTE = "id";
 	
 	public static final String NORTH_VALUE = "NORTH";
 	public static final String WEST_VALUE = "WEST";
@@ -37,7 +38,7 @@ public class XMLReader {
 	    try {
 	        SAXParser saxParser = factory.newSAXParser();
 	        File file = new File("test.xml");
-	        DefaultHandler xmlHandler = new DefaultHandler();
+	        ArtGameLoadHandler xmlHandler = new ArtGameLoadHandler();
 	        saxParser.parse(file, xmlHandler);
 	    }
 	    catch(ParserConfigurationException e1) {

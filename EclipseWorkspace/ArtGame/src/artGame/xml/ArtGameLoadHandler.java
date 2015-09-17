@@ -18,6 +18,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	private ArrayList<Player> player = new ArrayList<Player>();
 	private ArrayList<Guard> guards = new ArrayList<Guard>();
 	private Stack<ObjectBuilder> buildStack = new Stack<ObjectBuilder>();
+	private String currentElement;
 
 	public ArtGameLoadHandler(){
 		super();
@@ -34,7 +35,9 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		} else if(localName.equals(XMLReader.WALL_ELEMENT)){
 			addFieldToCurrentBuilder(localName, attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE));
 		} else if(localName.equals(XMLReader.PLAYER_ELEMENT)){
-			
+			buildStack.push(new PlayerBuilder());
+		} else if(localName.equals(XMLReader.DIRECTION_ELEMENT)){
+			currentElement = localName;
 		}
 	}
 	
@@ -46,6 +49,11 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName){
 		
+	}
+	
+	@Override
+	public void characters(char[] ch, int start, int length){
+		addFieldToCurrentBuilder(currentElement, new String(ch));
 	}
 
 }
