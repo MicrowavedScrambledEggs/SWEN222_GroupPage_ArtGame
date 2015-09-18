@@ -1,5 +1,8 @@
 package artGame.main;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -12,7 +15,21 @@ public class Game {
 	private Floor floor;
 
 	private Player p;
+	private List<Player> players;
 	
+	public Game(Floor floor,Collection<Player> players){
+		this.floor = floor;
+		this.players = new ArrayList<Player>();
+		this.players.addAll(players);
+		for(Player p:this.players){
+			this.floor.setCharacter(p, p.getRow(), p.getCol());
+		}
+	}
+	
+	public Game() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void initialise(){
 		floor = new Floor();
 		p = new Player(Direction.EAST,1);
