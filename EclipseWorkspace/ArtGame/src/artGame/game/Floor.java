@@ -15,12 +15,13 @@ public class Floor {
 	private int maxR = 3;
 	private int maxC = 7;
 	private Tile[][] floor;
-	private ExitTile exit;
+	private List<ExitTile> exits;
 	private List<Guard> guards;
 
-	public Floor(Tile[][] tiles,int maxR,int maxC, Collection<Guard> guards){
+	public Floor(Tile[][] tiles,int maxR,int maxC, Collection<Guard> guards, Collection<ExitTile> exits){
 		floor = tiles;
-		guards = new ArrayList<Guard>();
+		this.exits = new ArrayList<ExitTile>(exits);
+		this.guards = new ArrayList<Guard>();
 		this.maxR = maxR;
 		this.maxC = maxC;
 		for(Guard g:guards){
@@ -63,7 +64,8 @@ public class Floor {
 		floor[1][3].setWall(Direction.WEST, door);
 		// setting exit
 		floor[1][6] = new ExitTile(true, false, true, true);
-		exit = (ExitTile) floor[1][6];
+		exits = new ArrayList<ExitTile>();
+		exits.add((ExitTile) floor[1][6]);
 		// setting guard
 		Guard guard = new Guard(Character.Direction.WEST);
 		setCharacter(guard, 2, 5);
@@ -81,7 +83,12 @@ public class Floor {
 	}
 
 	public Character isOnExit() {
-		return exit.getOccupant();
+		for(ExitTile exit : exits){
+			if(exit.getOccupant() != null){
+				return exit.getOccupant();
+			}
+		}
+		return null;
 	}
 
 	/**

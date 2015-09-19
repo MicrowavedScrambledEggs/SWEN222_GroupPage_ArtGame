@@ -49,7 +49,12 @@ public class PlayerBuilder implements ObjectBuilder {
 
 	@Override
 	public Player buildObject() {
-		return new Player(d, iD);
+		System.out.printf("Building a player:\nID: %d\nDirection: %s\nPosition: %s\n\n",
+				iD, d.toString(), coord.toString());
+		Player toReturn = new Player(d, iD);
+		toReturn.setRow(coord.getX());
+		toReturn.setCol(coord.getY());
+		return toReturn;
 	}
 	
 	public Coordinate getCoordinate(){

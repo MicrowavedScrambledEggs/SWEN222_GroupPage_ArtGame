@@ -6,11 +6,11 @@ import artGame.game.Tile;
 
 public class TileBuilder implements ObjectBuilder {
 	
-	private boolean northWall = false;
-	private boolean westWall = false;
-	private boolean southWall = false;
-	private boolean eastWall = false;
-	private Coordinate coord;
+	protected boolean northWall = false;
+	protected boolean westWall = false;
+	protected boolean southWall = false;
+	protected boolean eastWall = false;
+	protected Coordinate coord;
 	
 	@Override
 	public void addFeild(String name, String value) {
@@ -35,6 +35,9 @@ public class TileBuilder implements ObjectBuilder {
 
 	@Override
 	public Tile buildObject() {
+		System.out.printf("Building an empty tile:\nPosition: %s\nNorth Wall: %b\nWest Wall %b"
+				+ "\nSouth Wall: %b\nEast Wall %b\n\n",
+				coord.toString(), northWall, westWall, southWall, eastWall);
 		return new EmptyTile(northWall, westWall, southWall, eastWall);
 	}
 	

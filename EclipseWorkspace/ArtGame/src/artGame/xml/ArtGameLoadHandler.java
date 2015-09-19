@@ -1,6 +1,7 @@
 package artGame.xml;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -8,6 +9,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import artGame.game.Coordinate;
+import artGame.game.ExitTile;
 import artGame.game.Floor;
 import artGame.game.Guard;
 import artGame.game.Player;
@@ -17,8 +19,9 @@ import artGame.main.Game;
 public class ArtGameLoadHandler extends DefaultHandler {
 
 	private HashMap<Coordinate, Tile> floorTiles = new HashMap<Coordinate, Tile>();
-	private HashMap<Coordinate, Player> players = new HashMap<Coordinate, Player>();
-	private HashMap<Coordinate, Guard> guards = new HashMap<Coordinate, Guard>();
+	private ArrayList<Player> players = new ArrayList<Player>();
+	private ArrayList<Guard> guards = new ArrayList<Guard>();
+	private ArrayList<ExitTile> exits = new ArrayList<ExitTile>();
 	private Stack<ObjectBuilder> buildStack = new Stack<ObjectBuilder>();
 	private String currentElement;
 
@@ -28,18 +31,24 @@ public class ArtGameLoadHandler extends DefaultHandler {
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes){
-		if(localName.equals(XMLReader.EMPTY_TILE_ELEMENT)){
-			buildStack.push(new TileBuilder());
-		} else if(localName.equals(XMLReader.POSITION_ELEMENT)){
+		if(qName.equals(XMLReader.EMPTY_TILE_ELEMENT)){	
+			if(attributes.getLength() != 0 &&
+					attributes.getValue(XMLReader.EXIT_ATTRIBUTE).equals(XMLReader.TRUE_VALUE)){
+				buildStack.push(new ExitTileBuilder());
+			} else {
+				buildStack.push(new TileBuilder());
+			}
+		} else if(qName.equals(XMLReader.POSITION_ELEMENT)){
 			buildStack.push(new CoordinateBuilder());
-		} else if(localName.equals(XMLReader.X_COORD_ELEMENT) || localName.equals(XMLReader.Y_COORD_ELEMENT)){
-			addFieldToCurrentBuilder(localName, attributes.getValue(XMLReader.VALUE_ATTRIBUTE));
-		} else if(localName.equals(XMLReader.WALL_ELEMENT)){
-			addFieldToCurrentBuilder(localName, attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE));
-		} else if(localName.equals(XMLReader.PLAYER_ELEMENT)){
+		} else if(qName.equals(XMLReader.X_COORD_ELEMENT) || qName.equals(XMLReader.Y_COORD_ELEMENT)){
+			addFieldToCurrentBuilder(qName, attributes.getValue(XMLReader.VALUE_ATTRIBUTE));
+		} else if(qName.equals(XMLReader.WALL_ELEMENT)){
+			addFieldToCurrentBuilder(qName, attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE));
+		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
 			buildStack.push(new PlayerBuilder());
-		} else if(localName.equals(XMLReader.DIRECTION_ELEMENT)){
-			currentElement = localName;
+			addFieldToCurrentBuilder(XMLReader.ID_ATTRIBUTE, attributes.getValue(XMLReader.ID_ATTRIBUTE));
+		} else if(qName.equals(XMLReader.DIRECTION_ELEMENT)){
+			currentElement = qName;
 		}
 	}
 	
@@ -50,28 +59,36 @@ public class ArtGameLoadHandler extends DefaultHandler {
 
 	@Override
 	public void endElement(String uri, String localName, String qName){
-		if(localName.equals(XMLReader.EMPTY_TILE_ELEMENT)){
+		if(qName.equals(XMLReader.EMPTY_TILE_ELEMENT)){
 			TileBuilder tileBuilder = (TileBuilder) buildStack.pop();
-			floorTiles.put(tileBuilder.getCoordinate(), tileBuilder.buildObject());
-		} else if(localName.equals(XMLReader.POSITION_ELEMENT)){
+			Tile builtTile = tileBuilder.buildObject();
+			floorTiles.put(tileBuilder.getCoordinate(), builtTile);
+			if(builtTile instanceof ExitTile){
+				exits.add((ExitTile) builtTile);
+			}
+		} else if(qName.equals(XMLReader.POSITION_ELEMENT)){
 			CoordinateBuilder coordBuilder = (CoordinateBuilder) buildStack.pop();
 			ObjectBuilder possitionableObjectBuilder = buildStack.peek();
-			possitionableObjectBuilder.addFeild(localName, coordBuilder.buildObject());	
-		} else if(localName.equals(XMLReader.PLAYER_ELEMENT)){
+			possitionableObjectBuilder.addFeild(qName, coordBuilder.buildObject());	
+		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
 			PlayerBuilder playerBuilder = (PlayerBuilder) buildStack.pop();
-			players.put(playerBuilder.getCoordinate(), playerBuilder.buildObject());
+			players.add(playerBuilder.buildObject());
 		}
 	}
 	
 	@Override
 	public void characters(char[] ch, int start, int length){
-		addFieldToCurrentBuilder(currentElement, new String(ch));
+		String elementDat = new String(Arrays.copyOfRange(ch, start, start + length));
+		elementDat = elementDat.trim();
+		if(elementDat.length() > 0){
+			addFieldToCurrentBuilder(currentElement, elementDat);
+		}
 	}
 	
 	public Game buildGame(){
 		Tile[][] tileArray = buildTileArray();
-		Floor floor = new Floor(tileArray, tileArray.length, tileArray[0].length, guards.values());
-		return new Game(floor, players.values());
+		Floor floor = new Floor(tileArray, tileArray.length, tileArray[0].length, guards, exits);
+		return new Game(floor, players);
 	}
 
 	private Tile[][] buildTileArray() {
@@ -81,9 +98,9 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	}
 
 	private Tile[][] buildTileArray(int width, int height) {
-		Tile[][] tileArray = new Tile[width][height];
+		Tile[][] tileArray = new Tile[height][width];
 		for(Coordinate coord : floorTiles.keySet()){
-			tileArray[coord.getX()][coord.getY()] = floorTiles.get(coord);
+			tileArray[coord.getY()][coord.getX()] = floorTiles.get(coord);
 		}
 		return tileArray;
 	}

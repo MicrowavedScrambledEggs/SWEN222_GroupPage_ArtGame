@@ -13,6 +13,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import artGame.main.Game;
+
 public class XMLReader {
 	
 	public static final String WALL_ELEMENT = "wall";
@@ -26,28 +28,38 @@ public class XMLReader {
 	public static final String DIRECTION_ATTRIBUTE = "direction";
 	public static final String VALUE_ATTRIBUTE = "value";
 	public static final String ID_ATTRIBUTE = "id";
+	public static final String EXIT_ATTRIBUTE = "isExit";
 	
 	public static final String NORTH_VALUE = "NORTH";
 	public static final String WEST_VALUE = "WEST";
 	public static final String SOUTH_VALUE = "SOUTH";
 	public static final String EAST_VALUE = "EAST";
+	public static final String TRUE_VALUE = "TRUE";
+	
+	private ArtGameLoadHandler xmlHandler;
 
 	public XMLReader(File xmlFile){
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 	    factory.setValidating(true);
 	    try {
 	        SAXParser saxParser = factory.newSAXParser();
-	        File file = new File("test.xml");
-	        ArtGameLoadHandler xmlHandler = new ArtGameLoadHandler();
-	        saxParser.parse(file, xmlHandler);
+	        xmlHandler = new ArtGameLoadHandler();
+	        saxParser.parse(xmlFile, xmlHandler);
 	    }
 	    catch(ParserConfigurationException e1) {
+	    	System.out.println("Problem with parsing: " + e1);
 	    }
 	    catch(SAXException e1) {
+	    	System.out.println("Problem with reading xml file: " + e1);
 	    }
 	    catch(IOException e) {
+	    	System.out.println("Problem with reading xml file: " + e);
 	    }
 
+	}
+	
+	public Game getGame(){
+		return xmlHandler.buildGame();
 	}
 
 }

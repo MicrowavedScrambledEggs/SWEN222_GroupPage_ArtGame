@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <game>
     <floor>
         <empty_tile>
@@ -24,7 +25,7 @@
             <wall direction = "SOUTH" />
             <wall direction = "WEST"  />
         </empty_tile>
-        <empty_tile>
+        <empty_tile isExit = "TRUE">
             <position>
                 <x value = "1"/>
                 <y value = "1"/>

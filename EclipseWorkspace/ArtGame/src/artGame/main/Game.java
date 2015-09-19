@@ -1,5 +1,6 @@
 package artGame.main;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Set;
 
 import artGame.game.*;
 import artGame.game.Character.Direction;
+import artGame.xml.XMLReader;
 
 public class Game {
 
@@ -24,6 +26,7 @@ public class Game {
 		for(Player p:this.players){
 			this.floor.setCharacter(p, p.getRow(), p.getCol());
 		}
+		this.p = players.iterator().next(); //TODO Badi: Just for now to get single player without nullpointerexceptions
 	}
 	
 	public Game() {
@@ -90,8 +93,20 @@ public class Game {
 	}
 	
 	public static void main(String[] args) {
-		Game game = new Game();
-		game.initialise();
+		Game game = null;
+		if(args.length == 0){
+			game = new Game();
+			game.initialise();
+		} else {
+			if(args[0].endsWith(".xml")){
+				game = loadGame(args[0]);
+			} else {
+				System.out.println("Argument given not a valid save file. Loading default game");
+				game = new Game();
+				game.initialise();
+			}
+		}
+		
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		while(game.getFloor().isOnExit()==null){
@@ -117,5 +132,11 @@ public class Game {
 			}
 			System.out.println("you made off with $"+score+" worth of art");
 		}
+	}
+
+	private static Game loadGame(String fileName) {
+		File loadFile = new File(fileName);
+		XMLReader gameLoader = new XMLReader(loadFile);
+		return gameLoader.getGame();
 	}	
 }
