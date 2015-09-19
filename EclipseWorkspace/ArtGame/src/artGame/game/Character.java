@@ -4,7 +4,7 @@ public abstract class Character {
 	public enum Direction{NORTH,SOUTH,EAST,WEST};
 	int row;
 	int col;
-	private Direction dir;
+	protected Direction dir;
 	
 	public Character(Direction dir) {
 		this.dir = dir;

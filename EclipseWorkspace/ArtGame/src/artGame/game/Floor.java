@@ -205,6 +205,14 @@ public class Floor {
 			Chest chest = (Chest) tileCharacterFacing(p);
 			chest.takeItem(p);
 		}
+		//stealing sculptures
+		//TODO note this has not been tested yet, unsure if simply setting occupant
+		//		to null is enough to avoid errors
+		else if (tileCharacterFacing(p).getOccupant() instanceof Sculpture){
+			Art stolenSculpture = ((Sculpture)tileCharacterFacing(p).getOccupant()).toItem();
+			p.addArt(stolenSculpture);
+			tileCharacterFacing(p).setOccupant(null);
+		}
 		// otherwise no action should be taken
 	}
 
