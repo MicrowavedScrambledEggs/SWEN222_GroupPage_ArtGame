@@ -15,8 +15,23 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import artGame.main.Game;
 
+/**
+ * Class for parsing xml files for saved games and new games 
+ * 
+ * Static fields match the terms used in the xml files for different elements,
+ * attributes and values etc. Typically an element represents an artGame.game class
+ * and it's attributes and values it's fields. Exceptions X_COORD_ELEMENT and
+ * Y_COORD_ELEMENT which are fields for Coordinate
+ * 
+ * @author Badi James
+ *
+ */
 public class XMLReader {
 	
+	//TODO: Add a lot more strings for elements etc once artGame.game is more complete
+	//TODO: Add strings for Guards
+	//TODO: Add handling for Art
+	//TODO: Add handling for inventory
 	public static final String WALL_ELEMENT = "wall";
 	public static final String POSITION_ELEMENT = "position";
 	public static final String EMPTY_TILE_ELEMENT = "empty_tile";
@@ -37,8 +52,15 @@ public class XMLReader {
 	public static final String TRUE_VALUE = "TRUE";
 	
 	private ArtGameLoadHandler xmlHandler;
-
+	
+	/**
+	 * Constructor for class XMLReader. Takes the given xmlFile and parses it
+	 * with a handler designed for the artGame xml format
+	 * 
+	 * @param xmlFile artGame xml file to parse
+	 */
 	public XMLReader(File xmlFile){
+		//create the
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 	    factory.setValidating(true);
 	    try {
@@ -58,6 +80,9 @@ public class XMLReader {
 
 	}
 	
+	/**
+	 * @return Game built from the handler after parsing xmlFile
+	 */
 	public Game getGame(){
 		return xmlHandler.buildGame();
 	}
