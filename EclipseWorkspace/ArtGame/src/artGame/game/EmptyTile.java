@@ -5,12 +5,12 @@ public class EmptyTile extends Tile{
 		super(nwall, wwall, swall, ewall);
 	}
 
-	
+
 	@Override
 	public boolean walkable() {
-		return true;
+		return occupant==null;
 	}
-	
+
 	public String toString(){
 		if(occupant!=null){
 			if(occupant instanceof Player) return "P";
