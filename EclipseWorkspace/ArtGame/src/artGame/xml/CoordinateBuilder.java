@@ -2,12 +2,21 @@ package artGame.xml;
 
 import artGame.game.Coordinate;
 
+/**
+ * Builds a Coordinate object from data from XML parser
+ *
+ * @author Badi James
+ *
+ */
 public class CoordinateBuilder implements ObjectBuilder {
-	
+
 	private int x;
 	private int y;
-	
+
 	@Override
+	/**
+	 * Sets the x and y coordinates
+	 */
 	public void addFeild(String name, String value) {
 		if(name.equals(XMLReader.X_COORD_ELEMENT)){
 			this.x = Integer.parseInt(value);
@@ -20,7 +29,7 @@ public class CoordinateBuilder implements ObjectBuilder {
 	@Override
 	public void addFeild(String name, Object value)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+		//not needed for this class
 
 	}
 

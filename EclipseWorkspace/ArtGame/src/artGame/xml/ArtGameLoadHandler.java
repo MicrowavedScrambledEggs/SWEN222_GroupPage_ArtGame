@@ -18,10 +18,10 @@ import artGame.main.Game;
 
 /**
  * SAX handler extended to specifically handle artGame xml files
- * 
+ *
  * Creates artGame.game objects while parsing xml file. Uses those objects to
  * create a artGame.main.Game when buildGame() called
- * 
+ *
  * @author Badi James
  *
  */
@@ -40,10 +40,10 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	public ArtGameLoadHandler(){
 		super();
 	}
-	
+
 	/**
 	 * Called when parser comes across a start tag for an element
-	 * 
+	 *
 	 * If the element is an element relating to an artGame.game object, creates an object builder
 	 * related to that object and pushes it to the stack.
 	 * If the element is an element relating to a primitive variable for an artGame.game object,
@@ -67,11 +67,11 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			buildStack.push(new CoordinateBuilder());
 		} else if(qName.equals(XMLReader.X_COORD_ELEMENT) || qName.equals(XMLReader.Y_COORD_ELEMENT)){
 			//Variables for coordinate
-			//if xml file is correctly written, object builder on top of stack should be a coordinate builder 
+			//if xml file is correctly written, object builder on top of stack should be a coordinate builder
 			addFieldToCurrentBuilder(qName, attributes.getValue(XMLReader.VALUE_ATTRIBUTE));
 		} else if(qName.equals(XMLReader.WALL_ELEMENT)){
 			//Wall variables for tiles
-			//if xml file is correctly written, object builder on top of stack should be a tile builder 
+			//if xml file is correctly written, object builder on top of stack should be a tile builder
 			addFieldToCurrentBuilder(qName, attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE));
 		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
 			buildStack.push(new PlayerBuilder());
@@ -81,7 +81,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			currentElement = qName;
 		}
 	}
-	
+
 	/**
 	 * Adds the given field, defined by localName, with the value defined by 'value' to the objectBuilder
 	 * at the top of the stack
@@ -90,14 +90,14 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	 */
 	private void addFieldToCurrentBuilder(String localName, String value) {
 		ObjectBuilder current = buildStack.peek();
-		current.addFeild(localName, value);		
+		current.addFeild(localName, value);
 	}
-	
+
 	/**
 	 * Called when parser comes across an end tag for an element
-	 * 
+	 *
 	 * Completes the object builder relating to the element, as in pops the object builder from
-	 * the stack, uses the object builder to create its object, then adds it to the relevant 
+	 * the stack, uses the object builder to create its object, then adds it to the relevant
 	 * collection
 	 */
 	@Override
@@ -109,21 +109,21 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		if(qName.equals(XMLReader.EMPTY_TILE_ELEMENT)){
 			completeTile();
 		} else if(qName.equals(XMLReader.POSITION_ELEMENT)){
-			completePosition(qName);	
+			completePosition(qName);
 		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
 			completePlayer();
 		}
 	}
-	
+
 	/**
-	 * Pops a playerBuilder from the top of the stack, builds the player object then adds it to 
+	 * Pops a playerBuilder from the top of the stack, builds the player object then adds it to
 	 * the players collection
 	 */
 	private void completePlayer() {
 		PlayerBuilder playerBuilder = (PlayerBuilder) buildStack.pop();
 		players.add(playerBuilder.buildObject());
 	}
-	
+
 	/**
 	 * Pops a coordinate builder from the top of the stack. Builds the coordinate object. Adds the
 	 * coordinate to the object builder for the object that the coordinate was a variable value for
@@ -134,9 +134,9 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		ObjectBuilder possitionableObjectBuilder = buildStack.peek();
 		possitionableObjectBuilder.addFeild(qName, coordBuilder.buildObject());
 	}
-	
+
 	/**
-	 * Pops a tile builder from the top of the stack. Builds the tile and adds it to the tile map 
+	 * Pops a tile builder from the top of the stack. Builds the tile and adds it to the tile map
 	 * with its coordinate as the key. If the tile is an exit tile, adds it to the exit tile collection
 	 * as well.
 	 */
@@ -148,28 +148,50 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			exits.add((ExitTile) builtTile);
 		}
 	}
-	
+
+	@Override
+	/**
+	 * Deals with characters in between tags for an element. Usually a value for a field the element
+	 * represents.
+	 */
 	public void characters(char[] ch, int start, int length){
 		//TODO: Add a lot more cases once artGame.game is more complete
+		//extracts a string from the section of the character array to parse
 		String elementDat = new String(Arrays.copyOfRange(ch, start, start + length));
-		elementDat = elementDat.trim();
-		if(elementDat.length() > 0){
+		elementDat = elementDat.trim();//removes whitespace
+		if(elementDat.length() > 0){//if it wasn't just whitespace
+			//Uses the string as the data for the current element and adds the field to the current builder
 			addFieldToCurrentBuilder(currentElement, elementDat);
 		}
 	}
-	
+
+	/**
+	 * Builds a game from the collections that were populated while parsing.
+	 * @return Built game from xml data
+	 */
 	public Game buildGame(){
 		Tile[][] tileArray = buildTileArray();
 		Floor floor = new Floor(tileArray, tileArray.length, tileArray[0].length, guards, exits);
 		return new Game(floor, players);
 	}
 
+	/**
+	 * @return a 2D array of tiles built from the tile map
+	 */
 	private Tile[][] buildTileArray() {
 		int width = findFloorWidth();
 		int height = findFloorHeight();
-		return buildTileArray(width, height);	
+		return buildTileArray(width, height);
 	}
 
+	/**
+	 * Creates a 2d array of tiles from the given height and width and populates it from
+	 * the map of coordinates to tiles, using the coordinate keys to find the array positions
+	 * for each of the tiles.
+	 * @param width Width of tile array
+	 * @param height Height of tile array
+	 * @return
+	 */
 	private Tile[][] buildTileArray(int width, int height) {
 		Tile[][] tileArray = new Tile[height][width];
 		for(Coordinate coord : floorTiles.keySet()){
@@ -178,6 +200,10 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		return tileArray;
 	}
 
+	/**
+	 * Goes through the map of coordinates to tiles and finds the largest Y value held by a
+	 * coordinate
+	 */
 	private int findFloorHeight() {
 		int largestY = 0;
 		for(Coordinate coord : floorTiles.keySet()){
@@ -188,6 +214,10 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		return largestY + 1;
 	}
 
+	/**
+	 * Goes through the map of coordinates to tiles and finds the largest X value held by a
+	 * coordinate
+	 */
 	private int findFloorWidth() {
 		int largestX = 0;
 		for(Coordinate coord : floorTiles.keySet()){

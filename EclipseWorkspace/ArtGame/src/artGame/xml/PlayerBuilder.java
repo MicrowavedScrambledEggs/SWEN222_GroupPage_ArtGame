@@ -5,21 +5,26 @@ import artGame.game.Coordinate;
 import artGame.game.Player;
 
 public class PlayerBuilder implements ObjectBuilder {
-	
+
 	private Direction d;
 	private Coordinate coord;
 	private int iD;
-	
+
 	@Override
 	public void addFeild(String name, String value) {
+		//TODO:Inventory handling
 		if(name.equals(XMLReader.DIRECTION_ELEMENT)){
 			addDirection(value);
 		} else if(name.equals(XMLReader.ID_ATTRIBUTE)){
 			iD = Integer.parseInt(value);
 		}
-		
+
 	}
 
+	/**
+	 * Sets the direction field to the value represented by the argument string
+	 * @param value String representation of direction value
+	 */
 	private void addDirection(String value) {
 		if(value.equals(XMLReader.NORTH_VALUE)){
 			d = Direction.NORTH;
@@ -40,14 +45,17 @@ public class PlayerBuilder implements ObjectBuilder {
 				this.coord = (Coordinate) value;
 			} else {
 				throw new IllegalArgumentException(String.format("Error when building player: "
-						+ "Tried to add %s when %s was needed", value.getClass().getName(), 
+						+ "Tried to add %s when %s was needed", value.getClass().getName(),
 						Coordinate.class.getName()));
 			}
 		}
-		
+
 	}
 
 	@Override
+	/**
+	 * Builds the player, then sets its position on the board from its coordinates
+	 */
 	public Player buildObject() {
 		System.out.printf("Building a player:\nID: %d\nDirection: %s\nPosition: %s\n\n",
 				iD, d.toString(), coord.toString());
@@ -56,7 +64,10 @@ public class PlayerBuilder implements ObjectBuilder {
 		toReturn.setCol(coord.getY());
 		return toReturn;
 	}
-	
+
+	/**
+	 * @return Coordinate given to it from data from XML parser
+	 */
 	public Coordinate getCoordinate(){
 		return this.coord;
 	}
