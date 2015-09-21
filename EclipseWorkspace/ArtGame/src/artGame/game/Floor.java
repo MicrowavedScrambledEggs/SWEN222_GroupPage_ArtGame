@@ -46,7 +46,7 @@ public class Floor {
 		// cleanup
 		// setting west walls
 		floor[0][0].setWall(Direction.WEST, new Wall(new Art("Art1", 1000)));
-		floor[1][0] = new Chest(false, true, false, false);
+		floor[1][0] = new Chest(0,false, true, false, false);
 		((Chest) floor[1][0]).setContent(new Key(1));
 		floor[1][0].setWall(Direction.WEST, new Wall());
 		floor[2][0].setWall(Direction.WEST, new Wall(new Art("Art2", 4000)));
@@ -67,7 +67,7 @@ public class Floor {
 		exits = new ArrayList<ExitTile>();
 		exits.add((ExitTile) floor[1][6]);
 		// setting guard
-		Guard guard = new Guard(Character.Direction.WEST);
+		Guard guard = new Guard(Character.Direction.WEST,0);
 		setCharacter(guard, 2, 5);
 		guards.add(guard);
 	}
@@ -210,7 +210,7 @@ public class Floor {
 		//		to null is enough to avoid errors
 		else if (tileCharacterFacing(p).getOccupant() instanceof Sculpture){
 			Art stolenSculpture = ((Sculpture)tileCharacterFacing(p).getOccupant()).toItem();
-			p.addArt(stolenSculpture);
+			p.addItem(stolenSculpture);
 			tileCharacterFacing(p).setOccupant(null);
 		}
 		// otherwise no action should be taken

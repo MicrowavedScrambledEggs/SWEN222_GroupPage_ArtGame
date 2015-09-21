@@ -9,8 +9,8 @@ package artGame.game;
 public class Sculpture extends Character{
 	private int value;
 	private String name;
-	public Sculpture(Direction dir,int value,String name) {
-		super(dir);
+	public Sculpture(Direction dir,int ID, int value,String name) {
+		super(dir, ID);
 		this.value = value;
 		this.name = name;
 	}
