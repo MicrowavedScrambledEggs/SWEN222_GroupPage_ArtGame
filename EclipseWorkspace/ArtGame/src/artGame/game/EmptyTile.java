@@ -8,7 +8,7 @@ public class EmptyTile extends Tile{
 	
 	@Override
 	public boolean walkable() {
-		return true;
+		return occupant==null;
 	}
 	
 	public String toString(){
