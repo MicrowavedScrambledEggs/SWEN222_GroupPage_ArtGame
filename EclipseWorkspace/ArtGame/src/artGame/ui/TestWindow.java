@@ -38,7 +38,7 @@ public class TestWindow {
 	};
 	
 	public TestWindow() {
-		camera = Matrix4f.translate(new Vector3f(0f, 0f, -1f));//.multiply(Matrix4f.rotate(angle, 1f, 0f, 0f));
+		camera = Matrix4f.scale(0.25f, 0.25f, 0.25f).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f));
 		glfwSetErrorCallback(errorCallback);
 		
 		if (glfwInit() != GL_TRUE) {
@@ -102,7 +102,7 @@ public class TestWindow {
             width.flip();
             height.flip();
             
-            //camera = camera.multiply(Matrix4f.rotate(speed, 0f, 1f, 0f));
+            camera = camera.multiply(Matrix4f.rotate(speed, 0f, 1f, 0f));
 		}
 		
 		// shut down
