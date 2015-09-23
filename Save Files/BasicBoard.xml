@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game>
+    <floor>
+        <empty_tile>
+            <position>
+                <x value = "0"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+        </empty_tile>
+        <empty_tile>
+            <position>
+                <x value = "1"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "EAST"  />
+        </empty_tile>
+        <empty_tile>
+            <position>
+                <x value = "0"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <wall direction = "WEST"  />
+        </empty_tile>
+        <empty_tile isExit = "TRUE">
+            <position>
+                <x value = "1"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <wall direction = "EAST"  />
+        </empty_tile>
+    </floor>
+    <player id = "1">
+    	<direction>EAST</direction>
+        <position>
+            <x value = "0"/>
+            <y value = "0"/>
+        </position>
+    </player>
+</game>

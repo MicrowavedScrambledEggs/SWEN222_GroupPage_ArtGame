@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="EclipseWorkspace/ArtGame/src"/>
+	<classpathentry kind="lib" path="EclipseWorkspace/ArtGame/lib/jars/lwjgl.jar"/>
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="EclipseWorkspace/ArtGame/bin"/>
+</classpath>
