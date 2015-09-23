@@ -1,0 +1,12 @@
+package artGame.ui.renderer.math;
+
+import java.nio.FloatBuffer;
+
+public class Vector2f {
+
+	public FloatBuffer toBuffer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

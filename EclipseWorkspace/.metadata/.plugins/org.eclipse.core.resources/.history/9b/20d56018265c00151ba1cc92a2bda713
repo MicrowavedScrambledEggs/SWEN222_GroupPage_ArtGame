@@ -1,0 +1,29 @@
+package artGame.ui.renderer;
+
+
+public class AssetLoader {
+	// all methods in this class must return an implementation of Asset
+	
+	// singleton
+	private static AssetLoader instance = new AssetLoader();
+	
+	public static AssetLoader instance() {
+		return instance;
+	}
+	
+	private AssetLoader() {
+		
+	}
+	
+	public Model loadOBJ(String filepath) {
+		//TODO
+		
+		Scanner scan = new Scanner
+		return null;
+	}
+	
+	public Sprite[][] loadSpritesheet(String filepath) {
+		//TODO
+		return null;
+	}
+}

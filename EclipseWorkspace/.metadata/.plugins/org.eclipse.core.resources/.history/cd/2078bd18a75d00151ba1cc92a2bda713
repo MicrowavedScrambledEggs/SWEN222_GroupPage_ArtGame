@@ -1,0 +1,13 @@
+package artGame.ui.renderer;
+
+/*
+ * Adapted from LWJGL GitHub wiki
+ */
+public class Shader {
+	
+	private int id;
+
+	public Shader(int type, CharSequence source) {
+		id = glCreateShader(type);
+	}
+}

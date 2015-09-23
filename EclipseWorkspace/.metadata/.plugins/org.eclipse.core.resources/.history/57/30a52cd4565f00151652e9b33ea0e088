@@ -1,0 +1,69 @@
+package artGame.ui.renderer.math;
+
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+
+public class Vector3f {
+
+	private float[] v = new float[3];
+	
+	public Vector3f() {
+		v[0] = 0f;
+		v[1] = 0f;
+		v[2] = 0f;
+	}
+	
+	public Vector3f(float x, float y, float z) {
+		v[0] = x;
+		v[1] = y;
+		v[3] = z;
+	}
+
+	public FloatBuffer toBuffer() {
+		FloatBuffer b = BufferUtils.createFloatBuffer(3);
+		b.put(v);
+		b.flip();
+		return b;
+	}
+	
+	public float getX() {
+		return v[0];
+	}
+	
+	public float getY() {
+		return v[1];
+	}
+	
+	public float getZ() {
+		return v[2];
+	}
+	
+	public Vector2f scale(float scalar) {
+		float x = v[0] * scalar;
+		float y = v[1] * scalar;
+		return new Vector2f(x, y);
+	}
+	
+	public Vector2f add(Vector2f other) {
+		float x = v[0] + other.v[0];
+		float y = v[1] + other.v[1];
+		return new Vector2f(x,y);
+	}
+	
+	public float length() {
+		return (float) Math.sqrt(v[0]*v[0]+v[1]*v[1]);
+	}
+	
+	public Vector2f normalized() {
+		return scale(1/length());
+	}
+	
+	public float dot(Vector2f other) {
+		return v[0] * other.v[0] + v[1] * other.v[1];
+	}
+	
+	public Vector2f lerp(Vector2f other, float alpha) {
+        return this.scale(1f - alpha).add(other.scale(alpha));
+    }
+}

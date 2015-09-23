@@ -1,0 +1,9 @@
+package artGame.ui.renderer.math;
+
+import java.nio.FloatBuffer;
+
+public interface Vectorf {
+
+	public FloatBuffer toBuffer();
+
+}

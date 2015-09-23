@@ -1,0 +1,7 @@
+package artGame.ui.renderer;
+
+import static org.lwjgl.opengl.GL30.*;
+
+public class VertexArrayObject {
+	private int id;
+}
