@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.lwjgl.glfw.GLFWErrorCallback"/>
+<fullyQualifiedTypeName name="org.lwjgl.glfw.Callbacks"/>
+<fullyQualifiedTypeName name="org.lwjgl.opengl.GLContext"/>
+<fullyQualifiedTypeName name="org.lwjgl.glfw.GLFWKeyCallback"/>
+<fullyQualifiedTypeName name="java.nio.IntBuffer"/>
+<fullyQualifiedTypeName name="org.lwjgl.BufferUtils"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="artGame.ui.renderer.Model.Coord"/>
+<fullyQualifiedTypeName name="artGame.ui.renderer.Coord"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.nio.FloatBuffer"/>
+<fullyQualifiedTypeName name="org.lwjgl.opengl.GL15"/>
+<fullyQualifiedTypeName name="org.lwjgl.opengl.GL20"/>
+</qualifiedTypeNameHistroy>

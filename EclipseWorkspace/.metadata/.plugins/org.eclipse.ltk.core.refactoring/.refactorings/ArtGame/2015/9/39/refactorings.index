@@ -1,0 +1,8 @@
+1442719158998	Delete element
+1442799226241	Delete element
+1442992112181	Rename field 'vertBuffer'
+1442992121408	Rename field 'uvBuffer'
+1442992140142	Rename field 'vertices'
+1442992151611	Rename field 'uvs'
+1442996061640	Delete element
+1442997426497	Rename method 'updateUniforms'

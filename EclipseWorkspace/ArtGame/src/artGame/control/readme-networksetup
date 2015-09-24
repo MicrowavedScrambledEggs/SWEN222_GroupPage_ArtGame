@@ -1,3 +1,10 @@
+Q: WAIT, I JUST WANT TO KNOW HOW TO RUN THE THING. HELP. 
+A: Oops, sorry! It's very similar to PacMan.
+   So if you want a server, then run Main with:
+	-server <some number greater than 0>
+   For a client, run it with
+   	-connect <whatever IP the server spits out> -port 32768
+
 ===================================================================================
 1. Structure of the TCP Server-to-Client process
 ===================================================================================
