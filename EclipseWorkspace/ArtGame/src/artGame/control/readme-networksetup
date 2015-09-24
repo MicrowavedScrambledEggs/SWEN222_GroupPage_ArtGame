@@ -37,15 +37,14 @@ HEADER, SEND BEFORE ALL DATA:
 DATA CONTENTS:
 	IF MOVEMENT:								IF RECEIVING ITEM:
 	[3] = character's current X					[3] = if item is to be taken from a character, player's ID
-	[4] = character's current Y					[4] = if item is to be taken from the world, object's ID
-	[5] = character's destination X				[5] = item ID
+	[4] = character's current Y					[4] = item ID
+	[5] = character's destination X				
 	[6] = character's destination Y			
 	
 	IF LOSING ITEM:								IF ACCESSING INVENTORY, CLIENT REQUEST
-	[3] = ID of item to be removed				(empty; note that a client should have a local copy of their own inventory, 
-													so this packet is only useful for accessing someone/thing else's inventory.)
+	[3] = ID of item to be removed				[3] inventory of player's inventory to send 
 	
-												IF ACCESSING INVENTORY, SERVER RESPONSE
+												IF READING AN INVENTORY, SERVER RESPONSE
 												[3-1023] Item IDs of the inventory's contents.
 										
 	IF ESCAPING LEVEL:							IF BEING CAUGHT:

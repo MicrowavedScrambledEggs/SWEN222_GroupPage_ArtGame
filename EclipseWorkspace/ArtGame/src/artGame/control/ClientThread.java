@@ -41,11 +41,11 @@ public class ClientThread extends SocketThread {
 				DataInputStream input = new DataInputStream(socket.getInputStream());
 				DataOutputStream output = new DataOutputStream(socket.getOutputStream());
 				// write first
-				if (r==0) {
+				if (r == 0) {
 					writeMovePacket(output,pid,curX,curY,++curX,++curY);
 					System.out.println("GAVE: "+curX+", "+curY +" "+r);
 				} else if (r==1) {
-					int item = ((int)Math.random()*10)+100;
+					int item = (int)(Math.random()*10)+100;
 					writeTakeItemPacket(output,pid,item);
 					System.err.println("GAVE: "+item);
 				} else {
@@ -53,7 +53,7 @@ public class ClientThread extends SocketThread {
 					System.out.println("GAVE: "+curX+", "+curY +" "+r);
 				}
 				//while(input.available() <= 0) {}
-				r = r+1;
+				r++;
 				Thread.sleep(4000);
 			} catch (IOException e) { e.printStackTrace(); }
 			catch (InterruptedException e) { e.printStackTrace(); }
@@ -62,9 +62,9 @@ public class ClientThread extends SocketThread {
 	}
 	
 	private void writeTakeItemPacket(DataOutputStream output, int pid, int itemId) throws IOException {
-		output.writeInt(1);
+		output.writeInt(0);
 		output.writeInt(pid);
-		output.writeInt(BasicPacketParser.ITEM_TAKE);
+		output.writeInt(Packet.ITEM_TAKE);
 		output.writeInt(pid);
 		output.writeInt(0); // because item is being taken from a player
 		output.writeInt(itemId);
@@ -72,9 +72,9 @@ public class ClientThread extends SocketThread {
 	}
 
 	private void writeMovePacket(DataOutputStream output, int pid, int curX, int curY, int destX, int destY) throws IOException {
-		output.writeInt(1);
+		output.writeInt(0);
 		output.writeInt(pid);
-		output.writeInt(BasicPacketParser.MOVE);
+		output.writeInt(Packet.MOVE);
 		output.writeInt(curX);
 		output.writeInt(curY);
 		output.writeInt(destX);

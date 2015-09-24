@@ -3,6 +3,8 @@ package artGame.control;
 import java.awt.Point;
 import java.util.Arrays;
 
+import artGame.main.Main;
+
 /**
  * @author Vicki
  *
@@ -15,48 +17,47 @@ public class BasicPacketParser implements PacketParser {
 	private byte[] bytepacket;
 	private int[] intpacket;
 	
-	static final int MOVE = 0;
-	static final int INVENTORY = 1;
-	static final int ITEM_TAKE = 2;
-	static final int ITEM_GIVE = 3;
-	static final int ESCAPE = 4;
-	static final int LOSE = 5;
-	
-	static final int GAME_START = 10;
-	static final int GAME_END = 11;
-	static final int DISCONNECT = 12;
-	
-	static final int OBJECT_CHANGED = 20;
-
-	public static enum WORLD { OBJECT_CHANGED };
-	public static enum CLIENT {PKT_MOVE, PKT_INVENTORY, PKT_ITEM_TAKE, 
-		PKT_ITEM_GIVE, PKT_ESCAPED, PKT_CAUGHT };
-	public static enum NETWORK { GAME_START, GAME_END, DISCONNECT };
-	
-	public static enum EVENT_TYPE { CLIENT, NETWORK, WORLD };
-	
-	private BasicPacketParser(int act, int id, byte[] packet) {
+	/* obsolete */
+	private BasicPacketParser(int act, int id, byte[] packet) throws IncompletePacketException {
+		if (packet == null) throw new IncompletePacketException();
 		this.ACTION = act;
 		this.ID = id;
-		int i = 0;
-		bytepacket = Arrays.copyOf(packet, packet.length);
-	}
+		bytepacket = packet;
+		bytepacket = getBytes();
+	}	
 	
-	private BasicPacketParser(int act, int id, int[] packet) throws IncompletePacketException {
-		this.ACTION = act;
-		this.ID = id;
-		int i = 0;
+	/** Thread reads input as an array of integers. Give me your delicious
+	 * integets, I will consume them all. 
+	 * @param packet
+	 * @throws IncompletePacketException
+	 */
+	private BasicPacketParser(int[] packet) throws IncompletePacketException {
+		this.ACTION = packet[2];
+		this.ID = packet[1];
 		intpacket = Arrays.copyOf(packet, packet.length);
 		bytepacket = getBytes();
 	}
 	
-	@Override
+	/** Returns a copy of the Parser's contents as a byte array,
+	 * containing the header, contents and terminating character.
+	 * @return
+	 * @throws IncompletePacketException If the Parser has not
+	 * been given a byte packet. 
+	 */
 	public byte[] getBytes() throws IncompletePacketException {
 		if (bytepacket != null) {
-			return Arrays.copyOf(bytepacket,bytepacket.length);
+			for (int i = 0; i < bytepacket.length; i++) {
+				if (bytepacket[i] == Packet.TERMINAL) {
+					return Arrays.copyOf(bytepacket, i+1);
+				}
+			}
+			return Arrays.copyOf(bytepacket, bytepacket.length);
 		} else if (intpacket != null) {
 			byte[] b = new byte[intpacket.length];
-			for(int i = 0; i < intpacket.length; i++) {
+			for (int i = 0; i < intpacket.length; i++) {
+				if (intpacket[i] == Packet.TERMINAL) {
+					return Arrays.copyOf(b,i+1);
+				}
 				b[i] = (byte) intpacket[i];
 			}
 			return b;
@@ -64,30 +65,132 @@ public class BasicPacketParser implements PacketParser {
 		throw new IncompletePacketException();
 	}
 	
-	public static PacketParser getPacketFromBytes(byte[] bytepacket) throws IncompletePacketException{
-		return new BasicPacketParser(bytepacket[2],bytepacket[1],bytepacket);
+	public static Action getActionFromBytes(byte[] bytepacket) throws IncompletePacketException{
+		return new BasicPacketParser(bytepacket[2],bytepacket[1],bytepacket).executePacket();
 	}
 	
-	public static PacketParser getPacketFromInts(int[] intpacket) throws IncompletePacketException{
-		return new BasicPacketParser(intpacket[2],intpacket[1],intpacket);
+	public static Action getActionFromInts(int[] intpacket) throws IncompletePacketException{
+		return new BasicPacketParser(intpacket).executePacket();
 	}
 	
-	EVENT_TYPE translateType(int t) {
-		CLIENT[] client = CLIENT.values();
-		NETWORK[] network = NETWORK.values();
-		WORLD[] world = WORLD.values();
+	Packet.EVENT_TYPE translateType(int t) {
+		Packet.CLIENT[] client = Packet.CLIENT.values();
+		Packet.NETWORK[] network = Packet.NETWORK.values();
+		Packet.WORLD[] world = Packet.WORLD.values();
 		if (t <= client[client.length-1].ordinal()) {
-			return EVENT_TYPE.CLIENT;
+			return Packet.EVENT_TYPE.CLIENT;
 		} else if (t <= network[network.length-1].ordinal()) {
-			return EVENT_TYPE.NETWORK;
+			return Packet.EVENT_TYPE.NETWORK;
 		} else if (t <= world[world.length-1].ordinal()) {
-			return EVENT_TYPE.WORLD;
+			return Packet.EVENT_TYPE.WORLD;
 		}
 		throw new IllegalArgumentException();
 	}
 	
-	public Action executePacket() {
-		Action m = null;
-		return m;
+	public Action executePacket() throws IncompletePacketException {
+		try {
+			switch (ACTION) {
+				case (Packet.MOVE):
+					return (new MovePacket()).read(bytepacket);
+				case (Packet.ITEM_TAKE):
+					return (new TakeItemPacket()).read(bytepacket);
+				
+				// TODO add the rest of the cases!
+			}
+		} catch (IncompatiblePacketException e) {
+			e.printStackTrace();
+		}
+		throw new IncompletePacketException();
+	}
+}
+
+
+
+/** MovePacket contains the player's current and destination coordinates. 
+ * 
+ * 
+ * 
+ * 
+ * */
+class MovePacket implements Packet {
+	private final int PACKET_LENGTH = 4;
+
+	@Override
+	public Action read(byte[] packet) throws IncompatiblePacketException { // FIXME why can't this be package-visible?
+//		if (packet.length != PACKET_LENGTH + Packet.HEAD_LENGTH || packet.length > Main.LARGE_PACKET_SIZE) {
+//			throw new IncompatiblePacketException(Packet.HEAD_LENGTH + PACKET_LENGTH +" is wrong!"+ packet.length);
+//		}
+		int index = Packet.HEAD_LENGTH;
+		System.out.println("MOVEPACKET: Reading a MOVE packet");
+		Point playerPos = new Point(packet[index++],packet[index++]);
+		Point playerDes = new Point(packet[index++],packet[index]);
+		System.out.println(packet[1]+" ("+playerPos.getX()+","+playerPos.getY()+") -> ("+playerDes.getX()+","+playerDes.getY()+")");
+		return new MovePlayerAction(packet[1],playerPos,playerDes);
+	}
+
+	@Override
+	public int packetLength() {
+		return PACKET_LENGTH;
+	}
+}
+
+/** TakeItemPacket contains the name of 
+ * 
+ * 
+ * 
+ * 
+ * */
+class TakeItemPacket implements Packet {
+	private final int PACKET_LENGTH = 3;
+	
+	@Override
+	public Action read(byte[] packet) throws IncompatiblePacketException {
+//		if (packet.length != Packet.HEAD_LENGTH + PACKET_LENGTH) throw new IncompatiblePacketException();
+		System.out.println("TAKEPACKET: Reading a TAKE packet");
+		int index = Packet.HEAD_LENGTH;
+		boolean isWorld = (packet[0] == 1) ? true : false;
+		return new TakeItemAction(isWorld, packet[index++], packet[index]);
+	}
+	
+	@Override	
+	public int packetLength() {
+		return PACKET_LENGTH;
+	}
+}
+
+class ReadInventoryPacket implements Packet {
+	private final int PACKET_LENGTH = -1;
+	
+	@Override
+	public Action read(byte[] packet) throws IncompatiblePacketException {
+//		if (packet.length < Packet.HEAD_LENGTH) throw new IncompatiblePacketException();
+		System.out.println("INVENTORY: Reading an INVENTORY packet");
+		int index = Packet.HEAD_LENGTH;
+		boolean isWorld = (packet[0] == 1) ? true : false;
+		int[] inv = new int[packet.length-Packet.HEAD_LENGTH];
+		for (int i = 0; i < inv.length; i++) {
+			inv[i] = packet[i];
+		}
+		return new ReadInventoryAction(inv);
+	}
+	
+	@Override	
+	public int packetLength() {
+		return Integer.MAX_VALUE;
+	}
+}
+
+class SendInventory implements Packet {
+	private final int PACKET_LENGTH = 3;
+	
+	@Override
+	public Action read(byte[] packet) throws IncompatiblePacketException {
+//		if (packet.length != Packet.HEAD_LENGTH + PACKET_LENGTH) throw new IncompatiblePacketException();
+		return new SendInventoryAction(packet[2],packet[3]);
+	}
+	
+	@Override	
+	public int packetLength() {
+		return PACKET_LENGTH;
 	}
 }

@@ -1,21 +1,12 @@
 package artGame.control;
 
 import java.awt.Point;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Arrays;
-
-import artGame.control.GamePacket.MovePacket;
 import artGame.main.Game;
 import artGame.main.Main;
 
@@ -59,25 +50,27 @@ public class ServerThread extends SocketThread {
 				// great! there's data in the stream! is it from the client player or the client game?
 				waitFor(input);
 				
-				int source = input.readInt(); // 0 if player, 1 if gameworld
-				System.out.println("SRC = "+source);
-				// now we know that, what's being affected by this data?
-				waitFor(input);
-				int gotId = input.readInt();
-				System.out.println("ID  = "+gotId);
-				// and now we know that, what kind of data are we getting?
-				waitFor(input);
-				int action = input.readInt();
-				System.out.println("ACT = "+action);
+				int[] data = new int[Main.LARGE_PACKET_SIZE];
+				int curVal = input.readInt();
+				int i = 0;
+				while (curVal != Packet.TERMINAL) {
+					data[i] = curVal;
+					curVal = input.readInt();
+					i++;
+				}
 				
-				// now we know who it's for, we can start parsing it.
-				processDataStream(input,action,gotId);
+				try {
+					Action a = BasicPacketParser.getActionFromInts(data);
+				} catch (IncompletePacketException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				// and now to make things print a little slower we'll just sleep for a bit. 
-				Thread.sleep(4000);
+//				Thread.sleep(4000);
 				runcount++;
 			} catch (IOException e) { e.printStackTrace(); }
-			catch (InterruptedException e) { e.printStackTrace(); }
+//			catch (InterruptedException e) { e.printStackTrace(); }
 			runcount++;
 		}
 	}
@@ -115,52 +108,37 @@ public class ServerThread extends SocketThread {
 	 * 
 	 * Working on getting the PacketParsers and an Action class to do this job. 
 	 */
-	private void processDataStream(DataInputStream input, int action, int gotId) throws IOException {
-		if (gotId == 0) { // client-sent packets should never be 0!
-			
-		} else if (gotId == pid) { // this packet is about an action taken by our client player
-			waitFor(input);
-			if (action == BasicPacketParser.MOVE) {
-				readMove(input,gotId);
-			} else if (action == BasicPacketParser.ITEM_TAKE) {
-				readTakeItem(input,gotId);
-			} else if (action == BasicPacketParser.ESCAPE) {
-				readEscape(input,gotId);
-			} else if (action == BasicPacketParser.ITEM_GIVE) {
-				readGiveItem(input,gotId);
-			} else if (action == BasicPacketParser.LOSE) {
-				readCaught(input,gotId);
-			} else if (action == BasicPacketParser.INVENTORY) {
-				readInventory(input,gotId);
-			} else {
-				throw new IllegalArgumentException();
-			}
-		} else { // this packet is an action taken on something in the world
-			System.out.println("ACTION "+action+" FOR ACTOR "+gotId+" IS INVALID");
-		}
-		// wait for terminating character
-		waitFor(input);
-		if (input.readInt() == Integer.MAX_VALUE) {
-			System.out.println("DONE");
-		} else {
-			System.err.println("ERR");
-		}
-	}
-
-	/**
-	 * 
-	 */
-	private void readMove(DataInputStream input, int gotId) throws IOException {
-		System.out.println("Reading a MOVE packet");
-			int[] readPos = new int[4];
-			readPos[0] = input.readInt();
-			readPos[1] = input.readInt();
-			readPos[2] = input.readInt();
-			readPos[3] = input.readInt();
-			Point playerPos = new Point(readPos[0],readPos[1]);
-			Point playerDes = new Point(readPos[2],readPos[3]);
-			System.out.println(pid+" ("+playerPos.getX()+","+playerPos.getY()+") -> ("+playerDes.getX()+","+playerDes.getY()+")");
-	}
+//	private void processDataStream(DataInputStream input, int action, int gotId) throws IOException {
+//		if (gotId == 0) { // client-sent packets should never be 0!
+//			
+//		} else if (gotId == pid) { // this packet is about an action taken by our client player
+//			waitFor(input);
+//			if (action == Packet.MOVE) {
+//				readMove(input,gotId);
+//			} else if (action == Packet.ITEM_TAKE) {
+//				readTakeItem(input,gotId);
+//			} else if (action == Packet.ESCAPE) {
+//				readEscape(input,gotId);
+//			} else if (action == Packet.ITEM_GIVE) {
+//				readGiveItem(input,gotId);
+//			} else if (action == Packet.LOSE) {
+//				readCaught(input,gotId);
+//			} else if (action == Packet.INVENTORY) {
+//				readInventory(input,gotId);
+//			} else {
+//				throw new IllegalArgumentException();
+//			}
+//		} else { // this packet is an action taken on something in the world
+//			System.out.println("ACTION "+action+" FOR ACTOR "+gotId+" IS INVALID");
+//		}
+//		// wait for terminating character
+//		waitFor(input);
+//		if (input.readInt() == Integer.MAX_VALUE) {
+//			System.out.println("DONE");
+//		} else {
+//			System.err.println("ERR");
+//		}
+//	}
 
 	/**
 	 * @param input
@@ -191,7 +169,7 @@ public class ServerThread extends SocketThread {
 	private void sendInventory(DataOutputStream output, int pid) throws IOException {
 		output.writeInt(0);
 		output.writeInt(pid);
-		output.writeInt(BasicPacketParser.INVENTORY);
+		output.writeInt(Packet.INVENTORY);
 		// this is a pretend inventory!
 		int[] inventory = new int[(int)(Math.random()*10)];
 		for (int i = 0; i < inventory.length; i++) {
