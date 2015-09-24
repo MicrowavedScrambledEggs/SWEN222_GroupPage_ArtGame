@@ -1,0 +1,69 @@
+Q: WAIT, I JUST WANT TO KNOW HOW TO RUN THE THING. HELP. 
+A: Oops, sorry! It's very similar to PacMan.
+   So if you want a server, then run Main with:
+	-server <some number greater than 0>
+   For a client, run it with
+   	-connect <whatever IP the server spits out> -port 32768
+
+===================================================================================
+1. Structure of the TCP Server-to-Client process
+===================================================================================
+Hello, gentle reader! I trust you've come here before triyng to look at the rest
+of the code. That's probably a good idea.
+
+Anyway, as it currently stands: Main, ServerThread and ClientThread are the
+only classes you might be interested in. ServerThread and ClientThread have methods
+for reading and writing information directly to their sockets. At the moment,
+server and client can read and respond to each other's requests for movement and
+to take items. 
+
+The next step is to push all these methods into a separate class, 
+BasicPacketParser, and this will have the capacity to both read byte arrays as
+instructions the Game can act on (the Action classes) and convert data to 
+byte arrays.  
+
+===================================================================================
+2. Structure of data transmissions
+===================================================================================
+Currently, all data is read in sequences, but when the classes are properly
+implemented these numbers will correspond to data in a byte array. 
+Note that while you can read the data as an integer, we should only need shorts,
+and the code is going to change to reflect this. 
+(Short: two bytes, making up any number from 0-32767 inclusive.)
+
+Here's what each player's action looks like in numbers:
+
+HEADER, SEND BEFORE ALL DATA:
+	[0] = Is this a game world update? (then 1, otherwise 0)
+	[1] = ID of the item/player/guard taking an action, or 0 for network updates.
+			(The server sends responses with the id of the client it's 
+			communicating with, except in the case of network updates.
+	[2] = message type, as defined by the enums and static variables in 
+			BasicPacketParser. 
+	
+DATA CONTENTS:
+	IF MOVEMENT:								IF RECEIVING ITEM:
+	[3] = character's current X					[3] = if item is to be taken from a character, player's ID
+	[4] = character's current Y					[4] = if item is to be taken from the world, object's ID
+	[5] = character's destination X				[5] = item ID
+	[6] = character's destination Y			
+	
+	IF LOSING ITEM:								IF ACCESSING INVENTORY, CLIENT REQUEST
+	[3] = ID of item to be removed				(empty; note that a client should have a local copy of their own inventory, 
+													so this packet is only useful for accessing someone/thing else's inventory.)
+	
+												IF ACCESSING INVENTORY, SERVER RESPONSE
+												[3-1023] Item IDs of the inventory's contents.
+										
+	IF ESCAPING LEVEL:							IF BEING CAUGHT:
+	(empty; sent after player has				(empty)
+	clicked 'ok, take me out')
+
+	IF USING ITEM ON OBJECT, CLIENT REQUEST:	IF CHANGING OBJECT STATE, SERVER UPDATE:
+	[3] id of object							[3] if player, player id, else 0
+	[4] id of item								[4] if item, item id, else 0
+												[5] int value representing state
+DATA TERMINATOR: 										
+... followed by the max integer value.  
+
+===================================================================================

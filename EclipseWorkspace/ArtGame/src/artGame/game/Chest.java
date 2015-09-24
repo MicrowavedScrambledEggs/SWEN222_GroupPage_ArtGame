@@ -1,11 +1,12 @@
 package artGame.game;
 
 public class Chest extends Tile {
-
+	public final int id;
 	private Item content;
 
-	public Chest(boolean nwall, boolean wwall, boolean swall, boolean ewall) {
+	public Chest(int id,boolean nwall, boolean wwall, boolean swall, boolean ewall) {
 		super(nwall, wwall, swall, ewall);
+		this.id = id;
 	}
 
 	public void takeItem(Player p) {

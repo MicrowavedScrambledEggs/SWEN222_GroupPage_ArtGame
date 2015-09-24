@@ -1,0 +1,17 @@
+package artGame.ui.renderer;
+
+import static org.lwjgl.opengl.GL15.*;
+
+public class VertexBufferObject {
+	
+	private final int id;
+	
+	public VertexBufferObject() {
+		id = glGenBuffers();
+	}
+	
+	public void bind(int target) {
+		glBindBuffer(target, id);
+	}
+
+}

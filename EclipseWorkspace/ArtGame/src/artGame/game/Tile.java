@@ -21,10 +21,7 @@ public abstract class Tile {
 		return occupant;
 	}
 	public void setOccupant(Character occupant) {
-		if(walkable()){
-		this.occupant = occupant;
-		}
-		else throw new GameError("Trying to move character to invalid tile");
+			this.occupant = occupant;
 	}
 	
 	public void setWall(Direction dir,Wall wall){

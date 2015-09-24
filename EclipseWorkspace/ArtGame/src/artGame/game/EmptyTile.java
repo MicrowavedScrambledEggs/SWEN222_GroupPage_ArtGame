@@ -20,3 +20,4 @@ public class EmptyTile extends Tile{
 		else return "X";
 	}
 }
+

@@ -33,6 +33,7 @@ public class Game {
 		// TODO Auto-generated constructor stub
 	}
 
+	//placeholder for init, will need to read from xml eventually for players' positions
 	public void initialise(){
 		floor = new Floor();
 		p = new Player(Direction.EAST,1);

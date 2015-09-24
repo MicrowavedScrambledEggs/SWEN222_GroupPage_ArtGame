@@ -1,9 +1,16 @@
 package artGame.ui.renderer;
 
-public class Sprite implements Asset{
+import artGame.ui.renderer.math.Matrix4f;
+
+public class Sprite implements Asset {
+	@Override
+	public void draw(Matrix4f view) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
-	public void draw() {
+	public void delete() {
 		// TODO Auto-generated method stub
 		
 	}

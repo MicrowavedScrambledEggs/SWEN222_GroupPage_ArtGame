@@ -1,0 +1,18 @@
+package artGame.ui.renderer;
+
+import artGame.ui.renderer.math.Vector3f;
+
+public class Sprite implements Asset {
+	@Override
+	public void draw(Vector3f pos) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
