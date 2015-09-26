@@ -33,8 +33,11 @@ public class XMLReader {
 	//TODO: Add handling for Art
 	//TODO: Add handling for inventory
 	public static final String WALL_ELEMENT = "wall";
+	public static final String DOOR_ELEMENT = "door";
 	public static final String POSITION_ELEMENT = "position";
 	public static final String EMPTY_TILE_ELEMENT = "empty_tile";
+	public static final String TILE_STRETCH_ELEMENT = "tile_stretch";
+	public static final String STAIR_TILE_ELEMENT = "stair_tile";
 	public static final String X_COORD_ELEMENT = "x";
 	public static final String Y_COORD_ELEMENT = "y";
 	public static final String PLAYER_ELEMENT = "player";
