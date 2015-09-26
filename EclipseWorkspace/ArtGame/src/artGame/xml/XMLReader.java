@@ -43,9 +43,13 @@ public class XMLReader {
 	public static final String PLAYER_ELEMENT = "player";
 	public static final String DIRECTION_ELEMENT = "direction";
 	
+	public static final String LEVEL_ATTRIBUTE = "level";
 	public static final String DIRECTION_ATTRIBUTE = "direction";
 	public static final String VALUE_ATTRIBUTE = "value";
 	public static final String ID_ATTRIBUTE = "id";
+	public static final String DOOR_ID_ATTRIBUTE = "doorID";
+	public static final String KEY_ID_ATTRIBUTE = "keyID";
+	public static final String LOCKED_ATTRIBUTE = "locked";
 	public static final String EXIT_ATTRIBUTE = "isExit";
 	
 	public static final String NORTH_VALUE = "NORTH";

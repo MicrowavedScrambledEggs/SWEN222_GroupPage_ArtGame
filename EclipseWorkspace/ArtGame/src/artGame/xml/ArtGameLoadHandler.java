@@ -8,7 +8,9 @@ import java.util.Stack;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import artGame.game.Art;
 import artGame.game.Coordinate;
+import artGame.game.Door;
 import artGame.game.ExitTile;
 import artGame.game.Floor;
 import artGame.game.Guard;
@@ -26,11 +28,18 @@ import artGame.main.Game;
  *
  */
 public class ArtGameLoadHandler extends DefaultHandler {
-
+	
+	private HashMap<Integer, Door> doors = new HashMap<Integer, Door>();
+	private HashMap<Integer, Art> paintings = new HashMap<Integer, Art>();
 	private HashMap<Coordinate, Tile> floorTiles = new HashMap<Coordinate, Tile>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Guard> guards = new ArrayList<Guard>();
 	private ArrayList<ExitTile> exits = new ArrayList<ExitTile>();
+	private ArrayList<PlayerBuilder> playerBuilders = new ArrayList<PlayerBuilder>();
+	private ArrayList<TileBuilder> tileBuilders = new ArrayList<TileBuilder>();
+	private ArrayList<ArtBuilder> artBuilders = new ArrayList<ArtBuilder>();
+	private ArrayList<SculptureBuilder> sculptureBuilders = new ArrayList<SculptureBuilder>();
+	private ArrayList<GuardBuilder> guardBuilders = new ArrayList<GuardBuilder>();
 	//Keeps track of which object it is currently building
 	private Stack<ObjectBuilder> buildStack = new Stack<ObjectBuilder>();
 	//For elements with string data in between tags. So that characters() knows what element
@@ -73,6 +82,8 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			//Wall variables for tiles
 			//if xml file is correctly written, object builder on top of stack should be a tile builder
 			addFieldToCurrentBuilder(qName, attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE));
+		} else if(qName.equals(XMLReader.DOOR_ELEMENT)){
+			
 		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
 			buildStack.push(new PlayerBuilder());
 			//adds the iD value in the id attribute to the new player builder
@@ -121,7 +132,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	 */
 	private void completePlayer() {
 		PlayerBuilder playerBuilder = (PlayerBuilder) buildStack.pop();
-		players.add(playerBuilder.buildObject());
+		playerBuilders.add(playerBuilder);
 	}
 
 	/**
@@ -142,11 +153,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	 */
 	private void completeTile() {
 		TileBuilder tileBuilder = (TileBuilder) buildStack.pop();
-		Tile builtTile = tileBuilder.buildObject();
-		floorTiles.put(tileBuilder.getCoordinate(), builtTile);
-		if(builtTile instanceof ExitTile){
-			exits.add((ExitTile) builtTile);
-		}
+		tileBuilders.add(tileBuilder);
 	}
 
 	@Override

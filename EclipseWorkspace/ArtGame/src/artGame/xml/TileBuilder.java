@@ -1,5 +1,8 @@
 package artGame.xml;
 
+import java.util.HashMap;
+
+import artGame.game.Character.Direction;
 import artGame.game.Coordinate;
 import artGame.game.EmptyTile;
 import artGame.game.Tile;
@@ -16,6 +19,9 @@ public class TileBuilder implements ObjectBuilder {
 	protected boolean southWall = false;
 	protected boolean eastWall = false;
 	protected Coordinate coord;
+	
+	private HashMap<Direction, Integer> doorReference = new HashMap<Direction, Integer>();
+	private HashMap<Direction, Integer> artReference = new HashMap<Direction, Integer>();
 
 	@Override
 	/**
