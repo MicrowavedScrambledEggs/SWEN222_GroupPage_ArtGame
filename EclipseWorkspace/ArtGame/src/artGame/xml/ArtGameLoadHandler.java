@@ -16,6 +16,7 @@ import artGame.game.ExitTile;
 import artGame.game.Floor;
 import artGame.game.Guard;
 import artGame.game.Player;
+import artGame.game.Sculpture;
 import artGame.game.Tile;
 import artGame.main.Game;
 
@@ -35,6 +36,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	private HashMap<Coordinate, Tile> floorTiles = new HashMap<Coordinate, Tile>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Guard> guards = new ArrayList<Guard>();
+	private ArrayList<Sculpture> sculptures = new ArrayList<Sculpture>();
 	private ArrayList<ExitTile> exits = new ArrayList<ExitTile>();
 	private ArrayList<PlayerBuilder> playerBuilders = new ArrayList<PlayerBuilder>();
 	private ArrayList<TileBuilder> tileBuilders = new ArrayList<TileBuilder>();
@@ -105,7 +107,9 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			currentElement = qName;
 		} else if(qName.equals(XMLReader.PAINTING_ELEMENT)){
 			buildStack.push(new ArtBuilder(Integer.parseInt(attributes.getValue(0))));
-		} 
+		} else if(qName.equals(XMLReader.SCULPTURE_ELEMENT)){
+			buildStack.push(new SculptureBuilder(Integer.parseInt(attributes.getValue(0))));
+		}
 	}
 
 	private void setWallArtReference(Attributes attributes) {
@@ -162,7 +166,14 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			completePlayer();
 		} else if(qName.equals(XMLReader.PAINTING_ELEMENT)){
 			completePainting();
+		} else if(qName.equals(XMLReader.SCULPTURE_ELEMENT)){
+			completeSculpture();
 		}
+	}
+
+	private void completeSculpture() {
+		SculptureBuilder sculptureBuilder = (SculptureBuilder) buildStack.pop();
+		sculptureBuilders.add(sculptureBuilder);
 	}
 
 	private void completePainting() {
@@ -239,7 +250,14 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		buildGuards();
 		Tile[][] tileArray = buildTileArray();
 		Floor floor = new Floor(tileArray, tileArray.length, tileArray[0].length, guards, exits);
+		addSculpturesToFloor(floor);
 		return new Game(floor, players);
+	}
+
+	private void addSculpturesToFloor(Floor floor) {
+		for(Sculpture sculp : sculptures){
+			floor.setCharacter(sculp, sculp.getRow(), sculp.getCol());
+		}
 	}
 
 	private void buildGuards() {
@@ -274,8 +292,9 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	}
 
 	private void buildScuptures() {
-		// TODO Auto-generated method stub
-		
+		for(SculptureBuilder sculptureBuilder: sculptureBuilders){
+			sculptures.add(sculptureBuilder.buildObject());
+		}
 	}
 
 	private void buildArt() {

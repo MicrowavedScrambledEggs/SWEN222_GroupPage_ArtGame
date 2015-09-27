@@ -17,6 +17,7 @@ public class EmptyTile extends Tile{
 		if(occupant!=null){
 			if(occupant instanceof Player) return "P";
 			else if(occupant instanceof Guard) return "G";
+			else if(occupant instanceof Sculpture) return "$";
 			else return "C";
 		}
 		else {

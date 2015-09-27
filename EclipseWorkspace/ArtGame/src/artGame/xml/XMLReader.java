@@ -44,6 +44,7 @@ public class XMLReader {
 	public static final String PLAYER_ELEMENT = "player";
 	public static final String DIRECTION_ELEMENT = "direction";
 	public static final String PAINTING_ELEMENT = "painting";
+	public static final String SCULPTURE_ELEMENT = "sculpture";
 	public static final String NAME_ELEMENT = "name";
 	public static final String VALUE_ELEMENT = "value";
 	

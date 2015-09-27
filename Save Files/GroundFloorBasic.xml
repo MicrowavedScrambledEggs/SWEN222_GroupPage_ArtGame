@@ -1734,4 +1734,13 @@
     	<name>A Really Shit Painting</name>
     	<value>10</value>
     </painting>
+    <sculpture artID = "58">
+    	<direction>EAST</direction>
+    	<position>
+            <x value = "6"/>
+            <y value = "6"/>
+        </position>
+    	<name>Statue of David (J Pearce)</name>
+    	<value>10000</value>
+    </sculpture>
 </game>
