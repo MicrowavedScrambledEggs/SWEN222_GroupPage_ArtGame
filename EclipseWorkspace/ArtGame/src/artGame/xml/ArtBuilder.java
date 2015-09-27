@@ -1,10 +1,24 @@
 package artGame.xml;
 
-public class ArtBuilder implements ObjectBuilder {
+import artGame.game.Art;
 
+public class ArtBuilder implements ObjectBuilder {
+	
+	private String artName;
+	private int value;
+	private int artID;
+	
+	public ArtBuilder(int artID){
+		this.artID = artID;
+	}
+	
 	@Override
 	public void addFeild(String name, String value) {
-		// TODO Auto-generated method stub
+		if(name.equals(XMLReader.NAME_ELEMENT)){
+			this.artName = value;
+		} else if (name.equals(XMLReader.VALUE_ELEMENT)){
+			this.value = Integer.parseInt(value);
+		}
 
 	}
 
@@ -14,11 +28,14 @@ public class ArtBuilder implements ObjectBuilder {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public int getArtID() {
+		return artID;
+	}
 
 	@Override
-	public <T> T buildObject() {
-		// TODO Auto-generated method stub
-		return null;
+	public Art buildObject() {
+		return new Art(artName, value);
 	}
 
 }

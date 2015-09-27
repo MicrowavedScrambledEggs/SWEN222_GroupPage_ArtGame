@@ -1726,4 +1726,12 @@
             <y value = "1"/>
         </position>
     </player>
+    <painting artID = "1">
+    	<name>A Really Good Painting</name>
+    	<value>1000</value>
+    </painting>
+    <painting artID = "2">
+    	<name>A Really Shit Painting</name>
+    	<value>10</value>
+    </painting>
 </game>

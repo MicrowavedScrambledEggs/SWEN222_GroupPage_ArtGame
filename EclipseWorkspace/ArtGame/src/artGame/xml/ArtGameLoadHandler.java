@@ -91,15 +91,27 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			//Wall variables for tiles
 			//if xml file is correctly written, object builder on top of stack should be a tile builder
 			addFieldToCurrentBuilder(qName, attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE));
+			if(attributes.getLength() > 1){
+				setWallArtReference(attributes);
+			}
 		} else if(qName.equals(XMLReader.DOOR_ELEMENT)){
 			buildDoor(attributes);
 		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
 			buildStack.push(new PlayerBuilder());
 			//adds the iD value in the id attribute to the new player builder
 			addFieldToCurrentBuilder(XMLReader.ID_ATTRIBUTE, attributes.getValue(XMLReader.ID_ATTRIBUTE));
-		} else if(qName.equals(XMLReader.DIRECTION_ELEMENT)){
+		} else if(qName.equals(XMLReader.DIRECTION_ELEMENT) || qName.equals(XMLReader.NAME_ELEMENT)
+				|| qName.equals(XMLReader.VALUE_ELEMENT)){
 			currentElement = qName;
-		}
+		} else if(qName.equals(XMLReader.PAINTING_ELEMENT)){
+			buildStack.push(new ArtBuilder(Integer.parseInt(attributes.getValue(0))));
+		} 
+	}
+
+	private void setWallArtReference(Attributes attributes) {
+		TileBuilder currentTile = (TileBuilder) buildStack.peek();
+		currentTile.addArtReference(attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE), 
+				Integer.parseInt(attributes.getValue(XMLReader.ART_ID_ATTRIBUTE)));
 	}
 
 	private void buildDoor(Attributes attributes) {
@@ -148,7 +160,14 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			completeLinkedTile();
 		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
 			completePlayer();
+		} else if(qName.equals(XMLReader.PAINTING_ELEMENT)){
+			completePainting();
 		}
+	}
+
+	private void completePainting() {
+		ArtBuilder artBuilder = (ArtBuilder) buildStack.pop();
+		artBuilders.add(artBuilder);
 	}
 
 	private void completeLinkedTile() {
@@ -260,7 +279,9 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	}
 
 	private void buildArt() {
-		// TODO Auto-generated method stub
+		for(ArtBuilder artBuilder : artBuilders){
+			paintings.put(artBuilder.getArtID(), artBuilder.buildObject());
+		}
 		
 	}
 
