@@ -1,9 +1,6 @@
 package artGame.control;
 
-import java.awt.Point;
 import java.util.Arrays;
-
-import artGame.main.Main;
 
 /**
  * @author Vicki
@@ -27,7 +24,7 @@ public class BasicPacketParser implements PacketParser {
 	}	
 	
 	/** Thread reads input as an array of integers. Give me your delicious
-	 * integets, I will consume them all. 
+	 * integers, I will consume them all. 
 	 * @param packet
 	 * @throws IncompletePacketException
 	 */
@@ -91,106 +88,18 @@ public class BasicPacketParser implements PacketParser {
 		try {
 			switch (ACTION) {
 				case (Packet.MOVE):
-					return (new MovePacket()).read(bytepacket);
-				case (Packet.ITEM_TAKE):
-					return (new TakeItemPacket()).read(bytepacket);
-				
+					System.out.println("Moving");
+					return (new MovePlayerPacket()).read(bytepacket);
+				case (Packet.ITEM_LOSE):
+					System.out.println("Giving");
+					return (new GetItemPacket()).read(bytepacket);
+				case (Packet.INVENTORY):
+					System.out.println("");
 				// TODO add the rest of the cases!
 			}
 		} catch (IncompatiblePacketException e) {
 			e.printStackTrace();
 		}
 		throw new IncompletePacketException();
-	}
-}
-
-
-
-/** MovePacket contains the player's current and destination coordinates. 
- * 
- * 
- * 
- * 
- * */
-class MovePacket implements Packet {
-	private final int PACKET_LENGTH = 4;
-
-	@Override
-	public Action read(byte[] packet) throws IncompatiblePacketException { // FIXME why can't this be package-visible?
-//		if (packet.length != PACKET_LENGTH + Packet.HEAD_LENGTH || packet.length > Main.LARGE_PACKET_SIZE) {
-//			throw new IncompatiblePacketException(Packet.HEAD_LENGTH + PACKET_LENGTH +" is wrong!"+ packet.length);
-//		}
-		int index = Packet.HEAD_LENGTH;
-		System.out.println("MOVEPACKET: Reading a MOVE packet");
-		Point playerPos = new Point(packet[index++],packet[index++]);
-		Point playerDes = new Point(packet[index++],packet[index]);
-		System.out.println(packet[1]+" ("+playerPos.getX()+","+playerPos.getY()+") -> ("+playerDes.getX()+","+playerDes.getY()+")");
-		return new MovePlayerAction(packet[1],playerPos,playerDes);
-	}
-
-	@Override
-	public int packetLength() {
-		return PACKET_LENGTH;
-	}
-}
-
-/** TakeItemPacket contains the name of 
- * 
- * 
- * 
- * 
- * */
-class TakeItemPacket implements Packet {
-	private final int PACKET_LENGTH = 3;
-	
-	@Override
-	public Action read(byte[] packet) throws IncompatiblePacketException {
-//		if (packet.length != Packet.HEAD_LENGTH + PACKET_LENGTH) throw new IncompatiblePacketException();
-		System.out.println("TAKEPACKET: Reading a TAKE packet");
-		int index = Packet.HEAD_LENGTH;
-		boolean isWorld = (packet[0] == 1) ? true : false;
-		return new TakeItemAction(isWorld, packet[index++], packet[index]);
-	}
-	
-	@Override	
-	public int packetLength() {
-		return PACKET_LENGTH;
-	}
-}
-
-class ReadInventoryPacket implements Packet {
-	private final int PACKET_LENGTH = -1;
-	
-	@Override
-	public Action read(byte[] packet) throws IncompatiblePacketException {
-//		if (packet.length < Packet.HEAD_LENGTH) throw new IncompatiblePacketException();
-		System.out.println("INVENTORY: Reading an INVENTORY packet");
-		int index = Packet.HEAD_LENGTH;
-		boolean isWorld = (packet[0] == 1) ? true : false;
-		int[] inv = new int[packet.length-Packet.HEAD_LENGTH];
-		for (int i = 0; i < inv.length; i++) {
-			inv[i] = packet[i];
-		}
-		return new ReadInventoryAction(inv);
-	}
-	
-	@Override	
-	public int packetLength() {
-		return Integer.MAX_VALUE;
-	}
-}
-
-class SendInventory implements Packet {
-	private final int PACKET_LENGTH = 3;
-	
-	@Override
-	public Action read(byte[] packet) throws IncompatiblePacketException {
-//		if (packet.length != Packet.HEAD_LENGTH + PACKET_LENGTH) throw new IncompatiblePacketException();
-		return new SendInventoryAction(packet[2],packet[3]);
-	}
-	
-	@Override	
-	public int packetLength() {
-		return PACKET_LENGTH;
 	}
 }

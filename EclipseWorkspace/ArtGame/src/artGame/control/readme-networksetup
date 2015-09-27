@@ -4,6 +4,23 @@ A: Oops, sorry! It's very similar to PacMan.
 	-server <some number greater than 0>
    For a client, run it with
    	-connect <whatever IP the server spits out> -port 32768
+   	
+===================================================================================
+
+TODO LIST:
+1. need a way to convert from IDs to objects 
+		has packet | has action   | equals()
+move	[X]			[X]				[X]
+readinv	[X]			[X]				[X]
+sendinv	[X]			[X]				[ ]
+end		[ ]			[ ]				[ ]
+start	[ ]			[ ]				[ ]
+lose	[X]			[X]				[X]
+gain	[X]			[X]				[X]
+use		[ ]			[ ]				[ ]
+caught	[ ]			[ ]				[ ]
+leave	[ ]			[ ]				[ ]
+change	[ ]			[ ]				[ ]
 
 ===================================================================================
 1. Structure of the TCP Server-to-Client process
@@ -43,16 +60,17 @@ HEADER, SEND BEFORE ALL DATA:
 	
 DATA CONTENTS:
 	IF MOVEMENT:								IF RECEIVING ITEM:
-	[3] = character's current X					[3] = if item is to be taken from a character, player's ID
+	[3] = character's current X					[3] = source, character or object, that the item is to be taken from
 	[4] = character's current Y					[4] = item ID
 	[5] = character's destination X				
 	[6] = character's destination Y			
 	
 	IF LOSING ITEM:								IF ACCESSING INVENTORY, CLIENT REQUEST
-	[3] = ID of item to be removed				[3] inventory of player's inventory to send 
-	
+	[3] = destination of the item				[3] id of inventory owner 
+	[4] = ID of item to be removed
 												IF READING AN INVENTORY, SERVER RESPONSE
-												[3-1023] Item IDs of the inventory's contents.
+												[3] id of inventory owner
+												[4-1023] Item IDs of the inventory's contents.
 										
 	IF ESCAPING LEVEL:							IF BEING CAUGHT:
 	(empty; sent after player has				(empty)

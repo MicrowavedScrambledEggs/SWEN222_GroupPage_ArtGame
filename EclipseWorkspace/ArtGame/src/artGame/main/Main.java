@@ -77,6 +77,7 @@ public class Main {
 				runPublicSocket(publicServerPort,gameClock,broadcastClock,maxClients);
 			} else if(serverURL != null) {
 				// Run in client mode
+				System.out.println("Hi?");
 				runClient(serverURL,publicServerPort);
 			} else {
 				// single user game

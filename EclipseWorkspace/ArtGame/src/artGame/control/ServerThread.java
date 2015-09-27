@@ -55,6 +55,7 @@ public class ServerThread extends SocketThread {
 				int i = 0;
 				while (curVal != Packet.TERMINAL) {
 					data[i] = curVal;
+					waitFor(input);
 					curVal = input.readInt();
 					i++;
 				}
@@ -115,11 +116,11 @@ public class ServerThread extends SocketThread {
 //			waitFor(input);
 //			if (action == Packet.MOVE) {
 //				readMove(input,gotId);
-//			} else if (action == Packet.ITEM_TAKE) {
+//			} else if (action == Packet.ITEM_LOSE) {
 //				readTakeItem(input,gotId);
 //			} else if (action == Packet.ESCAPE) {
 //				readEscape(input,gotId);
-//			} else if (action == Packet.ITEM_GIVE) {
+//			} else if (action == Packet.ITEM_GAIN) {
 //				readGiveItem(input,gotId);
 //			} else if (action == Packet.LOSE) {
 //				readCaught(input,gotId);

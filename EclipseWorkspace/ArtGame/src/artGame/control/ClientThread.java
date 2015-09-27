@@ -31,6 +31,7 @@ public class ClientThread extends SocketThread {
 	}
 	
 	public void run() {
+		System.out.println("RUN");
 		int runcount = 0; 
 		int curX = 0;
 		int curY = 0;
@@ -42,15 +43,15 @@ public class ClientThread extends SocketThread {
 				DataOutputStream output = new DataOutputStream(socket.getOutputStream());
 				// write first
 				if (r == 0) {
-					writeMovePacket(output,pid,curX,curY,++curX,++curY);
-					System.out.println("GAVE: "+curX+", "+curY +" "+r);
+					writeMovePacket(output,pid,curX,curY,curX+1,curY+1);
+					System.out.println("GAVE: ("+curX+", "+curY +") going to ("+curX+1+","+curX+1+")");
 				} else if (r==1) {
 					int item = (int)(Math.random()*10)+100;
 					writeTakeItemPacket(output,pid,item);
 					System.err.println("GAVE: "+item);
 				} else {
-					writeMovePacket(output,pid,curX,curY,++curX,++curY);
-					System.out.println("GAVE: "+curX+", "+curY +" "+r);
+					writeMovePacket(output,pid,curX,curY,curX+1,curY+1);
+					System.out.println("GAVE: ("+curX+", "+curY +") going to ("+curX+1+","+curX+1+")");
 				}
 				//while(input.available() <= 0) {}
 				r++;
@@ -64,7 +65,7 @@ public class ClientThread extends SocketThread {
 	private void writeTakeItemPacket(DataOutputStream output, int pid, int itemId) throws IOException {
 		output.writeInt(0);
 		output.writeInt(pid);
-		output.writeInt(Packet.ITEM_TAKE);
+		output.writeInt(Packet.ITEM_LOSE);
 		output.writeInt(pid);
 		output.writeInt(0); // because item is being taken from a player
 		output.writeInt(itemId);
@@ -83,11 +84,6 @@ public class ClientThread extends SocketThread {
 	}
 	
 	private void readInventoryPacket(DataInputStream output, int pid) throws IOException {
-		int val = -1;
-		while (val < Integer.MAX_VALUE) {
-			val = output.readInt();
-			System.out.println("ITEM :"+val);
-		}
 	}
 
 	@Override
@@ -134,7 +130,7 @@ public class ClientThread extends SocketThread {
 				try {
 					Thread.sleep(400);
 				} catch (InterruptedException e) {
-					// we've been interrupted! let's get back to work.
+					// we've been woken up! let's get back to work.
 					TIMEOUT = 0;
 					System.out.println("hmm?");
 				}
