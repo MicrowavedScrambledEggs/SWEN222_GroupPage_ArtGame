@@ -42,6 +42,12 @@ public class XMLReader {
 	public static final String X_COORD_ELEMENT = "x";
 	public static final String Y_COORD_ELEMENT = "y";
 	public static final String PLAYER_ELEMENT = "player";
+	public static final String GUARD_ELEMENT = "guard";
+	public static final String PATROL_ELEMENT = "patrol";
+	public static final String X_PATH_ELEMENT = "west_east_stretch";
+	public static final String Y_PATH_ELEMENT = "north_south_stretch";
+	public static final String START_ELEMENT = "start";
+	public static final String FINISH_ELEMENT = "finish";
 	public static final String DIRECTION_ELEMENT = "direction";
 	public static final String PAINTING_ELEMENT = "painting";
 	public static final String SCULPTURE_ELEMENT = "sculpture";

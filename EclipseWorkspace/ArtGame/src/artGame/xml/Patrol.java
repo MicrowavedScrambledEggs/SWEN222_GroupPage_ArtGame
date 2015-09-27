@@ -1,14 +1,15 @@
 package artGame.xml;
 
-import artGame.game.Coordinate;
-import artGame.game.Character.Direction;
+import java.util.LinkedList;
 
-public class GuardBuilder extends CharacterBuilder {
+public class Patrol implements ObjectBuilder {
 	
-	private Patrol patrol;
-	
-	public GuardBuilder(int iD){
-		super(iD);
+	private LinkedList<Stretch> stretches = new LinkedList<Stretch>();
+
+	@Override
+	public void addFeild(String name, String value) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

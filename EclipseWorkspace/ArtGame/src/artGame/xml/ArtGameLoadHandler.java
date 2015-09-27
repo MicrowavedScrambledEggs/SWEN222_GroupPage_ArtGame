@@ -99,9 +99,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		} else if(qName.equals(XMLReader.DOOR_ELEMENT)){
 			buildDoor(attributes);
 		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
-			buildStack.push(new PlayerBuilder());
-			//adds the iD value in the id attribute to the new player builder
-			addFieldToCurrentBuilder(XMLReader.ID_ATTRIBUTE, attributes.getValue(XMLReader.ID_ATTRIBUTE));
+			buildStack.push(new PlayerBuilder(Integer.parseInt(attributes.getValue(XMLReader.ID_ATTRIBUTE))));
 		} else if(qName.equals(XMLReader.DIRECTION_ELEMENT) || qName.equals(XMLReader.NAME_ELEMENT)
 				|| qName.equals(XMLReader.VALUE_ELEMENT)){
 			currentElement = qName;

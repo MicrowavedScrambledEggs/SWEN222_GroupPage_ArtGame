@@ -1719,28 +1719,83 @@
 			<wall direction = "EAST"/>
 		</empty_tile>
 	</floor>
-	<player id = "1">
-    	<direction>EAST</direction>
-        <position>
-            <x value = "8"/>
-            <y value = "1"/>
-        </position>
-    </player>
-    <painting artID = "1">
-    	<name>A Really Good Painting</name>
-    	<value>1000</value>
-    </painting>
-    <painting artID = "2">
-    	<name>A Really Shit Painting</name>
-    	<value>10</value>
-    </painting>
-    <sculpture artID = "58">
-    	<direction>EAST</direction>
-    	<position>
-            <x value = "6"/>
-            <y value = "6"/>
-        </position>
-    	<name>Statue of David (J Pearce)</name>
-    	<value>10000</value>
-    </sculpture>
+	<players>
+		<player id = "1">
+	    	<direction>EAST</direction>
+	        <position>
+	            <x value = "8"/>
+	            <y value = "1"/>
+	        </position>
+	    </player>
+	</players>
+	<art>
+	    <painting artID = "1">
+	    	<name>A Really Good Painting</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "2">
+	    	<name>A Really Shit Painting</name>
+	    	<value>10</value>
+	    </painting>
+	    <sculpture artID = "58">
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "6"/>
+	            <y value = "6"/>
+	        </position>
+	    	<name>Statue of David (J Pearce)</name>
+	    	<value>10000</value>
+	    </sculpture>
+	</art>
+	<guards>
+		<guard id = "2">
+			<direction>EAST</direction>
+	        <position>
+	            <x value = "7"/>
+	            <y value = "7"/>
+	        </position>
+	        <patrol>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "8"/>
+	            		<y value = "7"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "12"/>
+	            		<y value = "7"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "12"/>
+	            		<y value = "8"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "12"/>
+	            		<y value = "12"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "11"/>
+	            		<y value = "12"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "7"/>
+	            		<y value = "12"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "7"/>
+	            		<y value = "11"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "7"/>
+	            		<y value = "7"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        </patrol>
+		</guard>
+	</guards>
 </game>
