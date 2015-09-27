@@ -18,10 +18,51 @@ public class TileBuilder implements ObjectBuilder {
 	protected boolean westWall = false;
 	protected boolean southWall = false;
 	protected boolean eastWall = false;
-	protected Coordinate coord;
+	private Coordinate coord;
 	
 	private HashMap<Direction, Integer> doorReference = new HashMap<Direction, Integer>();
 	private HashMap<Direction, Integer> artReference = new HashMap<Direction, Integer>();
+	
+	public void addDoorReference(String direction, int id){
+		Direction dir = stringToDirection(direction);
+		doorReference.put(dir, id);
+	}
+	
+	public void addArtReference(String direction, int id){
+		Direction dir = stringToDirection(direction);
+		artReference.put(dir, id);
+	}
+	
+	public HashMap<Direction, Integer> getDoorReference() {
+		return doorReference;
+	}
+
+	public HashMap<Direction, Integer> getArtReference() {
+		return artReference;
+	}
+
+	public void setDoorReference(HashMap<Direction, Integer> doorReference) {
+		this.doorReference = doorReference;
+	}
+
+	public void setArtReference(HashMap<Direction, Integer> artReference) {
+		this.artReference = artReference;
+	}
+
+	private Direction stringToDirection(String direction) {
+		if(direction.equals(XMLReader.NORTH_VALUE)){
+			return Direction.NORTH;
+		} else if (direction.equals(XMLReader.SOUTH_VALUE)){
+			return Direction.SOUTH;
+		} else if (direction.equals(XMLReader.WEST_VALUE)){
+			return Direction.WEST;
+		} else if (direction.equals(XMLReader.EAST_VALUE)){
+			return Direction.EAST;
+		} else {
+			throw new IllegalArgumentException(String.format("Need a valid direction to set door reference. \"%s\" "
+					+ "is not a valid direction.\n", direction));
+		}
+	}
 
 	@Override
 	/**
@@ -68,6 +109,11 @@ public class TileBuilder implements ObjectBuilder {
 	 */
 	public Coordinate getCoordinate(){
 		return this.coord;
+	}
+	
+
+	public void setCoordinate(Coordinate coord) {
+		this.coord = coord;
 	}
 
 	@Override

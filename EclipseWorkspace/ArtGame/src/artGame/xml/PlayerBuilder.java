@@ -57,11 +57,11 @@ public class PlayerBuilder implements ObjectBuilder {
 	 * Builds the player, then sets its position on the board from its coordinates
 	 */
 	public Player buildObject() {
-		System.out.printf("Building a player:\nID: %d\nDirection: %s\nPosition: %s\n\n",
-				iD, d.toString(), coord.toString());
+//		System.out.printf("Building a player:\nID: %d\nDirection: %s\nPosition: %s\n\n",
+//				iD, d.toString(), coord.toString());
 		Player toReturn = new Player(d, iD);
-		toReturn.setRow(coord.getX());
-		toReturn.setCol(coord.getY());
+		toReturn.setRow(coord.getY());
+		toReturn.setCol(coord.getX());
 		return toReturn;
 	}
 

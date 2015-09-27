@@ -9,6 +9,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import artGame.game.Art;
+import artGame.game.Character.Direction;
 import artGame.game.Coordinate;
 import artGame.game.Door;
 import artGame.game.ExitTile;
@@ -72,7 +73,15 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			} else {
 				buildStack.push(new TileBuilder());
 			}
+		} else if(qName.equals(XMLReader.TILE_STRETCH_ELEMENT)){
+			buildStack.push(new TileStretchBuilder(Integer.parseInt(attributes.getValue(0))));
+		} else if(qName.equals(XMLReader.STAIR_TILE_ELEMENT)){
+			buildStack.push(new StairTileBuilder());
 		} else if(qName.equals(XMLReader.POSITION_ELEMENT)){
+			buildStack.push(new CoordinateBuilder());
+		} else if(qName.equals(XMLReader.LINKED_TILE_ELEMENT)){
+			StairTileBuilder stairBuilder = (StairTileBuilder) buildStack.peek();
+			stairBuilder.setLinkedLevel(Integer.parseInt(attributes.getValue(0)));
 			buildStack.push(new CoordinateBuilder());
 		} else if(qName.equals(XMLReader.X_COORD_ELEMENT) || qName.equals(XMLReader.Y_COORD_ELEMENT)){
 			//Variables for coordinate
@@ -83,7 +92,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			//if xml file is correctly written, object builder on top of stack should be a tile builder
 			addFieldToCurrentBuilder(qName, attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE));
 		} else if(qName.equals(XMLReader.DOOR_ELEMENT)){
-			
+			buildDoor(attributes);
 		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
 			buildStack.push(new PlayerBuilder());
 			//adds the iD value in the id attribute to the new player builder
@@ -91,6 +100,18 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		} else if(qName.equals(XMLReader.DIRECTION_ELEMENT)){
 			currentElement = qName;
 		}
+	}
+
+	private void buildDoor(Attributes attributes) {
+		int doorID = Integer.parseInt(attributes.getValue(0));
+		TileBuilder currentTile = (TileBuilder) buildStack.peek();
+		currentTile.addDoorReference(attributes.getValue(1), doorID);
+		boolean locked = attributes.getValue(2).equals(XMLReader.TRUE_VALUE);
+		int keyID = 0;
+		if(attributes.getLength() == 4){
+			keyID = Integer.parseInt(attributes.getValue(3));
+		}
+		doors.put(doorID, new Door(locked, keyID));
 	}
 
 	/**
@@ -117,13 +138,28 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		//TODO: Add handling for Guards
 		//TODO: Add handling for Art
 		//TODO: Add handling for inventory
-		if(qName.equals(XMLReader.EMPTY_TILE_ELEMENT)){
+		if(qName.equals(XMLReader.EMPTY_TILE_ELEMENT) || qName.equals(XMLReader.STAIR_TILE_ELEMENT)){
 			completeTile();
+		} else if(qName.equals(XMLReader.TILE_STRETCH_ELEMENT)){
+			completeTileStretch();
 		} else if(qName.equals(XMLReader.POSITION_ELEMENT)){
 			completePosition(qName);
+		} else if(qName.equals(XMLReader.LINKED_TILE_ELEMENT)){
+			completeLinkedTile();
 		} else if(qName.equals(XMLReader.PLAYER_ELEMENT)){
 			completePlayer();
 		}
+	}
+
+	private void completeLinkedTile() {
+		CoordinateBuilder coordBuilder = (CoordinateBuilder) buildStack.pop();
+		StairTileBuilder stairBuilder = (StairTileBuilder) buildStack.peek();
+		stairBuilder.setLinkedCoord(coordBuilder.buildObject());
+	}
+
+	private void completeTileStretch() {
+		TileStretchBuilder tileStretch = (TileStretchBuilder) buildStack.pop();  
+		tileBuilders.addAll(tileStretch.getTileBuilders());
 	}
 
 	/**
@@ -177,9 +213,55 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	 * @return Built game from xml data
 	 */
 	public Game buildGame(){
+		buildArt();
+		buildScuptures();
+		buildTiles();
+		buildPlayers();
+		buildGuards();
 		Tile[][] tileArray = buildTileArray();
 		Floor floor = new Floor(tileArray, tileArray.length, tileArray[0].length, guards, exits);
 		return new Game(floor, players);
+	}
+
+	private void buildGuards() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void buildPlayers() {
+		for(PlayerBuilder playerBuilder: playerBuilders){
+			players.add(playerBuilder.buildObject());
+		}
+	}
+
+	private void buildTiles() {
+		for(TileBuilder tileBuilder : tileBuilders){
+			//TODO: Add handling of stair tiles
+			Tile tile = tileBuilder.buildObject();
+			HashMap<Direction, Integer> doorRefs = tileBuilder.getDoorReference();
+			for(Direction d : doorRefs.keySet()){
+				tile.setWall(d, doors.get(doorRefs.get(d)));
+			}
+			HashMap<Direction, Integer> artRefs = tileBuilder.getArtReference();
+			for(Direction d : artRefs.keySet()){
+				tile.getWall(d).setArt(paintings.get(artRefs.get(d)));
+			}
+			floorTiles.put(tileBuilder.getCoordinate(), tile);
+			if(tile instanceof ExitTile){
+				exits.add((ExitTile) tile);
+			}
+		}
+		
+	}
+
+	private void buildScuptures() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void buildArt() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
