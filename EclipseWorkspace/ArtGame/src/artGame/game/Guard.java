@@ -1,6 +1,6 @@
 package artGame.game;
 
-import java.util.List;
+import java.util.List; 
 
 public class Guard extends Character {
 
