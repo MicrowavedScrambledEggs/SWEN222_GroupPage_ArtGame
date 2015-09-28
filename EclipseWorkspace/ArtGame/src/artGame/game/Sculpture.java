@@ -9,6 +9,7 @@ package artGame.game;
 public class Sculpture extends Character{
 	private int value;
 	private String name;
+	private String description;
 	public Sculpture(Direction dir,int ID, int value,String name) {
 		super(dir, ID);
 		this.value = value;
@@ -20,8 +21,16 @@ public class Sculpture extends Character{
 	 * aka when it has been picked up by a player
 	 * @return
 	 */
-	public Art toItem(){
-		return new Art(name,value);
+	public Art toItem(Floor f){
+		return new Art(name,value,f.nextItemID());
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }
