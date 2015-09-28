@@ -62,7 +62,7 @@ public class Material {
         GLFW.glfwGetFramebufferSize(window, width, height);
         float ratio = width.get() / (float) height.get();
 
-        Matrix4f projection = Matrix4f.ortho(-ratio, ratio, -1f, 1f, -1f, 100f);
+        Matrix4f projection = Matrix4f.persp(80f, ratio, 1f, 100f);
         projUniform = program.getUniformLocation("projection");
         program.setUniform(projUniform, projection);
 	}

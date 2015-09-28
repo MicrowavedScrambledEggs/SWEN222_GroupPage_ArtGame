@@ -1,3 +1,5 @@
 *.snap
-EclipseWorkspace/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
-EclipseWorkspace/ArtGame/bin/
+EclipseWorkspace/.metadata/
+EclipseWorkspace/.metadata/.plugins/
+*.class
+
