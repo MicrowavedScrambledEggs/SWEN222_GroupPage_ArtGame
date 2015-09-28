@@ -13,6 +13,7 @@ Rendering
 Game Logic:
   -artID
   -Guard path
+  -ItemID
 
 MAIN:
   -A runnable game server that loads demo game

@@ -30,7 +30,7 @@ import artGame.main.Game;
  *
  */
 public class ArtGameLoadHandler extends DefaultHandler {
-	
+
 	private HashMap<Integer, Door> doors = new HashMap<Integer, Door>();
 	private HashMap<Integer, Art> paintings = new HashMap<Integer, Art>();
 	private HashMap<Coordinate, Tile> floorTiles = new HashMap<Coordinate, Tile>();
@@ -112,7 +112,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 
 	private void setWallArtReference(Attributes attributes) {
 		TileBuilder currentTile = (TileBuilder) buildStack.peek();
-		currentTile.addArtReference(attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE), 
+		currentTile.addArtReference(attributes.getValue(XMLReader.DIRECTION_ATTRIBUTE),
 				Integer.parseInt(attributes.getValue(XMLReader.ART_ID_ATTRIBUTE)));
 	}
 
@@ -186,7 +186,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	}
 
 	private void completeTileStretch() {
-		TileStretchBuilder tileStretch = (TileStretchBuilder) buildStack.pop();  
+		TileStretchBuilder tileStretch = (TileStretchBuilder) buildStack.pop();
 		tileBuilders.addAll(tileStretch.getTileBuilders());
 	}
 
@@ -247,9 +247,16 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		buildPlayers();
 		buildGuards();
 		Tile[][] tileArray = buildTileArray();
-		Floor floor = new Floor(tileArray, tileArray.length, tileArray[0].length, guards, exits);
+		Floor floor = new Floor(tileArray, tileArray.length, tileArray[0].length, exits);
 		addSculpturesToFloor(floor);
+		addGuardsToFloor(floor);
 		return new Game(floor, players);
+	}
+
+	private void addGuardsToFloor(Floor floor) {
+		for(Guard guard : guards){
+			floor.setCharacter(guard, guard.getRow(), guard.getCol());
+		}
 	}
 
 	private void addSculpturesToFloor(Floor floor) {
@@ -260,7 +267,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 
 	private void buildGuards() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void buildPlayers() {
@@ -286,7 +293,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 				exits.add((ExitTile) tile);
 			}
 		}
-		
+
 	}
 
 	private void buildScuptures() {
@@ -299,7 +306,7 @@ public class ArtGameLoadHandler extends DefaultHandler {
 		for(ArtBuilder artBuilder : artBuilders){
 			paintings.put(artBuilder.getArtID(), artBuilder.buildObject());
 		}
-		
+
 	}
 
 	/**
