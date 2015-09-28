@@ -55,7 +55,7 @@ public class Model implements Asset {
 	}
 
 	@Override
-	public void draw(Matrix4f view) {
+	public void draw(Matrix4f view, Vector3f light) {
 		material.update(model, view);
 		glDrawArrays(GL_TRIANGLES, 0, numVerts);
 	}

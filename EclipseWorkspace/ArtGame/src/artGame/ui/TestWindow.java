@@ -26,6 +26,7 @@ public class TestWindow {
 	private static GLFWErrorCallback errorCallback = Callbacks.errorCallbackPrint(System.err);
 	private static long window;
 	private static Matrix4f camera;
+	private Vector3f light;
 	private float angle = 35.2f;
 	private float speed = 0.01f;
 	private GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
@@ -38,7 +39,9 @@ public class TestWindow {
 	};
 	
 	public TestWindow() {
-		camera = Matrix4f.scale(0.25f, 0.25f, 0.25f).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f));
+		camera = Matrix4f.translate(new Vector3f(0, 0, -5)).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f));
+		light = new Vector3f(1.0f, 1.0f, 1.0f).normalized();
+		
 		glfwSetErrorCallback(errorCallback);
 		
 		if (glfwInit() != GL_TRUE) {
@@ -75,12 +78,9 @@ public class TestWindow {
 		// no proper 'game loop', as this is a test.
 		// TODO associate proper Window class with Game class
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
-			
-			float ratio;
 
             /* Get width and height to calcualte the ratio */
             glfwGetFramebufferSize(window, width, height);
-            ratio = width.get() / (float) height.get();
 
             /* Rewind buffers for next get */
             width.rewind();
@@ -91,7 +91,7 @@ public class TestWindow {
             glClear(GL_COLOR_BUFFER_BIT);
             
             for (Asset a : renderList) {
-            	a.draw(camera);
+            	a.draw(camera, light);
             }
 
             /* Swap buffers and poll Events */

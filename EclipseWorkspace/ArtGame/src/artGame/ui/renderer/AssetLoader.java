@@ -90,6 +90,10 @@ public class AssetLoader {
 			}
 		}
 	}
+	
+	public CharSequence loadShaderSource(String filepath) {
+		return ""; //TODO
+	}
 
 	public Sprite[][] loadSpritesheet(String filepath) {
 		// TODO
