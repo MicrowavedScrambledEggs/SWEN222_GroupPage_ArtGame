@@ -97,7 +97,12 @@ public class Floor {
 	public void printFloor() {
 		for (int i = 0; i < maxR; i++) {
 			for (int j = 0; j < maxC; j++) {
-				System.out.print(floor[i][j]);
+				Tile toPrint = floor[i][j];
+				if(toPrint == null){
+					System.out.print(" ");
+				} else {
+					System.out.print(toPrint);
+				}
 			}
 			System.out.println("");
 		}
