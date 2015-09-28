@@ -28,8 +28,8 @@ public class Main {
 		// mostly stolen from Dave's PacMan code.
 		String filename = null;
 		String serverURL = null;
-		boolean server = false;
-		int maxClients = 0;
+		boolean server = true;
+		int maxClients = 1;
 		int gameClock = WAIT_PERIOD;
 		int broadcastClock = BROADCAST_PERIOD;
 		int publicServerPort = 32768; // default
@@ -57,7 +57,7 @@ public class Main {
 			}
 		}
 
-		
+
 		// Sanity checks, also stolen directly from Dave's PacMan code
 		if(serverURL != null && server) {
 			System.out.println("Cannot be a server and connect to another server!");
@@ -70,7 +70,7 @@ public class Main {
 		} else if (!server && maxClients > 1) {
 			System.out.println("Cannot override number of clients when connecting to server.");
 		}
-		
+
 		try {
 			if(server) {
 				// Run in Server mode
@@ -114,7 +114,7 @@ public class Main {
 //			}
 		}
 //
-	
+
 	private static void runClient(String addr, int port) throws IOException {
 		Socket s = new Socket(addr,port);
 		System.out.println("The client has connected to " + s.getInetAddress() +":"+s.getPort());
@@ -122,7 +122,7 @@ public class Main {
 	}
 
 
-	@SuppressWarnings("resource") // (otherwise it complains that the publicSocket is never used.) 
+	@SuppressWarnings("resource") // (otherwise it complains that the publicSocket is never used.)
 	private static void runPublicSocket(int port, int gameClock, int broadcastClock, int maxClients) {
 		if (maxClients <= 0) throw new IllegalArgumentException("The server must be capable of accepting at least one client request.");
 		// now we've passed the sanity checks, enter the main listen loop
@@ -145,7 +145,7 @@ public class Main {
 				}
 				numConnected ++;
 				// this loop checks if we should close any of our child sockets
-				// we don't expect to have more than six players, so this should be OK. 
+				// we don't expect to have more than six players, so this should be OK.
 				for (int i = 0; i < children.length; i++) {
 					if (children[i] != null && children[i].isTimedOut()) {
 						if (timeout[i] >= System.currentTimeMillis()) {

@@ -1,0 +1,19 @@
+INTERGRATION DAY TODO LIST:
+
+Badi XML:
+ -Guards
+  -Chests?
+
+Server:
+  -Quick sever GUI
+
+Rendering
+  -Interperet the game
+
+Game Logic:
+  -artID
+  -Guard path
+
+MAIN:
+  -A runnable game server that loads demo game
+  -A runnable client

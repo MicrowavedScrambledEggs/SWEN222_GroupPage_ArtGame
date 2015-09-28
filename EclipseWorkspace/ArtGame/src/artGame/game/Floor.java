@@ -7,7 +7,7 @@ import java.util.List;
 import artGame.game.Character.Direction;
 
 /**
- * game floor TODO 
+ * game floor TODO
  * proper docs
  *
  */
@@ -18,17 +18,14 @@ public class Floor {
 	private List<ExitTile> exits;
 	private List<Guard> guards;
 
-	public Floor(Tile[][] tiles,int maxR,int maxC, Collection<Guard> guards, Collection<ExitTile> exits){
+	public Floor(Tile[][] tiles,int maxR,int maxC, Collection<ExitTile> exits){
 		floor = tiles;
 		this.exits = new ArrayList<ExitTile>(exits);
 		this.guards = new ArrayList<Guard>();
 		this.maxR = maxR;
 		this.maxC = maxC;
-		for(Guard g:guards){
-			setCharacter(g,g.getRow(),g.getCol());
-		}
 	}
-	
+
 	/*
 	 * generating the floor. this is poorly done and should be replaced by a
 	 * proper parser
