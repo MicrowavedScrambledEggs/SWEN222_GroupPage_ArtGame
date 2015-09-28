@@ -7,28 +7,39 @@ import java.util.List;
 import artGame.game.Character.Direction;
 
 /**
- * game floor TODO
- * proper docs
+ * game floor TODO proper docs
  *
  */
 public class Floor {
 	private int maxR = 3;
 	private int maxC = 7;
-	private Tile[][] floor;
+	private Tile[][] floor; // ground floor
+	private Tile[][] floor1;// first floor TODO NYI
 	private List<ExitTile> exits;
 	private List<Guard> guards;
 
-	public Floor(Tile[][] tiles,int maxR,int maxC, Collection<ExitTile> exits){
+	private int itemIDC; // counter for item IDs
+
+	public Floor(Tile[][] tiles, int maxR, int maxC, Collection<ExitTile> exits) {
 		floor = tiles;
 		this.exits = new ArrayList<ExitTile>(exits);
 		this.guards = new ArrayList<Guard>();
 		this.maxR = maxR;
 		this.maxC = maxC;
+		this.itemIDC = 0;
+	}
+
+	/**
+	 * gets the next availible item id, incrementing it in the process
+	 * 
+	 * @return
+	 */
+	public int nextItemID() {
+		return itemIDC++;
 	}
 
 	/*
-	 * generating the floor. this is poorly done and should be replaced by a
-	 * proper parser
+	 * generating the floor for demo version of game
 	 */
 	public Floor() {
 		// initial sweep
@@ -42,13 +53,16 @@ public class Floor {
 
 		// cleanup
 		// setting west walls
-		floor[0][0].setWall(Direction.WEST, new Wall(new Art("Art1", 1000)));
-		floor[1][0] = new Chest(0,false, true, false, false);
-		((Chest) floor[1][0]).setContent(new Key(1));
+		floor[0][0].setWall(Direction.WEST, new Wall(new Art("Art1", 1000,
+				itemIDC++)));
+		floor[1][0] = new Chest(0, false, true, false, false);
+		((Chest) floor[1][0]).setContent(new Key(1, itemIDC++));
 		floor[1][0].setWall(Direction.WEST, new Wall());
-		floor[2][0].setWall(Direction.WEST, new Wall(new Art("Art2", 4000)));
+		floor[2][0].setWall(Direction.WEST, new Wall(new Art("Art2", 4000,
+				itemIDC++)));
 		// east walls
-		floor[0][5].setWall(Direction.EAST, new Wall(new Art("Art3", 9000)));
+		floor[0][5].setWall(Direction.EAST, new Wall(new Art("Art3", 9000,
+				itemIDC++)));
 		floor[2][5].setWall(Direction.EAST, new Wall());
 		// mid walls
 		floor[0][3].setWall(Direction.WEST, new Wall());
@@ -64,7 +78,7 @@ public class Floor {
 		exits = new ArrayList<ExitTile>();
 		exits.add((ExitTile) floor[1][6]);
 		// setting guard
-		Guard guard = new Guard(Character.Direction.WEST,0);
+		Guard guard = new Guard(Character.Direction.WEST, 0);
 		setCharacter(guard, 2, 5);
 		guards.add(guard);
 	}
@@ -73,15 +87,22 @@ public class Floor {
 		return floor[row][col];
 	}
 
+	/**
+	 * sets the character c to position row, col without regard to legality of
+	 * move or face direction. useful for initialising positions
+	 */
 	public void setCharacter(Character c, int row, int col) {
 		floor[row][col].setOccupant(c);
 		c.setRow(row);
 		c.setCol(col);
 	}
 
+	/**
+	 * checks if any characters are on exit tiles
+	 */
 	public Character isOnExit() {
-		for(ExitTile exit : exits){
-			if(exit.getOccupant() != null){
+		for (ExitTile exit : exits) {
+			if (exit.getOccupant() != null) {
 				return exit.getOccupant();
 			}
 		}
@@ -95,7 +116,7 @@ public class Floor {
 		for (int i = 0; i < maxR; i++) {
 			for (int j = 0; j < maxC; j++) {
 				Tile toPrint = floor[i][j];
-				if(toPrint == null){
+				if (toPrint == null) {
 					System.out.print(" ");
 				} else {
 					System.out.print(toPrint);
@@ -106,7 +127,8 @@ public class Floor {
 	}
 
 	/**
-	 * moves a character 1 tile(does nothing if invalid move)
+	 * moves a character 1 tile in the direction theyre facing(does nothing if
+	 * invalid move)
 	 */
 	public void moveCharacter(Character c) {
 		int oldRow = c.getRow();
@@ -132,6 +154,47 @@ public class Floor {
 					floor[oldRow][oldCol].setOccupant(null);
 				}
 			}
+		}
+	}
+
+	/**
+	 * moves a character to a targetted square and faces them the right way.
+	 * throws a error if invalid move
+	 */
+	public void moveCharacter(Character c, int row, int col) {
+		int colDiff = c.getCol() - col;
+		int rowDiff = c.getRow() - row;
+		//invalid move if one of them not 0 and trying to move >1 in any direction
+		if (colDiff * rowDiff != 0 && (Math.abs(colDiff)>1 || Math.abs(rowDiff)>1))
+			throw new GameError("trying to move more than 1 square at once");
+		if(colDiff==1){
+			c.setDir(Direction.WEST);
+			this.moveCharacter(c);
+		}
+		else if(colDiff==-1){
+			c.setDir(Direction.EAST);
+			this.moveCharacter(c);
+		}
+		else if(rowDiff==1){
+			c.setDir(Direction.NORTH);
+			this.moveCharacter(c);
+		}
+		else if(rowDiff==-1){
+			c.setDir(Direction.SOUTH);
+			this.moveCharacter(c);
+		}
+		//base case character not moving, direction update not required
+	}
+
+	/**
+	 * updates the positions of all guards as specified by their path
+	 * TODO for server version, potentially put this on a seperate thread 
+	 * TODO similar to pacman handling ghosts?
+	 */
+	public void moveGuards() {
+		for (Guard g : guards) {
+			Coordinate nextCoord = g.nextCoord();
+			moveCharacter(g,nextCoord.getY(),nextCoord.getX());
 		}
 	}
 
@@ -207,11 +270,13 @@ public class Floor {
 			Chest chest = (Chest) tileCharacterFacing(p);
 			chest.takeItem(p);
 		}
-		//stealing sculptures
-		//TODO note this has not been tested yet, unsure if simply setting occupant
-		//		to null is enough to avoid errors
-		else if (tileCharacterFacing(p).getOccupant() instanceof Sculpture){
-			Art stolenSculpture = ((Sculpture)tileCharacterFacing(p).getOccupant()).toItem();
+		// stealing sculptures
+		// TODO note this has not been tested yet, unsure if simply setting
+		// occupant
+		// to null is enough to avoid errors
+		else if (tileCharacterFacing(p).getOccupant() instanceof Sculpture) {
+			Art stolenSculpture = ((Sculpture) tileCharacterFacing(p)
+					.getOccupant()).toItem(this);
 			p.addItem(stolenSculpture);
 			tileCharacterFacing(p).setOccupant(null);
 		}
@@ -265,6 +330,34 @@ public class Floor {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * has the player p inspect whatever is in front of them
+	 */
+	public void inspect(Player p) {
+		// checking if wall
+		Wall wall = wallCharacterFacing(p);
+		if (wall != null) {
+			if (wall instanceof Door) {
+				System.out.println(((Door) wall).getDescription());
+			} else if (wall.getArt() != null) {
+				System.out.println(wall.getArt().getDescription());
+			}
+		}
+		// dealing with chests
+		else if (tileCharacterFacing(p) instanceof Chest) {
+			Chest chest = (Chest) tileCharacterFacing(p);
+			System.out.println(chest.getDescription());
+		}
+		// sculpture
+		else if (tileCharacterFacing(p).getOccupant() instanceof Sculpture) {
+			Sculpture sculpture = ((Sculpture) tileCharacterFacing(p)
+					.getOccupant());
+			System.out.println(sculpture.getDescription());
+		}
+		// otherwise no action should be taken
+
 	}
 
 }

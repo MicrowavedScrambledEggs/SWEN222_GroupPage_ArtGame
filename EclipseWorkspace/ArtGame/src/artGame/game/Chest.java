@@ -32,4 +32,8 @@ public class Chest extends Tile {
 	public String toString() {
 		return "C";
 	}
+	
+	public String getDescription(){
+		return "A chest. What could be inside?";
+	}
 }

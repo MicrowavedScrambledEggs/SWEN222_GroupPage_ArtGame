@@ -55,6 +55,7 @@ public class Game {
 		System.out.println("S: move down");
 		System.out.println("D: move right");
 		System.out.println("F: interact");
+		System.out.println("R: inspect");
 	}
 	
 	/**
@@ -79,7 +80,10 @@ public class Game {
 		}		
 		else if(id=='f'){
 			floor.interact(p);
-		}		
+		}
+		else if(id=='r'){
+			floor.inspect(p);
+		}
 		else{
 			
 		}
@@ -119,6 +123,7 @@ public class Game {
 			game.printMenu();
 			String s = sc.next();
 			game.doAction(game.getPlayer(),s.charAt(0)); //replace with keylistener
+			game.getFloor().moveGuards();
 		}
 		if(game.getPlayer().isCaught()){
 			System.out.println("you got arrested");

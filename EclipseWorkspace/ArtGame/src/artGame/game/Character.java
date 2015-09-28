@@ -12,6 +12,7 @@ public class Character {
 	protected Direction dir;
 	protected Set<Item> inventory;
 	
+	
 	public Character(Direction dir,int ID) {
 		this.dir = dir;
 		inventory = new HashSet<Item>();
@@ -55,6 +56,7 @@ public class Character {
 	public void setDir(Direction dir) {
 		this.dir = dir;
 	}
+	
 	
 	
 }

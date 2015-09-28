@@ -30,4 +30,12 @@ public class Door extends Wall {
 	public boolean passable(){
 		return !locked;
 	}
+	
+	/**
+	 * returns a short description of the door(used in inspect)
+	 */
+	public String getDescription(){
+		if(locked) return "Door number "+keyID+". It is locked.";
+		else return "A unlocked door";
+	}
 }
