@@ -15,7 +15,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Arrays;
 
-import artGame.control.GamePacket.MovePacket;
+//import artGame.control.GamePacket.MovePacket;
 import artGame.main.Game;
 import artGame.main.Main;
 

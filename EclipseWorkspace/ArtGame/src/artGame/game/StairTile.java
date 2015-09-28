@@ -43,5 +43,9 @@ public class StairTile extends Tile{
 	public void setOccupantHelper(Character occupant){
 		this.occupant = occupant;
 	}
+	
+	public String toString(){
+		return "S";
+	}
 
 }
