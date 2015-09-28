@@ -122,9 +122,13 @@ public class TestWindow {
 
 	private List<Asset> createScene() {
 		List<Asset> scene = new ArrayList<Asset>();
-		Model stair = AssetLoader.instance().loadOBJ("res/stair.obj");
-		if (stair != null) {
-			scene.add(stair);
+		Model david = AssetLoader.instance().loadOBJ("res/sculpture_david.obj");
+		if (david != null) {
+			scene.add(david);
+		}
+		Model floor = AssetLoader.instance().loadOBJ("res/floor.obj");
+		if (floor != null) {
+			scene.add(floor);
 		}
 		return scene;
 	}
