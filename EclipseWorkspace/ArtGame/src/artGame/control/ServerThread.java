@@ -15,7 +15,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Arrays;
 
-import artGame.control.GamePacket.MovePacket;
+//import artGame.control.GamePacket.MovePacket;
 import artGame.main.Game;
 import artGame.main.Main;
 
@@ -25,7 +25,7 @@ public class ServerThread extends SocketThread {
 	private final int wait;
 	private final int pid = 404;
 	private boolean timedout = false;
-	
+
 	public ServerThread(Game game, Socket socket, int wait) {
 		this.game = game;
 		this.socket = socket;
@@ -38,16 +38,16 @@ public class ServerThread extends SocketThread {
 		System.out.println("Sending our ID ("+pid+") to client...");
 		sendGameInfo();
 	}
-	
+
 	/** Sends the packet that will initialise the game for the client. */
 	private void sendGameInfo() {
 		// things the game needs: (feel free to add/remove!)
 		// [ ] layout of game 'board'
 		// [ ] number of players (if any)
 		// [ ] number of max players?
-		// [ ] guard patrols? 
+		// [ ] guard patrols?
 	}
-	
+
 	public void run() {
 		int runcount = 0; // debugging
 		while (!socket.isClosed()) {
@@ -58,7 +58,7 @@ public class ServerThread extends SocketThread {
 				// read first
 				// great! there's data in the stream! is it from the client player or the client game?
 				waitFor(input);
-				
+
 				int source = input.readInt(); // 0 if player, 1 if gameworld
 				System.out.println("SRC = "+source);
 				// now we know that, what's being affected by this data?
@@ -69,11 +69,11 @@ public class ServerThread extends SocketThread {
 				waitFor(input);
 				int action = input.readInt();
 				System.out.println("ACT = "+action);
-				
+
 				// now we know who it's for, we can start parsing it.
 				processDataStream(input,action,gotId);
-				
-				// and now to make things print a little slower we'll just sleep for a bit. 
+
+				// and now to make things print a little slower we'll just sleep for a bit.
 				Thread.sleep(4000);
 				runcount++;
 			} catch (IOException e) { e.printStackTrace(); }
@@ -81,9 +81,9 @@ public class ServerThread extends SocketThread {
 			runcount++;
 		}
 	}
-	
+
 	/** In between data segments, waits and checks to ensure the connection hasn't
-	 * timed out. 
+	 * timed out.
 	 * @param s
 	 */
 	private void waitFor(InputStream s) {
@@ -112,12 +112,12 @@ public class ServerThread extends SocketThread {
 
 	/* The process of translating the stream data is gloriously repetitive.
 	 * Let's have methods for dealing with that!
-	 * 
-	 * Working on getting the PacketParsers and an Action class to do this job. 
+	 *
+	 * Working on getting the PacketParsers and an Action class to do this job.
 	 */
 	private void processDataStream(DataInputStream input, int action, int gotId) throws IOException {
 		if (gotId == 0) { // client-sent packets should never be 0!
-			
+
 		} else if (gotId == pid) { // this packet is about an action taken by our client player
 			waitFor(input);
 			if (action == BasicPacketParser.MOVE) {
@@ -148,7 +148,7 @@ public class ServerThread extends SocketThread {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void readMove(DataInputStream input, int gotId) throws IOException {
 		System.out.println("Reading a MOVE packet");
@@ -176,7 +176,7 @@ public class ServerThread extends SocketThread {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void readInventory(DataInputStream input, int gotId) {
 		System.out.println("Reading an INVENTORY packet");
@@ -184,9 +184,9 @@ public class ServerThread extends SocketThread {
 		// (providing they're in range and other such concerns)
 		// (the network cares not for your precious game logic)
 	}
-	
+
 	/** In real code, there will be a collection of item IDs passed in here,
-	 * as obtained by the game. 
+	 * as obtained by the game.
 	 * @throws IOException */
 	private void sendInventory(DataOutputStream output, int pid) throws IOException {
 		output.writeInt(0);
@@ -197,7 +197,7 @@ public class ServerThread extends SocketThread {
 		for (int i = 0; i < inventory.length; i++) {
 			inventory[i] = (int)(Math.random()*100)+100;
 		}
-		
+
 		for (int i = 0; i < inventory.length; i++) {
 			output.writeInt(inventory[i]);
 		}
@@ -205,21 +205,21 @@ public class ServerThread extends SocketThread {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void readCaught(DataInputStream input, int gotId) {
 		System.out.println("Reading a CAUGHT packet");
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void readGiveItem(DataInputStream input, int gotId) {
 		System.out.println("Reading a GIVE packet");
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void readEscape(DataInputStream input, int gotId) {
 		System.out.println("Reading an ESCAPE packet");
@@ -239,13 +239,13 @@ public class ServerThread extends SocketThread {
 	public boolean isSocketSafe() {
 		return socket.isBound() && socket.isConnected() && !socket.isClosed();
 	}
-	
+
 	@Override
 	public boolean close() {
 		if (socket.isClosed()) {
 			return true;
-		} 
-		try { 
+		}
+		try {
 			socket.shutdownInput();
 			socket.shutdownOutput();
 			socket.close();
