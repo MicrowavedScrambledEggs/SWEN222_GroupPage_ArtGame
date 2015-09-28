@@ -9,7 +9,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 
-import artGame.ui.renderer.math.Matrix4f;
+import artGame.ui.renderer.math.*;
 
 public class Material {
 	private Shader vert;
@@ -19,22 +19,18 @@ public class Material {
 	private int modelUniform;
 	private int viewUniform;
 	private int projUniform;
+	private int lightUniform;
+	
+	private Vector3f color;
 
-	private final CharSequence vertSource = "#version 150 core\n" + "\n"
-			+ "in vec3 position;\n" + "in vec2 uv;\n" + "\n"
-			+ "out vec3 vertexColor;\n" + "\n" + "uniform mat4 model;\n"
-			+ "uniform mat4 view;\n" + "uniform mat4 projection;\n" + "\n"
-			+ "void main() {\n" + "    vertexColor = vec3(1.0, 1.0, 1.0);\n"
-			+ "    mat4 mvp = projection * view * model;\n"
-			+ "    gl_Position = mvp * vec4(position, 1.0);\n" + "}";
-	private final CharSequence fragSource = "#version 150 core\n" + "\n"
-			+ "in vec3 vertexColor;\n" + "\n" + "out vec4 fragColor;\n" + "\n"
-			+ "void main() {\n" + "    fragColor = vec4(vertexColor, 1.0);\n"
-			+ "}";
+	private final CharSequence vertSource = AssetLoader.instance().loadShaderSource("res/BasicLit.vert");
+	private final CharSequence fragSource = AssetLoader.instance().loadShaderSource("res/Basic.frag");
 
-	public Material(VertexBufferObject verts, VertexBufferObject uvs) {
+	public Material(VertexBufferObject verts, VertexBufferObject uvs, VertexBufferObject norms, Vector3f color) {
 		vert = new Shader(GL_VERTEX_SHADER, vertSource);
         frag = new Shader(GL_FRAGMENT_SHADER, fragSource);
+        
+        this.color = color;
 
         program = new ShaderProgram();
         program.attachShader(vert);
@@ -53,8 +49,15 @@ public class Material {
         uvs.bind(GL_ARRAY_BUFFER);
         program.setVertexAttributePointer(uvAttrib, 2, 0, 0);
         
+        int normAttrib = program.getAttributeLocation("normal");
+        program.enableVertexAttribute(normAttrib);
+        norms.bind(GL_ARRAY_BUFFER);
+        program.setVertexAttributePointer(normAttrib, 3, 0, 0);
+        
         modelUniform = program.getUniformLocation("model");
         viewUniform = program.getUniformLocation("view");
+        lightUniform = program.getUniformLocation("light");
+        program.setUniform(program.getUniformLocation("matColor"), this.color);
         
         long window = GLFW.glfwGetCurrentContext();
         IntBuffer width = BufferUtils.createIntBuffer(1);
@@ -67,9 +70,10 @@ public class Material {
         program.setUniform(projUniform, projection);
 	}
 	
-	public void update(Matrix4f model, Matrix4f view) {
+	public void update(Matrix4f model, Matrix4f view, Vector3f light) {
         program.setUniform(modelUniform, model);
         program.setUniform(viewUniform, view);
+        program.setUniform(lightUniform, light);
 	}
 	
 	public void delete() {

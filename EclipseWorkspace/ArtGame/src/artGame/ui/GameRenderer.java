@@ -7,27 +7,28 @@ import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Model;
 import artGame.ui.renderer.math.Matrix4f;
+import artGame.ui.renderer.math.Vector3f;
 
 public class GameRenderer {
 
 	private List<Asset> renderList;
 	private Matrix4f camera;
+	private Vector3f light;
 	
 	private float angle = 35.2f;
 	private float speed = 0.1f;
 	
 	public GameRenderer(){
 		
-		camera = Matrix4f.scale(0.25f, 0.25f, 0.25f).multiply(
-				Matrix4f.rotate(angle, 1f, 0f, 0f));
-		
+		camera = Matrix4f.translate(new Vector3f(0, 0, -5)).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f));
+		light = new Vector3f(1.0f, 1.0f, 1.0f).normalized();
 		renderList = createScene();
 	}
 	
 	public void render(){
 		
 		for (Asset a : renderList) {
-			a.draw(camera);
+			a.draw(camera, light);
 		}
 		
 		camera = camera.multiply(Matrix4f.rotate(speed, 0f, 1f, 0f));
