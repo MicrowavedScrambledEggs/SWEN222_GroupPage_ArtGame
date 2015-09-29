@@ -208,4 +208,8 @@ public class Matrix4f {
 
         return scaling;
     }
+
+	public float[][] getData() {
+		return m;
+	}
 }

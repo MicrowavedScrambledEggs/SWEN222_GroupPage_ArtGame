@@ -23,10 +23,7 @@ public class Material {
 	
 	private Vector3f color;
 
-	private final CharSequence vertSource = AssetLoader.instance().loadShaderSource("res/BasicLit.vert");
-	private final CharSequence fragSource = AssetLoader.instance().loadShaderSource("res/Basic.frag");
-
-	public Material(VertexBufferObject verts, VertexBufferObject uvs, VertexBufferObject norms, Vector3f color) {
+	public Material(VertexBufferObject verts, VertexBufferObject uvs, VertexBufferObject norms, Vector3f color, CharSequence vertSource, CharSequence fragSource) {
 		vert = new Shader(GL_VERTEX_SHADER, vertSource);
         frag = new Shader(GL_FRAGMENT_SHADER, fragSource);
         

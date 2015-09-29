@@ -3,6 +3,7 @@ package artGame.ui;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Model;
+import artGame.ui.renderer.Sprite;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 
@@ -122,9 +123,15 @@ public class TestWindow {
 
 	private List<Asset> createScene() {
 		List<Asset> scene = new ArrayList<Asset>();
+		/*
 		Model david = AssetLoader.instance().loadOBJ("res/sculpture_david.obj");
 		if (david != null) {
 			scene.add(david);
+		}
+		*/
+		Sprite player = AssetLoader.instance().loadSpritesheet("res/Red_Player.png", 32);
+		if (player != null) {
+			scene.add(player);
 		}
 		Model floor = AssetLoader.instance().loadOBJ("res/floor.obj");
 		if (floor != null) {
