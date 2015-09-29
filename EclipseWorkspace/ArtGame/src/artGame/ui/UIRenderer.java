@@ -3,6 +3,11 @@ package artGame.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Tim King
+ *
+ */
 public class UIRenderer {
 
 	private List<Widget> overlayList;
@@ -19,7 +24,9 @@ public class UIRenderer {
 	}
 	
 	public void dispose(){
-		
+		for(int i = 0; i < overlayList.size(); i++){
+			overlayList.get(i).delete();
+		}
 	}
 	
 	private List<Widget> createOverlay() {

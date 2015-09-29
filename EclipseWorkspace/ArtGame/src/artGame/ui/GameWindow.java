@@ -18,6 +18,11 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
 
+/**
+ * 
+ * @author Tim King
+ *
+ */
 public class GameWindow {
 
 	private GameRenderer game;
