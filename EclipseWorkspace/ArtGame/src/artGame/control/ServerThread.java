@@ -122,7 +122,6 @@ public class ServerThread extends SocketThread {
 	 *
 	 * Working on getting the PacketParsers and an Action class to do this job.
 	 */
-
 //	private void processDataStream(DataInputStream input, int action, int gotId) throws IOException {
 //		if (gotId == 0) { // client-sent packets should never be 0!
 //			
