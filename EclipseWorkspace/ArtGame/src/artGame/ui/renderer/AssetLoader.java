@@ -90,6 +90,23 @@ public class AssetLoader {
 			}
 		}
 	}
+	
+	public CharSequence loadShaderSource(String filepath) {
+		Scanner scan = null;
+		try {
+			scan = new Scanner(new File(filepath));
+			scan.useDelimiter("\\Z");
+			return scan.next();
+			
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (scan != null) {
+				scan.close();
+			}
+		}
+	}
 
 	public Sprite[][] loadSpritesheet(String filepath) {
 		// TODO

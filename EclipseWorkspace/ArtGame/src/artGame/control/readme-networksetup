@@ -9,18 +9,18 @@ A: Oops, sorry! It's very similar to PacMan.
 
 TODO LIST:
 1. need a way to convert from IDs to objects 
-		has packet | has action   | equals()
-move	[X]			[X]				[X]
-readinv	[X]			[X]				[X]
-sendinv	[X]			[X]				[ ]
-end		[ ]			[ ]				[ ]
-start	[ ]			[ ]				[ ]
-lose	[X]			[X]				[X]
-gain	[X]			[X]				[X]
-use		[ ]			[ ]				[ ]
-caught	[ ]			[ ]				[ ]
-leave	[ ]			[ ]				[ ]
-change	[ ]			[ ]				[ ]
+		has packet | has action   | equals()  | toString
+move	[X]			[X]				[X]			[X]
+readinv	[X]			[X]				[X]			[ ]
+sendinv	[X]			[X]				[ ]			[X]
+end		[ ]			[ ]				[ ]			[ ]
+start	[ ]			[ ]				[ ]			[ ]
+lose	[X]			[X]				[X]			[ ]
+gain	[X]			[X]				[X]			[ ]
+use		[ ]			[ ]				[ ]			[ ]
+caught	[ ]			[ ]				[ ]			[ ]
+leave	[ ]			[ ]				[ ]			[ ]
+change	[ ]			[ ]				[ ]			[ ]
 
 ===================================================================================
 1. Structure of the TCP Server-to-Client process
@@ -56,14 +56,15 @@ HEADER, SEND BEFORE ALL DATA:
 			(The server sends responses with the id of the client it's 
 			communicating with, except in the case of network updates.
 	[2] = message type, as defined by the enums and static variables in 
-			BasicPacketParser. 
+			Packet. 
 	
 DATA CONTENTS:
 	IF MOVEMENT:								IF RECEIVING ITEM:
-	[3] = character's current X					[3] = source, character or object, that the item is to be taken from
-	[4] = character's current Y					[4] = item ID
-	[5] = character's destination X				
-	[6] = character's destination Y			
+	[3]	= moving entity's id					[3] = source, character or object, that the item is to be taken from
+	[4] = character's current X					[4] = item ID
+	[5] = character's current Y					
+	[6] = character's destination X				
+	[7] = character's destination Y			
 	
 	IF LOSING ITEM:								IF ACCESSING INVENTORY, CLIENT REQUEST
 	[3] = destination of the item				[3] id of inventory owner 
@@ -77,7 +78,7 @@ DATA CONTENTS:
 	clicked 'ok, take me out')
 
 	IF USING ITEM ON OBJECT, CLIENT REQUEST:	IF CHANGING OBJECT STATE, SERVER UPDATE:
-	[3] id of object							[3] if player, player id, else 0
+	[3] id of entity							[3] if player, player id, else 0
 	[4] id of item								[4] if item, item id, else 0
 												[5] int value representing state
 DATA TERMINATOR: 										

@@ -16,9 +16,12 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 public class Model implements Asset {
 	private FloatBuffer vertBuffer;
 	private FloatBuffer uvBuffer;
+	private FloatBuffer normBuffer;
+	
 	private VertexArrayObject vao;
 	private VertexBufferObject vertBufferObject;
 	private VertexBufferObject uvBufferObject;
+	private VertexBufferObject normBufferObject;
 	
 	private Matrix4f model;
 	private int numVerts;
@@ -43,6 +46,12 @@ public class Model implements Asset {
 		}
 		uvBuffer.flip();
 		
+		normBuffer = BufferUtils.createFloatBuffer(3 * norms.size());
+		for (Vector3f norm : norms) {
+			normBuffer.put(norm.getX()).put(norm.getY()).put(norm.getZ());
+		}
+		normBuffer.flip();
+		
 		vertBufferObject = new VertexBufferObject();
         vertBufferObject.bind(GL_ARRAY_BUFFER);
         vertBufferObject.uploadBufferData(GL_ARRAY_BUFFER, vertBuffer, GL_STATIC_DRAW);
@@ -50,13 +59,18 @@ public class Model implements Asset {
         uvBufferObject = new VertexBufferObject();
         uvBufferObject.bind(GL_ARRAY_BUFFER);
         uvBufferObject.uploadBufferData(GL_ARRAY_BUFFER, uvBuffer, GL_STATIC_DRAW);
+        
+        normBufferObject = new VertexBufferObject();
+        normBufferObject.bind(GL_ARRAY_BUFFER);
+        normBufferObject.uploadBufferData(GL_ARRAY_BUFFER, normBuffer, GL_STATIC_DRAW);
 		
-		material = new Material(vertBufferObject, uvBufferObject);
+		material = new Material(vertBufferObject, uvBufferObject, normBufferObject, new Vector3f(1f, 1f, 1f));
 	}
 
 	@Override
-	public void draw(Matrix4f view) {
-		material.update(model, view);
+	public void draw(Matrix4f view, Vector3f light) {
+		vao.bind();
+		material.update(model, view, light);
 		glDrawArrays(GL_TRIANGLES, 0, numVerts);
 	}
 	

@@ -26,6 +26,7 @@ public class TestWindow {
 	private static GLFWErrorCallback errorCallback = Callbacks.errorCallbackPrint(System.err);
 	private static long window;
 	private static Matrix4f camera;
+	private Vector3f light;
 	private float angle = 35.2f;
 	private float speed = 0.01f;
 	private GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
@@ -38,7 +39,9 @@ public class TestWindow {
 	};
 	
 	public TestWindow() {
-		camera = Matrix4f.scale(0.25f, 0.25f, 0.25f).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f));
+		camera = Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f));
+		light = new Vector3f(1.0f, 1.0f, 0.5f).normalized();
+		
 		glfwSetErrorCallback(errorCallback);
 		
 		if (glfwInit() != GL_TRUE) {
@@ -64,6 +67,10 @@ public class TestWindow {
 		glfwMakeContextCurrent(window);
 		GLContext.createFromCurrent();
 		
+		// enable backface culling
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		
 		// declare buffers for using inside the loop
         IntBuffer width = BufferUtils.createIntBuffer(1);
         IntBuffer height = BufferUtils.createIntBuffer(1);
@@ -75,12 +82,9 @@ public class TestWindow {
 		// no proper 'game loop', as this is a test.
 		// TODO associate proper Window class with Game class
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
-			
-			float ratio;
 
             /* Get width and height to calcualte the ratio */
             glfwGetFramebufferSize(window, width, height);
-            ratio = width.get() / (float) height.get();
 
             /* Rewind buffers for next get */
             width.rewind();
@@ -89,9 +93,12 @@ public class TestWindow {
             /* Set viewport and clear screen */
             glViewport(0, 0, width.get(), height.get());
             glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_DEPTH_BUFFER_BIT);
+            glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GL_LEQUAL);
             
             for (Asset a : renderList) {
-            	a.draw(camera);
+            	a.draw(camera, light);
             }
 
             /* Swap buffers and poll Events */
@@ -103,6 +110,7 @@ public class TestWindow {
             height.flip();
             
             camera = camera.multiply(Matrix4f.rotate(speed, 0f, 1f, 0f));
+            
 		}
 		
 		// shut down
@@ -114,9 +122,13 @@ public class TestWindow {
 
 	private List<Asset> createScene() {
 		List<Asset> scene = new ArrayList<Asset>();
-		Model stair = AssetLoader.instance().loadOBJ("res/stair.obj");
-		if (stair != null) {
-			scene.add(stair);
+		Model david = AssetLoader.instance().loadOBJ("res/sculpture_david.obj");
+		if (david != null) {
+			scene.add(david);
+		}
+		Model floor = AssetLoader.instance().loadOBJ("res/floor.obj");
+		if (floor != null) {
+			scene.add(floor);
 		}
 		return scene;
 	}

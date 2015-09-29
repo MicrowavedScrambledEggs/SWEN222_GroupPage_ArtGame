@@ -4,12 +4,17 @@ package artGame.control;
 class LoseItemPacket implements Packet {
 	private final int PACKET_LENGTH = 3;
 	
+	/** Attempts to read the byte array into an Action. 
+	 * 
+	 */
 	@Override
-	public Action read(byte[] packet) throws IncompatiblePacketException {
-//		if (packet.length != Packet.HEAD_LENGTH + PACKET_LENGTH) throw new IncompatiblePacketException();
+	public LoseItemAction read(byte[] packet) throws IncompatiblePacketException {
+		if (packet.length <= Packet.HEAD_LENGTH || packet[3] != Packet.ITEM_LOSE) {
+			throw new IncompatiblePacketException();
+		}
 		System.out.println("TAKEPACKET: Reading a TAKE packet");
 		boolean isWorld = (packet[0] == 1) ? true : false;
-		return new LoseItemAction(isWorld, (int)packet[1], (int)packet[3], (int)packet[4]);
+		return new LoseItemAction(isWorld, (int)packet[1], (int)packet[3], (int)packet[5]);
 	}
 	
 	@Override	

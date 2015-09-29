@@ -33,16 +33,35 @@ public class XMLReader {
 	//TODO: Add handling for Art
 	//TODO: Add handling for inventory
 	public static final String WALL_ELEMENT = "wall";
+	public static final String DOOR_ELEMENT = "door";
 	public static final String POSITION_ELEMENT = "position";
 	public static final String EMPTY_TILE_ELEMENT = "empty_tile";
+	public static final String TILE_STRETCH_ELEMENT = "tile_stretch";
+	public static final String STAIR_TILE_ELEMENT = "stair_tile";
+	public static final String LINKED_TILE_ELEMENT = "linked_tile";
 	public static final String X_COORD_ELEMENT = "x";
 	public static final String Y_COORD_ELEMENT = "y";
 	public static final String PLAYER_ELEMENT = "player";
+	public static final String GUARD_ELEMENT = "guard";
+	public static final String PATROL_ELEMENT = "patrol";
+	public static final String X_PATH_ELEMENT = "west_east_stretch";
+	public static final String Y_PATH_ELEMENT = "north_south_stretch";
+	public static final String START_ELEMENT = "start";
+	public static final String FINISH_ELEMENT = "finish";
 	public static final String DIRECTION_ELEMENT = "direction";
+	public static final String PAINTING_ELEMENT = "painting";
+	public static final String SCULPTURE_ELEMENT = "sculpture";
+	public static final String NAME_ELEMENT = "name";
+	public static final String VALUE_ELEMENT = "value";
 	
+	public static final String LEVEL_ATTRIBUTE = "level";
 	public static final String DIRECTION_ATTRIBUTE = "direction";
 	public static final String VALUE_ATTRIBUTE = "value";
 	public static final String ID_ATTRIBUTE = "id";
+	public static final String DOOR_ID_ATTRIBUTE = "doorID";
+	public static final String KEY_ID_ATTRIBUTE = "keyID";
+	public static final String ART_ID_ATTRIBUTE = "artID";
+	public static final String LOCKED_ATTRIBUTE = "locked";
 	public static final String EXIT_ATTRIBUTE = "isExit";
 	
 	public static final String NORTH_VALUE = "NORTH";

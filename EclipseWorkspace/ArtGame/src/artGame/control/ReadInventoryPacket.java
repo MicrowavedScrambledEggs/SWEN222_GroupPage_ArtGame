@@ -8,7 +8,7 @@ class ReadInventoryPacket implements Packet {
 	private final int PACKET_LENGTH = Integer.MAX_VALUE;
 	
 	@Override
-	public Action read(byte[] packet) throws IncompatiblePacketException {
+	public ReadInventoryAction read(byte[] packet) throws IncompatiblePacketException {
 //		if (packet.length < Packet.HEAD_LENGTH) throw new IncompatiblePacketException();
 		System.out.println("INVENTORY: Reading an INVENTORY packet");
 		int index = Packet.HEAD_LENGTH;
@@ -35,20 +35,21 @@ class ReadInventoryPacket implements Packet {
 	public byte[] write(Action a) throws IncompatiblePacketException {
 		if (!(a instanceof ReadInventoryAction)) throw new IncompatiblePacketException();
 		ReadInventoryAction rinva = (ReadInventoryAction)a;
-		int[] items = rinva.getItems(); 
-		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
-		int index = 0;
-		packet[index++] = (byte)(rinva.isWorldUpdate() ? 0 : 1);
-		packet[index++] = (byte)rinva.getRecipient();
-		packet[index++] = Packet.INVENTORY;
-		
-		packet[index] = (byte)Integer.MAX_VALUE;
-		
-		for (int i = index; i < items.length; i++) {
-			packet[index] = (byte)items[i-3];
+		int[] items = rinva.getInventory(); 
+		byte[] packet = new byte[rinva.getInventory().length + Packet.HEAD_LENGTH + 1];
+		packet[0] = (byte)(rinva.isWorldUpdate() ? 0 : 1);
+		packet[1] = (byte)rinva.getRecipient();
+		packet[2] = Packet.INVENTORY;
+		packet[3] = (byte)rinva.getInventoryOwner();
+		int i = 4;
+		for ( ; i < items.length; i++) {
+			if (items[i - 4] == -1) { break; }
+			else { 
+				packet[i] = (byte)items[i - 4];
+			}
 		}
-		
-		System.out.println("INV PACK: WORLD = "+packet[0]+", RECIPIENT = "+packet[1]+","+packet[2]+","+packet[3]);
+
+		packet[i]	= (byte)Packet.TERMINAL;
 		
 		return packet;
 	}

@@ -9,7 +9,7 @@ public class MovePlayerAction implements Action {
 	private final Point current;
 	private final Point destination;
 	
-	/** This constructor creates a non-world update action. 
+	/** This constructor will move an entity as a non-world update action. 
 	 *  
 	 * @param recipientId Client to receive (or who sent) this action.
 	 * @param movingPlayerId Id of the player to move
@@ -32,10 +32,10 @@ public class MovePlayerAction implements Action {
 	 * @param current The current location of the moving player
 	 * @param destination The destination of the moving player 
 	 */
-	public MovePlayerAction(boolean isWorld, int recipientId, int pid, Point current, Point destination) {
+	public MovePlayerAction(boolean isWorld, int recipientId, int movingPlayerId, Point current, Point destination) {
 		this.recipientId = recipientId;
 		this.isWorld = isWorld;
-		this.pid = pid;
+		this.pid = movingPlayerId;
 		this.current = new Point((int)current.getX(), (int)current.getY());
 		this.destination = new Point((int)destination.getX(), (int)destination.getY());
 	}
@@ -76,5 +76,11 @@ public class MovePlayerAction implements Action {
 			return true; 
 		}
 		return false;
+	}
+	
+	public String toString() {
+		return "MovePlayerAction: RECIEVER:"+getRecipient()+"\tID:"+getPlayerId()+
+				"\tCUR:"+getCurrent().getX()+","+getCurrent().getY()+"\t"+
+				"\tDES:"+getDestination().getX()+","+getDestination().getY();
 	}
 }

@@ -148,24 +148,19 @@ public class Matrix4f {
         return ortho;
     }
 	
-	public static Matrix4f persp(float left, float right, float bottom, float top, float near, float far) {
-        Matrix4f persp = new Matrix4f();
+	public static Matrix4f persp(float fovy, float aspect, float near, float far) {
+        Matrix4f perspective = new Matrix4f();
 
-        float a = (right + left) / (right - left);
-        float b = (top + bottom) / (top - bottom);
-        float c = -(far + near) / (far - near);
-        float d = -(2f * far * near) / (far - near);
+        float f = (float) (1f / Math.tan(Math.toRadians(fovy) / 2f));
 
-        persp.m[0][0] = (2f * near) / (right - left);
-        persp.m[1][1] = (2f * near) / (top - bottom);
-        persp.m[0][2] = a;
-        persp.m[1][2] = b;
-        persp.m[2][2] = c;
-        persp.m[3][2] = -1f;
-        persp.m[2][3] = d;
-        persp.m[3][3] = 0f;
+        perspective.m[0][0] = f / aspect;
+        perspective.m[1][1] = f;
+        perspective.m[2][2] = (far + near) / (near - far);
+        perspective.m[3][2] = -1f;
+        perspective.m[2][3] = (2f * far * near) / (near - far);
+        perspective.m[3][3] = 0f;
 
-        return persp;
+        return perspective;
     }
 	
 	public static Matrix4f translate(Vector3f delta) {

@@ -14,11 +14,6 @@ public class ReadInventoryAction implements Action {
 		this.recipientId = recipientId;
 	}
 
-	public int[] getItems() {
-		// TODO need to have a way to convert from item IDs to item objects
-		return Arrays.copyOf(inventory, inventory.length);
-	}
-
 	@Override
 	public boolean isWorldUpdate() {
 		return false;
@@ -33,15 +28,27 @@ public class ReadInventoryAction implements Action {
 		return inventoryOwner;
 	}
 	
+	public int[] getInventory() {
+		return Arrays.copyOf(inventory,inventory.length);
+	}
+	
 	public boolean equals(Object o) {
 		if (!(o instanceof ReadInventoryAction)) return false;
 		ReadInventoryAction a = (ReadInventoryAction) o;
-		if (Arrays.equals(inventory, a.getItems())
+		if (Arrays.equals(inventory, a.getInventory())
 			&& isWorldUpdate() == a.isWorldUpdate()
 			&& getRecipient() == a.getRecipient()
 			&& getInventoryOwner() == a.getInventoryOwner()) {
 			return true;
 		}
 		return false;
+	}
+
+	public String toString() {
+		String s = "ReadInventoryAction: RECIEVER:"+getRecipient()+"\tID:"+getInventoryOwner();
+		for (int i = 0; i < inventory.length; i++) {
+			s += ", "+inventory[0];
+		}
+		return s;
 	}
 }

@@ -6,9 +6,9 @@ public class LoseItemAction implements Action {
 	private final int loserId;
 	private final int itemId;
 	
-	public LoseItemAction(boolean isWorld, int recipientId, int receiverId, int itemId) {
+	public LoseItemAction(boolean isWorld, int recipientId, int inventoryToLoseFrom, int itemId) {
 		this.recipientId = recipientId;
-		this.loserId = receiverId;
+		this.loserId = inventoryToLoseFrom;
 		this.itemId = itemId;
 		this.isWorld = isWorld;
 	}
@@ -20,8 +20,6 @@ public class LoseItemAction implements Action {
 	public int getItemId() {
 		return itemId;
 	}
-	
-	// TODO get item id
 	
 	@Override
 	public boolean isWorldUpdate() {
@@ -36,11 +34,16 @@ public class LoseItemAction implements Action {
 	public boolean equals(Object o) {
 		if (!(o instanceof LoseItemAction)) return false;
 		LoseItemAction a = (LoseItemAction)o;
-		if (isWorldUpdate() == a.isWorldUpdate()
-				&& getRecipient() == a.getRecipient()
-				&& getItemId() == a.getItemId()
-				&& getLoserId() == a.getLoserId())
-			{ return true; }
+		if (getRecipient() == a.getRecipient()
+			&& isWorldUpdate() == a.isWorldUpdate()
+			&& getLoserId() == a.getLoserId()
+			&& getItemId() == a.getItemId() ) { 
+			return true; 
+		}
 		return false;
+	}
+	
+	public String toString() {
+		return "LoseItemAction: RECIEVER:"+getRecipient()+"\tLOSER_ID:"+loserId+"\tITEM_ID:"+itemId;
 	}
 }

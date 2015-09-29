@@ -1,11 +1,11 @@
 package artGame.control;
 
-class SendInventoryPacket implements Packet {
+class GetInventoryPacket implements Packet {
 	private final int PACKET_LENGTH = 3;
 	
 	@Override
-	public Action read(byte[] packet) throws IncompatiblePacketException {
-		return new SendInventoryAction(packet[2],packet[3]);
+	public GetInventoryAction read(byte[] packet) throws IncompatiblePacketException {
+		return new GetInventoryAction(packet[2],packet[3]);
 	}
 	
 	@Override	
@@ -15,8 +15,8 @@ class SendInventoryPacket implements Packet {
 
 	@Override
 	public byte[] write(Action a) throws IncompatiblePacketException {
-		if (!(a instanceof SendInventoryAction)) throw new IncompatiblePacketException();
-		SendInventoryAction ma = (SendInventoryAction)a;
+		if (!(a instanceof GetInventoryAction)) throw new IncompatiblePacketException();
+		GetInventoryAction ma = (GetInventoryAction)a;
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
 		int index = 0;
 		packet[index++] = (byte)(ma.isWorldUpdate() ? 0 : 1);
