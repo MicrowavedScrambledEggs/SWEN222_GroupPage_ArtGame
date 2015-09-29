@@ -69,8 +69,8 @@ public class TestWindow {
 		GLContext.createFromCurrent();
 		
 		// enable backface culling
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
 		
 		// declare buffers for using inside the loop
         IntBuffer width = BufferUtils.createIntBuffer(1);
@@ -123,16 +123,20 @@ public class TestWindow {
 
 	private List<Asset> createScene() {
 		List<Asset> scene = new ArrayList<Asset>();
-		/*
+		Sprite player = AssetLoader.instance().loadSpritesheet("res/Red_Player.png", 32);
+		if (player != null) {
+			//scene.add(player);
+		}
+		
+		///*
 		Model david = AssetLoader.instance().loadOBJ("res/sculpture_david.obj");
 		if (david != null) {
 			scene.add(david);
+		} else {
+			System.out.println("David not loaded");
 		}
-		*/
-		Sprite player = AssetLoader.instance().loadSpritesheet("res/Red_Player.png", 32);
-		if (player != null) {
-			scene.add(player);
-		}
+		//*/
+		
 		Model floor = AssetLoader.instance().loadOBJ("res/floor.obj");
 		if (floor != null) {
 			scene.add(floor);

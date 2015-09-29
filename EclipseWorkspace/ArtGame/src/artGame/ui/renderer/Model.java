@@ -69,7 +69,7 @@ public class Model implements Asset {
 				GL_STATIC_DRAW);
 
 		material = new Material(vertBufferObject, uvBufferObject,
-				normBufferObject, new Vector3f(1f, 1f, 1f), AssetLoader
+				normBufferObject, new Vector3f(0f, 0f, 1f), AssetLoader
 						.instance().loadShaderSource("res/BasicLit.vert"),
 				AssetLoader.instance().loadShaderSource("res/Basic.frag"));
 	}
@@ -78,7 +78,9 @@ public class Model implements Asset {
 	public void draw(Matrix4f view, Vector3f light) {
 		vao.bind();
 		material.update(model, view, light);
+		material.enable();
 		glDrawArrays(GL_TRIANGLES, 0, numVerts);
+		material.disable();
 	}
 
 	@Override

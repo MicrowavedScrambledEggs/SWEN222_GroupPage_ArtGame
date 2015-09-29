@@ -12,6 +12,6 @@ uniform mat4 projection;
 void main() {
 	vec3 vertPos = position + cameraRight * squareVerts.x + cameraUp * squareVerts.y;
     mat4 vp = projection * view;
-    gl_Position = vp * vec4(vertPos, 1.0);
+    gl_Position = vp * vec4(squareVerts, 1.0); // just drawing the verts directly for now
 	uv = squareVerts.xy + vec2(0.5, 0.5);
 }
