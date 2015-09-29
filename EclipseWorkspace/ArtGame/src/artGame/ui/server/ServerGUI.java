@@ -129,6 +129,7 @@ public class ServerGUI extends JPanel {
 					serverRunning = false;
 					serverThread.interrupt();
 					serverThread = null;
+					setInputEnabled(true);
 					infoBar.setRunningStatus(false);
 					log.log("server killed");
 				} else {
@@ -144,6 +145,7 @@ public class ServerGUI extends JPanel {
 							return;
 						}
 					}
+					setInputEnabled(false);
 					serverRunning = true;
 					serverThread = new Thread(new Runnable(){
 
@@ -227,6 +229,14 @@ public class ServerGUI extends JPanel {
 			}
 		});
 		th.start();
+	}
+	
+	private void setInputEnabled(boolean enabled){
+		this.fileURL.setEditable(enabled);
+		this.loadFile.setEnabled(enabled);
+		this.gameClock.setEditable(enabled);
+		this.maxClient.setEditable(enabled);
+		this.port.setEditable(enabled);
 	}
 	
 	public void log(String text){
