@@ -1,17 +1,25 @@
 package artGame.ui.renderer;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
+
+import org.lwjgl.BufferUtils;
 
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector2f;
 import artGame.ui.renderer.math.Vector3f;
 
 public class AssetLoader {
-	// all methods in this class must return an implementation of Asset
 
 	// singleton
 	private static AssetLoader instance = new AssetLoader();
@@ -108,8 +116,63 @@ public class AssetLoader {
 		}
 	}
 
-	public Sprite[][] loadSpritesheet(String filepath) {
-		// TODO
+	public Sprite loadSpritesheet(String filepath, int size) {
+		BufferedImage sheet;
+		try {
+			sheet = ImageIO.read(new File(filepath));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		BufferedImage[][] sprites = new BufferedImage[sheet.getWidth() / size][sheet.getHeight() / size];
+		Texture[][] textures = new Texture[sprites.length][sprites[0].length];
+		for (int col = 0; col < sprites.length; col++) {
+			for(int row = 0; row < sprites[col].length; row++) {
+				sprites[col][row] = sheet.getSubimage(col * size, row * size, size, size);
+				textures[row][col] = new Texture(sprites[col][row], size);
+			}
+		}
+		return new Sprite(textures);
+	}
+	
+	public ByteBuffer imageToBuffer(BufferedImage image) {
+		if (image != null) {
+            /* Flip image Horizontal to get the origin to bottom left */
+            AffineTransform transform = AffineTransform.getScaleInstance(1f, -1f);
+            transform.translate(0, -image.getHeight());
+            AffineTransformOp operation = new AffineTransformOp(transform,
+                    AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            image = operation.filter(image, null);
+
+            /* Get width and height of image */
+            int width = image.getWidth();
+            int height = image.getHeight();
+
+            /* Get pixel data of image */
+            int[] pixels = new int[width * height];
+            image.getRGB(0, 0, width, height, pixels, 0, width);
+
+            /* Put pixel data into a ByteBuffer */
+            ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * 4);
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    /* Pixel as RGBA: 0xAARRGGBB */
+                    int pixel = pixels[y * width + x];
+                    /* Red component 0xAARRGGBB >> 16 = 0x0000AARR */
+                    buffer.put((byte) ((pixel >> 16) & 0xFF));
+                    /* Green component 0xAARRGGBB >> 8 = 0x00AARRGG */
+                    buffer.put((byte) ((pixel >> 8) & 0xFF));
+                    /* Blue component 0xAARRGGBB >> 0 = 0xAARRGGBB */
+                    buffer.put((byte) (pixel & 0xFF));
+                    /* Alpha component 0xAARRGGBB >> 24 = 0x000000AA */
+                    buffer.put((byte) ((pixel >> 24) & 0xFF));
+                }
+            }
+            /* Do not forget to flip the buffer! */
+            buffer.flip();
+            
+            return buffer;
+		}
 		return null;
 	}
 }

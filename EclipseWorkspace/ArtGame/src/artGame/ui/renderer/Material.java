@@ -16,6 +16,10 @@ public class Material {
 	private Shader frag;
 	private ShaderProgram program;
 	
+	private int posAttrib;
+	private int normAttrib;
+	private int uvAttrib;
+	
 	private int modelUniform;
 	private int viewUniform;
 	private int projUniform;
@@ -23,10 +27,7 @@ public class Material {
 	
 	private Vector3f color;
 
-	private final CharSequence vertSource = AssetLoader.instance().loadShaderSource("res/BasicLit.vert");
-	private final CharSequence fragSource = AssetLoader.instance().loadShaderSource("res/Basic.frag");
-
-	public Material(VertexBufferObject verts, VertexBufferObject uvs, VertexBufferObject norms, Vector3f color) {
+	public Material(VertexBufferObject verts, VertexBufferObject uvs, VertexBufferObject norms, Vector3f color, CharSequence vertSource, CharSequence fragSource) {
 		vert = new Shader(GL_VERTEX_SHADER, vertSource);
         frag = new Shader(GL_FRAGMENT_SHADER, fragSource);
         
@@ -39,17 +40,17 @@ public class Material {
         program.link();
 		program.use();
         
-        int posAttrib = program.getAttributeLocation("position");
+        posAttrib = program.getAttributeLocation("position");
         program.enableVertexAttribute(posAttrib);
         verts.bind(GL_ARRAY_BUFFER);
         program.setVertexAttributePointer(posAttrib, 3, 0, 0);
 
-        int uvAttrib = program.getAttributeLocation("uv");
+        uvAttrib = program.getAttributeLocation("uv");
         program.enableVertexAttribute(uvAttrib);
         uvs.bind(GL_ARRAY_BUFFER);
         program.setVertexAttributePointer(uvAttrib, 2, 0, 0);
         
-        int normAttrib = program.getAttributeLocation("normal");
+        normAttrib = program.getAttributeLocation("normal");
         program.enableVertexAttribute(normAttrib);
         norms.bind(GL_ARRAY_BUFFER);
         program.setVertexAttributePointer(normAttrib, 3, 0, 0);
@@ -74,6 +75,19 @@ public class Material {
         program.setUniform(modelUniform, model);
         program.setUniform(viewUniform, view);
         program.setUniform(lightUniform, light);
+	}
+	
+	public void enable() {
+		program.enableVertexAttribute(posAttrib);
+		program.enableVertexAttribute(uvAttrib);
+		program.enableVertexAttribute(normAttrib);
+		program.use();
+	}
+	
+	public void disable() {
+		program.disableVertexAttribute(posAttrib);
+		program.disableVertexAttribute(uvAttrib);
+		program.disableVertexAttribute(normAttrib);
 	}
 	
 	public void delete() {

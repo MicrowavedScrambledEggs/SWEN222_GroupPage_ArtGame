@@ -3,6 +3,7 @@ package artGame.ui;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Model;
+import artGame.ui.renderer.Sprite;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 
@@ -68,8 +69,8 @@ public class TestWindow {
 		GLContext.createFromCurrent();
 		
 		// enable backface culling
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
 		
 		// declare buffers for using inside the loop
         IntBuffer width = BufferUtils.createIntBuffer(1);
@@ -122,10 +123,20 @@ public class TestWindow {
 
 	private List<Asset> createScene() {
 		List<Asset> scene = new ArrayList<Asset>();
+		Sprite player = AssetLoader.instance().loadSpritesheet("res/Red_Player.png", 32);
+		if (player != null) {
+			//scene.add(player);
+		}
+		
+		///*
 		Model david = AssetLoader.instance().loadOBJ("res/sculpture_david.obj");
 		if (david != null) {
 			scene.add(david);
+		} else {
+			System.out.println("David not loaded");
 		}
+		//*/
+		
 		Model floor = AssetLoader.instance().loadOBJ("res/floor.obj");
 		if (floor != null) {
 			scene.add(floor);
