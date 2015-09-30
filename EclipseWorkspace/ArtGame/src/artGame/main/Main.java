@@ -97,8 +97,13 @@ public class Main {
 				// Run as server
 				runPublicSocket(port,gameClock,broadcastClock,maxClients);
 			} else if(serverURL != null) {
+<<<<<<< HEAD
 				// Run as client
 				runClient(GAME, serverURL,port);
+=======
+				// Run in client mode
+				runClient(serverURL,publicServerPort);
+>>>>>>> 342b35d931854225238b59e40ad31c79ee42260b
 			} else {
 				// single user game
 			}

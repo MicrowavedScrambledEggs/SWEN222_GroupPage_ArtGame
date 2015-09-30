@@ -1,5 +1,0 @@
-package artGame.ui.renderer;
-
-public interface Asset {
-	public void draw(float x, float y, float z);
-}

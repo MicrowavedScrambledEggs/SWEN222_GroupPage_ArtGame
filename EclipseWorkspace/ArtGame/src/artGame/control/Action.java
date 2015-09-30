@@ -1,5 +1,6 @@
 package artGame.control;
 
+<<<<<<< HEAD
 import java.util.Collection;
 
 import artGame.main.Game;
@@ -23,4 +24,8 @@ public interface Action {
 	 */
 	// public void execute(Game g);
 	
+=======
+public interface Action {
+
+>>>>>>> 342b35d931854225238b59e40ad31c79ee42260b
 }

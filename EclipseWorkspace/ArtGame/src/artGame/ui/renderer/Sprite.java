@@ -36,8 +36,10 @@ public class Sprite implements Asset {
 	private Shader frag;
     
 	public Sprite(Texture[][] spritesheet) {
-		position = new Vector3f();
+		position = new Vector3f(0, 0.5f, 0);
 		this.spritesheet = spritesheet;
+		
+		//spritesheet[0][0].bind();
 		
 		vao = new VertexArrayObject();
 		vao.bind();
@@ -97,11 +99,13 @@ public class Sprite implements Asset {
 		program.setUniform(cameraUpUniform, cameraUp);
 		program.setUniform(positionUniform, position);
 		program.setUniform(viewUniform, view);
-		program.setUniform(textureUniform, 0);
+		//program.setUniform(textureUniform, 0);
 		
-		vao.bind();
+		
         spritesheet[0][0].bind();
-        glDrawArrays(GL_QUADS, 0, 4);
+        program.use();
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        
 	}
 
 	@Override

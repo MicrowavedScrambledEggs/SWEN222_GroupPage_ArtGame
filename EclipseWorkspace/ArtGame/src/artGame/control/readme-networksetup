@@ -4,6 +4,7 @@ A: Oops, sorry! It's very similar to PacMan.
 	-server <some number greater than 0>
    For a client, run it with
    	-connect <whatever IP the server spits out> -port 32768
+<<<<<<< HEAD
    	
 ===================================================================================
 
@@ -23,6 +24,8 @@ use		[ ]			[ ]				[ ]			[ ]
 caught	[ ]			[ ]				[ ]			[ ]
 leave	[ ]			[ ]				[ ]			[ ]
 change	[ ]			[ ]				[ ]			[ ]
+=======
+>>>>>>> 342b35d931854225238b59e40ad31c79ee42260b
 
 ===================================================================================
 1. Structure of the TCP Server-to-Client process
@@ -58,29 +61,28 @@ HEADER, SEND BEFORE ALL DATA:
 			(The server sends responses with the id of the client it's 
 			communicating with, except in the case of network updates.
 	[2] = message type, as defined by the enums and static variables in 
-			Packet. 
+			BasicPacketParser. 
 	
 DATA CONTENTS:
 	IF MOVEMENT:								IF RECEIVING ITEM:
-	[3]	= moving entity's id					[3] = source, character or object, that the item is to be taken from
-	[4] = character's current X					[4] = item ID
-	[5] = character's current Y					
-	[6] = character's destination X				
-	[7] = character's destination Y			
+	[3] = character's current X					[3] = if item is to be taken from a character, player's ID
+	[4] = character's current Y					[4] = if item is to be taken from the world, object's ID
+	[5] = character's destination X				[5] = item ID
+	[6] = character's destination Y			
 	
 	IF LOSING ITEM:								IF ACCESSING INVENTORY, CLIENT REQUEST
-	[3] = destination of the item				[3] id of inventory owner 
-	[4] = ID of item to be removed
-												IF READING AN INVENTORY, SERVER RESPONSE
-												[3] id of inventory owner
-												[4-1023] Item IDs of the inventory's contents.
+	[3] = ID of item to be removed				(empty; note that a client should have a local copy of their own inventory, 
+													so this packet is only useful for accessing someone/thing else's inventory.)
+	
+												IF ACCESSING INVENTORY, SERVER RESPONSE
+												[3-1023] Item IDs of the inventory's contents.
 										
 	IF ESCAPING LEVEL:							IF BEING CAUGHT:
 	(empty; sent after player has				(empty)
 	clicked 'ok, take me out')
 
 	IF USING ITEM ON OBJECT, CLIENT REQUEST:	IF CHANGING OBJECT STATE, SERVER UPDATE:
-	[3] id of entity							[3] if player, player id, else 0
+	[3] id of object							[3] if player, player id, else 0
 	[4] id of item								[4] if item, item id, else 0
 												[5] int value representing state
 DATA TERMINATOR: 										

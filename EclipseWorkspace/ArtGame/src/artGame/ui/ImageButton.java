@@ -1,3 +1,4 @@
+
 package artGame.ui;
 
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
@@ -94,3 +95,4 @@ public class ImageButton implements Widget {
 	}
 
 }
+

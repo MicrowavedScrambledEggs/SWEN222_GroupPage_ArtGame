@@ -1,5 +1,0 @@
-package artGame.ui.renderer.math;
-
-public class Matrix3f {
-
-}
