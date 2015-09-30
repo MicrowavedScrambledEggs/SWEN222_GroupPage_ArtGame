@@ -8,15 +8,17 @@ A: Oops, sorry! It's very similar to PacMan.
 ===================================================================================
 
 TODO LIST:
-1. need a way to convert from IDs to objects 
+1. need a way to convert from IDs to objects
+2. server needs to give client its id at the start of the interaction
+3. which means the server needs a way to get a unique ID from Game 
 		has packet | has action   | equals()  | toString
 move	[X]			[X]				[X]			[X]
-readinv	[X]			[X]				[X]			[ ]
-sendinv	[X]			[X]				[ ]			[X]
+readinv	[X]			[X]				[X]			[X]
+getinv	[X]			[X]				[X]			[X]
 end		[ ]			[ ]				[ ]			[ ]
 start	[ ]			[ ]				[ ]			[ ]
-lose	[X]			[X]				[X]			[ ]
-gain	[X]			[X]				[X]			[ ]
+loseitm	[X]			[X]				[X]			[ ]
+gainitm	[X]			[X]				[X]			[ ]
 use		[ ]			[ ]				[ ]			[ ]
 caught	[ ]			[ ]				[ ]			[ ]
 leave	[ ]			[ ]				[ ]			[ ]

@@ -8,5 +8,5 @@ package artGame.control;
  */
 public interface PacketParser {
 	
-	public Action executePacket() throws IncompletePacketException;
+	public Action executePacket(boolean fromClient) throws IncompletePacketException;
 }

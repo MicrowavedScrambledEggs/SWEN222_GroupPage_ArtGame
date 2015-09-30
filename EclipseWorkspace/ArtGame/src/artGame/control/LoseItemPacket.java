@@ -9,8 +9,10 @@ class LoseItemPacket implements Packet {
 	 */
 	@Override
 	public LoseItemAction read(byte[] packet) throws IncompatiblePacketException {
-		if (packet.length <= Packet.HEAD_LENGTH || packet[3] != Packet.ITEM_LOSE) {
-			throw new IncompatiblePacketException();
+		if (packet.length < packetLength() + Packet.HEAD_LENGTH) {
+			throw new IncompatiblePacketException("This packet is too short!");
+		} else if (packet[Packet.IDX_TYPE] != Packet.ITEM_GAIN) {
+			throw new IncompatiblePacketException("This packet is not an item loss packet!");
 		}
 		System.out.println("TAKEPACKET: Reading a TAKE packet");
 		boolean isWorld = (packet[0] == 1) ? true : false;
@@ -40,8 +42,10 @@ class LoseItemPacket implements Packet {
 
 	@Override
 	public byte[] write(int... values) throws IncompatiblePacketException {
-		if (values.length < packetLength() + Packet.HEAD_LENGTH || values[3] != Packet.ITEM_LOSE) {
-			throw new IncompatiblePacketException();
+		if (values.length < packetLength() + Packet.HEAD_LENGTH) {
+			throw new IncompatiblePacketException("This packet is too short!");
+		} else if (values[Packet.IDX_TYPE] != Packet.ITEM_GAIN) {
+			throw new IncompatiblePacketException("This packet is not an item loss packet!");
 		}
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
 		int index = 0;

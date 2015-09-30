@@ -9,7 +9,11 @@ class ReadInventoryPacket implements Packet {
 	
 	@Override
 	public ReadInventoryAction read(byte[] packet) throws IncompatiblePacketException {
-//		if (packet.length < Packet.HEAD_LENGTH) throw new IncompatiblePacketException();
+		if (packet.length <= Packet.HEAD_LENGTH) {
+			throw new IncompatiblePacketException("This packet is too short!");
+		} else if (packet[Packet.IDX_TYPE] != Packet.INVENTORY) {
+			throw new IncompatiblePacketException("This packet is not an inventory-read packet!");
+		}
 		System.out.println("INVENTORY: Reading an INVENTORY packet");
 		int index = Packet.HEAD_LENGTH;
 		boolean isWorld = (packet[0] == 1) ? true : false;

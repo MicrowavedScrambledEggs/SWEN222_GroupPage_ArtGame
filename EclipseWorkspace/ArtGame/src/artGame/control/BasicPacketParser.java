@@ -5,20 +5,21 @@ import java.util.Arrays;
 /**
  * @author Vicki
  *
+ * Note to self: there could just be an array of Packets and you can loop around those
+ * to look for the one that doesn't throw an exception... Massive if-blocks are nonessential. 
  */
 public class BasicPacketParser implements PacketParser {
 	public final int ACTION;
 	public final int ID;
-	//public final int length;
 	
 	private byte[] bytepacket;
 	private int[] intpacket;
 	
 	/* obsolete */
-	private BasicPacketParser(int act, int id, byte[] packet) throws IncompletePacketException {
+	private BasicPacketParser(byte[] packet) throws IncompletePacketException {
 		if (packet == null) throw new IncompletePacketException();
-		this.ACTION = act;
-		this.ID = id;
+		this.ACTION = packet[Packet.IDX_TYPE];
+		this.ID = packet[Packet.IDX_PID];
 		bytepacket = packet;
 		bytepacket = getBytes();
 	}	
@@ -29,8 +30,8 @@ public class BasicPacketParser implements PacketParser {
 	 * @throws IncompletePacketException
 	 */
 	private BasicPacketParser(int[] packet) throws IncompletePacketException {
-		this.ACTION = packet[2];
-		this.ID = packet[1];
+		this.ACTION = packet[Packet.IDX_TYPE];
+		this.ID = packet[Packet.IDX_PID];
 		intpacket = Arrays.copyOf(packet, packet.length);
 		bytepacket = getBytes();
 	}
@@ -62,12 +63,12 @@ public class BasicPacketParser implements PacketParser {
 		throw new IncompletePacketException();
 	}
 	
-	public static Action getActionFromBytes(byte[] bytepacket) throws IncompletePacketException{
-		return new BasicPacketParser(bytepacket[2],bytepacket[1],bytepacket).executePacket();
+	public static Action getActionFromBytes(byte[] bytepacket, boolean fromClient) throws IncompletePacketException{
+		return new BasicPacketParser(bytepacket).executePacket(false);
 	}
 	
-	public static Action getActionFromInts(int[] intpacket) throws IncompletePacketException{
-		return new BasicPacketParser(intpacket).executePacket();
+	public static Action getActionFromInts(int[] intpacket, boolean fromClient) throws IncompletePacketException{
+		return new BasicPacketParser(intpacket).executePacket(false);
 	}
 	
 	Packet.EVENT_TYPE translateType(int t) {
@@ -84,22 +85,46 @@ public class BasicPacketParser implements PacketParser {
 		throw new IllegalArgumentException();
 	}
 	
-	public Action executePacket() throws IncompletePacketException {
+	/** This method interprets a byte array packet as an Action. */
+	public static Action executePacket(byte[] packet, boolean fromClient) throws IncompletePacketException {
+		int action = (int)packet[Packet.IDX_TYPE];
 		try {
-			switch (ACTION) {
-				case (Packet.MOVE):
-					System.out.println("Moving");
-					return (new MovePlayerPacket()).read(bytepacket);
-				case (Packet.ITEM_LOSE):
-					System.out.println("Giving");
-					return (new GetItemPacket()).read(bytepacket);
-				case (Packet.INVENTORY):
-					System.out.println("");
-				// TODO add the rest of the cases!
+			if (action == Packet.MOVE) {
+				System.out.println("Moving");
+				return (new MovePlayerPacket()).read(packet);
+			} 
+			// item packets!
+			else if (action == Packet.ITEM_GAIN) {
+				System.out.println("Giving item");
+				return (new GetItemPacket()).read(packet);
+			} 
+			else if (action == Packet.ITEM_LOSE) {
+				System.out.println("Losing item");
+				return (new LoseItemPacket()).read(packet);
+			} 
+			// Inventory packets!
+			else if (action == Packet.INVENTORY && fromClient) {
+				System.out.println("Server reads get-inventory request");
+				return (new GetInventoryPacket().read(packet));
+			} 
+			else if (action == Packet.INVENTORY && !fromClient) {
+				System.out.println("Client reads sent inventory");
+				return (new ReadInventoryPacket().read(packet));
 			}
+			// TODO Being captured
+			// TODO Escaping
+			// TODO start game
+			// TODO end game
+			// TODO disconnect
+			// TODO object change
 		} catch (IncompatiblePacketException e) {
 			e.printStackTrace();
 		}
 		throw new IncompletePacketException();
+	}
+
+	@Override
+	public Action executePacket(boolean fromClient) throws IncompletePacketException {
+		return BasicPacketParser.executePacket(bytepacket,false);
 	}
 }

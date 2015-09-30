@@ -1,11 +1,16 @@
 package artGame.control;
 
 class GetInventoryPacket implements Packet {
-	private final int PACKET_LENGTH = 3;
+	private final int PACKET_LENGTH = 1;
 	
 	@Override
 	public GetInventoryAction read(byte[] packet) throws IncompatiblePacketException {
-		return new GetInventoryAction(packet[2],packet[3]);
+		if (packet.length < packetLength() + Packet.HEAD_LENGTH) {
+			throw new IncompatiblePacketException("This packet is too short!");
+		} else if (packet[Packet.IDX_TYPE] != Packet.INVENTORY) {
+			throw new IncompatiblePacketException("This packet is not a get-inventory packet!");
+		}
+		return new GetInventoryAction(packet[Packet.IDX_PID],packet[3]);
 	}
 	
 	@Override	
@@ -23,7 +28,6 @@ class GetInventoryPacket implements Packet {
 		packet[index++] = (byte)ma.getRecipient();
 		packet[index++] = Packet.INVENTORY;
 		packet[index++] = (byte)ma.getInventoryOwner();
-		
 		packet[index] = (byte)Integer.MAX_VALUE;
 		
 		return packet;		
@@ -31,7 +35,17 @@ class GetInventoryPacket implements Packet {
 
 	@Override
 	public byte[] write(int... values) throws IncompatiblePacketException {
-		// TODO Auto-generated method stub
-		return null;
+		if (values.length < packetLength() + Packet.HEAD_LENGTH) {
+			throw new IncompatiblePacketException("This packet is too short!");
+		} else if (values[Packet.IDX_TYPE] != Packet.ITEM_GAIN) {
+			throw new IncompatiblePacketException("This packet is not an inventory request packet!");
+		}
+		byte[] packet = new byte[Packet.HEAD_LENGTH + packetLength() + 1];
+		packet[0] = (byte)values[0];
+		packet[1] = (byte)values[1];
+		packet[2] = Packet.INVENTORY;
+		packet[3] = (byte)values[3];
+		packet[4] = (byte)Packet.TERMINAL;
+		return packet;
 	}
 }

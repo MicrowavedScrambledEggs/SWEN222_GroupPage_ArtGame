@@ -11,17 +11,23 @@ interface Packet {
 	public static enum EVENT_TYPE { CLIENT, NETWORK, WORLD }
 
 	public static final int HEAD_LENGTH = 3;
-	public static final int TERMINAL = Integer.MAX_VALUE;
-	static final int MOVE = 0;
-	static final int INVENTORY = 1;
+	
+	public static final int MOVE = 		0;
+	public static final int INVENTORY = 1;
 	public static final int ITEM_LOSE = 2;
 	public static final int ITEM_GAIN = 3;
-	public static final int ESCAPE = 4;
-	public static final int LOSE = 5;
-	public static final int GAME_START = 10;
-	public static final int GAME_END = 11;
-	public static final int DISCONNECT = 12;
+	public static final int ESCAPE = 	4;
+	public static final int LOSE = 		5;
+	public static final int GAME_START =10;
+	public static final int GAME_END =	11;
+	public static final int DISCONNECT =12;
 	public static final int OBJECT_CHANGED = 20;
+	
+	public static final int TERMINAL = Integer.MAX_VALUE;
+	
+	public static final int IDX_ISWORLD = 0;
+	public static final int IDX_PID = 1;
+	public static final int IDX_TYPE = 2;
 	
 	/** Attempts to read a packet of data as if it were produced by the
 	 * 'write' method of the implementing class. 

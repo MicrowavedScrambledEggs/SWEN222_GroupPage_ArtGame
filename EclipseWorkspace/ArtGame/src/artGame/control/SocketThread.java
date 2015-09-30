@@ -5,12 +5,7 @@ import java.net.Socket;
 
 public abstract class SocketThread extends Thread {
 	static final int CONNECTION_TIMEOUT = 10000;
-	static final int LARGE_PACKET_SIZE = 1024; // used for testing, will make smaller when we learn how big the largest packets need to be. 
-	
-//	public SocketThread(Socket s, int timeout) {
-//		socket = s;
-//		this.timeout = timeout;
-//	}
+	static final int LARGE_PACKET_SIZE = 1024; // used for testing 
 
 	/** Returns the address of the machine this SocketThread is connected to. */
 	public abstract InetAddress getInetAddress();
@@ -29,4 +24,7 @@ public abstract class SocketThread extends Thread {
 	 * 
 	 * BAD METHOD.*/
 	public abstract boolean close();
+	
+	/** Returns the ID of the player connected to this socket.*/
+	public abstract int getPlayerId();
 }
