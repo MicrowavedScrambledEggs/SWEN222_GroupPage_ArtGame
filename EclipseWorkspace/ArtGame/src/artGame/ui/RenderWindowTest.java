@@ -45,6 +45,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GLContext;
 
+import artGame.control.ClientThread;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Model;
@@ -66,18 +67,10 @@ public class RenderWindowTest implements Screen {
 	
 	private List<Asset> renderList;
 	
-	private GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
-		@Override
-		public void invoke(long window, int key, int scancode, int action,
-				int mods) {
-			if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-				glfwSetWindowShouldClose(window, GL_TRUE);
-			}
-		}
-	};
+	private GLFWKeyCallback keyCallback;
 	
-	public RenderWindowTest(){
-		
+	public RenderWindowTest(ClientThread connection){
+		keyCallback = new NetworkKeyCallback(connection);
 	}
 
 	@Override
