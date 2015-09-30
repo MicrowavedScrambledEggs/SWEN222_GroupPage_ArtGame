@@ -74,7 +74,7 @@ public class GameWindow {
 		GLContext.createFromCurrent();
 
 		game= new GameRenderer();
-		ui = new UIRenderer();
+		ui = new UIRenderer(getWidth(), getHeight());
 		
 		run();
 		

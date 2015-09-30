@@ -240,7 +240,7 @@ public class ServerGUI extends JPanel {
 	}
 	
 	public void log(String text){
-		System.out.println(text);
+		log.log(text);
 	}
 	
 	public static void main(String[] args) {
