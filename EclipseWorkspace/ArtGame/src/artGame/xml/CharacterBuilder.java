@@ -4,11 +4,11 @@ import artGame.game.Coordinate;
 import artGame.game.Character.Direction;
 
 public abstract class CharacterBuilder implements ObjectBuilder {
-	
+
 	private Direction d;
 	private Coordinate coord;
 	private int iD;
-	
+
 	public CharacterBuilder(int id){
 		this.iD = id;
 	}
@@ -22,7 +22,7 @@ public abstract class CharacterBuilder implements ObjectBuilder {
 			iD = Integer.parseInt(value);
 		}
 	}
-	
+
 	/**
 	 * Sets the direction field to the value represented by the argument string
 	 * @param value String representation of direction value
@@ -46,13 +46,13 @@ public abstract class CharacterBuilder implements ObjectBuilder {
 			if(value instanceof Coordinate){
 				this.coord = (Coordinate) value;
 			} else {
-				throw new IllegalArgumentException(String.format("Error when building player: "
+				throw new IllegalArgumentException(String.format("Error when building character: "
 						+ "Tried to add %s when %s was needed", value.getClass().getName(),
 						Coordinate.class.getName()));
 			}
 		}
 	}
-	
+
 	public Direction getDirection() {
 		return d;
 	}
