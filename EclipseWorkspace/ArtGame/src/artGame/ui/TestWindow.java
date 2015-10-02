@@ -143,7 +143,7 @@ public class TestWindow {
 			scene.add(floor);
 		}
 		
-		Sprite player = AssetLoader.instance().loadSpritesheet("res/Red_Player.png", 32);
+		Sprite player = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32);
 		if (player != null) {
 			scene.add(player);
 		}

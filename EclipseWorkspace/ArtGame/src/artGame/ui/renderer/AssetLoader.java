@@ -125,8 +125,9 @@ public class AssetLoader {
 			e.printStackTrace();
 			return null;
 		}
+		// TODO Fix spritesheet bug
 		BufferedImage[][] sprites = new BufferedImage[sheet.getWidth() / size][sheet.getHeight() / size];
-		Texture[][] textures = new Texture[sprites.length][sprites[0].length];
+		Texture[][] textures = new Texture[sheet.getWidth() / size][sheet.getHeight() / size];
 		for (int col = 0; col < sprites.length; col++) {
 			for(int row = 0; row < sprites[col].length; row++) {
 				sprites[col][row] = sheet.getSubimage(col * size, row * size, size, size);
