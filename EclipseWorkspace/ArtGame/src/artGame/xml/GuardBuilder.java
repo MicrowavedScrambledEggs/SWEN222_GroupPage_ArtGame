@@ -2,11 +2,12 @@ package artGame.xml;
 
 import artGame.game.Coordinate;
 import artGame.game.Character.Direction;
+import artGame.game.Guard;
 
 public class GuardBuilder extends CharacterBuilder {
-	
+
 	private Patrol patrol;
-	
+
 	public GuardBuilder(int iD){
 		super(iD);
 	}
@@ -14,14 +15,21 @@ public class GuardBuilder extends CharacterBuilder {
 	@Override
 	public void addFeild(String name, Object value)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-
+		super.addFeild(name, value);
+		if(name.equals(XMLReader.PATROL_ELEMENT)){
+			if(value instanceof Patrol){
+				this.patrol = (Patrol) value;
+			} else {
+				throw new IllegalArgumentException(String.format("Error when building guard: "
+						+ "Tried to add %s when %s was needed", value.getClass().getName(),
+						Coordinate.class.getName()));
+			}
+		}
 	}
 
 	@Override
-	public <T> T buildObject() {
-		// TODO Auto-generated method stub
-		return null;
+	public Guard buildObject() {
+		return new Guard(super.getDirection(), super.getID(), patrol.getSteps());
 	}
 
 }

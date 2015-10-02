@@ -1,5 +1,7 @@
 package artGame.game;
-//TODO add ids and stuff to this - kai
+/**
+ * a piece of art in the players inventory
+ */
 public class Art extends Item{
 	public final String name;
 	public final int value;

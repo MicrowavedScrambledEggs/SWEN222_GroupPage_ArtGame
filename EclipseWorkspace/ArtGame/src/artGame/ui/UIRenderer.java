@@ -1,31 +1,44 @@
 package artGame.ui;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 
-public class UIRenderer {
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-	private List<Widget> overlayList;
+
+
+public class UIRenderer extends JPanel {
 	
-	public UIRenderer(){
-		overlayList = createOverlay();
+	private JFrame frame;
+	
+	public UIRenderer(int width, int height){
 		
-	}
-	
-	public void render(float width, float height, float screenWidth, float screenHeight){
-		for(Widget w : overlayList) {
-			w.draw(width, height, screenWidth, screenHeight);
-		}
+		this.setPreferredSize(new Dimension(width, height));
+		
+		frame = new JFrame();
+		//frame.setUndecorated(true);
+		
+		//frame.setAlwaysOnTop(true);
+		frame.add(this);
+		frame.setEnabled(true);
+		frame.setVisible(true);
+		frame.pack();
+		//frame.setOpacity(0);
+		//frame.setAlwaysOnTop(true);
+		frame.requestFocus();
+		//frame.setAlwaysOnTop(false);
 	}
 	
 	public void dispose(){
-		
+		frame.dispose();
 	}
 	
-	private List<Widget> createOverlay() {
-		List<Widget> widgets = new ArrayList<>();
-		widgets.add(new ImageButton(null, 50, 50));
-		return widgets;
+	@Override
+	public void paintComponent(Graphics g){
+		g.setColor(new Color(0.5f, 0.5f, 0.5f, 0.2f));
+		g.fillRect(0,  0,  getWidth(),  getHeight());
 	}
 	
 }

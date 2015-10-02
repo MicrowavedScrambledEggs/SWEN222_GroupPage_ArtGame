@@ -65,9 +65,7 @@ public class Model implements Asset {
         normBufferObject.bind(GL_ARRAY_BUFFER);
         normBufferObject.uploadBufferData(GL_ARRAY_BUFFER, normBuffer, GL_STATIC_DRAW);
 		
-		material = new Material(vertBufferObject, uvBufferObject, normBufferObject, new Vector3f(1f, 1f, 1f),
-				AssetLoader.instance().loadShaderSource("res/BasicLit.vert"),
-				AssetLoader.instance().loadShaderSource("res/Basic.frag"));
+		material = new Material(vertBufferObject, uvBufferObject, normBufferObject, new Vector3f(1f, 1f, 1f));
 	}
 
 	@Override
