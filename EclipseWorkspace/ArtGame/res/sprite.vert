@@ -1,6 +1,7 @@
 #version 150 core
+#extension GL_ARB_explicit_attrib_location : require
 
-in vec3 squareVerts;
+layout(location = 0) in vec3 squareVerts;
 out vec2 uv;
 
 uniform vec3 cameraUp;

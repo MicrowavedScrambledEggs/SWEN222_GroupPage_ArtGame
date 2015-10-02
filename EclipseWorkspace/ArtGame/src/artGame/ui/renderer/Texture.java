@@ -22,10 +22,11 @@ public class Texture {
 	}
 
 	public void bind() {
-		// TODO Auto-generated method stub
 		glBindTexture(GL_TEXTURE_2D, id);
-		
-		
+	}
+	
+	public void unbind() {
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 }

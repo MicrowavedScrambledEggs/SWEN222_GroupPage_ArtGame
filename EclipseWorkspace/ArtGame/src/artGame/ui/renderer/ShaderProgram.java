@@ -42,8 +42,14 @@ public class ShaderProgram {
         }
     }
 	
+	public void bindAttributeLocation(CharSequence name, int location) {
+		glBindAttribLocation(id, location, name);
+	}
+	
 	public int getAttributeLocation(CharSequence name) {
-        return glGetAttribLocation(id, name);
+        int out = glGetAttribLocation(id, name);
+        if (out < 0) throw new RuntimeException("Attribute not found");
+        return out;
     }
 	
 	public void enableVertexAttribute(int location) {
@@ -96,6 +102,10 @@ public class ShaderProgram {
 	
 	public void use() {
 		glUseProgram(id);
+	}
+	
+	public void disable() {
+		glUseProgram(0);
 	}
 
 	public void delete() {

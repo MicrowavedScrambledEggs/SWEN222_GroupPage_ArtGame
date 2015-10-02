@@ -14,6 +14,7 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector2f;
@@ -132,7 +133,7 @@ public class AssetLoader {
 				textures[row][col] = new Texture(sprites[col][row], size);
 			}
 		}
-		return new Sprite(textures);
+		return new Sprite(textures, new Vector3f(1, 0.5f, 0));
 	}
 	
 	public ByteBuffer imageToBuffer(BufferedImage image) {

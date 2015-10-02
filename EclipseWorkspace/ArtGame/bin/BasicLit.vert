@@ -1,8 +1,9 @@
 #version 150 core
+#extension GL_ARB_explicit_attrib_location : require
 
-in vec3 position;
-in vec2 uv;
-in vec3 normal;
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec2 uv;
+layout(location = 2) in vec3 normal;
 out vec3 vertexColor;
 
 uniform mat4 model;

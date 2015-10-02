@@ -35,4 +35,8 @@ public class VertexBufferObject {
 		return id;
 	}
 
+	public void unbind(int target) {
+		glBindBuffer(target, 0);
+	}
+
 }

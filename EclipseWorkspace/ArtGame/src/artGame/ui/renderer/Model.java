@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector2f;
@@ -72,8 +73,12 @@ public class Model implements Asset {
 	@Override
 	public void draw(Matrix4f view, Vector3f light) {
 		vao.bind();
+		material.enable();
 		material.update(model, view, light);
 		glDrawArrays(GL_TRIANGLES, 0, numVerts);
+		material.disable();
+		vao.unbind();
+		//System.out.println("Model drawn");
 	}
 	
 	@Override

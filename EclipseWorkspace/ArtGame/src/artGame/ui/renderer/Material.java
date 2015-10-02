@@ -16,9 +16,9 @@ public class Material {
 	private Shader frag;
 	private ShaderProgram program;
 	
-	private int posAttrib;
-	private int normAttrib;
-	private int uvAttrib;
+	private int posAttrib = 0;
+	private int uvAttrib = 1;
+	private int normAttrib = 2;
 	
 	private int modelUniform;
 	private int viewUniform;
@@ -37,23 +37,25 @@ public class Material {
         program.attachShader(vert);
         program.attachShader(frag);
         program.bindFragmentDataLocation(0, "fragColor");
-        program.link();
-		program.use();
         
-        posAttrib = program.getAttributeLocation("position");
+        
+        program.bindAttributeLocation("position", posAttrib);
         program.enableVertexAttribute(posAttrib);
         verts.bind(GL_ARRAY_BUFFER);
         program.setVertexAttributePointer(posAttrib, 3, 0, 0);
 
-        uvAttrib = program.getAttributeLocation("uv");
+        program.bindAttributeLocation("uv", uvAttrib);
         program.enableVertexAttribute(uvAttrib);
         uvs.bind(GL_ARRAY_BUFFER);
         program.setVertexAttributePointer(uvAttrib, 2, 0, 0);
         
-        normAttrib = program.getAttributeLocation("normal");
+        program.bindAttributeLocation("normal", normAttrib);
         program.enableVertexAttribute(normAttrib);
         norms.bind(GL_ARRAY_BUFFER);
         program.setVertexAttributePointer(normAttrib, 3, 0, 0);
+        
+        program.link();
+		program.use();
         
         modelUniform = program.getUniformLocation("model");
         viewUniform = program.getUniformLocation("view");
@@ -69,6 +71,7 @@ public class Material {
         Matrix4f projection = Matrix4f.persp(80f, ratio, 1f, 100f);
         projUniform = program.getUniformLocation("projection");
         program.setUniform(projUniform, projection);
+        program.disable();
 	}
 	
 	public void update(Matrix4f model, Matrix4f view, Vector3f light) {
@@ -88,11 +91,17 @@ public class Material {
 		program.disableVertexAttribute(posAttrib);
 		program.disableVertexAttribute(uvAttrib);
 		program.disableVertexAttribute(normAttrib);
+		program.disable();
 	}
 	
 	public void delete() {
 		vert.delete();
 		frag.delete();
 		program.delete();
+	}
+
+	public ShaderProgram getProgram() {
+		// TODO Auto-generated method stub
+		return program;
 	}
 }
