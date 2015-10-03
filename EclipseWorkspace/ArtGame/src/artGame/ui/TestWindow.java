@@ -3,6 +3,7 @@ package artGame.ui;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Model;
+import artGame.ui.renderer.Sprite;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 
@@ -14,6 +15,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -68,8 +70,9 @@ public class TestWindow {
 		GLContext.createFromCurrent();
 		
 		// enable backface culling
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+		glDisable(GL_CULL_FACE);
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
 		
 		// declare buffers for using inside the loop
         IntBuffer width = BufferUtils.createIntBuffer(1);
@@ -78,7 +81,7 @@ public class TestWindow {
         // temporary list of assets so something can be displayed
         // TODO replace with better scene-loading solution from game
         List<Asset> renderList = createScene();
-		
+
 		// no proper 'game loop', as this is a test.
 		// TODO associate proper Window class with Game class
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
@@ -89,17 +92,20 @@ public class TestWindow {
             /* Rewind buffers for next get */
             width.rewind();
             height.rewind();
-
+            
+            //System.out.println(GL11.glGetError());
+            
             /* Set viewport and clear screen */
             glViewport(0, 0, width.get(), height.get());
             glClear(GL_COLOR_BUFFER_BIT);
             glClear(GL_DEPTH_BUFFER_BIT);
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LEQUAL);
-            
+
             for (Asset a : renderList) {
             	a.draw(camera, light);
             }
+
 
             /* Swap buffers and poll Events */
             glfwSwapBuffers(window);
@@ -108,9 +114,9 @@ public class TestWindow {
             /* Flip buffers for next loop */
             width.flip();
             height.flip();
-            
+
+            //System.out.println(GL11.glGetError());
             camera = camera.multiply(Matrix4f.rotate(speed, 0f, 1f, 0f));
-            
 		}
 		
 		// shut down
@@ -122,13 +128,24 @@ public class TestWindow {
 
 	private List<Asset> createScene() {
 		List<Asset> scene = new ArrayList<Asset>();
+		
+		///*
 		Model david = AssetLoader.instance().loadOBJ("res/sculpture_david.obj");
 		if (david != null) {
 			scene.add(david);
+		} else {
+			System.out.println("David not loaded");
 		}
+		//*/
+		
 		Model floor = AssetLoader.instance().loadOBJ("res/floor.obj");
 		if (floor != null) {
 			scene.add(floor);
+		}
+		
+		Sprite player = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32);
+		if (player != null) {
+			scene.add(player);
 		}
 		return scene;
 	}

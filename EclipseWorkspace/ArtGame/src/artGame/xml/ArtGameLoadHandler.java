@@ -79,7 +79,8 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			buildStack.push(new TileStretchBuilder(Integer.parseInt(attributes.getValue(0))));
 		} else if(qName.equals(XMLReader.STAIR_TILE_ELEMENT)){
 			buildStack.push(new StairTileBuilder());
-		} else if(qName.equals(XMLReader.POSITION_ELEMENT)){
+		} else if(qName.equals(XMLReader.POSITION_ELEMENT) || qName.equals(XMLReader.START_ELEMENT)
+				|| qName.equals(XMLReader.FINISH_ELEMENT)){
 			buildStack.push(new CoordinateBuilder());
 		} else if(qName.equals(XMLReader.LINKED_TILE_ELEMENT)){
 			StairTileBuilder stairBuilder = (StairTileBuilder) buildStack.peek();
@@ -107,6 +108,14 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			buildStack.push(new ArtBuilder(Integer.parseInt(attributes.getValue(0))));
 		} else if(qName.equals(XMLReader.SCULPTURE_ELEMENT)){
 			buildStack.push(new SculptureBuilder(Integer.parseInt(attributes.getValue(0))));
+		} else if(qName.equals(XMLReader.GUARD_ELEMENT)){
+			buildStack.push(new GuardBuilder(Integer.parseInt(attributes.getValue(0))));
+		} else if(qName.equals(XMLReader.PATROL_ELEMENT)){
+			buildStack.push(new Patrol());
+		} else if(qName.equals(XMLReader.X_PATH_ELEMENT)){
+			buildStack.push(new WestEastStretch());
+		} else if(qName.equals(XMLReader.Y_PATH_ELEMENT)){
+			buildStack.push(new NorthSouthStretch());
 		}
 	}
 

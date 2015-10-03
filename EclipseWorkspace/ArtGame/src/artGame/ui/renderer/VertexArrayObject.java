@@ -23,4 +23,8 @@ public class VertexArrayObject {
 	public int getID() {
 		return id;
 	}
+
+	public void unbind() {
+		glBindVertexArray(0);
+	}
 }
