@@ -16,7 +16,7 @@ public class Game {
 
 	private Floor floor;
 
-	private Player p;
+	private static Player p;
 	private List<Player> players;
 	
 	public Game(Floor floor,Collection<Player> players){
@@ -115,15 +115,14 @@ public class Game {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		while(game.getFloor().isOnExit()==null){
-			if(game.getFloor().checkGuards()){
-				game.getPlayer().gotCaught();
-				break;
-			}
 			game.floor.printFloor();//replace with gui display
 			game.printMenu();
 			String s = sc.next();
 			game.doAction(game.getPlayer(),s.charAt(0)); //replace with keylistener
 			game.getFloor().moveGuards();
+			if(game.getFloor().checkGuards().contains(game.getPlayer())){
+				break;
+			}
 		}
 		if(game.getPlayer().isCaught()){
 			System.out.println("you got arrested");
