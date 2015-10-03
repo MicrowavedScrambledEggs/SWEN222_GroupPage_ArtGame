@@ -25,8 +25,9 @@ public class Guard extends Character {
 		if (path != null) {
 			Coordinate current = new Coordinate(this.col, this.row);
 			int step = path.indexOf(current);
+			step = step+1;
 			if(step == path.size()) step = 0;
-			return path.get(step + 1);
+			return path.get(step);
 		}
 		else return new Coordinate(this.col,this.row);
 	}
