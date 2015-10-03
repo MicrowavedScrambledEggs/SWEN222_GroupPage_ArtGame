@@ -80,7 +80,6 @@ public class Floor {
 		// setting guard
 		Guard guard = new Guard(Character.Direction.WEST, 0);
 		setCharacter(guard, 2, 5);
-		guards.add(guard);
 	}
 
 	public Tile getTile(int row, int col) {
@@ -95,6 +94,9 @@ public class Floor {
 		floor[row][col].setOccupant(c);
 		c.setRow(row);
 		c.setCol(col);
+		if(c instanceof Guard){
+			guards.add((Guard)c);
+		}
 	}
 
 	/**
