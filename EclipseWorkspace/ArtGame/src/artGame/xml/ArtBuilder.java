@@ -35,7 +35,7 @@ public class ArtBuilder implements ObjectBuilder {
 
 	@Override
 	public Art buildObject() {
-		return new Art(artName, value);
+		return new Art(artName, value, artID);
 	}
 
 }
