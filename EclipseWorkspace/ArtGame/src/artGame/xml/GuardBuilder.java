@@ -29,7 +29,10 @@ public class GuardBuilder extends CharacterBuilder {
 
 	@Override
 	public Guard buildObject() {
-		return new Guard(super.getDirection(), super.getID(), patrol.getSteps());
+		Guard guard = new Guard(super.getDirection(), super.getID(), patrol.getSteps());
+		guard.setRow(super.getCoord().getY());
+		guard.setCol(super.getCoord().getX());
+		return guard;
 	}
 
 }

@@ -165,7 +165,8 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			completeTile();
 		} else if(qName.equals(XMLReader.TILE_STRETCH_ELEMENT)){
 			completeTileStretch();
-		} else if(qName.equals(XMLReader.POSITION_ELEMENT)){
+		} else if(qName.equals(XMLReader.POSITION_ELEMENT) || qName.equals(XMLReader.START_ELEMENT)
+				|| qName.equals(XMLReader.FINISH_ELEMENT)){
 			completePosition(qName);
 		} else if(qName.equals(XMLReader.LINKED_TILE_ELEMENT)){
 			completeLinkedTile();
@@ -175,7 +176,31 @@ public class ArtGameLoadHandler extends DefaultHandler {
 			completePainting();
 		} else if(qName.equals(XMLReader.SCULPTURE_ELEMENT)){
 			completeSculpture();
+		} else if(qName.equals(XMLReader.X_PATH_ELEMENT) || qName.equals(XMLReader.Y_PATH_ELEMENT)){
+			completePatrolSegment(qName);
+		} else if(qName.equals(XMLReader.PATROL_ELEMENT)){
+			completePatrol(qName);
+		} else if(qName.equals(XMLReader.GUARD_ELEMENT)){
+			completeGuard();
 		}
+		
+	}
+
+	private void completeGuard() {
+		GuardBuilder guardBuilder = (GuardBuilder) buildStack.pop();
+		guardBuilders.add(guardBuilder);
+	}
+
+	private void completePatrol(String qName) {
+		Patrol patrol = (Patrol) buildStack.pop();
+		GuardBuilder guardBuilder = (GuardBuilder) buildStack.peek();
+		guardBuilder.addFeild(qName, patrol);
+	}
+
+	private void completePatrolSegment(String qName) {
+		Stretch patrolSegment = (Stretch) buildStack.pop();
+		Patrol patrol = (Patrol) buildStack.peek();
+		patrol.addFeild(qName, patrolSegment);
 	}
 
 	private void completeSculpture() {
@@ -275,7 +300,9 @@ public class ArtGameLoadHandler extends DefaultHandler {
 	}
 
 	private void buildGuards() {
-		// TODO Auto-generated method stub
+		for(GuardBuilder guardBuilder: guardBuilders){
+			guards.add(guardBuilder.buildObject());
+		}
 
 	}
 

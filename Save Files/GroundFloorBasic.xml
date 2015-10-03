@@ -1747,7 +1747,7 @@
 	    	<value>10000</value>
 	    </sculpture>
 	</art>
-	<!--<guards>
+	<guards>
 		<guard id = "2">
 			<direction>EAST</direction>
 	        <position>
@@ -1797,5 +1797,5 @@
 	        	</north_south_stretch>
 	        </patrol>
 		</guard>
-	</guards>-->
+	</guards>
 </game>

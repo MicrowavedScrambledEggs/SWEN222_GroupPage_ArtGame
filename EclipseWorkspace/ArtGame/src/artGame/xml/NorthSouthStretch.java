@@ -29,7 +29,7 @@ public class NorthSouthStretch implements Stretch {
 		}
 		if(name.equals(XMLReader.FINISH_ELEMENT)){
 			if(value instanceof Coordinate){
-				this.start = (Coordinate) value;
+				this.finish = (Coordinate) value;
 			} else {
 				throw new IllegalArgumentException(String.format("Error when building patrol strech: "
 						+ "Tried to add %s when %s was needed", value.getClass().getName(),
