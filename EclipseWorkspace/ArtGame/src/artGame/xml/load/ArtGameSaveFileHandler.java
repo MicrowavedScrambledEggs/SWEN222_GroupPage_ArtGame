@@ -85,6 +85,11 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 			buildStack.push(new ObjectBuilder(new WestEastStretch()));
 		} else if(qName.equals(XMLHandler.Y_PATH_ELEMENT)){
 			buildStack.push(new ObjectBuilder(new NorthSouthStretch()));
+		} else if(qName.equals(XMLHandler.ITEM_ELEMENT)){
+			addFieldToCurrentBuilder(qName, this.attributeStringArray(attributes));
+		} else if(qName.equals(XMLHandler.CHEST_ELEMENT)){
+			buildStack.push(new ObjectBuilder(new ChestBuilder(gameMaker, 
+					Integer.parseInt(attributes.getValue(0)))));
 		}
 	}
 	
@@ -110,7 +115,7 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		} else if(qName.equals(XMLHandler.GUARD_ELEMENT) || qName.equals(XMLHandler.SCULPTURE_ELEMENT)
 				|| qName.equals(XMLHandler.PAINTING_ELEMENT) || qName.equals(XMLHandler.PLAYER_ELEMENT)
 				|| qName.equals(XMLHandler.STAIR_TILE_ELEMENT) || qName.equals(XMLHandler.TILE_STRETCH_ELEMENT)
-				|| qName.equals(XMLHandler.EMPTY_TILE_ELEMENT)){
+				|| qName.equals(XMLHandler.EMPTY_TILE_ELEMENT) || qName.equals(XMLHandler.CHEST_ELEMENT)){
 			buildList.add(buildStack.pop());
 		}	
 	}

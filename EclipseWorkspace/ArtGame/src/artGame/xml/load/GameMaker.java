@@ -2,14 +2,17 @@ package artGame.xml.load;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import artGame.game.Character;
 import artGame.game.Character.Direction;
 import artGame.game.Art;
+import artGame.game.Chest;
 import artGame.game.Coordinate;
 import artGame.game.Door;
 import artGame.game.ExitTile;
 import artGame.game.Floor;
+import artGame.game.Key;
 import artGame.game.Player;
 import artGame.game.StairTile;
 import artGame.game.Tile;
@@ -29,6 +32,15 @@ public class GameMaker {
 	private HashMap<Integer, Art> paintings = new HashMap<Integer, Art>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Character> nPCs = new ArrayList<Character>();
+	private HashMap<Integer, Key> keys = new HashMap<Integer, Key>();
+	private HashMap<Chest, HashSet<Integer>> chestKeyRefs 
+		= new HashMap<Chest, HashSet<Integer>>();
+	private HashMap<Chest, HashSet<Integer>> chestArtRefs 
+		= new HashMap<Chest, HashSet<Integer>>();
+	private HashMap<Character, HashSet<Integer>> characterKeyRefs 
+		= new HashMap<Character, HashSet<Integer>>();
+	private HashMap<Character, HashSet<Integer>> characterArtRefs 
+		= new HashMap<Character, HashSet<Integer>>();
 	private int maxCol = 0;
 	private int maxRow = 0;
 
@@ -119,11 +131,39 @@ public class GameMaker {
 		buildTileArray();
 		addArtToTiles();
 		addDoorsToTiles();
+		fillChests();
+		fillInventories();
 		Floor floor = new Floor(tileArray, tileArray.length, tileArray[0].length, exits);
 		addNPCsToFloor(floor);
 		return new Game(floor, players);
 	}
 	
+	private void fillInventories() {
+		for(Character ch : characterKeyRefs.keySet()){
+			for(int keyId : characterKeyRefs.get(ch)){
+				ch.addItem(keys.get(keyId));
+			}
+		}
+		for(Character ch : characterArtRefs.keySet()){
+			for(int artId : characterArtRefs.get(ch)){
+				ch.addItem(paintings.get(artId));
+			}
+		}
+	}
+
+	private void fillChests() {
+		for(Chest ch : chestKeyRefs.keySet()){
+			for(int keyId : chestKeyRefs.get(ch)){
+				ch.setContent(keys.get(keyId));
+			}
+		}
+		for(Chest ch : chestArtRefs.keySet()){
+			for(int artId : chestArtRefs.get(ch)){
+				ch.setContent(paintings.get(artId));
+			}
+		}
+	}
+
 	private void addNPCsToFloor(Floor floor) {
 		for(Character nPC : nPCs){
 			floor.setCharacter(nPC, nPC.getRow(), nPC.getCol());
@@ -160,5 +200,29 @@ public class GameMaker {
 		for(Coordinate coord : tiles.keySet()){
 			tileArray[coord.getY()][coord.getX()] = tiles.get(coord);
 		}
+	}
+
+	public void addChestKeyRefs(Chest chest, HashSet<Integer> keyRefs) {
+		addKeys(keyRefs);
+		chestKeyRefs.put(chest, keyRefs);
+	}
+
+	private void addKeys(HashSet<Integer> keyRefs) {
+		for(int keyID : keyRefs){
+			keys.put(keyID, new Key(keyID, keyID));
+		}
+	}
+
+	public void addChestArtRefs(Chest chest, HashSet<Integer> artRefs) {
+		chestArtRefs.put(chest, artRefs);
+	}
+	
+	public void addCharacterKeyRefs(Character ch, HashSet<Integer> keyRefs) {
+		addKeys(keyRefs);
+		characterKeyRefs.put(ch, keyRefs);
+	}
+
+	public void addCharacterArtRefs(Character ch, HashSet<Integer> artRefs) {
+		characterArtRefs.put(ch, artRefs);
 	}
 }
