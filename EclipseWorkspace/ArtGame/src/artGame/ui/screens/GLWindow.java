@@ -189,4 +189,8 @@ public class GLWindow {
 		window.begin();
 	}
 
+	public static long getWindow() {
+		return window;
+	}
+
 }

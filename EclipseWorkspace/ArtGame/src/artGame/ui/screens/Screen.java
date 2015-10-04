@@ -7,6 +7,5 @@ public interface Screen {
 
 	public void render(Matrix4f view, Vector3f light);
 	public void dispose();
-	public long getWindow();
 	
 }
