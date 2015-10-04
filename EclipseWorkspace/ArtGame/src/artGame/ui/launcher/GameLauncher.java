@@ -20,8 +20,8 @@ import javax.swing.JTextField;
 
 import artGame.control.ClientThread;
 import artGame.ui.RenderWindowTest;
-import artGame.ui.Screen;
-import artGame.ui.UIRenderer;
+import artGame.ui.screens.Screen;
+import artGame.ui.screens.UIRenderer;
 /**
  * 
  * @author Tim King
@@ -107,7 +107,7 @@ public class GameLauncher extends JPanel {
 	
 	public void start(ClientThread client){
 		
-		screen = new RenderWindowTest(client);
+		//screen = new RenderWindowTest(client);
 		screen.initialize();
 	
 		while(glfwWindowShouldClose(screen.getWindow()) == GL_FALSE){
