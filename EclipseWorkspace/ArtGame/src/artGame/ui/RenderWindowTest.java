@@ -20,6 +20,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
+import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_BACK;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
@@ -46,6 +47,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GLContext;
 
 import artGame.control.ClientThread;
+import artGame.main.Game;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Model;
@@ -57,28 +59,26 @@ public class RenderWindowTest implements Screen {
 	private static GLFWErrorCallback errorCallback = Callbacks
 			.errorCallbackPrint(System.err);
 	private static long window;
-	private static Matrix4f camera;
-	private Vector3f light;
-	private float angle = 35.2f;
-	private float speed = 0.3f;
+	
+	private GameRenderer renderer;
 	
 	private IntBuffer width;
 	private IntBuffer height;
-	
-	private List<Asset> renderList;
 	
 	private GLFWKeyCallback keyCallback;
 	
 	public RenderWindowTest(ClientThread connection){
 		keyCallback = new NetworkKeyCallback(connection);
+		initialize();
+	}
+	
+	public RenderWindowTest(){
+		keyCallback = null;
+		initialize();
 	}
 
 	@Override
 	public void initialize() {
-		camera = Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(
-				Matrix4f.rotate(angle, 1f, 0f, 0f));
-		light = new Vector3f(1.0f, 1.0f, 0.5f).normalized();
-
 		glfwSetErrorCallback(errorCallback);
 
 		if (glfwInit() != GL_TRUE) {
@@ -91,7 +91,7 @@ public class RenderWindowTest implements Screen {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		window = glfwCreateWindow(640, 480, "Renderer Demo Window", NULL, NULL);
+		window = glfwCreateWindow(640, 480, "Game Renderer Test", NULL, NULL);
 		if (window == NULL) {
 			glfwTerminate();
 			throw new RuntimeException("Failed to create the GLFW window");
@@ -103,6 +103,11 @@ public class RenderWindowTest implements Screen {
 		// create OpenGL context
 		glfwMakeContextCurrent(window);
 		GLContext.createFromCurrent();
+		
+		// create renderer
+		Game game = new Game();
+		game.initialise();
+		renderer = new GameRenderer(game);
 
 		// enable backface culling
 		glEnable(GL_CULL_FACE);
@@ -111,10 +116,6 @@ public class RenderWindowTest implements Screen {
 		// declare buffers for using inside the loop
 		width = BufferUtils.createIntBuffer(1);
 		height = BufferUtils.createIntBuffer(1);
-
-		// temporary list of assets so something can be displayed
-		// TODO replace with better scene-loading solution from game
-		renderList = createScene();
 	}
 
 	@Override
@@ -129,14 +130,11 @@ public class RenderWindowTest implements Screen {
 		/* Set viewport and clear screen */
 		glViewport(0, 0, width.get(), height.get());
 		glClear(GL_COLOR_BUFFER_BIT);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LEQUAL);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
 
-		for (Asset a : renderList) {
-			a.draw(camera, light);
-		}
-
+		renderer.render();
 		/* Swap buffers and poll Events */
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -144,15 +142,17 @@ public class RenderWindowTest implements Screen {
 		/* Flip buffers for next loop */
 		width.flip();
 		height.flip();
-
-		camera = camera.multiply(Matrix4f.rotate(speed, 0f, 1f, 0f));
 	}
 
 	@Override
 	public void dispose() {
+		renderer.dispose();
+		
 		// shut down
 		glfwDestroyWindow(window);
-		keyCallback.release();
+		if (keyCallback != null) {
+			keyCallback.release();
+		}
 		glfwTerminate();
 		errorCallback.release();
 	}
@@ -162,27 +162,13 @@ public class RenderWindowTest implements Screen {
 		return window;
 	}
 	
-	private List<Asset> createScene() {
-		List<Asset> scene = new ArrayList<Asset>();
-		Model david = null;
-		try {
-			david = AssetLoader.instance().loadOBJ(FileUtils.getFilePath("sculpture_david.obj"));
-		} catch (IOException e) {
-			e.printStackTrace();
+	// this is for testing the new renderer
+	public static void main(String[] args) {
+		RenderWindowTest test = new RenderWindowTest();
+		while (glfwWindowShouldClose(window) != GL_TRUE) {
+			test.render();
 		}
-		if (david != null) {
-			scene.add(david);
-		}
-		Model floor = null;
-		try {
-			floor = AssetLoader.instance().loadOBJ(FileUtils.getFilePath("floor.obj"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (floor != null) {
-			scene.add(floor);
-		}
-		return scene;
+		test.dispose();
 	}
 
 }

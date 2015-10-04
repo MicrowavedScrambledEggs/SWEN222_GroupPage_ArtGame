@@ -14,8 +14,6 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector2f;
 import artGame.ui.renderer.math.Vector3f;
@@ -34,7 +32,6 @@ public class AssetLoader {
 	}
 
 	public Model loadOBJ(String filepath) {
-		// TODO
 		List<Vector3f> vertList = new ArrayList<Vector3f>();
 		List<Vector2f> uvList = new ArrayList<Vector2f>();
 		List<Vector3f> normList = new ArrayList<Vector3f>();
@@ -134,27 +131,27 @@ public class AssetLoader {
 				textures[row][col] = new Texture(sprites[col][row], size);
 			}
 		}
-		return new Sprite(textures, new Vector3f(1, 0.5f, 0));
+		return new Sprite(textures, new Vector3f(0, 0.5f, 0));
 	}
 	
 	public ByteBuffer imageToBuffer(BufferedImage image) {
 		if (image != null) {
-            /* Flip image Horizontal to get the origin to bottom left */
+            
             AffineTransform transform = AffineTransform.getScaleInstance(1f, -1f);
             transform.translate(0, -image.getHeight());
             AffineTransformOp operation = new AffineTransformOp(transform,
                     AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
             image = operation.filter(image, null);
 
-            /* Get width and height of image */
+            
             int width = image.getWidth();
             int height = image.getHeight();
 
-            /* Get pixel data of image */
+            
             int[] pixels = new int[width * height];
             image.getRGB(0, 0, width, height, pixels, 0, width);
 
-            /* Put pixel data into a ByteBuffer */
+            
             ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * 4);
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
@@ -170,7 +167,7 @@ public class AssetLoader {
                     buffer.put((byte) ((pixel >> 24) & 0xFF));
                 }
             }
-            /* Do not forget to flip the buffer! */
+            
             buffer.flip();
             
             return buffer;

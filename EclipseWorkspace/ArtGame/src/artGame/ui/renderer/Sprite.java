@@ -11,8 +11,6 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
-
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 
@@ -100,7 +98,8 @@ public class Sprite implements Asset {
 	}
 	
 	@Override
-	public void draw(Matrix4f view, Vector3f light) {
+	public void draw(Camera camera, Vector3f light) {
+		Matrix4f view = camera.getView();
 		float[][] v = view.getData();
         //System.out.println(GL11.glGetError());
 		
@@ -143,6 +142,14 @@ public class Sprite implements Asset {
 		vert.delete();
 		frag.delete();
 		program.delete();
+	}
+
+	public void setPosition(Vector3f position) {
+		this.position = position;
+	}
+
+	public Sprite instantiate() {
+		return new Sprite(spritesheet, position);
 	}
 
 }

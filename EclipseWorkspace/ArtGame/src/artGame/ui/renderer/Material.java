@@ -61,23 +61,16 @@ public class Material {
         viewUniform = program.getUniformLocation("view");
         lightUniform = program.getUniformLocation("light");
         program.setUniform(program.getUniformLocation("matColor"), this.color);
-        
-        long window = GLFW.glfwGetCurrentContext();
-        IntBuffer width = BufferUtils.createIntBuffer(1);
-        IntBuffer height = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetFramebufferSize(window, width, height);
-        float ratio = width.get() / (float) height.get();
-
-        Matrix4f projection = Matrix4f.persp(80f, ratio, 1f, 100f);
         projUniform = program.getUniformLocation("projection");
-        program.setUniform(projUniform, projection);
+        
         program.disable();
 	}
 	
-	public void update(Matrix4f model, Matrix4f view, Vector3f light) {
+	public void update(Matrix4f model, Camera camera, Vector3f light) {
         program.setUniform(modelUniform, model);
-        program.setUniform(viewUniform, view);
+        program.setUniform(viewUniform, camera.getView());
         program.setUniform(lightUniform, light);
+        program.setUniform(projUniform, camera.getProjection());
 	}
 	
 	public void enable() {

@@ -360,4 +360,12 @@ public class Floor {
 
 	}
 
+	public int getHeight() {
+		return floor.length;
+	}
+	
+	public int getWidth() {
+		return floor[0].length;
+	}
+
 }

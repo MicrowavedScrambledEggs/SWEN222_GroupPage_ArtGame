@@ -2,6 +2,7 @@ package artGame.ui;
 
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
+import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Model;
 import artGame.ui.renderer.Sprite;
 import artGame.ui.renderer.math.Matrix4f;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.Callbacks;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL11;
@@ -27,9 +29,9 @@ public class TestWindow {
 	
 	private static GLFWErrorCallback errorCallback = Callbacks.errorCallbackPrint(System.err);
 	private static long window;
-	private static Matrix4f camera;
+	private static Camera camera;
 	private Vector3f light;
-	private float angle = 35.2f;
+	private float angle = 60f;
 	private float speed = 0.01f;
 	private GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
 	    @Override
@@ -41,8 +43,7 @@ public class TestWindow {
 	};
 	
 	public TestWindow() {
-		camera = Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f));
-		light = new Vector3f(1.0f, 1.0f, 0.5f).normalized();
+		
 		
 		glfwSetErrorCallback(errorCallback);
 		
@@ -62,6 +63,8 @@ public class TestWindow {
 		    throw new RuntimeException("Failed to create the GLFW window");
 		}
 		
+		
+		
 		// associate window with key callback
 		glfwSetKeyCallback(window, keyCallback);
 		
@@ -74,9 +77,18 @@ public class TestWindow {
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_BACK);
 		
-		// declare buffers for using inside the loop
+		window = GLFW.glfwGetCurrentContext();
         IntBuffer width = BufferUtils.createIntBuffer(1);
         IntBuffer height = BufferUtils.createIntBuffer(1);
+        GLFW.glfwGetFramebufferSize(window, width, height);
+        float ratio = width.get() / (float) height.get();
+        width.rewind();
+        height.rewind();
+		
+		camera = new Camera(Matrix4f.persp(80f, ratio, 1f, 100f), 2.5f);
+		light = new Vector3f(1.0f, 1.0f, 0.5f).normalized();
+		
+		camera.rotate(new Vector3f(angle, 0, 0));
         
         // temporary list of assets so something can be displayed
         // TODO replace with better scene-loading solution from game
@@ -116,7 +128,7 @@ public class TestWindow {
             height.flip();
 
             //System.out.println(GL11.glGetError());
-            camera = camera.multiply(Matrix4f.rotate(speed, 0f, 1f, 0f));
+            //camera.rotate(new Vector3f(0, speed, 0));
 		}
 		
 		// shut down
@@ -130,7 +142,7 @@ public class TestWindow {
 		List<Asset> scene = new ArrayList<Asset>();
 		
 		///*
-		Model david = AssetLoader.instance().loadOBJ("res/sculpture_david.obj");
+		Model david = AssetLoader.instance().loadOBJ("res/left_wall.obj");
 		if (david != null) {
 			scene.add(david);
 		} else {
