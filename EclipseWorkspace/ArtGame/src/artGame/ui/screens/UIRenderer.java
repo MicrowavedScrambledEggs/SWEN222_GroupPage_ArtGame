@@ -65,7 +65,7 @@ public class UIRenderer implements Screen {
 			}
 		}
 		
-		glfwGetFramebufferSize(getWindow(), width, height);
+		glfwGetFramebufferSize(GLWindow.getWindow(), width, height);
 		int wVal = width.get();
 		int hVal = height.get();
 		float ratio = (float)wVal/(float)hVal;
@@ -101,12 +101,6 @@ public class UIRenderer implements Screen {
 	
 	public void dispose(){
 	
-	}
-
-	@Override
-	public long getWindow() {
-		
-		return window;
 	}
 	
 	private void createUI(){

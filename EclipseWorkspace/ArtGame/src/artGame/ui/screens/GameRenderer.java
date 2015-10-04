@@ -57,12 +57,6 @@ public class GameRenderer implements Screen {
 	public void dispose(){
 		
 	}
-
-	@Override
-	public long getWindow() {
-		
-		return window;
-	}
 	
 	private List<Asset> createScene() {
 		List<Asset> scene = new ArrayList<Asset>();
