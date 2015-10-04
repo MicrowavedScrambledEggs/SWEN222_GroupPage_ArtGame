@@ -9,7 +9,7 @@ import java.util.Set;
 
 import artGame.game.*;
 import artGame.game.Character.Direction;
-import artGame.xml.XMLReader;
+import artGame.xml.XMLHandler;
 
 public class Game {
 
@@ -142,7 +142,7 @@ public class Game {
 
 	private static Game loadGame(String fileName) {
 		File loadFile = new File(fileName);
-		XMLReader gameLoader = new XMLReader(loadFile);
+		XMLHandler gameLoader = new XMLHandler(loadFile);
 		return gameLoader.getGame();
 	}	
 }
