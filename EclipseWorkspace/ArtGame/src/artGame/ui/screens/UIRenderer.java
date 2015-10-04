@@ -39,10 +39,7 @@ public class UIRenderer implements Screen {
 	
 	public UIRenderer(long window){
 		this.window = window;
-	}
-	
-	@Override
-	public void initialize() {
+		
 		width = BufferUtils.createIntBuffer(1);
 		height = BufferUtils.createIntBuffer(1);
 		createUI();

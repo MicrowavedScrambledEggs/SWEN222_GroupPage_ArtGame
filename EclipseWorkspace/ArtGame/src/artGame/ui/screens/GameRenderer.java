@@ -35,18 +35,13 @@ public class GameRenderer implements Screen {
 	
 	public GameRenderer(long window){
 		this.window=window;	
-	}
-	
-	@Override
-	public void initialize() {
-        
-        // temporary list of assets so something can be displayed
+		
+		 // temporary list of assets so something can be displayed
         // TODO replace with better scene-loading solution from game
        renderList = createScene();
        
        GLWindow.setView(GLWindow.INITIAL_VIEW);
        GLWindow.setLight(new Vector3f(1.0f, 1.0f, 0.5f).normalized());
-       
 	}
 	
 	@Override
