@@ -2,6 +2,7 @@ package artGame.ui;
 
 import artGame.game.Guard;
 import artGame.game.Item;
+import artGame.game.Key;
 import artGame.game.Player;
 import artGame.game.Sculpture;
 import artGame.game.Tile;
@@ -14,6 +15,8 @@ import artGame.game.Wall;
  */
 public class GameData {
 
+	private static Item[] items = {new Key(0, 2)};
+	
 	public static Player getCurrentPlayer(){
 		
 		return null;
@@ -36,7 +39,7 @@ public class GameData {
 	
 	public static Item[] getCurrentItems(){
 		
-		return null;
+		return items;
 	}
 	
 	public Wall[] getWallData(){

@@ -28,9 +28,6 @@ public class GameRenderer implements Screen {
 	
 	private long window;
 	
-	private IntBuffer width;
-	private IntBuffer height;
-	
 	private List<Asset> renderList;
 	
 	private float angle = 35.2f;
@@ -42,53 +39,24 @@ public class GameRenderer implements Screen {
 	
 	@Override
 	public void initialize() {
-		// declare buffers for using inside the loop
-        width = BufferUtils.createIntBuffer(1);
-        height = BufferUtils.createIntBuffer(1);
         
         // temporary list of assets so something can be displayed
         // TODO replace with better scene-loading solution from game
        renderList = createScene();
        
-       GLWindow.setView(Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f)));
+       GLWindow.setView(GLWindow.INITIAL_VIEW);
        GLWindow.setLight(new Vector3f(1.0f, 1.0f, 0.5f).normalized());
        
 	}
 	
 	@Override
 	public void render(Matrix4f view, Vector3f light) {
-	
-		 /* Get width and height to calcualte the ratio */
-        glfwGetFramebufferSize(getWindow(), width, height);
-
-        /* Rewind buffers for next get */
-        width.rewind();
-        height.rewind();
-        
-        //System.out.println(GL11.glGetError());
-        
-        /* Set viewport and clear screen */
-        glViewport(0, 0, width.get(), height.get());
-        glClear(GL_COLOR_BUFFER_BIT);
-        glClear(GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
 
         for (Asset a : renderList) {
         	a.draw(view, light);
         }
-
-
-        /* Swap buffers and poll Events */
-        glfwSwapBuffers(getWindow());
-        glfwPollEvents();
-
-        /* Flip buffers for next loop */
-        width.flip();
-        height.flip();
-
-        //System.out.println(GL11.glGetError());
-        GLWindow.setView(GLWindow.getView().multiply(Matrix4f.rotate(speed, 0f, 1f, 0f)));
+        
+        GLWindow.setView(GLWindow.getView().multiply(Matrix4f.rotate(0.9f, 0f, 1f, 0f)));
 	}
 	
 	public void dispose(){
