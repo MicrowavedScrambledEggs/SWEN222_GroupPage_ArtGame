@@ -1,5 +1,7 @@
 package artGame.xml.load;
 
+import java.util.HashSet;
+
 import artGame.game.Coordinate;
 import artGame.game.Character.Direction;
 import artGame.xml.XMLHandler;
@@ -10,6 +12,8 @@ public abstract class CharacterBuilder implements BuildStrategy {
 	private Coordinate coord;
 	private int iD;
 	private GameMaker gameMaker;
+	private HashSet<Integer> artRefs = new HashSet<Integer>();
+	private HashSet<Integer> keyRefs = new HashSet<Integer>();
 
 	public CharacterBuilder(GameMaker gameMaker, int id){
 		this.gameMaker = gameMaker;
@@ -19,7 +23,13 @@ public abstract class CharacterBuilder implements BuildStrategy {
 	@Override
 	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
-		//TODO:Inventory handling
+		if(name.equals(XMLHandler.ITEM_ELEMENT)){
+			if(values[0].equals(XMLHandler.ART_VALUE)){
+				artRefs.add(Integer.parseInt((String) values[1]));
+			} else if(values[0].equals(XMLHandler.KEY_VALUE)){
+				keyRefs.add(Integer.parseInt((String) values[1]));
+			}
+		}
 		if(name.equals(XMLHandler.DIRECTION_ELEMENT)){
 			addDirection((String) values[0]);
 		} else if(name.equals(XMLHandler.ID_ATTRIBUTE)){
@@ -81,6 +91,20 @@ public abstract class CharacterBuilder implements BuildStrategy {
 	 */
 	public GameMaker getGameMaker() {
 		return gameMaker;
+	}
+
+	/**
+	 * @return the artRefs
+	 */
+	public HashSet<Integer> getArtRefs() {
+		return artRefs;
+	}
+
+	/**
+	 * @return the keyRefs
+	 */
+	public HashSet<Integer> getKeyRefs() {
+		return keyRefs;
 	} 
 	
 	

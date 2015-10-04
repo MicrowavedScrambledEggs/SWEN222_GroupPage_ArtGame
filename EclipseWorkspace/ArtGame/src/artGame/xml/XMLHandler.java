@@ -54,6 +54,9 @@ public class XMLHandler {
 	public static final String SCULPTURE_ELEMENT = "sculpture";
 	public static final String NAME_ELEMENT = "name";
 	public static final String VALUE_ELEMENT = "value";
+	public static final String INVENTORY_ELEMENT = "inventory";
+	public static final String ITEM_ELEMENT = "item";
+	public static final String CHEST_ELEMENT = "chest";
 	
 	public static final String LEVEL_ATTRIBUTE = "level";
 	public static final String DIRECTION_ATTRIBUTE = "direction";
@@ -64,12 +67,16 @@ public class XMLHandler {
 	public static final String ART_ID_ATTRIBUTE = "artID";
 	public static final String LOCKED_ATTRIBUTE = "locked";
 	public static final String EXIT_ATTRIBUTE = "isExit";
+	public static final String TYPE_ATTRIBUTE = "type";
 	
 	public static final String NORTH_VALUE = "NORTH";
 	public static final String WEST_VALUE = "WEST";
 	public static final String SOUTH_VALUE = "SOUTH";
 	public static final String EAST_VALUE = "EAST";
 	public static final String TRUE_VALUE = "TRUE";
+	public static final String ART_VALUE = "ART";
+	public static final String KEY_VALUE = "KEY";
+	
 	
 	private ArtGameSaveFileHandler xmlHandler;
 	
@@ -79,13 +86,18 @@ public class XMLHandler {
 	 * 
 	 * @param xmlFile artGame xml file to parse
 	 */
-	public XMLHandler(File xmlFile){
-		//create the
+	public XMLHandler(){
+		xmlHandler = new ArtGameSaveFileHandler();
+	}
+	
+	/**
+	 * @return Game built from the handler after parsing xmlFile
+	 */
+	public Game loadGame(File xmlFile){
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 	    factory.setValidating(true);
 	    try {
 	        SAXParser saxParser = factory.newSAXParser();
-	        xmlHandler = new ArtGameSaveFileHandler();
 	        saxParser.parse(xmlFile, xmlHandler);
 	    }
 	    catch(ParserConfigurationException e1) {
@@ -97,13 +109,6 @@ public class XMLHandler {
 	    catch(IOException e) {
 	    	System.out.println("Problem with reading xml file: " + e);
 	    }
-
-	}
-	
-	/**
-	 * @return Game built from the handler after parsing xmlFile
-	 */
-	public Game getGame(){
 		return xmlHandler.buildGame();
 	}
 

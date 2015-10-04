@@ -141,7 +141,7 @@ public class Game {
 
 	private static Game loadGame(String fileName) {
 		File loadFile = new File(fileName);
-		XMLHandler gameLoader = new XMLHandler(loadFile);
-		return gameLoader.getGame();
+		XMLHandler gameLoader = new XMLHandler();
+		return gameLoader.loadGame(loadFile);
 	}	
 }

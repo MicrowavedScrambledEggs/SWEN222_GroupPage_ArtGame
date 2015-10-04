@@ -14,7 +14,9 @@ public class PlayerBuilder extends CharacterBuilder {
 		Player toAdd = new Player(super.getDirection(), super.getiD());
 		toAdd.setRow(super.getCoord().getY());
 		toAdd.setCol(super.getCoord().getX());
-		super.getGameMaker().addPlayer(toAdd);
+		getGameMaker().addPlayer(toAdd);
+		getGameMaker().addCharacterArtRefs(toAdd, getArtRefs());
+		getGameMaker().addCharacterKeyRefs(toAdd, getKeyRefs());
 	}
 
 }
