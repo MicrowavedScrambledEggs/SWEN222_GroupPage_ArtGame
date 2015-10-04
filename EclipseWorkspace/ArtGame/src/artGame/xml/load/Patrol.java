@@ -1,39 +1,32 @@
-package artGame.xml;
+package artGame.xml.load;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import artGame.game.Coordinate;
+import artGame.xml.XMLHandler;
 
 public class Patrol implements Stretch {
-
+	
 	private LinkedList<Stretch> stretches = new LinkedList<Stretch>();
 
 	@Override
-	public void addFeild(String name, String value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void addFeild(String name, Object value)
+	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
-		if(name.equals(XMLReader.X_PATH_ELEMENT) || name.equals(XMLReader.Y_PATH_ELEMENT)){
-			if(value instanceof Stretch){
-				stretches.add((Stretch) value);
+		if(name.equals(XMLHandler.X_PATH_ELEMENT) || name.equals(XMLHandler.Y_PATH_ELEMENT)){
+			if(values[0] instanceof Stretch){
+				stretches.add((Stretch) values[0]);
 			} else {
 				throw new IllegalArgumentException(String.format("Error when building patrol: "
-						+ "Tried to add %s when %s was needed", value.getClass().getName(),
-						Coordinate.class.getName()));
+						+ "Tried to add %s when %s was needed", values[0].getClass().getName(),
+						Stretch.class.getName()));
 			}
 		}
-
 	}
 
 	@Override
-	public <T> T buildObject() {
-		// TODO Auto-generated method stub
-		return null;
+	public void addToGame() {
+		// Does Nothing!!
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import artGame.main.Game;
+import artGame.xml.load.ArtGameSaveFileHandler;
 
 /**
  * Class for parsing xml files for saved games and new games 
@@ -26,7 +27,7 @@ import artGame.main.Game;
  * @author Badi James
  *
  */
-public class XMLReader {
+public class XMLHandler {
 	
 	//TODO: Add a lot more strings for elements etc once artGame.game is more complete
 	//TODO: Add strings for Guards
@@ -70,7 +71,7 @@ public class XMLReader {
 	public static final String EAST_VALUE = "EAST";
 	public static final String TRUE_VALUE = "TRUE";
 	
-	private ArtGameLoadHandler xmlHandler;
+	private ArtGameSaveFileHandler xmlHandler;
 	
 	/**
 	 * Constructor for class XMLReader. Takes the given xmlFile and parses it
@@ -78,13 +79,13 @@ public class XMLReader {
 	 * 
 	 * @param xmlFile artGame xml file to parse
 	 */
-	public XMLReader(File xmlFile){
+	public XMLHandler(File xmlFile){
 		//create the
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 	    factory.setValidating(true);
 	    try {
 	        SAXParser saxParser = factory.newSAXParser();
-	        xmlHandler = new ArtGameLoadHandler();
+	        xmlHandler = new ArtGameSaveFileHandler();
 	        saxParser.parse(xmlFile, xmlHandler);
 	    }
 	    catch(ParserConfigurationException e1) {
