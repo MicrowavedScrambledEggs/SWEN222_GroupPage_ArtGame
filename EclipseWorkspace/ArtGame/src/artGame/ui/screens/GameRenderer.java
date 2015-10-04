@@ -27,20 +27,17 @@ import artGame.ui.renderer.math.Vector3f;
 public class GameRenderer implements Screen {
 	
 	private long window;
-	private static Matrix4f camera;
-	private Vector3f light;
-	private float angle = 35.2f;
-	private float speed = 0.01f;
 	
 	private IntBuffer width;
 	private IntBuffer height;
 	
 	private List<Asset> renderList;
 	
+	private float angle = 35.2f;
+	private float speed = 0.1f;
+	
 	public GameRenderer(long window){
-		this.window=window;
-		camera = Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f));
-		light = new Vector3f(1.0f, 1.0f, 0.5f).normalized();		
+		this.window=window;	
 	}
 	
 	@Override
@@ -52,10 +49,15 @@ public class GameRenderer implements Screen {
         // temporary list of assets so something can be displayed
         // TODO replace with better scene-loading solution from game
        renderList = createScene();
+       
+       GLWindow.setView(Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(Matrix4f.rotate(angle, 1f, 0f, 0f)));
+       GLWindow.setLight(new Vector3f(1.0f, 1.0f, 0.5f).normalized());
+       
 	}
 	
 	@Override
-	public void render() {
+	public void render(Matrix4f view, Vector3f light) {
+	
 		 /* Get width and height to calcualte the ratio */
         glfwGetFramebufferSize(getWindow(), width, height);
 
@@ -73,7 +75,7 @@ public class GameRenderer implements Screen {
         glDepthFunc(GL_LEQUAL);
 
         for (Asset a : renderList) {
-        	a.draw(camera, light);
+        	a.draw(view, light);
         }
 
 
@@ -86,7 +88,7 @@ public class GameRenderer implements Screen {
         height.flip();
 
         //System.out.println(GL11.glGetError());
-        camera = camera.multiply(Matrix4f.rotate(speed, 0f, 1f, 0f));
+        GLWindow.setView(GLWindow.getView().multiply(Matrix4f.rotate(speed, 0f, 1f, 0f)));
 	}
 	
 	public void dispose(){

@@ -29,15 +29,21 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GLContext;
 
 import artGame.ui.NetworkKeyCallback;
+import artGame.ui.renderer.math.Matrix4f;
+import artGame.ui.renderer.math.Vector3f;
 
 public class GLWindow {
-	
-	private static GLFWErrorCallback errorCallback = Callbacks.errorCallbackPrint(System.err);
+
+	private static GLFWErrorCallback errorCallback = Callbacks
+			.errorCallbackPrint(System.err);
 	private static long window;
-	
+
 	private GLFWKeyCallback keyCallback = new NetworkKeyCallback(null);
-	
+
 	private Set<Screen> screens;
+
+	private static Matrix4f camera;
+	private static Vector3f light;
 
 	public GLWindow() {
 		glfwSetErrorCallback(errorCallback);
@@ -69,44 +75,61 @@ public class GLWindow {
 		glDisable(GL_CULL_FACE);
 		// glEnable(GL_CULL_FACE);
 		// glCullFace(GL_BACK);
-		
+
 		initScreens();
 	}
-	
-	public void begin(){
+
+	public void begin() {
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
 			loop();
+			
 		}
 	}
-	
-	private void loop(){
+
+	private void loop() {
 		render();
 	}
 
 	private void render() {
-		for(Screen screen : screens){
-			screen.render();
+		for (Screen screen : screens) {
+			screen.render(camera, light);
 		}
 	}
-	
-	private void initScreens(){
+
+	private void initScreens() {
 		screens = new HashSet<Screen>();
 		screens.add(new UIRenderer(window));
 		screens.add(new GameRenderer(window));
-		
-		for(Screen screen : screens){
+
+		for (Screen screen : screens) {
 			screen.initialize();
 		}
 	}
-	
-	public void dispose(){
+
+	public void dispose() {
 		glfwDestroyWindow(window);
 		keyCallback.release();
 		glfwTerminate();
 		errorCallback.release();
 	}
-	
-	public static void main(String[] args){
+
+	public static void setView(Matrix4f view) {
+		GLWindow.camera = view;
+	}
+
+	public static Matrix4f getView() {
+		return camera;
+	}
+
+	public static void setLight(Vector3f light) {
+		GLWindow.light = light;
+	}
+
+	public static Vector3f getLight() {
+		return light;
+	}
+
+	public static void main(String[] args) {
 		GLWindow window = new GLWindow();
 		window.begin();
 	}
