@@ -16,8 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
+
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
+import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Model;
 import artGame.ui.renderer.Sprite;
 import artGame.ui.renderer.math.Matrix4f;
@@ -30,7 +33,7 @@ public class GameRenderer implements Screen {
 	
 	private List<Asset> renderList;
 	
-	private float angle = 35.2f;
+	private float angle = 0.2f;
 	private float speed = 0.1f;
 	
 	public GameRenderer(long window){
@@ -40,18 +43,26 @@ public class GameRenderer implements Screen {
         // TODO replace with better scene-loading solution from game
        renderList = createScene();
        
-       GLWindow.setView(GLWindow.INITIAL_VIEW);
+       window = GLFW.glfwGetCurrentContext();
+       IntBuffer width = BufferUtils.createIntBuffer(1);
+       IntBuffer height = BufferUtils.createIntBuffer(1);
+       GLFW.glfwGetFramebufferSize(window, width, height);
+       float ratio = width.get() / (float) height.get();
+       width.rewind();
+       height.rewind();
+       
+       GLWindow.setCamera(new Camera(Matrix4f.persp(80f, ratio, 1f, 100f), 2.5f));
        GLWindow.setLight(new Vector3f(1.0f, 1.0f, 0.5f).normalized());
 	}
 	
 	@Override
-	public void render(Matrix4f view, Vector3f light) {
+	public void render(Camera cam, Vector3f light) {
 
         for (Asset a : renderList) {
-        	a.draw(view, light);
+        	a.draw(cam, light);
         }
         
-        GLWindow.setView(GLWindow.getView().multiply(Matrix4f.rotate(0.9f, 0f, 1f, 0f)));
+        GLWindow.getCamera().rotate(new Vector3f(angle, angle, 0));
 	}
 	
 	public void dispose(){

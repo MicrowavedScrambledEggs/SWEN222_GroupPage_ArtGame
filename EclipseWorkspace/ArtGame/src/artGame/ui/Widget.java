@@ -22,6 +22,7 @@ import org.lwjgl.glfw.GLFW;
 
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
+import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Shader;
 import artGame.ui.renderer.ShaderProgram;
 import artGame.ui.renderer.Texture;
@@ -130,9 +131,51 @@ public class Widget implements Asset {
 	}
 	
 	@Override
-	public void draw(Matrix4f view, Vector3f light) {
-		
+	public void draw(Camera cam, Vector3f light) {
+		Matrix4f view = cam.getView();
 		view = GLWindow.INITIAL_VIEW;
+		//view =  Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(Matrix4f.rotate(35.2f, 1f, 0f, 0f));;
+	
+		float[][] v = view.getData();
+		
+        //System.out.println(GL11.glGetError());
+	
+		Vector3f cameraRight = new Vector3f(v[0][0]*scale, v[0][1], v[0][2]);
+		Vector3f cameraUp = new Vector3f(v[1][0]*scale, v[1][1]*scale, v[1][2]*scale);
+		
+		program.use();
+		program.setUniform(cameraRightUniform, cameraRight);
+       // System.out.println(cameraRight.toString());
+		program.setUniform(cameraUpUniform, cameraUp);
+		program.setUniform(positionUniform, position);
+		program.setUniform(viewUniform, view);
+		program.setUniform(textureUniform, 0);
+
+        //System.out.println(cameraUp.toString());
+		
+        spritesheet[0][0].bind();
+
+        vao.bind();
+        //System.out.println(GL11.glGetError());
+        verts.bind(GL_ARRAY_BUFFER);
+        
+        //glDepthMask(GL_FALSE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        //draw transparent object ...
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDisable(GL_BLEND);
+        //glDepthMask(GL_TRUE);
+        //System.out.println(GL11.glGetError());
+        program.disable();
+        //System.out.println(GL11.glGetError());
+        verts.unbind(GL_ARRAY_BUFFER);
+        vao.unbind();
+        System.out.println();
+	}
+	
+	public void draw() {
+		Matrix4f view = GLWindow.INITIAL_VIEW;
 		//view =  Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(Matrix4f.rotate(35.2f, 1f, 0f, 0f));;
 	
 		float[][] v = view.getData();

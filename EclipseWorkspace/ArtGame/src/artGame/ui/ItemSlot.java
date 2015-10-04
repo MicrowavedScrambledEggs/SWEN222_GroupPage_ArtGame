@@ -1,5 +1,6 @@
 package artGame.ui;
 
+import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 
@@ -28,8 +29,8 @@ public class ItemSlot {
 		this.widget = widget;
 	}
 
-	public void draw(Matrix4f view, Vector3f light) {
-		widget.draw(view, light);
+	public void draw() {
+		widget.draw();
 	}
 
 }

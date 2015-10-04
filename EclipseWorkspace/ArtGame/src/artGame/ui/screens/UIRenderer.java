@@ -18,6 +18,7 @@ import artGame.game.Item;
 import artGame.ui.GameData;
 import artGame.ui.ItemSlot;
 import artGame.ui.Widget;
+import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Texture;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
@@ -46,8 +47,8 @@ public class UIRenderer implements Screen {
 	}
 	
 	@Override
-	public void render(Matrix4f view, Vector3f light) {
-		
+	public void render(Camera cam, Vector3f light) {
+		Matrix4f view = cam.getView();
 		for(Item item: GameData.getCurrentItems()){
 			boolean contains = false;
 			int freeSlot = -1;
@@ -74,11 +75,11 @@ public class UIRenderer implements Screen {
 			//testLoc = testLoc.add(new Vector3f(0.01f, 0.01f*ratio, 0f));
 			//System.out.println(testLoc.toString());
 			//asset.setLocation(testLoc);
-			asset.draw(view, light);
+			asset.draw(cam, light);
 		}
 		
 		for(ItemSlot item : inventory){
-			item.draw(view, light);
+			item.draw();
 			if(item.getItem() != -1){
 				if(itemsById.containsKey(item.getItem())){
 					Widget icon = itemsById.get(item.getItem());
@@ -88,7 +89,7 @@ public class UIRenderer implements Screen {
 					float yOff = -0.3f*item.getWidget().getScale();
 					
 					icon.setScreenLocation(item.getWidget().getX()+xOff, item.getWidget().getY()+yOff);
-					icon.draw(view, light);
+					icon.draw();
 				}
 			}
 			
@@ -108,7 +109,7 @@ public class UIRenderer implements Screen {
 		inventory = new ArrayList<>();
 		itemsById = new HashMap<>();
 		
-		float y = 0f;
+		float y = -0.2f;
 		
 		float invSlotCount = 8;
 		float startX = 0.1f;
