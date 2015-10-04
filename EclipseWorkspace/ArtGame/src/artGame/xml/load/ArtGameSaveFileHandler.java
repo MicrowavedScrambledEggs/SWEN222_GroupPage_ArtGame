@@ -29,9 +29,7 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes){
 		//TODO: Add a lot more cases once artGame.game is more complete
-		//TODO: Add handling for Guards
-		//TODO: Add handling for Art
-		//TODO: Add handling for inventory
+		//TODO: Add handling for item descriptions
 		if(qName.equals(XMLHandler.EMPTY_TILE_ELEMENT)){
 			//decides the type of tile builder based on if it's for an exit tile or a regular empty tile
 			if(attributes.getLength() != 0 &&
@@ -103,9 +101,6 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName){
 		//TODO: Add a lot more cases once artGame.game is more complete
-		//TODO: Add handling for Guards
-		//TODO: Add handling for Art
-		//TODO: Add handling for inventory
 		if(qName.equals(XMLHandler.POSITION_ELEMENT) || qName.equals(XMLHandler.START_ELEMENT)
 				|| qName.equals(XMLHandler.FINISH_ELEMENT) || qName.equals(XMLHandler.LINKED_TILE_ELEMENT)){
 			addFieldToCurrentBuilder(qName, currentCoord.buildCoordinate());

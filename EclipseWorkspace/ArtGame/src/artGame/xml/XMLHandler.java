@@ -15,6 +15,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import artGame.main.Game;
 import artGame.xml.load.ArtGameSaveFileHandler;
+import artGame.xml.save.ArtGameSaver;
 
 /**
  * Class for parsing xml files for saved games and new games 
@@ -57,6 +58,7 @@ public class XMLHandler {
 	public static final String INVENTORY_ELEMENT = "inventory";
 	public static final String ITEM_ELEMENT = "item";
 	public static final String CHEST_ELEMENT = "chest";
+	public static final String FLOOR_ELEMENT = "floor";
 	
 	public static final String LEVEL_ATTRIBUTE = "level";
 	public static final String DIRECTION_ATTRIBUTE = "direction";
@@ -79,6 +81,7 @@ public class XMLHandler {
 	
 	
 	private ArtGameSaveFileHandler xmlHandler;
+	private ArtGameSaver saver;
 	
 	/**
 	 * Constructor for class XMLReader. Takes the given xmlFile and parses it
@@ -88,6 +91,7 @@ public class XMLHandler {
 	 */
 	public XMLHandler(){
 		xmlHandler = new ArtGameSaveFileHandler();
+		saver = new ArtGameSaver();
 	}
 	
 	/**
@@ -110,6 +114,10 @@ public class XMLHandler {
 	    	System.out.println("Problem with reading xml file: " + e);
 	    }
 		return xmlHandler.buildGame();
+	}
+	
+	public void saveGame(Game game, String fileName){
+		saver.saveGame(game, fileName);
 	}
 
 }
