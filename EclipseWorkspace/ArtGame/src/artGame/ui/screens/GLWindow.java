@@ -156,10 +156,6 @@ public class GLWindow {
 		
 		screens.add(new GameRenderer(window));
 		screens.add(new UIRenderer(window));
-
-		for (Screen screen : screens) {
-			screen.initialize();
-		}
 		
 		camera = bufferedCam;
 	    light = bufferedLight;
