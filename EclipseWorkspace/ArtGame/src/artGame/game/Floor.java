@@ -337,7 +337,7 @@ public class Floor {
 			if (victim != null) {
 				victim.gotCaught();
 				caught.add(victim);
-			}
+			} //
 		}
 		return caught;
 	}
