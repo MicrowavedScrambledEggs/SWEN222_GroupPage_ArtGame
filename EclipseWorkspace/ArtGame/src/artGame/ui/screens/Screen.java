@@ -1,4 +1,4 @@
-package artGame.ui;
+package artGame.ui.screens;
 
 public interface Screen {
 
