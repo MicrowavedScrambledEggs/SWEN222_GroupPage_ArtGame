@@ -7,16 +7,17 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import artGame.control.Action;
 import artGame.game.*;
 import artGame.game.Character.Direction;
-import artGame.xml.XMLReader;
+import artGame.xml.XMLHandler;
 
 public class Game {
 
 
 	private Floor floor;
 
-	private Player p;
+	private static Player p;
 	private List<Player> players;
 	
 	public Game(Floor floor,Collection<Player> players){
@@ -115,15 +116,14 @@ public class Game {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		while(game.getFloor().isOnExit()==null){
-			if(game.getFloor().checkGuards()){
-				game.getPlayer().gotCaught();
-				break;
-			}
 			game.floor.printFloor();//replace with gui display
 			game.printMenu();
 			String s = sc.next();
 			game.doAction(game.getPlayer(),s.charAt(0)); //replace with keylistener
 			game.getFloor().moveGuards();
+			if(game.getFloor().checkGuards().contains(game.getPlayer())){
+				break;
+			}
 		}
 		if(game.getPlayer().isCaught()){
 			System.out.println("you got arrested");
@@ -142,7 +142,14 @@ public class Game {
 
 	private static Game loadGame(String fileName) {
 		File loadFile = new File(fileName);
-		XMLReader gameLoader = new XMLReader(loadFile);
-		return gameLoader.getGame();
-	}	
+		XMLHandler gameLoader = new XMLHandler();
+		return gameLoader.loadGame(loadFile);
+	}
+	
+	/* Vicki messes with networking below this line. */
+	
+	public boolean updateFromAction(Action a) {
+		
+		return false;
+	}
 }
