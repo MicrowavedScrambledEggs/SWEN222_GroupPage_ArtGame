@@ -133,21 +133,34 @@
             <wall direction = "WEST" />
             <wall direction = "SOUTH" />
         </empty_tile>
-        <tile_stretch length = "3">
+        <tile_stretch length = "2">
 			<position>
 				<x value = "2"/>
                 <y value = "1"/>
             </position>
             <wall direction = "SOUTH" />
 		</tile_stretch>
-		<empty_tile>
+		<chest id = "1">
+			<position>
+				<x value = "4"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <inventory>
+            	<item type = "ART" id = "59"/>
+            </inventory>
+		</chest>
+		<chest id = "0">
 			<position>
 				<x value = "5"/>
                 <y value = "1"/>
             </position>
             <wall direction = "EAST" />
             <wall direction = "SOUTH" />
-        </empty_tile>
+            <inventory>
+            	<item type = "KEY" id = "1"/>
+            </inventory>
+        </chest>
         <empty_tile>
 			<position>
 				<x value = "6"/>
@@ -1743,11 +1756,15 @@
 	            <x value = "6"/>
 	            <y value = "6"/>
 	        </position>
-	    	<name>Statue of David (J Pearce)</name>
+	    	<name>Michelangelo's David (J Pearce)</name>
 	    	<value>10000</value>
 	    </sculpture>
+	    <painting artID = "59">
+	    	<name>Someone Forgot to Flush</name>
+	    	<value>-999</value>
+	    </painting>
 	</art>
-	<!--<guards>
+	<guards>
 		<guard id = "2">
 			<direction>EAST</direction>
 	        <position>
@@ -1796,6 +1813,9 @@
 	        		</finish>
 	        	</north_south_stretch>
 	        </patrol>
+	        <inventory>
+	        	<item type = "KEY" id = "2"/>
+	        </inventory>
 		</guard>
-	</guards>-->
+	</guards>
 </game>
