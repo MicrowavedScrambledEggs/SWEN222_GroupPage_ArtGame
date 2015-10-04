@@ -120,7 +120,7 @@ public class Widget implements Asset {
        // Matrix4f projection = new Matrix4f();
         bottom = bottom/ratio;
         System.out.println("Right: " + right + ", Bottom: " + bottom);
-        Matrix4f projection = Matrix4f.ortho(0, right, bottom, 0, 1f, 16777215.0f);
+        Matrix4f projection = Matrix4f.ortho(0, right, 0, bottom, 1f, 16777215.0f);
         projUniform = program.getUniformLocation("projection");
         program.setUniform(projUniform, projection);
         program.disable();
@@ -200,6 +200,10 @@ public class Widget implements Asset {
 		vert.delete();
 		frag.delete();
 		program.delete();
+	}
+
+	public float getScale() {
+		return scale;
 	}
 
 }

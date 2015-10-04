@@ -69,7 +69,9 @@ public class UIRenderer implements Screen {
 		}
 		
 		glfwGetFramebufferSize(getWindow(), width, height);
-		float ratio = (float)width.get()/(float)height.get();
+		int wVal = width.get();
+		int hVal = height.get();
+		float ratio = (float)wVal/(float)hVal;
 		
 		for(Widget asset : assets){	
 			//testLoc = testLoc.add(new Vector3f(0.01f, 0.01f*ratio, 0f));
@@ -83,7 +85,12 @@ public class UIRenderer implements Screen {
 			if(item.getItem() != -1){
 				if(itemsById.containsKey(item.getItem())){
 					Widget icon = itemsById.get(item.getItem());
-					icon.setScreenLocation(item.getWidget().getX(), item.getWidget().getY());
+					
+					float xOff = (item.getWidget().getScale() * 64)/wVal;
+					xOff = 0;
+					float yOff = -0.3f*item.getWidget().getScale();
+					
+					icon.setScreenLocation(item.getWidget().getX()+xOff, item.getWidget().getY()+yOff);
 					icon.draw(view, light);
 				}
 			}
@@ -110,7 +117,7 @@ public class UIRenderer implements Screen {
 		inventory = new ArrayList<>();
 		itemsById = new HashMap<>();
 		
-		float y = 1.02f;
+		float y = 0f;
 		
 		float invSlotCount = 8;
 		float startX = 0.1f;
@@ -137,6 +144,7 @@ public class UIRenderer implements Screen {
 		Widget icon2 = loadWidget("res/key_placeholder.png", 64, 0.8f, 0.8f);
 		
 		if(icon2 != null){
+			icon2.setScale(scale);
 			itemsById.put(2, icon2);
 		}
 		
