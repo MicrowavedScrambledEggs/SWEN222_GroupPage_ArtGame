@@ -16,7 +16,6 @@ public class Game {
 
 
 	private Floor floor;
-
 	private static Player p;
 	private List<Player> players;
 	

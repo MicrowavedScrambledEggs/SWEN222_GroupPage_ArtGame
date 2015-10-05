@@ -15,8 +15,9 @@ import artGame.game.Character.Direction;
 public class Floor {
 	private int maxR = 3;
 	private int maxC = 7;
-	private Tile[][] floor; // ground floor
-	private Tile[][] floor1;// first floor TODO NYI
+	
+	private int offset = 0; // used for calculating coordinate offsets
+	private Tile[][] floor;
 	private List<ExitTile> exits;
 	private List<Guard> guards;
 
@@ -28,6 +29,36 @@ public class Floor {
 		this.guards = new ArrayList<Guard>();
 		this.maxR = maxR;
 		this.maxC = maxC;
+		this.itemIDC = 0;
+	}
+	
+
+	/**
+	 * upgraded version of constructor, takes a variable number of floors
+	 * and automatically determines maximum row and column numbers
+	 */
+	public Floor(Collection<ExitTile> exits,Tile[][]... floors) {
+		//calculating offset
+		int localC = 0; //local number of cols of a floor
+		int localR = 0; //local number of rows
+		for(Tile[][] tiles:floors){
+			if(tiles.length>localR) localR=tiles.length;
+			if(tiles[0].length>localC) localC=tiles[0].length;
+		}
+		offset = localC*2; //offset is double the maximum width of a floor
+		//moving tiles of non 0 floors to correct location
+		for(int i=1;i<floors.length;i++){
+			Tile[][] currentFloor = floors[i];
+			for(int r=0;r<currentFloor.length;r++){
+				for(int c=0;c<currentFloor[0].length;c++){
+					floor[r][c+offset*i] = currentFloor[r][c];
+				}
+			}
+		}
+		this.exits = new ArrayList<ExitTile>(exits);
+		this.guards = new ArrayList<Guard>();
+		this.maxR = localR;
+		this.maxC = offset*floors.length;
 		this.itemIDC = 0;
 	}
 
@@ -84,8 +115,19 @@ public class Floor {
 		setCharacter(guard, 2, 5);
 	}
 
+	
+	/**
+	 * returns tile at target coordinate
+	 */
 	public Tile getTile(int row, int col) {
 		return floor[row][col];
+	}
+	
+	/**
+	 * returns tile at target coordinate of a specified floor
+	 */
+	public Tile getTile(int row, int col,int floorNumber) {
+		return floor[row][col+offset*floorNumber];
 	}
 
 	/**
@@ -97,6 +139,20 @@ public class Floor {
 		c.setRow(row);
 		c.setCol(col);
 		if(c instanceof Guard && !guards.contains((Guard)c)){
+			guards.add((Guard)c);
+		}
+	}
+	
+	/**
+	 * sets the character c to position row, col of a given floor without regard 
+	 * to legality of move or face direction. useful for initialising positions
+	 */
+	public void setCharacter(Character c, int row, int col,int floorNumber) {
+		floor[row][col+offset*floorNumber].setOccupant(c);
+		c.setRow(row);
+		c.setCol(col);
+		if(c instanceof Guard && !guards.contains((Guard)c)){
+			((Guard)c).offsetPath(offset*floorNumber);
 			guards.add((Guard)c);
 		}
 	}

@@ -1,5 +1,6 @@
 package artGame.game;
 
+import java.util.ArrayList;
 import java.util.List; 
 
 public class Guard extends Character {
@@ -30,6 +31,19 @@ public class Guard extends Character {
 			return path.get(step);
 		}
 		else return new Coordinate(this.col,this.row);
+	}
+	
+	/**
+	 * offsets a guards path by a given amount. must be used when adding guards
+	 * to any floor except ground floor
+	 */
+	public void offsetPath(int offset){
+		if(path==null) throw new GameError("attempting to offset a guard without path. wtf happened?");
+		List<Coordinate> newPath = new ArrayList<Coordinate>();
+		for(Coordinate c:path){
+			newPath.add(new Coordinate(c.getX(),c.getY()+offset));
+		}
+		this.path = newPath;
 	}
 
 	@Override
