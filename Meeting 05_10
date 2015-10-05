@@ -1,0 +1,42 @@
+MEETING 5/10/15
+
+DUE IN 9 DAYS!!!!!!!!!!!!!!
+
+DOCS:
+  - Everyone does java doc on their assigned packages
+  - Kai will attempt to auto generate class diagram
+
+GAME LOGIC:
+  - Implement multiple levels
+  
+NETWORK
+  - (KAI's TODO:) Game getter methods
+    - getPlayer(int playerID)
+    - getCharactes()/getNPCs()
+  - In general get stuff talking to each other!!!!
+
+XML
+  - Item descriptions
+  - Save Game
+  - multiple levels (once implemented in game logic)
+
+UI
+  - (TIM'S TODO:) get game object from client thread
+  - GL window main method with command line args sever client set up
+
+ART
+  - Icon's for keys
+  - Paintings paintings paintings
+
+Badi is gonna have to talk to Kai about getters from game logic objects 
+Tim and Reiker is gonna have to talk to Kai about getters from game logic objects esp relating to
+rendering
+Tim and Reiker are going to have to work together
+Vicki is going to get thangs from game logic classes too
+
+SATURDAY MEET UP:
+
+Some free Cotton computer lab
+From 11am
+Order pizza for dinner or some shit
+

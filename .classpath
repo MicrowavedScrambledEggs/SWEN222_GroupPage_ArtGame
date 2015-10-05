@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="EclipseWorkspace/ArtGame/src"/>
-	<classpathentry kind="lib" path="EclipseWorkspace/ArtGame/lib/jars/lwjgl.jar"/>
-	<classpathentry kind="lib" path="lwjgl/jar/lwjgl.jar"/>
+	<classpathentry kind="lib" path="EclipseWorkspace/ArtGame/lib/jars/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="SWEN222_GroupPage_ArtGame/EclipseWorkspace/ArtGame/lib/native"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="SWEN222_GroupPage_ArtGame/lwjgl/native"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="EclipseWorkspace/ArtGame/bin"/>

@@ -33,7 +33,7 @@ public class Floor {
 
 	/**
 	 * gets the next availible item id, incrementing it in the process
-	 * 
+	 *
 	 * @return
 	 */
 	public int nextItemID() {
@@ -192,7 +192,7 @@ public class Floor {
 
 	/**
 	 * updates the positions of all guards as specified by their path
-	 * TODO for server version, potentially put this on a seperate thread 
+	 * TODO for server version, potentially put this on a seperate thread
 	 * TODO similar to pacman handling ghosts?
 	 */
 	public void moveGuards() {
@@ -279,14 +279,19 @@ public class Floor {
 			chest.takeItem(p);
 		}
 		// stealing sculptures
-		// TODO note this has not been tested yet, unsure if simply setting
-		// occupant
-		// to null is enough to avoid errors
 		else if (tileCharacterFacing(p).getOccupant() instanceof Sculpture) {
 			Art stolenSculpture = ((Sculpture) tileCharacterFacing(p)
 					.getOccupant()).toItem(this);
 			p.addItem(stolenSculpture);
 			tileCharacterFacing(p).setOccupant(null);
+		}
+		//guards
+		else if (tileCharacterFacing(p).getOccupant() instanceof Guard){
+			Guard g = ( Guard)tileCharacterFacing(p).getOccupant();
+			for(Item i:g.getInventory()){
+				p.addItem(i);
+			}
+			g.clearInventory();
 		}
 		// otherwise no action should be taken
 	}
@@ -373,7 +378,7 @@ public class Floor {
 	public int getHeight() {
 		return floor.length;
 	}
-	
+
 	public int getWidth() {
 		return floor[0].length;
 	}

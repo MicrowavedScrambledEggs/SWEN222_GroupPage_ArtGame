@@ -16,22 +16,22 @@ public class Character {
 	int col;
 	protected Direction dir; //face direction
 	protected Set<Item> inventory;
-	
-	
+
+
 	public Character(Direction dir,int ID) {
 		this.dir = dir;
 		inventory = new HashSet<Item>();
 		this.ID = ID;
 	}
-	
-	
+
+
 	/**
 	 * adds the Item item to inventory
 	 */
 	public void addItem(Item item){
 		inventory.add(item);
 	}
-	
+
 	/**
 	 * removes the Item item from inventory
 	 */
@@ -45,16 +45,19 @@ public class Character {
 	 */
 	public Set<Item> getInventory() {
 		return inventory;
-		
+
 	}
 
+	public void clearInventory(){
+		inventory = new HashSet<Item>();
+	}
 	/**
 	 * gets current row
 	 */
 	public int getRow() {
 		return row;
 	}
-	
+
 	/**
 	 * sets current row
 	 */
@@ -68,7 +71,7 @@ public class Character {
 	public int getCol() {
 		return col;
 	}
-	
+
 	/**
 	 * sets current column
 	 */
@@ -82,14 +85,14 @@ public class Character {
 	public Direction getDir() {
 		return dir;
 	}
-	
+
 	/**
 	 * sets current facing direction
 	 */
 	public void setDir(Direction dir) {
 		this.dir = dir;
 	}
-	
-	
-	
+
+
+
 }
