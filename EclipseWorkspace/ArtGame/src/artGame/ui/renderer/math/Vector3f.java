@@ -80,4 +80,9 @@ public class Vector3f {
 	public float[] toArray() {
 		return Arrays.copyOf(v, v.length);
 	}
+	
+	@Override
+	public String toString() {
+		return v[0] + ", " + v[1] + ", " + v[2];
+	}
 }

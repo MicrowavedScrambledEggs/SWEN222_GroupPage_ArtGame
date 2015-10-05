@@ -2,7 +2,9 @@ package artGame.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import artGame.game.Character.Direction;
 
@@ -80,7 +82,6 @@ public class Floor {
 		// setting guard
 		Guard guard = new Guard(Character.Direction.WEST, 0);
 		setCharacter(guard, 2, 5);
-		guards.add(guard);
 	}
 
 	public Tile getTile(int row, int col) {
@@ -95,6 +96,9 @@ public class Floor {
 		floor[row][col].setOccupant(c);
 		c.setRow(row);
 		c.setCol(col);
+		if(c instanceof Guard && !guards.contains((Guard)c)){
+			guards.add((Guard)c);
+		}
 	}
 
 	/**
@@ -196,6 +200,10 @@ public class Floor {
 			Coordinate nextCoord = g.nextCoord();
 			moveCharacter(g,nextCoord.getY(),nextCoord.getX());
 		}
+//		for(int i=0;i<guards.size();i++){
+//			Coordinate nextCoord = guards.get(i).nextCoord();
+//			moveCharacter(guards.get(i),nextCoord.getY(),nextCoord.getX());
+//		}
 	}
 
 	/**
@@ -297,7 +305,7 @@ public class Floor {
 			cOff = -1;
 		} else if (dir == Direction.SOUTH) {
 			rOff = 1;
-		} else if (dir == Direction.WEST) {
+		} else if (dir == Direction.EAST) {
 			cOff = 1;
 		}
 		// cycle through offset tiles and check for players
@@ -318,18 +326,20 @@ public class Floor {
 	}
 
 	/**
-	 * returns true if guards see someone, else false
+	 * returns set of caught players
 	 */
-	public boolean checkGuards() {
+	public Set<Player> checkGuards() {
+		Set<Player> caught = new HashSet<Player>();
 		for (Guard g : guards) {
 			// right now only checks for a single player
 			// will be extended to collection in final version
-			Player caught = checkGuard(g);
-			if (caught != null) {
-				return true;
-			}
+			Player victim = checkGuard(g);
+			if (victim != null) {
+				victim.gotCaught();
+				caught.add(victim);
+			} //
 		}
-		return false;
+		return caught;
 	}
 
 	/**
@@ -358,6 +368,14 @@ public class Floor {
 		}
 		// otherwise no action should be taken
 
+	}
+
+	public int getHeight() {
+		return floor.length;
+	}
+	
+	public int getWidth() {
+		return floor[0].length;
 	}
 
 }
