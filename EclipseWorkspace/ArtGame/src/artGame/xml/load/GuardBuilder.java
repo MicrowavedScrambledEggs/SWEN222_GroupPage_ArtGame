@@ -4,13 +4,13 @@ import artGame.game.Guard;
 import artGame.xml.XMLHandler;
 
 public class GuardBuilder extends CharacterBuilder {
-	
+
 	private Patrol patrol;
-	
+
 	public GuardBuilder(GameMaker gameMaker, int id) {
 		super(gameMaker, id);
 	}
-	
+
 	@Override
 	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
@@ -25,10 +25,15 @@ public class GuardBuilder extends CharacterBuilder {
 			}
 		}
 	}
-	
+
 	@Override
 	public void addToGame() {
-		Guard guard = new Guard(super.getDirection(), super.getiD(), patrol.getSteps());
+		Guard guard = null;
+		if(patrol != null){
+			guard = new Guard(super.getDirection(), super.getiD(), patrol.getSteps());
+		} else {
+			guard = new Guard(super.getDirection(), super.getiD());
+		}
 		guard.setRow(super.getCoord().getY());
 		guard.setCol(super.getCoord().getX());
 		getGameMaker().addNPC(guard);

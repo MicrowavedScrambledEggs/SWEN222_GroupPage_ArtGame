@@ -1306,7 +1306,7 @@
 			<position>
 				<x value = "5"/>
                 <y value = "14"/>
-			</position>			
+			</position>
 			<wall direction = "NORTH" />
 		</empty_tile>
 		<tile_stretch length = "8">
@@ -1815,6 +1815,16 @@
 	        </patrol>
 	        <inventory>
 	        	<item type = "KEY" id = "2"/>
+	        </inventory>
+		</guard>
+		<guard id = "3">
+		    <direction>EAST</direction>
+		    <position>
+	            <x value = "18"/>
+	            <y value = "0"/>
+	        </position>
+	        <inventory>
+	        	<item type = "KEY" id = "3"/>
 	        </inventory>
 		</guard>
 	</guards>

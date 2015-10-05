@@ -20,9 +20,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- * 
+ *
  * @author Tim King
- * 
+ *
  */
 public class ServerGUI extends JPanel {
 
@@ -31,31 +31,31 @@ public class ServerGUI extends JPanel {
 	private ServerMenuBar menu;
 	private ServerLog log;
 	private ServerInfoBar infoBar;
-	
-	private JTextField fileURL; 
+
+	private JTextField fileURL;
 	private JButton loadFile;
 	private JLabel fileLabel;
-	
+
 	private JTextField maxClient;
 	private JLabel maxClientLabel;
-	
+
 	private JTextField gameClock;
 	private JLabel gameClockLabel;
-	
+
 	private JTextField port;
 	private JLabel portLabel;
-	
+
 	private JButton startServer;
-	
+
 	final JFileChooser files = new JFileChooser();
-	
+
 	private Thread serverThread;
-	
+
 	private boolean serverRunning = false;
 	private boolean running = true;
 
 	public ServerGUI(int width, int height) {
-		
+
 		 try {
 			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
 		} catch (ClassNotFoundException e2) {
@@ -71,7 +71,7 @@ public class ServerGUI extends JPanel {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		
+
 		frame = new JFrame("ArtGame Server");
 
 		setPreferredSize(new Dimension(width, height));
@@ -86,14 +86,14 @@ public class ServerGUI extends JPanel {
 		loadFile = new JButton("load");
 		fileLabel = new JLabel("Map file");
 		//fileURL.setHorizontalAlignment(JTextField.CENTER);
-		
+
 		loadFile.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				int returnVal = files.showOpenDialog(null);
-				
+
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 		            File file = files.getSelectedFile();
 		            //This is where a real application would open the file.
@@ -102,29 +102,29 @@ public class ServerGUI extends JPanel {
 		        } else {
 		            log("Open command cancelled by user.\n");
 		        }
-				
+
 			}
-			
+
 		});
-		
+
 		maxClient = new JTextField(8);
 		maxClientLabel = new JLabel("Max clients");
 		//maxClient.setHorizontalAlignment(JTextField.CENTER);
-		
+
 		gameClock = new JTextField(10);
 		gameClockLabel = new JLabel("Game clock (MS)");
 		//gameClock.setHorizontalAlignment(JTextField.CENTER);
-		
+
 		port = new JTextField(10);
 		portLabel = new JLabel("Port");
 		//port.setHorizontalAlignment(JTextField.CENTER);
-		
+
 		startServer = new JButton("Run server");
 		startServer.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				if(serverRunning){
 					serverRunning = false;
 					serverThread.interrupt();
@@ -153,7 +153,7 @@ public class ServerGUI extends JPanel {
 						public void run() {
 							artGame.main.Main.main(args);
 						}
-						
+
 					});
 					serverThread.start();
 					infoBar.setRunningStatus(true);
@@ -173,54 +173,54 @@ public class ServerGUI extends JPanel {
 				}
 				frame.getContentPane().repaint();
 			}
-			
+
 		});
-		
+
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
+
 		JPanel header = new JPanel();
 		JPanel topLeft = new JPanel(new BorderLayout());
 		JPanel topRight = new JPanel(new BorderLayout());
 		JPanel botLeft = new JPanel(new BorderLayout());
 		JPanel botRight = new JPanel(new BorderLayout());
-		
+
 		//Add GUI components to the main gui panel (this)
 		header.add(fileLabel);
 		header.add(fileURL);
 		header.add(loadFile);
-		
+
 		topLeft.add(maxClientLabel, BorderLayout.NORTH);
 		topLeft.add(maxClient, BorderLayout.SOUTH);
-		
+
 		topRight.add(gameClockLabel, BorderLayout.NORTH);
 		topRight.add(gameClock, BorderLayout.SOUTH);
-		
+
 		botLeft.add(portLabel, BorderLayout.NORTH);
 		botLeft.add(port, BorderLayout.SOUTH);
-		
+
 		botRight.add(startServer);
-		
+
 		this.add(header);
 		this.add(topLeft);
 		this.add(topRight);
 		this.add(botLeft);
 		this.add(botRight);
-		
+
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-		
+
 		frame.setJMenuBar(menu);
 		frame.add(this);
 		frame.add(log);
 		frame.add(infoBar);
 		frame.setVisible(true);
 		frame.pack();
-		
+
 		run();
-		
+
 	}
 
 	public void run(){
-		
+
 		Thread th = new Thread(new Runnable(){
 			public void run(){
 				while(1 == 1){
@@ -230,7 +230,7 @@ public class ServerGUI extends JPanel {
 		});
 		th.start();
 	}
-	
+
 	private void setInputEnabled(boolean enabled){
 		this.fileURL.setEditable(enabled);
 		this.loadFile.setEnabled(enabled);
@@ -238,11 +238,11 @@ public class ServerGUI extends JPanel {
 		this.maxClient.setEditable(enabled);
 		this.port.setEditable(enabled);
 	}
-	
+
 	public void log(String text){
 		log.log(text);
 	}
-	
+
 	public static void main(String[] args) {
 		ServerGUI gui = new ServerGUI(400, 200);
 	}
