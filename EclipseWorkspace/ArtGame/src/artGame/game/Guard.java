@@ -43,7 +43,7 @@ public class Guard extends Character {
 		for(Coordinate c:path){
 			newPath.add(new Coordinate(c.getX(),c.getY()+offset));
 		}
-		this.path = newPath;// 
+		this.path = newPath;// //
 	}
 
 	@Override
