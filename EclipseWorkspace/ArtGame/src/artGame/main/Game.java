@@ -41,6 +41,17 @@ public class Game {
 	}
 	
 	/**
+	 * returns the player with specified id
+	 * throws a error if player not found
+	 */
+	public Player getPlayer(int id){
+		for(Player p:players){
+			if(p.getId()==id) return p;
+		}
+		throw new GameError("Player ID:" + id + " not found");
+	}
+	
+	/**
 	 * prints menu options
 	 */
 	public void printMenu(){
