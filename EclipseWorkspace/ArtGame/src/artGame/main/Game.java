@@ -147,9 +147,34 @@ public class Game {
 	}
 	
 	/* Vicki messes with networking below this line. */
+
+	public Player addPlayer() {
+		int id = 1;
+		if (players != null && players.size() > 1) {
+			id = players.get(players.size()-1).getId() + 1;
+		}
+		Player newPlayer = new Player(Direction.SOUTH, id);
+		players.add(newPlayer);
+		return newPlayer;
+	}
 	
-	public boolean updateFromAction(Action a) {
-		
+	/** Removes a given player ID from the game.
+	 * 
+	 * @param pid
+	 * @return True if the player was removed, false otherwise.
+	 */
+	public boolean removePlayer(int pid) {
+		if (players.size() == 0) { return false; } // alternatively, calls some kind of game over message
+		if (pid >= 1 && pid < players.size()) {
+			for(Player p : players) {
+				if (p.getId() == pid) {
+					players.remove(p);
+					return true;
+				}
+			}
+		}
 		return false;
 	}
+	
+	
 }

@@ -90,6 +90,10 @@ public class Character {
 		this.dir = dir;
 	}
 	
-	
+
+	/** Returns the unique ID of the character. */
+	public int getId() {
+		return ID;
+	}
 	
 }
