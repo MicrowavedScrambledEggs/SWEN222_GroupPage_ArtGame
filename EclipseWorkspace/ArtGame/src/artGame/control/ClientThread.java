@@ -12,10 +12,12 @@ public class ClientThread extends SocketThread {
 	private Socket socket;
 	private boolean isPlaying = true;
 	private int pid = 404;
+	private volatile long timeout;
 	
 	public ClientThread(Socket s, Game g) {
 		this.socket = s;
 		game = g;
+		timeout = System.currentTimeMillis() + SocketThread.CONNECTION_TIMEOUT;
 		System.err.println("SERVER INFO:\nPID: "+pid
 				+ "\nSOCKETADDR  "+socket.getLocalAddress()+" PORT: "+socket.getLocalPort()
 				+ "\nCONNECT TO: "+socket.getInetAddress() +" PORT: "+socket.getPort());
@@ -51,6 +53,11 @@ public class ClientThread extends SocketThread {
 					output.write(packet);
 				}
 				// TODO this is where the part that reads the messages goes!
+				// [get time]
+				timeout = System.currentTimeMillis() + SocketThread.CONNECTION_TIMEOUT;
+				// [read for]
+				// [if timeout, close]
+				// [otherwise, keep looping!]
 				r++;
 				Thread.sleep(500);
 			} catch (IOException e) { 
@@ -58,8 +65,6 @@ public class ClientThread extends SocketThread {
 			} catch (InterruptedException e) { 
 				e.printStackTrace();
 			} catch (IncompatiblePacketException e) {
-				// TODO Auto-generated catch block
-				System.err.println("Cannot be having this, you monster.");
 				e.printStackTrace();
 			}
 			runcount++;
@@ -95,7 +100,7 @@ public class ClientThread extends SocketThread {
 
 	@Override
 	public boolean isTimedOut() {
-		return false;
+		return System.currentTimeMillis() < timeout;
 	}
 
 	@Override

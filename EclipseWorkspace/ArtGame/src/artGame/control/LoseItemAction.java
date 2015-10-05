@@ -27,14 +27,14 @@ public class LoseItemAction implements Action {
 	}
 
 	@Override
-	public int getRecipient() {
+	public int getClient() {
 		return recipientId;
 	}
 
 	public boolean equals(Object o) {
 		if (!(o instanceof LoseItemAction)) return false;
 		LoseItemAction a = (LoseItemAction)o;
-		if (getRecipient() == a.getRecipient()
+		if (getClient() == a.getClient()
 			&& isWorldUpdate() == a.isWorldUpdate()
 			&& getLoserId() == a.getLoserId()
 			&& getItemId() == a.getItemId() ) { 
@@ -44,6 +44,6 @@ public class LoseItemAction implements Action {
 	}
 	
 	public String toString() {
-		return "LoseItemAction: RECIEVER:"+getRecipient()+"\tLOSER_ID:"+loserId+"\tITEM_ID:"+itemId;
+		return "LoseItemAction: RECIEVER:"+getClient()+"\tLOSER_ID:"+loserId+"\tITEM_ID:"+itemId;
 	}
 }

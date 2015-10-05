@@ -27,14 +27,14 @@ class LoseItemPacket implements Packet {
 	@Override
 	public byte[] write(Action a) throws IncompatiblePacketException {
 		if (!(a instanceof LoseItemAction)) throw new IncompatiblePacketException();
-		LoseItemAction tia = (LoseItemAction)a;
+		LoseItemAction lia = (LoseItemAction)a;
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
 		int index = 0;
-		packet[index++] = (byte)(tia.isWorldUpdate() ? 0 : 1);
-		packet[index++] = (byte)tia.getRecipient();
+		packet[index++] = (byte)(lia.isWorldUpdate() ? 0 : 1);
+		packet[index++] = (byte)lia.getClient();
 		packet[index++] = Packet.ITEM_LOSE;
-		packet[index++] = (byte)(int)tia.getLoserId();
-		packet[index++] = (byte)(int)tia.getItemId();
+		packet[index++] = (byte)(int)lia.getLoserId();
+		packet[index++] = (byte)(int)lia.getItemId();
 		packet[index] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
@@ -49,14 +49,14 @@ class LoseItemPacket implements Packet {
 		}
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
 		int index = 0;
-		packet[index++] = (byte)values[0];
-		packet[index++] = (byte)values[1];
-		packet[index++] = Packet.ITEM_LOSE;
-		packet[index++] = (byte)values[3];
-		packet[index++] = (byte)values[4];
-		packet[index++] = (byte)values[5];
-		packet[index++] = (byte)values[6];
-		packet[index] = (byte)Integer.MAX_VALUE;
+		packet[0] = (byte)values[Packet.IDX_ISWORLD];
+		packet[1] = (byte)values[Packet.IDX_PID];
+		packet[2] = Packet.ITEM_LOSE;
+		packet[3] = (byte)values[3];
+		packet[4] = (byte)values[4];
+		packet[5] = (byte)values[5];
+		packet[6] = (byte)values[6];
+		packet[7] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
 	}

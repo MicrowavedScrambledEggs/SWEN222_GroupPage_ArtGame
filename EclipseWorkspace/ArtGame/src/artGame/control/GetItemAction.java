@@ -27,7 +27,7 @@ public class GetItemAction implements Action {
 	}
 	
 	@Override
-	public int getRecipient() {
+	public int getClient() {
 		return recipientId;
 	}
 	
@@ -35,11 +35,15 @@ public class GetItemAction implements Action {
 		if (!(o instanceof GetItemAction)) return false;
 		GetItemAction a = (GetItemAction)o;
 		if (isWorldUpdate() == a.isWorldUpdate()
-			&& getRecipient() == a.getRecipient()
+			&& getClient() == a.getClient()
 			&& getItemSource() == a.getItemSource()
 			&& getItemId() == a.getItemId()) {
 			return true;
 		}
 		return false;
+	}
+	
+	public String toString() {
+		return "GetItem: item #"+itemId+" for client "+ recipientId +" from "+recipientId+", isWorld "+isWorld;
 	}
 }
