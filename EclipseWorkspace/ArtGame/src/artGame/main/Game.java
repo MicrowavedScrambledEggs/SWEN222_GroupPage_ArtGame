@@ -52,6 +52,17 @@ public class Game {
 	}
 	
 	/**
+	 * returns the Guard with specified id
+	 * throws a error if guard not found
+	 */
+	public Guard getGuard(int id){
+		for(Guard g:floor.getGuards()){
+			if(g.getId()==id) return g;
+		}
+		throw new GameError("Guard ID:" + id + " not found");
+	}
+	
+	/**
 	 * prints menu options
 	 */
 	public void printMenu(){

@@ -438,5 +438,9 @@ public class Floor {
 	public int getWidth() {
 		return floor[0].length;
 	}
+	
+	public List<Guard> getGuards(){
+		return guards;
+	}
 
 }
