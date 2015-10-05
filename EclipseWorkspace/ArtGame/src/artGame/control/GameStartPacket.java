@@ -1,23 +1,18 @@
 package artGame.control;
 
-/** GetItemPacket contains the name of 
- * 
- * 
- * 
- * 
- * */
-class GetItemPacket implements Packet {
-	private final int PACKET_LENGTH = 2;
+/** */
+public class GameStartPacket implements Packet {
+	private final int PACKET_LENGTH = 0;
 	
 	@Override
-	public GetItemAction read(byte[] packet) throws IncompatiblePacketException {
+	public GameStartAction read(byte[] packet) throws IncompatiblePacketException {
 		if (packet.length < packetLength() + Packet.HEAD_LENGTH) {
 			throw new IncompatiblePacketException("This packet is too short!");
-		} else if (packet[Packet.IDX_TYPE] != Packet.ITEM_GAIN) {
-			throw new IncompatiblePacketException("This packet is not an item gain packet!");
+		} else if (packet[Packet.IDX_TYPE] != Packet.GAME_START) {
+			throw new IncompatiblePacketException("This packet is not using-item packet!");
 		}
 		boolean isWorld = (packet[0] == 1) ? true : false;
-		return new GetItemAction(isWorld, (int)packet[Packet.IDX_PID], (int)packet[3], (int)packet[4]);
+		return new GameStartAction((int)packet[Packet.IDX_PID]);
 	}
 	
 	@Override	
@@ -27,15 +22,13 @@ class GetItemPacket implements Packet {
 
 	@Override
 	public byte[] write(Action a) throws IncompatiblePacketException {
-		if (!(a instanceof GetItemAction)) throw new IncompatiblePacketException();
-		GetItemAction tia = (GetItemAction)a;
+		if (!(a instanceof GameStartAction)) throw new IncompatiblePacketException();
+		GameStartAction gsa = (GameStartAction)a;
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
 		int index = 0;
-		packet[index++] = (byte)(tia.isWorldUpdate() ? 0 : 1);
-		packet[index++] = (byte)tia.getClient();
-		packet[index++] = Packet.ITEM_GAIN;
-		packet[index++] = (byte)(int)tia.getItemSource();
-		packet[index++] = (byte)(int)tia.getItemId();
+		packet[index++] = (byte)(gsa.isWorldUpdate() ? 1 : 0);
+		packet[index++] = (byte)gsa.getClient();
+		packet[index++] = Packet.GAME_START;
 		packet[index] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
@@ -51,10 +44,8 @@ class GetItemPacket implements Packet {
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
 		packet[Packet.IDX_ISWORLD] = (byte)values[Packet.IDX_ISWORLD];
 		packet[Packet.IDX_PID] = (byte)values[Packet.IDX_PID];
-		packet[Packet.IDX_TYPE] = Packet.ITEM_GAIN;
-		packet[3] = (byte)values[3];
-		packet[4] = (byte)values[4];
-		packet[5] = (byte)Integer.MAX_VALUE;
+		packet[Packet.IDX_TYPE] = Packet.GAME_START;
+		packet[4] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
 	}

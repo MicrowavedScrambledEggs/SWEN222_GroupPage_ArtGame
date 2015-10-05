@@ -19,14 +19,14 @@ public class GetInventoryAction implements Action {
 	}
 
 	@Override
-	public int getRecipient() {
+	public int getClient() {
 		return recipientId;
 	}
 	
 	public boolean equals(Object o) {
 		if (!(o instanceof GetInventoryAction)) return false;
 		GetInventoryAction a = (GetInventoryAction)o;
-		if (getRecipient() == a.getRecipient()
+		if (getClient() == a.getClient()
 			&& getInventoryOwner() == a.getInventoryOwner()) {
 			return true; 
 		}
@@ -34,6 +34,6 @@ public class GetInventoryAction implements Action {
 	}
 	
 	public String toString() {
-		return "GetInventoryAction: RECIEVER:"+getRecipient()+"\tOWNER ID:"+getInventoryOwner();
+		return "GetInventoryAction: RECIEVER:"+getClient()+"\tOWNER ID:"+getInventoryOwner();
 	}	
 }

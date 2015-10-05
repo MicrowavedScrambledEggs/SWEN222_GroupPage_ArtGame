@@ -1,23 +1,18 @@
 package artGame.control;
 
-/** GetItemPacket contains the name of 
- * 
- * 
- * 
- * 
- * */
-class GetItemPacket implements Packet {
-	private final int PACKET_LENGTH = 2;
+/** */
+public class UseItemPacket implements Packet {
+	private final int PACKET_LENGTH = 3;
 	
 	@Override
-	public GetItemAction read(byte[] packet) throws IncompatiblePacketException {
+	public UseItemAction read(byte[] packet) throws IncompatiblePacketException {
 		if (packet.length < packetLength() + Packet.HEAD_LENGTH) {
 			throw new IncompatiblePacketException("This packet is too short!");
-		} else if (packet[Packet.IDX_TYPE] != Packet.ITEM_GAIN) {
-			throw new IncompatiblePacketException("This packet is not an item gain packet!");
+		} else if (packet[Packet.IDX_TYPE] != Packet.ITEM_USE) {
+			throw new IncompatiblePacketException("This packet is not using-item packet!");
 		}
 		boolean isWorld = (packet[0] == 1) ? true : false;
-		return new GetItemAction(isWorld, (int)packet[Packet.IDX_PID], (int)packet[3], (int)packet[4]);
+		return new UseItemAction(isWorld, (int)packet[Packet.IDX_PID], (int)packet[3], (int)packet[4], (int)packet[5]);
 	}
 	
 	@Override	
@@ -27,15 +22,16 @@ class GetItemPacket implements Packet {
 
 	@Override
 	public byte[] write(Action a) throws IncompatiblePacketException {
-		if (!(a instanceof GetItemAction)) throw new IncompatiblePacketException();
-		GetItemAction tia = (GetItemAction)a;
+		if (!(a instanceof UseItemAction)) throw new IncompatiblePacketException();
+		UseItemAction uia = (UseItemAction)a;
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
 		int index = 0;
-		packet[index++] = (byte)(tia.isWorldUpdate() ? 0 : 1);
-		packet[index++] = (byte)tia.getClient();
+		packet[index++] = (byte)(uia.isWorldUpdate() ? 1 : 0);
+		packet[index++] = (byte)uia.getClient();
 		packet[index++] = Packet.ITEM_GAIN;
-		packet[index++] = (byte)(int)tia.getItemSource();
-		packet[index++] = (byte)(int)tia.getItemId();
+		packet[index++] = (byte)uia.getUsersId();
+		packet[index++] = (byte)(int)uia.getEntityId();
+		packet[index++] = (byte)(int)uia.getItemId();
 		packet[index] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
@@ -54,7 +50,8 @@ class GetItemPacket implements Packet {
 		packet[Packet.IDX_TYPE] = Packet.ITEM_GAIN;
 		packet[3] = (byte)values[3];
 		packet[4] = (byte)values[4];
-		packet[5] = (byte)Integer.MAX_VALUE;
+		packet[5] = (byte)values[5];
+		packet[6] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
 	}
