@@ -92,7 +92,17 @@ public class Character {
 	public void setDir(Direction dir) {
 		this.dir = dir;
 	}
+<<<<<<< HEAD
 
 
 
+=======
+	
+
+	/** Returns the unique ID of the character. */
+	public int getId() {
+		return ID;
+	}
+	
+>>>>>>> 5cc9cf3acc3191b8eb9cd8ec0a16a450ef623973
 }

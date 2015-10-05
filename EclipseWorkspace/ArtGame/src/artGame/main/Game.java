@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import artGame.control.Action;
 import artGame.game.*;
 import artGame.game.Character.Direction;
 import artGame.xml.XMLHandler;
@@ -143,5 +144,37 @@ public class Game {
 		File loadFile = new File(fileName);
 		XMLHandler gameLoader = new XMLHandler();
 		return gameLoader.loadGame(loadFile);
-	}	
+	}
+	
+	/* Vicki messes with networking below this line. */
+
+	public Player addPlayer() {
+		int id = 1;
+		if (players != null && players.size() > 1) {
+			id = players.get(players.size()-1).getId() + 1;
+		}
+		Player newPlayer = new Player(Direction.SOUTH, id);
+		players.add(newPlayer);
+		return newPlayer;
+	}
+	
+	/** Removes a given player ID from the game.
+	 * 
+	 * @param pid
+	 * @return True if the player was removed, false otherwise.
+	 */
+	public boolean removePlayer(int pid) {
+		if (players.size() == 0) { return false; } // alternatively, calls some kind of game over message
+		if (pid >= 1 && pid < players.size()) {
+			for(Player p : players) {
+				if (p.getId() == pid) {
+					players.remove(p);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	
 }
