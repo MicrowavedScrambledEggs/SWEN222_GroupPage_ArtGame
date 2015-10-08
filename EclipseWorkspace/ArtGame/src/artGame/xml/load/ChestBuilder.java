@@ -10,16 +10,16 @@ import artGame.game.Tile;
 import artGame.xml.XMLHandler;
 
 public class ChestBuilder extends TileBuilder {
-	
+
 	private int id;
 	private HashSet<Integer> artRefs = new HashSet<Integer>();
 	private HashSet<Integer> keyRefs = new HashSet<Integer>();
 
-	public ChestBuilder(GameMaker gameMaker, int id) {
-		super(gameMaker);
+	public ChestBuilder(int level, GameMaker gameMaker, int id) {
+		super(level, gameMaker);
 		this.id = id;
 	}
-	
+
 	@Override
 	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
@@ -32,13 +32,13 @@ public class ChestBuilder extends TileBuilder {
 			}
 		}
 	}
-	
+
 	@Override
 	public void addToGame() {
 		Chest chest = new Chest(id, isNorthWall(), isWestWall(), isSouthWall(), isEastWall());
-		getGameMaker().addTile(getCoord(), chest);
-		getGameMaker().addDoorMap(getCoord(), getDoorReference());
-		getGameMaker().addArtMap(getCoord(), getArtReference());
+		getGameMaker().addTile(getLevel(), getCoord(), chest);
+		getGameMaker().addDoorMap(getLevel(), getCoord(), getDoorReference());
+		getGameMaker().addArtMap(getLevel(), getCoord(), getArtReference());
 		getGameMaker().addChestKeyRefs(chest, keyRefs);
 		getGameMaker().addChestArtRefs(chest, artRefs);
 	}

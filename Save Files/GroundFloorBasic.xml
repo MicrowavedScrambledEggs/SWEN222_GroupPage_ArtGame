@@ -1751,6 +1751,7 @@
 	    	<value>10</value>
 	    </painting>
 	    <sculpture artID = "58">
+	        <level value = "0" />
 	    	<direction>EAST</direction>
 	    	<position>
 	            <x value = "6"/>
@@ -1766,6 +1767,7 @@
 	</art>
 	<guards>
 		<guard id = "2">
+		    <level value = "0" />
 			<direction>EAST</direction>
 	        <position>
 	            <x value = "7"/>

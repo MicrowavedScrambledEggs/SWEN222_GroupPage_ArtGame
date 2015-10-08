@@ -15,7 +15,7 @@ import artGame.game.Character.Direction;
 public class Floor {
 	private int maxR = 3;
 	private int maxC = 7;
-	
+
 	private int offset = 0; // used for calculating coordinate offsets
 	private Tile[][] floor;
 	private List<ExitTile> exits;
@@ -31,7 +31,7 @@ public class Floor {
 		this.maxC = maxC;
 		this.itemIDC = 0;
 	}
-	
+
 
 	/**
 	 * upgraded version of constructor, takes a variable number of floors
@@ -47,7 +47,9 @@ public class Floor {
 		}
 		offset = localC*2; //offset is double the maximum width of a floor
 		//moving tiles of non 0 floors to correct location
-		for(int i=1;i<floors.length;i++){
+		this.maxC = localC*(floors.length*2 - 1);
+		floor = new Tile[localR][maxC];
+		for(int i=0;i<floors.length;i++){
 			Tile[][] currentFloor = floors[i];
 			for(int r=0;r<currentFloor.length;r++){
 				for(int c=0;c<currentFloor[0].length;c++){
@@ -58,7 +60,6 @@ public class Floor {
 		this.exits = new ArrayList<ExitTile>(exits);
 		this.guards = new ArrayList<Guard>();
 		this.maxR = localR;
-		this.maxC = offset*floors.length;
 		this.itemIDC = 0;
 	}
 
@@ -115,14 +116,14 @@ public class Floor {
 		setCharacter(guard, 2, 5);
 	}
 
-	
+
 	/**
 	 * returns tile at target coordinate
 	 */
 	public Tile getTile(int row, int col) {
 		return floor[row][col];
 	}
-	
+
 	/**
 	 * returns tile at target coordinate of a specified floor
 	 */
@@ -142,9 +143,9 @@ public class Floor {
 			guards.add((Guard)c);
 		}
 	}
-	
+
 	/**
-	 * sets the character c to position row, col of a given floor without regard 
+	 * sets the character c to position row, col of a given floor without regard
 	 * to legality of move or face direction. useful for initialising positions
 	 */
 	public void setCharacter(Character c, int row, int col,int floorNumber) {
@@ -438,7 +439,7 @@ public class Floor {
 	public int getWidth() {
 		return floor[0].length;
 	}
-	
+
 	public List<Guard> getGuards(){
 		return guards;
 	}

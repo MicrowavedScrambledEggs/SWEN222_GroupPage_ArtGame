@@ -6,6 +6,7 @@ import artGame.xml.XMLHandler;
 public class GuardBuilder extends CharacterBuilder {
 
 	private Patrol patrol;
+	private int level;
 
 	public GuardBuilder(GameMaker gameMaker, int id) {
 		super(gameMaker, id);
@@ -15,6 +16,16 @@ public class GuardBuilder extends CharacterBuilder {
 	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
 		super.addField(name, values);
+		if(name.equals(XMLHandler.LEVEL_ATTRIBUTE)){
+			if(values[0] instanceof String){
+				String lev = (String) values[0];
+				level = Integer.parseInt(lev);
+			} else {
+				throw new IllegalArgumentException(String.format("Error when building guard: "
+						+ "Tried to add %s when %s was needed", values[0].getClass().getName(),
+						"Level Integer"));
+			}
+		}
 		if(name.equals(XMLHandler.PATROL_ELEMENT)){
 			if(values[0] instanceof Patrol){
 				this.patrol = (Patrol) values[0];
@@ -36,7 +47,7 @@ public class GuardBuilder extends CharacterBuilder {
 		}
 		guard.setRow(super.getCoord().getY());
 		guard.setCol(super.getCoord().getX());
-		getGameMaker().addNPC(guard);
+		getGameMaker().addNPC(level, guard);
 		getGameMaker().addCharacterArtRefs(guard, getArtRefs());
 		getGameMaker().addCharacterKeyRefs(guard, getKeyRefs());
 	}

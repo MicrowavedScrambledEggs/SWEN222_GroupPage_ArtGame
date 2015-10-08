@@ -11,13 +11,14 @@ import artGame.main.Game;
 import artGame.xml.XMLHandler;
 
 public class ArtGameSaveFileHandler extends DefaultHandler {
-	
+
 	private Stack<ObjectBuilder> buildStack = new Stack<ObjectBuilder>();
 	private ArrayList<ObjectBuilder> buildList = new ArrayList<ObjectBuilder>();
 	private GameMaker gameMaker = new GameMaker();
 	private CoordinateBuilder currentCoord;
 	private String currentElement;
-	
+	private int currentLevel;
+
 	/**
 	 * Called when parser comes across a start tag for an element
 	 *
@@ -30,19 +31,24 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	public void startElement(String uri, String localName, String qName, Attributes attributes){
 		//TODO: Add a lot more cases once artGame.game is more complete
 		//TODO: Add handling for item descriptions
+		if(qName.equals(XMLHandler.FLOOR_ELEMENT)){
+			currentLevel = Integer.parseInt(attributes.getValue(0));
+		} else if(qName.equals(XMLHandler.LEVEL_ATTRIBUTE)){
+			addFieldToCurrentBuilder(qName, attributes.getValue(0));
+		}
 		if(qName.equals(XMLHandler.EMPTY_TILE_ELEMENT)){
 			//decides the type of tile builder based on if it's for an exit tile or a regular empty tile
 			if(attributes.getLength() != 0 &&
 					attributes.getValue(XMLHandler.EXIT_ATTRIBUTE).equals(XMLHandler.TRUE_VALUE)){
-				buildStack.push(new ObjectBuilder(new ExitTileBuilder(gameMaker)));
+				buildStack.push(new ObjectBuilder(new ExitTileBuilder(currentLevel, gameMaker)));
 			} else {
-				buildStack.push(new ObjectBuilder(new TileBuilder(gameMaker)));
+				buildStack.push(new ObjectBuilder(new TileBuilder(currentLevel, gameMaker)));
 			}
 		} else if(qName.equals(XMLHandler.TILE_STRETCH_ELEMENT)){
-			buildStack.push(new ObjectBuilder(new TileStretchBuilder(gameMaker, 
+			buildStack.push(new ObjectBuilder(new TileStretchBuilder(currentLevel, gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
 		} else if(qName.equals(XMLHandler.STAIR_TILE_ELEMENT)){
-			buildStack.push(new ObjectBuilder(new StairTileBuilder(gameMaker)));
+			buildStack.push(new ObjectBuilder(new StairTileBuilder(currentLevel, gameMaker)));
 		} else if(qName.equals(XMLHandler.POSITION_ELEMENT) || qName.equals(XMLHandler.START_ELEMENT)
 				|| qName.equals(XMLHandler.FINISH_ELEMENT)){
 			currentCoord = new CoordinateBuilder();
@@ -56,26 +62,26 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 			currentCoord.setY(Integer.parseInt(attributes.getValue(0)));
 		} else if(qName.equals(XMLHandler.WALL_ELEMENT)){
 			//Wall variables for tiles
-			//if xml file is correctly written, object builder on top of stack should be a tile builder	
+			//if xml file is correctly written, object builder on top of stack should be a tile builder
 			addFieldToCurrentBuilder(qName, attributeStringArray(attributes));
 		} else if(qName.equals(XMLHandler.DOOR_ELEMENT)){
 			String[] doorInfo = attributeStringArray(attributes);
 			addFieldToCurrentBuilder(qName, doorInfo);
 			gameMaker.addDoor(doorInfo);
 		} else if(qName.equals(XMLHandler.PLAYER_ELEMENT)){
-			buildStack.push(new ObjectBuilder(new PlayerBuilder(gameMaker, 
+			buildStack.push(new ObjectBuilder(new PlayerBuilder(gameMaker,
 					Integer.parseInt(attributes.getValue(XMLHandler.ID_ATTRIBUTE)))));
 		} else if(qName.equals(XMLHandler.DIRECTION_ELEMENT) || qName.equals(XMLHandler.NAME_ELEMENT)
 				|| qName.equals(XMLHandler.VALUE_ELEMENT)){
 			currentElement = qName;
 		} else if(qName.equals(XMLHandler.PAINTING_ELEMENT)){
-			buildStack.push(new ObjectBuilder(new ArtBuilder(gameMaker, 
+			buildStack.push(new ObjectBuilder(new ArtBuilder(gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
 		} else if(qName.equals(XMLHandler.SCULPTURE_ELEMENT)){
-			buildStack.push(new ObjectBuilder(new SculptureBuilder(gameMaker, 
+			buildStack.push(new ObjectBuilder(new SculptureBuilder(gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
 		} else if(qName.equals(XMLHandler.GUARD_ELEMENT)){
-			buildStack.push(new ObjectBuilder(new GuardBuilder(gameMaker, 
+			buildStack.push(new ObjectBuilder(new GuardBuilder(gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
 		} else if(qName.equals(XMLHandler.PATROL_ELEMENT)){
 			buildStack.push(new ObjectBuilder(new Patrol()));
@@ -86,11 +92,11 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		} else if(qName.equals(XMLHandler.ITEM_ELEMENT)){
 			addFieldToCurrentBuilder(qName, this.attributeStringArray(attributes));
 		} else if(qName.equals(XMLHandler.CHEST_ELEMENT)){
-			buildStack.push(new ObjectBuilder(new ChestBuilder(gameMaker, 
+			buildStack.push(new ObjectBuilder(new ChestBuilder(currentLevel, gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
 		}
 	}
-	
+
 	/**
 	 * Called when parser comes across an end tag for an element
 	 *
@@ -112,9 +118,9 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 				|| qName.equals(XMLHandler.STAIR_TILE_ELEMENT) || qName.equals(XMLHandler.TILE_STRETCH_ELEMENT)
 				|| qName.equals(XMLHandler.EMPTY_TILE_ELEMENT) || qName.equals(XMLHandler.CHEST_ELEMENT)){
 			buildList.add(buildStack.pop());
-		}	
+		}
 	}
-	
+
 	private void completePatrolSegment(String qName) {
 		ObjectBuilder patrolSegmentBuilder = buildStack.pop();
 		BuildStrategy patrolSegment = patrolSegmentBuilder.getBuildStrategy();
@@ -155,7 +161,7 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		}
 		return attributeStringArray;
 	}
-	
+
 	public Game buildGame(){
 		for(ObjectBuilder objectBuilder : buildList){
 			objectBuilder.addToGame();

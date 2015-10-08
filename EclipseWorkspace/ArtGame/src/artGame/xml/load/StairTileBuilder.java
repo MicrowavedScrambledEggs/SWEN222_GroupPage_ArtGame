@@ -7,14 +7,14 @@ import artGame.game.Tile;
 import artGame.xml.XMLHandler;
 
 public class StairTileBuilder extends TileBuilder {
-	
+
 	private int linkedLevel;
 	private Coordinate linkedCoord;
-	
-	public StairTileBuilder(GameMaker gameMaker) {
-		super(gameMaker);
+
+	public StairTileBuilder(int level, GameMaker gameMaker) {
+		super(level, gameMaker);
 	}
-	
+
 	@Override
 	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
@@ -27,18 +27,18 @@ public class StairTileBuilder extends TileBuilder {
 				this.linkedCoord = (Coordinate) values[0];
 			} else {
 				throw new IllegalArgumentException(String.format("Error when building stair tile: "
-						+ "Tried to add %s when %s was needed for linked tile reference", 
+						+ "Tried to add %s when %s was needed for linked tile reference",
 						values[0].getClass().getName(), Coordinate.class.getName()));
 			}
 		}
 	}
-	
+
 	@Override
 	public void addToGame() {
 		StairTile tile = new StairTile(isNorthWall(), isWestWall(), isSouthWall(), isEastWall());
-		getGameMaker().addTile(getCoord(), tile);
-		getGameMaker().addDoorMap(getCoord(), getDoorReference());
-		getGameMaker().addArtMap(getCoord(), getArtReference());
+		getGameMaker().addTile(getLevel(), getCoord(), tile);
+		getGameMaker().addDoorMap(getLevel(), getCoord(), getDoorReference());
+		getGameMaker().addArtMap(getLevel(), getCoord(), getArtReference());
 		getGameMaker().addLinkedTileReference(tile, linkedLevel, linkedCoord);
 	}
 

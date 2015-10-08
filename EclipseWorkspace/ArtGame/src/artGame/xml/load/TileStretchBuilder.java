@@ -3,14 +3,14 @@ package artGame.xml.load;
 import artGame.game.Coordinate;
 
 public class TileStretchBuilder extends TileBuilder {
-	
+
 	private int length;
-	
-	public TileStretchBuilder(GameMaker gameMaker, int length) {
-		super(gameMaker);
+
+	public TileStretchBuilder(int level, GameMaker gameMaker, int length) {
+		super(level, gameMaker);
 		this.length = length;
 	}
-	
+
 	@Override
 	public void addToGame() {
 		Coordinate currentCoord = getCoord();
