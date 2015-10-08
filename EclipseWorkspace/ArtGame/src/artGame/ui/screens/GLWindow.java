@@ -43,6 +43,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GLContext;
 
 import artGame.game.Item;
+import artGame.ui.DebugKeyCallback;
 import artGame.ui.GameData;
 import artGame.ui.NetworkKeyCallback;
 import artGame.ui.renderer.Camera;
@@ -61,16 +62,20 @@ public class GLWindow {
 
 	private static Camera camera;
 	private static Vector3f light;
-	
+
 	private static Camera bufferedCam;
 	private static Vector3f bufferedLight;
-	
+
 	private IntBuffer width;
 	private IntBuffer height;
-	
+
+	private DebugKeyCallback debugKeys;
+
 	public static final Matrix4f INITIAL_VIEW = Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(Matrix4f.rotate(35.2f, 1f, 0f, 0f));
-	
+
 	public GLWindow() {
+
+		debugKeys = new DebugKeyCallback();
 		glfwSetErrorCallback(errorCallback);
 
 		if (glfwInit() != GL_TRUE) {
@@ -90,7 +95,8 @@ public class GLWindow {
 		}
 
 		// associate window with key callback
-		glfwSetKeyCallback(window, keyCallback);
+		//glfwSetKeyCallback(window, keyCallback);
+		glfwSetKeyCallback(window, debugKeys);
 
 		// create OpenGL context
 		glfwMakeContextCurrent(window);
@@ -104,7 +110,7 @@ public class GLWindow {
 		// declare buffers for using inside the loop
         width = BufferUtils.createIntBuffer(1);
         height = BufferUtils.createIntBuffer(1);
-        
+
 		initScreens();
 	}
 
@@ -116,7 +122,7 @@ public class GLWindow {
 	}
 
 	private void loop() {
-		
+
 		 /* Get width and height to calcualte the ratio */
         glfwGetFramebufferSize(window, width, height);
 
@@ -130,9 +136,9 @@ public class GLWindow {
         glClear(GL_DEPTH_BUFFER_BIT);
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
-        
+
 		render();
-		
+
 		 /* Swap buffers and poll Events */
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -140,25 +146,25 @@ public class GLWindow {
         /* Flip buffers for next loop */
         width.flip();
         height.flip();
-        
+        getCamera().translate(debugKeys.getCameraMove());
        camera = bufferedCam;
        light = bufferedLight;
         //System.out.println(GL11.glGetError());
-      
+
 	}
 
 	private void render() {
 		for (Screen screen : screens) {
-			screen.render(camera, light);
+			screen.render();
 		}
 	}
 
 	private void initScreens() {
 		screens = new ArrayList<Screen>();
-		
+
 		screens.add(new GameRenderer(window));
 		screens.add(new UIRenderer(window));
-		
+
 		camera = bufferedCam;
 	    light = bufferedLight;
 	}
@@ -194,7 +200,7 @@ public class GLWindow {
 	public static Camera getCamera(){
 		return camera;
 	}
-	
+
 	public static void setCamera(Camera cam) {
 		GLWindow.bufferedCam = cam;
 	}
@@ -203,5 +209,5 @@ public class GLWindow {
 		// this is for testing the new renderer
 		new GLWindow().begin();
 	}
-	
+
 }
