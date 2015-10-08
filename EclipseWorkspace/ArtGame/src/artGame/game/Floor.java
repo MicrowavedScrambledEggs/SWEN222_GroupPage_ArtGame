@@ -132,6 +132,22 @@ public class Floor {
 	}
 
 	/**
+	 * links the two tiles specified 
+	 * throws a error if either tile is not a stair tile
+	 */
+	public void linkStairs(int row1, int col1, int floor1, int row2, int col2, int floor2){
+		if(!(floor[row1][col1+offset*floor1] instanceof StairTile)){
+			throw new GameError("First position not stair, link fail");
+		}
+		if(!(floor[row2][col2+offset*floor2] instanceof StairTile)){
+			throw new GameError("Second position not stair, link fail");
+		}
+		StairTile st1 = (StairTile)floor[row1][col1+offset*floor1];
+		StairTile st2 = (StairTile)floor[row2][col2+offset*floor2];
+		st1.setLinkedTile(st2);
+		st2.setLinkedTile(st1);
+	}
+	/**
 	 * sets the character c to position row, col without regard to legality of
 	 * move or face direction. useful for initialising positions
 	 */
