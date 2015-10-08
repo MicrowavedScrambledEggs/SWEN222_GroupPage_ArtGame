@@ -1,6 +1,8 @@
-package artGame.control;
+package artGame.control.cmds;
 
-interface Packet {
+import artGame.control.IncompatiblePacketException;
+
+public interface Packet {
 	public static enum WORLD { OBJECT_CHANGED }
 
 	public static enum NETWORK { GAME_START, GAME_END, DISCONNECT }
@@ -10,11 +12,12 @@ interface Packet {
 	public static final int HEAD_LENGTH = 3;
 	
 	public static final int MOVE = 		0;
-	public static final int INVENTORY = 1;
-	public static final int ITEM_LOSE = 2;
-	public static final int ITEM_GAIN = 3;
-	public static final int ITEM_USE  = 4;
-	public static final int OBJECT_CHANGED = 5;
+	public static final int GET_INVENTORY = 1;
+	public static final int READ_INVENTORY = 2;
+	public static final int ITEM_LOSE = 3;
+	public static final int ITEM_GAIN = 4;
+	public static final int ITEM_USE  = 5;
+	public static final int OBJECT_CHANGED = 6;
 	public static final int ESCAPE = 	10;
 	public static final int LOSE = 		11;
 	public static final int GAME_START =20;

@@ -62,14 +62,16 @@ HEADER, SEND BEFORE ALL DATA:
 	
 DATA CONTENTS:
 	IF MOVEMENT:								IF RECEIVING ITEM:
-	[3]	= moving entity's id					[3] = source, character or object, that the item is to be taken from
+	[3]	= moving entity's id					[3] = ID of entity receiving item
 	[4] = character's current X					[4] = item ID
-	[5] = character's current Y					
-	[6] = character's destination X				
-	[7] = character's destination Y			
+	[5] = character's current Y				
+	[6] = current direction [ N = 0, E = 1, S = 2, W = 3 ]	
+	[7] = character's destination X				
+	[8] = character's destination Y	
+	[9] = direction they will be facing [ N = 0, E = 1, S = 2, W = 3 ]		
 	
 	IF LOSING ITEM:								IF ACCESSING INVENTORY, CLIENT REQUEST
-	[3] = destination of the item				[3] id of inventory owner 
+	[3] = ID of entity losing the item			[3] id of inventory owner 
 	[4] = ID of item to be removed
 												IF READING AN INVENTORY, SERVER RESPONSE
 												[3] id of inventory owner

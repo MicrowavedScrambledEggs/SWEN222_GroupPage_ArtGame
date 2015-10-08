@@ -1,6 +1,8 @@
-package artGame.control;
+package artGame.control.cmds;
+
 
 public class GetItemAction implements Action {
+	private static final int type = Packet.ITEM_GAIN;
 	private final int recipientId;
 	private final boolean isWorld;
 	private final int sourceId;
@@ -45,5 +47,9 @@ public class GetItemAction implements Action {
 	
 	public String toString() {
 		return "GetItem: item #"+itemId+" for client "+ recipientId +" from "+recipientId+", isWorld "+isWorld;
+	}
+	
+	public int type() {
+		return type;
 	}
 }

@@ -9,6 +9,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
 
+import artGame.control.cmds.Action;
+import artGame.control.cmds.BasicPacketParser;
+import artGame.control.cmds.Packet;
 import artGame.main.Game;
 import artGame.main.Main;
 
@@ -74,7 +77,7 @@ public class ServerThread extends SocketThread {
 				if (i > 1) { 
 					data = Arrays.copyOf(data,i);
 					try {
-						Action a = BasicPacketParser.getActionFromBytes(data, true);
+						Action a = BasicPacketParser.getActionFromPacket(data, true);
 					} catch (IncompletePacketException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

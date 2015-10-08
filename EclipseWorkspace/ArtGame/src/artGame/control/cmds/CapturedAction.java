@@ -1,6 +1,8 @@
-package artGame.control;
+package artGame.control.cmds;
+
 
 public class CapturedAction implements Action {
+	private static int type = Packet.LOSE;
 	private final int pid;
 	private final boolean isWorld;
 	
@@ -31,5 +33,9 @@ public class CapturedAction implements Action {
 	
 	public String toString() {
 		return "CapturedAction for client "+ pid;
+	}
+	
+	public int type() {
+		return type;
 	}
 }

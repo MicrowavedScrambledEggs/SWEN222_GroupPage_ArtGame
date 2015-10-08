@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+
+import artGame.control.cmds.BasicPacketParser;
+import artGame.control.cmds.Packet;
 import artGame.main.Game;
 
 public class ClientThread extends SocketThread {
@@ -33,23 +36,25 @@ public class ClientThread extends SocketThread {
 			try {
 				DataInputStream input = new DataInputStream(socket.getInputStream());
 				DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-				byte[] packet = null;
 				// write first
+				byte[] packet;
 				if (r == 0) {
-					packet = new MovePlayerPacket().write(0, pid, Packet.MOVE, pid, curX, curY, curX+1, curY+1, Packet.TERMINAL);
+					packet = BasicPacketParser.createPacket(0, pid, Packet.MOVE, 
+							pid, curX, curY, (curX+1), (curY+1), Packet.TERMINAL);
 					System.out.println("GAVE: "+packet[3]+" is moving ("+packet[4]+", "+packet[5]+") going to ("+packet[6]+","+packet[7]+"), size "+packet.length);
 					curX++;
 					curY++;
+					output.write(packet);
 				} else if (r==1) {
-					packet = new GetItemPacket().write(0, pid, Packet.ITEM_GAIN, 400, 60, Packet.TERMINAL);
+					packet = BasicPacketParser.createPacket(0, pid, Packet.ITEM_GAIN, 400, 60, Packet.TERMINAL);
 					System.err.println("GAVE: "+ packet[4]);
+					output.write(packet);
 				} else {
-					packet = new MovePlayerPacket().write(0, pid, Packet.MOVE, pid, curX, curY, curX+1, curY+1, Packet.TERMINAL);
+					packet = BasicPacketParser.createPacket(0, pid, Packet.MOVE, 
+							pid, curX, curY, (curX+1), (curY+1), Packet.TERMINAL);
 					System.out.println("GAVE: "+packet[3]+" is moving ("+packet[4]+", "+packet[5]+") going to ("+packet[6]+","+packet[7]+"), size "+packet.length);
 					curX++;
 					curY++;
-				}
-				if (packet != null) {
 					output.write(packet);
 				}
 				// TODO this is where the part that reads the messages goes!
@@ -64,9 +69,7 @@ public class ClientThread extends SocketThread {
 				e.printStackTrace(); 
 			} catch (InterruptedException e) { 
 				e.printStackTrace();
-			} catch (IncompatiblePacketException e) {
-				e.printStackTrace();
-			}
+			} 
 			runcount++;
 		}
 	}

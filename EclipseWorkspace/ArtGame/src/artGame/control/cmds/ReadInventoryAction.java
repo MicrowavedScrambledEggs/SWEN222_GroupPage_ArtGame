@@ -1,9 +1,10 @@
-package artGame.control;
+package artGame.control.cmds;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 public class ReadInventoryAction implements Action {
+	private static final int type = Packet.READ_INVENTORY;
 	private final int[] inventory;
 	private final int recipientId;
 	private final int inventoryOwner;
@@ -20,7 +21,7 @@ public class ReadInventoryAction implements Action {
 	}
 
 	@Override
-	public int getRecipient() {
+	public int getClient() {
 		return recipientId;
 	}
 	
@@ -37,7 +38,7 @@ public class ReadInventoryAction implements Action {
 		ReadInventoryAction a = (ReadInventoryAction) o;
 		if (Arrays.equals(inventory, a.getInventory())
 			&& isWorldUpdate() == a.isWorldUpdate()
-			&& getRecipient() == a.getRecipient()
+			&& getClient() == a.getClient()
 			&& getInventoryOwner() == a.getInventoryOwner()) {
 			return true;
 		}
@@ -45,10 +46,14 @@ public class ReadInventoryAction implements Action {
 	}
 
 	public String toString() {
-		String s = "ReadInventoryAction: RECIEVER:"+getRecipient()+"\tID:"+getInventoryOwner();
+		String s = "ReadInventoryAction: RECIEVER:"+getClient()+"\tID:"+getInventoryOwner();
 		for (int i = 0; i < inventory.length; i++) {
 			s += ", "+inventory[0];
 		}
 		return s;
+	}
+	
+	public int type() {
+		return type;
 	}
 }

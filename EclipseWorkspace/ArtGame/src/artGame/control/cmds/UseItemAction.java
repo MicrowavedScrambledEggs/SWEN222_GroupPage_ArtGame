@@ -1,6 +1,8 @@
-package artGame.control;
+package artGame.control.cmds;
+
 
 public class UseItemAction implements Action {
+	private static final int type = Packet.ITEM_USE;
 	private final int recipientId;
 	private final boolean isWorld;
 	private final int user;
@@ -52,5 +54,9 @@ public class UseItemAction implements Action {
 	
 	public String toString() {
 		return "UseItem: for client "+ recipientId +", player "+user+" acting on "+ entityId +" with "+ itemId +", isWorld? "+isWorld;
+	}
+	
+	public int type() {
+		return type;
 	}
 }

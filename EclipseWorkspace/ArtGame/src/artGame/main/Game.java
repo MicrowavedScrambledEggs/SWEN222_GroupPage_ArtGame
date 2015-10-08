@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import artGame.control.Action;
+import artGame.control.cmds.Action;
 import artGame.game.*;
 import artGame.game.Character.Direction;
 import artGame.xml.XMLHandler;
@@ -169,6 +169,9 @@ public class Game {
 	
 	/* Vicki messes with networking below this line. */
 
+	
+	
+	/** Adds a new player to the Game. */
 	public Player addPlayer() {
 		int id = 1;
 		if (players != null && players.size() > 1) {

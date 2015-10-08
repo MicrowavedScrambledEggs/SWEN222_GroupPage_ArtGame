@@ -1,8 +1,11 @@
-package artGame.control;
+package artGame.control.cmds;
 
 import java.awt.Point;
 
 public class MovePlayerAction implements Action {
+	private static final int type = Packet.MOVE; 
+	private final int curDir;
+	private final int newDir;
 	private final int recipientId;
 	private final boolean isWorld;
 	private final int pid;
@@ -16,12 +19,23 @@ public class MovePlayerAction implements Action {
 	 * @param current The current location of the moving player
 	 * @param destination The destination of the moving player 
 	 */
-	public MovePlayerAction(int recipientId, int movingPlayerId, Point current, Point destination) {
+	public MovePlayerAction(int recipientId, int movingPlayerId, Point current, int curDir, Point destination, int newDirection) {
 		isWorld = false;
 		this.recipientId = recipientId;
 		this.pid = movingPlayerId;
 		this.current = new Point((int)current.getX(), (int)current.getY());
 		this.destination = new Point((int)destination.getX(), (int)destination.getY());
+		this.curDir = curDir;
+		newDir = newDirection;
+		System.out.println(toString());
+	}
+	
+	public int getCurrentDirection() {
+		return curDir;
+	}
+	
+	public int getDestinationDirection() {
+		return newDir;
 	}
 	
 	/**
@@ -32,12 +46,14 @@ public class MovePlayerAction implements Action {
 	 * @param current The current location of the moving player
 	 * @param destination The destination of the moving player 
 	 */
-	public MovePlayerAction(boolean isWorld, int recipientId, int movingPlayerId, Point current, Point destination) {
+	public MovePlayerAction(boolean isWorld, int recipientId, int movingPlayerId, Point current, int curDir, Point destination, int newDirection) {
 		this.recipientId = recipientId;
 		this.isWorld = isWorld;
 		this.pid = movingPlayerId;
 		this.current = new Point((int)current.getX(), (int)current.getY());
 		this.destination = new Point((int)destination.getX(), (int)destination.getY());
+		this.curDir = curDir;
+		newDir = newDirection;
 	}
 	
 	/** Returns the location of the player affected by this update, at the time the action was created. */
@@ -48,6 +64,10 @@ public class MovePlayerAction implements Action {
 	/** Returns the destination of the player affected by this update, at the time the action was created. */
 	public Point getDestination() {
 		return new Point((int)destination.getX(), (int)destination.getY());
+	}
+	
+	public int type() {
+		return type;
 	}
 	
 	/** The id of the player moving player. */
@@ -61,7 +81,7 @@ public class MovePlayerAction implements Action {
 	}
 
 	@Override
-	public int getRecipient() {
+	public int getClient() {
 		return recipientId;
 	}
 	
@@ -70,8 +90,10 @@ public class MovePlayerAction implements Action {
 		MovePlayerAction a = (MovePlayerAction)o;
 		if (getCurrent().equals(a.getCurrent())
 			&& getDestination().equals(a.getDestination())
-			&& getRecipient() == a.getRecipient()
+			&& getClient() == a.getClient()
 			&& isWorldUpdate() == a.isWorldUpdate()
+			&& getCurrentDirection() == a.getCurrentDirection()
+			&& getDestinationDirection() == a.getDestinationDirection()
 			&& getPlayerId() == a.getPlayerId()) { 
 			return true; 
 		}
@@ -79,7 +101,7 @@ public class MovePlayerAction implements Action {
 	}
 	
 	public String toString() {
-		return "MovePlayerAction: RECIEVER:"+getRecipient()+"\tID:"+getPlayerId()+
+		return "MovePlayerAction: RECIEVER:"+getClient()+"\tID:"+getPlayerId()+
 				"\tCUR:"+getCurrent().getX()+","+getCurrent().getY()+"\t"+
 				"\tDES:"+getDestination().getX()+","+getDestination().getY();
 	}

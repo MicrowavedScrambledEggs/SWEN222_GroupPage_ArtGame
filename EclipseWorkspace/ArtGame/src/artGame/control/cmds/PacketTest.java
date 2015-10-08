@@ -1,10 +1,12 @@
-package artGame.control;
+package artGame.control.cmds;
 import static org.junit.Assert.*;
 
 import java.awt.Point;
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import artGame.control.IncompatiblePacketException;
 
 public class PacketTest {
 	@Test
@@ -15,13 +17,13 @@ public class PacketTest {
 			Point current = new Point(5,4);
 			Point dest = new Point(3,2);
 			byte[] pkt = { 
-					0, (byte)recipientId, Packet.MOVE, 					// header
-						(byte)movingPlayerId, 							// packet contents
-						(byte)current.getX(), 	(byte)current.getY(),   // packet contents
-						(byte)dest.getX(), 		(byte)dest.getY(),		// packet contents
-					(byte)Packet.TERMINAL 								// terminal
+					0, (byte)recipientId, Packet.MOVE, 							// header
+						(byte)movingPlayerId, 									// packet contents
+						(byte)current.getX(), 	(byte)current.getY(),(byte)0,   // packet contents
+						(byte)dest.getX(), 		(byte)dest.getY(),	 (byte)0,	// packet contents
+					(byte)Packet.TERMINAL 										// terminal
 			};
-			MovePlayerAction mpa = new MovePlayerAction(false,recipientId,movingPlayerId,current,dest);
+			MovePlayerAction mpa = new MovePlayerAction(false,recipientId,movingPlayerId,current,0,dest,0);
 			MovePlayerAction readPacket = new MovePlayerPacket().read(pkt);
 			System.out.println(mpa.toString());
 			System.out.println(readPacket.toString());
@@ -40,14 +42,16 @@ public class PacketTest {
 			Point current = new Point(30,4);
 			Point dest = new Point(31,2);
 			byte[] pkt = { 
-					0, (byte)recipientId, Packet.MOVE, 					// header
-						(byte)movingPlayerId, 							// packet contents
-						(byte)current.getX(), 	(byte)current.getY(),   // packet contents
-						(byte)dest.getX(), 		(byte)dest.getY(),		// packet contents
-					(byte)Packet.TERMINAL 								// terminal
+					0, (byte)recipientId, Packet.MOVE, 						// header
+						(byte)movingPlayerId, 								// packet contents
+						(byte)current.getX(), (byte)current.getY(), (byte)0,// packet contents
+						(byte)dest.getX(), 		(byte)dest.getY(),	(byte)0,// packet contents
+					(byte)Packet.TERMINAL 									// terminal
 			};
-			MovePlayerAction mpa = new MovePlayerAction(false,recipientId,movingPlayerId,current,dest);
+			MovePlayerAction mpa = new MovePlayerAction(false,recipientId,movingPlayerId,current,0,dest,0);
 			MovePlayerAction readPacket = new MovePlayerPacket().read(pkt);
+			System.out.println("MPA: "+mpa.toString());
+			System.out.println("RED: "+readPacket.toString());
 			assertTrue("Error in either MovePlayerAction or MovePlayerPacket's read method!",
 					mpa.equals(readPacket));
 		} catch (IncompatiblePacketException e) {
@@ -64,7 +68,7 @@ public class PacketTest {
 			byte[] pkt = new byte[Packet.HEAD_LENGTH + inv.length + 2];
 			pkt[0] = 0;
 			pkt[1] = (byte)recipientId;
-			pkt[2] = (byte)Packet.INVENTORY;
+			pkt[2] = (byte)Packet.READ_INVENTORY;
 			pkt[3] = (byte)inventoryOwnerId;
 			for (int i = 4; i < inv.length + 4; i++) {
 				pkt[i] = (byte)inv[i-4];
@@ -87,7 +91,7 @@ public class PacketTest {
 			int recipientId = 5;
 			int inventoryOwnerId = recipientId;	
 			byte[] pkt = {
-				0, (byte)recipientId, (byte)Packet.MOVE,	// header
+				0, (byte)recipientId, (byte)Packet.GET_INVENTORY,	// header
 				(byte)inventoryOwnerId,						// contents 
 				(byte)Packet.TERMINAL						// terminal
 			};
@@ -98,6 +102,7 @@ public class PacketTest {
 			assertTrue("Error in either GetInventoryAction or GetInventoryPacket's read method!",
 					gia.equals(new GetInventoryPacket().read(pkt)));
 		} catch (IncompatiblePacketException e) {
+			e.printStackTrace();
 			fail("Cannot throw an exception for equivalent packet types!");
 		}
 	}
@@ -119,8 +124,8 @@ public class PacketTest {
 	public void loseItemPacket_read() {
 		try {
 			int recipientId = 5;
-			int originId = -1;	
-			int item = 10;
+			int originId = 10;	
+			int item = 15;
 			byte[] pkt = {
 				0, (byte)recipientId, Packet.ITEM_LOSE, // header
 				(byte)originId, (byte)item,				// contents
@@ -130,9 +135,10 @@ public class PacketTest {
 			LoseItemAction readPacket = new LoseItemPacket().read(pkt);
 			System.out.println(lia.toString());
 			System.out.println(readPacket.toString());
-			assertTrue("Error in either LoseInventoryAction or LoseInventoryPacket's read method!",
-					lia.equals(new GetInventoryPacket().read(pkt)));
+			assertTrue("Error in either LoseItemAction or LoseItemPacket's read method!",
+					lia.equals(new LoseItemPacket().read(pkt)));
 		} catch (IncompatiblePacketException e) {
+			e.printStackTrace();
 			fail("Cannot throw an exception for equivalent packet types!");
 		}
 	}	

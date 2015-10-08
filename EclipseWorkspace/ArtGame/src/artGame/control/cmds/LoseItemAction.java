@@ -1,6 +1,8 @@
-package artGame.control;
+package artGame.control.cmds;
+
 
 public class LoseItemAction implements Action {
+	private static final int type = Packet.ITEM_LOSE;
 	private final boolean isWorld;
 	private final int recipientId;
 	private final int loserId;
@@ -45,5 +47,9 @@ public class LoseItemAction implements Action {
 	
 	public String toString() {
 		return "LoseItemAction: RECIEVER:"+getClient()+"\tLOSER_ID:"+loserId+"\tITEM_ID:"+itemId;
+	}
+	
+	public int type() {
+		return type;
 	}
 }

@@ -1,6 +1,8 @@
-package artGame.control;
+package artGame.control.cmds;
+
 
 public class GetInventoryAction implements Action {
+	private static final int type = Packet.GET_INVENTORY;
 	private final int recipientId;
 	private final int inventoryOwner;
 	
@@ -35,5 +37,9 @@ public class GetInventoryAction implements Action {
 	
 	public String toString() {
 		return "GetInventoryAction: RECIEVER:"+getClient()+"\tOWNER ID:"+getInventoryOwner();
+	}
+	
+	public int type() {
+		return type;
 	}	
 }

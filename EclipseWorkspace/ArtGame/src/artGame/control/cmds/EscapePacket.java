@@ -1,18 +1,18 @@
-package artGame.control;
+package artGame.control.cmds;
 
-/** */
-public class GameEndPacket implements Packet {
+import artGame.control.IncompatiblePacketException;
+
+public class EscapePacket implements Packet {
 	private final int PACKET_LENGTH = 0;
 	
 	@Override
-	public GameEndAction read(byte[] packet) throws IncompatiblePacketException {
+	public EscapeAction read(byte[] packet) throws IncompatiblePacketException {
 		if (packet.length < packetLength() + Packet.HEAD_LENGTH) {
 			throw new IncompatiblePacketException("This packet is too short!");
-		} else if (packet[Packet.IDX_TYPE] != Packet.GAME_END) {
-			throw new IncompatiblePacketException("This packet is not using-item packet!");
+		} else if (packet[Packet.IDX_TYPE] != Packet.ESCAPE) {
+			throw new IncompatiblePacketException("This packet is not an escape packet!");
 		}
-		boolean isWorld = (packet[0] == 1) ? true : false;
-		return new GameEndAction((int)packet[Packet.IDX_PID]);
+		return new EscapeAction((int)packet[Packet.IDX_PID]);
 	}
 	
 	@Override	
@@ -22,13 +22,13 @@ public class GameEndPacket implements Packet {
 
 	@Override
 	public byte[] write(Action a) throws IncompatiblePacketException {
-		if (!(a instanceof GameStartAction)) throw new IncompatiblePacketException();
-		GameEndAction gea = (GameEndAction)a;
+		if (!(a instanceof EscapeAction)) throw new IncompatiblePacketException();
+		EscapeAction ea = (EscapeAction)a;
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
 		int index = 0;
-		packet[index++] = (byte)(gea.isWorldUpdate() ? 1 : 0);
-		packet[index++] = (byte)gea.getClient();
-		packet[index++] = Packet.GAME_END;
+		packet[index++] = (byte)(ea.isWorldUpdate() ? 1 : 0); // should always be 1
+		packet[index++] = (byte)ea.getClient();
+		packet[index++] = Packet.ESCAPE;
 		packet[index] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
@@ -36,16 +36,16 @@ public class GameEndPacket implements Packet {
 
 	@Override
 	public byte[] write(int... values) throws IncompatiblePacketException {
-		if (values.length < packetLength() + Packet.HEAD_LENGTH) {
+		if (values.length < packetLength() + Packet.HEAD_LENGTH + 1) {
 			throw new IncompatiblePacketException("This packet is too short!");
 		} else if (values[Packet.IDX_TYPE] != Packet.ITEM_GAIN) {
-			throw new IncompatiblePacketException("This packet is not an end-game packet!");
+			throw new IncompatiblePacketException("This packet is not an escape packet!");
 		}
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];
 		packet[Packet.IDX_ISWORLD] = (byte)values[Packet.IDX_ISWORLD];
 		packet[Packet.IDX_PID] = (byte)values[Packet.IDX_PID];
-		packet[Packet.IDX_TYPE] = Packet.GAME_END;
-		packet[4] = (byte)Integer.MAX_VALUE;
+		packet[Packet.IDX_TYPE] = Packet.ESCAPE;
+		packet[3] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
 	}
