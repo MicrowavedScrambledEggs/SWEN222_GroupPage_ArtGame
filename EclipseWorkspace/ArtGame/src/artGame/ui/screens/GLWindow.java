@@ -31,6 +31,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.io.File;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +43,16 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GLContext;
 
+import artGame.game.Character.Direction;
 import artGame.game.Item;
+import artGame.main.Game;
 import artGame.ui.DebugKeyCallback;
 import artGame.ui.GameData;
 import artGame.ui.NetworkKeyCallback;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
+import artGame.xml.XMLHandler;
 
 public class GLWindow {
 
@@ -71,7 +75,20 @@ public class GLWindow {
 
 	private DebugKeyCallback debugKeys;
 
-	public static final Matrix4f INITIAL_VIEW = Matrix4f.translate(new Vector3f(0, 0, -3)).multiply(Matrix4f.rotate(35.2f, 1f, 0f, 0f));
+	public static final Matrix4f INITIAL_VIEW = Matrix4f.translate(
+			new Vector3f(0, 0, -3))
+			.multiply(Matrix4f.rotate(35.2f, 1f, 0f, 0f));
+
+	private GameRenderer gameRender;
+
+	private static Game game;
+
+	static {
+		XMLHandler gameLoader = new XMLHandler();
+		game = gameLoader.loadGame(new File("Save Files/GroundFloorBasic.xml"));
+		//game = new Game();
+		//game.initialise();
+	}
 
 	public GLWindow() {
 
@@ -95,7 +112,7 @@ public class GLWindow {
 		}
 
 		// associate window with key callback
-		//glfwSetKeyCallback(window, keyCallback);
+		// glfwSetKeyCallback(window, keyCallback);
 		glfwSetKeyCallback(window, debugKeys);
 
 		// create OpenGL context
@@ -108,8 +125,10 @@ public class GLWindow {
 		// glCullFace(GL_BACK);
 
 		// declare buffers for using inside the loop
-        width = BufferUtils.createIntBuffer(1);
-        height = BufferUtils.createIntBuffer(1);
+		width = BufferUtils.createIntBuffer(1);
+		height = BufferUtils.createIntBuffer(1);
+
+		GLWindow.setCamera(new Camera(INITIAL_VIEW, 5));
 
 		initScreens();
 	}
@@ -123,33 +142,34 @@ public class GLWindow {
 
 	private void loop() {
 
-		 /* Get width and height to calcualte the ratio */
-        glfwGetFramebufferSize(window, width, height);
+		/* Get width and height to calcualte the ratio */
+		glfwGetFramebufferSize(window, width, height);
 
-        /* Rewind buffers for next get */
-        width.rewind();
-        height.rewind();
+		/* Rewind buffers for next get */
+		width.rewind();
+		height.rewind();
 
-		 /* Set viewport and clear screen */
-        glViewport(0, 0, width.get(), height.get());
-        glClear(GL_COLOR_BUFFER_BIT);
-        glClear(GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
+		/* Set viewport and clear screen */
+		glViewport(0, 0, width.get(), height.get());
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
 
 		render();
 
-		 /* Swap buffers and poll Events */
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+		/* Swap buffers and poll Events */
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 
-        /* Flip buffers for next loop */
-        width.flip();
-        height.flip();
-        getCamera().translate(debugKeys.getCameraMove());
-       camera = bufferedCam;
-       light = bufferedLight;
-        //System.out.println(GL11.glGetError());
+		/* Flip buffers for next loop */
+		width.flip();
+		height.flip();
+		getCamera().translate(debugKeys.getCameraMove());
+		gameRender.getCamera().translate(debugKeys.getCameraMove());
+		camera = bufferedCam;
+		light = bufferedLight;
+		// System.out.println(GL11.glGetError());
 
 	}
 
@@ -162,11 +182,12 @@ public class GLWindow {
 	private void initScreens() {
 		screens = new ArrayList<Screen>();
 
-		screens.add(new GameRenderer(window));
+		this.gameRender = new GameRenderer(game);
+		screens.add(this.gameRender);
 		screens.add(new UIRenderer(window));
 
 		camera = bufferedCam;
-	    light = bufferedLight;
+		light = bufferedLight;
 	}
 
 	public void dispose() {
@@ -177,11 +198,11 @@ public class GLWindow {
 	}
 
 	public static void setView(Matrix4f view) {
-		//GLWindow.bufferedCam = view;
+		// GLWindow.bufferedCam = view;
 	}
 
 	public static Matrix4f getView() {
-	//	return camera;
+		// return camera;
 		return null;
 	}
 
@@ -197,7 +218,7 @@ public class GLWindow {
 		return window;
 	}
 
-	public static Camera getCamera(){
+	public static Camera getCamera() {
 		return camera;
 	}
 
@@ -205,9 +226,13 @@ public class GLWindow {
 		GLWindow.bufferedCam = cam;
 	}
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		// this is for testing the new renderer
 		new GLWindow().begin();
+	}
+
+	public static Game getGame() {
+		return game;
 	}
 
 }

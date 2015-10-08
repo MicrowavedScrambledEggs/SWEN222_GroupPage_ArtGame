@@ -50,7 +50,10 @@ public class UIRenderer implements Screen {
 	@Override
 	public void render() {
 		Camera cam = GLWindow.getCamera();
-		Matrix4f view = cam.getView();
+		Matrix4f view = null;
+		if(cam != null){
+			view = cam.getView();
+		}
 		Vector3f light = GLWindow.getLight();
 
 		updateInventory();
@@ -92,8 +95,8 @@ public class UIRenderer implements Screen {
 
 	private void updateInventory() {
 		resetInventory();
-		for(Item item: GameData.getCurrentItems()){
-
+		for(Item item: GLWindow.getGame().getPlayer().getInventory()){
+			System.out.println(item.ID);
 			int freeSlot = -1;
 			for(int i = 0; i < inventory.size(); i++){
 				ItemSlot slot = inventory.get(i);
@@ -155,7 +158,7 @@ public class UIRenderer implements Screen {
 
 		if(icon2 != null){
 			icon2.setScale(scale);
-			itemsById.put(2, icon2);
+			itemsById.put(1, icon2);
 		}
 
 		////Widget square = loadWidget("res/yellow_sq.png", 64, 0.8f, 0.8f);
