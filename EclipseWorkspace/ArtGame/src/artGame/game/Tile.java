@@ -1,13 +1,15 @@
 package artGame.game;
 
 import artGame.game.Character.Direction;
-
+/**
+ * The base class for all other tiles
+ * @author Kaishuo
+ *
+ */
 public abstract class Tile {
 	protected Wall[] walls;
 	protected Character occupant;
-	private boolean viewable; // whether or not the tile is viewable from
-								// current player
-
+	private boolean viewable; // whether or not the tile is visible
 	public abstract boolean walkable();
 
 	public Tile(boolean nwall, boolean wwall, boolean swall, boolean ewall) {
@@ -26,22 +28,38 @@ public abstract class Tile {
 		}
 	}
 
+	/**
+	 * Returns whether or not we can see this tile
+	 */
 	public boolean isViewable() {
 		return viewable;
 	}
 
+	/**
+	 * Sets this tile as visible(or not)
+	 */
 	public void setViewable(boolean viewable) {
 		this.viewable = viewable;
 	}
 
+	/**
+	 * Returns the character currently occupying this tile
+	 */
 	public Character getOccupant() {
 		return occupant;
 	}
 
+	/**
+	 * Sets a character to occupy this tile
+	 * @param occupant
+	 */
 	public void setOccupant(Character occupant) {
 		this.occupant = occupant;
 	}
 
+	/**
+	 * Sets one of this tile's walls to be the specified wall
+	 */
 	public void setWall(Direction dir, Wall wall) {
 		if (dir == Direction.NORTH) {
 			walls[0] = wall;
@@ -54,6 +72,9 @@ public abstract class Tile {
 		}
 	}
 
+	/**
+	 * Returns the wall in this tiles given direction
+	 */
 	public Wall getWall(Direction dir) {
 		if (dir == Direction.NORTH) {
 			return walls[0];

@@ -1,28 +1,27 @@
 package artGame.game;
 
 /**
- * A miscelaneous item in the game, also the base
- * class for art and keys
+ * Represents a item in the game
  * @author Kaishuo
  *
  */
 public class Item {
 	public final int ID; 
-	private String description; //short description of item
-								//perhaps use in mouse over
-								//in inventory?
+	protected String description; //optional
 	public Item(int ID){
 		this.ID = ID;
+		this.description = "An item... what could it be?";
 	}
 	
 	/**
-	 * gets the item description
+	 * Gets the item description
 	 */
 	public String getDescription() {
 		return description;
 	}
+	
 	/**
-	 * sets the item description
+	 * Sets the item description
 	 */
 	public void setDescription(String description) {
 		this.description = description;

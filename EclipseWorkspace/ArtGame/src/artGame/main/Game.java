@@ -107,7 +107,7 @@ public class Game {
 			floor.inspect(p);
 		}
 		else{
-			
+			//do nothing
 		}
 	}
 	
@@ -119,6 +119,49 @@ public class Game {
 		return p;
 	}
 	
+	/**
+	 * TESTING
+	 */
+	public void playGame(){
+		this.initialise();
+		char nextCommand = 'z';
+		Scanner sc = new Scanner(System.in);
+		while(true){
+			if(nextCommand!='z'){
+				doAction(p,nextCommand);
+				nextCommand = 'z';
+			}
+
+			this.floor.printFloor();//replace with gui display
+			this.printMenu();
+			nextCommand = sc.next().charAt(0);			
+			this.getFloor().moveGuards();
+			if(this.getFloor().checkGuards().contains(this.getPlayer())){
+				break;
+			}
+			
+		}
+		
+		if(this.getPlayer().isCaught()){
+			System.out.println("you got arrested");
+		}
+		else{
+			System.out.println("you ran off");
+			int score = 0;
+			for(Item i:this.getPlayer().getInventory()){
+				if(i instanceof Art){
+					score = score + ((Art)i).value;
+				}
+			}
+			System.out.println("you made off with $"+score+" worth of art");
+		}
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static void main(String[] args) {
 		Game game = null;
 		if(args.length == 0){
