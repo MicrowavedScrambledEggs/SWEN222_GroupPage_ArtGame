@@ -1,9 +1,9 @@
 Q: WAIT, I JUST WANT TO KNOW HOW TO RUN THE THING. HELP. 
 A: Oops, sorry! It's very similar to PacMan.
    So if you want a server, then run Main with:
-	-server <some number greater than 0>
+	-server <some number greater than 0> and a -loadgame <some game xml file>
    For a client, run it with
-   	-connect <whatever IP the server spits out> -port 32768
+   	-connect <whatever IP the server spits out> -port 32768 -loadgame <some xml file>
    	
 ===================================================================================
 
@@ -19,6 +19,7 @@ end		[X]			[X]				[X]			[X]			  [ ]
 start	[X]			[X]				[X]			[X]			  [ ]
 loseitm	[X]			[X]				[X]			[X]			  [ ]
 gainitm	[X]			[X]				[X]			[X]			  [ ]
+interat [X]			[X]				[X]			[X]			  [ ]
 use		[X]			[X]				[X]			[X]			  [ ]
 caught	[X]			[X]				[X]			[X]			  [ ]
 leave	[X]			[X]				[X]			[X]			  [ ]
@@ -27,7 +28,7 @@ change	[ ]			[ ]				[ ]			[ ]			  [ ]
 ===================================================================================
 1. Structure of the TCP Server-to-Client process
 ===================================================================================
-Hello, gentle reader! I trust you've come here before triyng to look at the rest
+Hello, gentle reader! I trust you've come here before trying to look at the rest
 of the code. That's probably a good idea.
 
 Anyway, as it currently stands: Main, ServerThread and ClientThread are the
@@ -37,9 +38,8 @@ server and client can read and respond to each other's requests for movement and
 to take items. 
 
 The next step is to push all these methods into a separate class, 
-BasicPacketParser, and this will have the capacity to both read byte arrays as
-instructions the Game can act on (the Action classes) and convert data to 
-byte arrays.  
+BasicPacketParser, and this will have the capacity to both read the stream as
+instructions the Game can act on (the Action classes) and write them.
 
 ===================================================================================
 2. Structure of data transmissions
@@ -62,13 +62,11 @@ HEADER, SEND BEFORE ALL DATA:
 	
 DATA CONTENTS:
 	IF MOVEMENT:								IF RECEIVING ITEM:
-	[3]	= moving entity's id					[3] = ID of entity receiving item
-	[4] = character's current X					[4] = item ID
-	[5] = character's current Y				
-	[6] = current direction [ N = 0, E = 1, S = 2, W = 3 ]	
-	[7] = character's destination X				
-	[8] = character's destination Y	
-	[9] = direction they will be facing [ N = 0, E = 1, S = 2, W = 3 ]		
+	[3]	= moving entity's id		INT			[3] = ID of entity receiving item	INT
+	[4] = character's current X		INT			[4] = item ID						INT
+	[5] = character's current Y		INT		
+	[6] = current direction			BYTE
+	[7] = time of sending			LONG
 	
 	IF LOSING ITEM:								IF ACCESSING INVENTORY, CLIENT REQUEST
 	[3] = ID of entity losing the item			[3] id of inventory owner 
@@ -85,6 +83,11 @@ DATA CONTENTS:
 	[3] id of using player 						[3] if player, player id, else 0
 	[4] id of entity							[4] if item, item id, else 0
 	[5] id of item								[5] int value representing state
+	
+	IF INTERACTING IN SOME WAY, CLIENT REQST:
+	(empty; sent after player has pressed 'F'
+	on some object in the world, to be
+	interpreted by server's Game.)
 					
 DATA TERMINATOR: 										
 ... followed by the max integer value.  

@@ -172,10 +172,24 @@ public class Game {
 	
 	
 	/** Adds a new player to the Game. */
-	public Player addPlayer() {
+//	public Player addPlayer() {
+//		int id = 1;
+//		if (players != null && players.size() > 1) {
+//			id = players.get(players.size()-1).getId() + 1;
+//		}
+//		Player newPlayer = new Player(Direction.SOUTH, id);
+//		players.add(newPlayer);
+//		return newPlayer;
+//	}
+	
+	/** Adds an existing player to this Game instance. */
+	public Player addPlayer(int i) throws IllegalArgumentException {
+		if (players == null) {
+			players = new ArrayList<Player>();
+		}
 		int id = 1;
-		if (players != null && players.size() > 1) {
-			id = players.get(players.size()-1).getId() + 1;
+		if (!isAvailablePlayerId(i)) {
+			throw new IllegalArgumentException();
 		}
 		Player newPlayer = new Player(Direction.SOUTH, id);
 		players.add(newPlayer);
@@ -188,7 +202,7 @@ public class Game {
 	 * @return True if the player was removed, false otherwise.
 	 */
 	public boolean removePlayer(int pid) {
-		if (players.size() == 0) { return false; } // alternatively, calls some kind of game over message
+		if (players == null || players.size() == 0) { return false; } // alternatively, calls some kind of game over message
 		if (pid >= 1 && pid < players.size()) {
 			for(Player p : players) {
 				if (p.getId() == pid) {
@@ -199,6 +213,14 @@ public class Game {
 		}
 		return false;
 	}
-	
-	
+
+	public boolean isAvailablePlayerId(int pid) {
+		if (players == null || players.size() == 0) return true;
+		for (Player p : players) {
+			if (p.getId() == pid) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

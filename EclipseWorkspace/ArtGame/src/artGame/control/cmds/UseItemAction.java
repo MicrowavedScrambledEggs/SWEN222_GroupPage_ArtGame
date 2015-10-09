@@ -17,6 +17,7 @@ public class UseItemAction implements Action {
 		this.isWorld = isWorld;
 	}
 
+	/** Returns the ID of the entity the object is being used on. */
 	public int getEntityId() {
 		return entityId;
 	}

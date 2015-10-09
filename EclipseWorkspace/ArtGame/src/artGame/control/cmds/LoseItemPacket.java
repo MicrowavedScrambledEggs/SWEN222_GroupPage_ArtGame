@@ -35,7 +35,7 @@ class LoseItemPacket implements Packet {
 		packet[index++] = (byte)(lia.isWorldUpdate() ? 0 : 1);
 		packet[index++] = (byte)lia.getClient();
 		packet[index++] = Packet.ITEM_LOSE;
-		packet[index++] = (byte)(int)lia.getLoserId();
+		packet[index++] = (byte)(int)lia.getItemSource();
 		packet[index++] = (byte)(int)lia.getItemId();
 		packet[index] = (byte)Integer.MAX_VALUE;
 		

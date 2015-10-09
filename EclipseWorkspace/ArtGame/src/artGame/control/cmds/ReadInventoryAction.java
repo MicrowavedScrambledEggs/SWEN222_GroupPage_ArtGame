@@ -2,6 +2,7 @@ package artGame.control.cmds;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class ReadInventoryAction implements Action {
 	private static final int type = Packet.READ_INVENTORY;
@@ -9,9 +10,18 @@ public class ReadInventoryAction implements Action {
 	private final int recipientId;
 	private final int inventoryOwner;
 	
-	public ReadInventoryAction(int recipientId, int inventoryOwner, int[] inventory) {
+	public ReadInventoryAction(int recipientId, int inventoryOwner, List<Integer> inv) {
 		this.inventoryOwner = inventoryOwner;
-		this.inventory = inventory;
+		this.inventory = new int[inv.size()];
+		for (int i = 0; i < inv.size(); i++) {
+			inventory[i] = inv.get(i);
+		}
+		this.recipientId = recipientId;
+	}	
+	
+	public ReadInventoryAction(int recipientId, int inventoryOwner, int[] inv) {
+		this.inventoryOwner = inventoryOwner;
+		this.inventory = Arrays.copyOf(inv, inv.length);
 		this.recipientId = recipientId;
 	}
 

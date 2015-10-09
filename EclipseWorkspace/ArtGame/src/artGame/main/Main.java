@@ -28,10 +28,6 @@ public class Main {
 	
 	private static volatile SocketThread[] children = new SocketThread[0];
 	private static Game GAME;
-
-	/* TODO:	 * 
-	 * stop/interrupt server
-	 */
 	
 	public static void main (String[] args) {
 		// mostly stolen from Dave's PacMan code.
@@ -49,7 +45,12 @@ public class Main {
 				readFileName = false;
 				String arg = args[i];
 				if(arg.equals("-help")) {
-					System.out.println("help text pending");
+					System.out.println("Commands:");
+					System.out.println("-server <numclients>	| starts a server that can accept n clients");
+					System.out.println("-connect <IP>			| starts a client that connects to the IP");
+					System.out.println("-clock <time>			| if server, sets min delay between updates [NOT IMPLEMENTED]");
+					System.out.println("-port <num>				| port to use");
+					System.out.println("-loadworld <path>		| gametype to run");
 					System.exit(0);
 				} else if(arg.equals("-server")) {
 					server = true;
@@ -60,8 +61,6 @@ public class Main {
 					gameClock = Integer.parseInt(args[++i]);
 				} else if(arg.equals("-port")) {
 					port = Integer.parseInt(args[++i]);
-				} else if (arg.equals("-clients")) {
-					maxClients = Integer.parseInt(args[++i]);
 				} else if (arg.equals("-loadworld")) {
 					filename = args[++i];
 					readFileName = true;
@@ -75,6 +74,7 @@ public class Main {
 			File f = new File(filename);
 			XMLHandler xmlh = new XMLHandler();
 			GAME = xmlh.loadGame(f);
+			System.out.println(GAME.toString());
 		}
 
 		// Sanity checks, also stolen directly from Dave's PacMan code
@@ -98,7 +98,7 @@ public class Main {
 				runPublicSocket(port,gameClock,maxClients);
 			} else if(serverURL != null) {
 				// Run as client
-				runClient(GAME, serverURL,port);
+				runClient(serverURL, port);
 			} else {
 				// single user game
 			}
@@ -111,11 +111,11 @@ public class Main {
 		System.exit(0);
 	}
 
-	private static void runClient(Game game, String addr, int port) throws IOException {
+	private static void runClient(String addr, int port) throws IOException {
 		Socket s = new Socket(addr,port);
 		children = null;
 		System.out.println("The client has connected to " + s.getInetAddress() +":"+s.getPort());
-		new ClientThread(s, game).run();
+		new ClientThread(s, GAME).run();
 	}
 
 
@@ -148,7 +148,7 @@ public class Main {
 			while (1 == 1) {
 				try {
 					Socket s = publicSocket.accept();
-					children[numConnected] = new ServerThread(null, s, WAIT_PERIOD);
+					children[numConnected] = new ServerThread(GAME, s, WAIT_PERIOD);
 					children[numConnected].start();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

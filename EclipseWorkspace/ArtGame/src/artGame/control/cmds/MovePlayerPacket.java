@@ -4,14 +4,18 @@ import java.awt.Point;
 import java.util.Arrays;
 
 import artGame.control.IncompatiblePacketException;
+import artGame.game.Character.Direction;
 
-/** MovePlayerPacket contains the player's current and destination coordinates. 
+/** MovePlayerPacket is capable of reading and writing move packets. 
  * 
+ * @author Vicki
  * 
- * 
- * 
- * */
+ */
 class MovePlayerPacket implements Packet {
+	private static final int N = 1;
+	private static final int S = 3;
+	private static final int E = 2;
+	private static final int W = 4;
 	private final int PACKET_LENGTH = 7;
 
 	@Override
@@ -22,9 +26,14 @@ class MovePlayerPacket implements Packet {
 			throw new IncompatiblePacketException("This packet is not a move packet!");
 		}
 		Point playerPos = new Point(packet[4],packet[5]);
-		Point playerDes = new Point(packet[7],packet[8]);
-		System.out.println(packet[0] +" for "+ packet[1]+" ("+playerPos.getX()+","+playerPos.getY()+") -> ("+playerDes.getX()+","+playerDes.getY()+")");
-		return new MovePlayerAction((int)packet[Packet.IDX_PID],(int)packet[3], playerPos, (int)packet[6], playerDes, (int)packet[9]);
+		long time = 0;
+		for (int i = 7; i < 11; i++) // thanks to http://stackoverflow.com/questions/1026761/how-to-convert-a-byte-array-to-its-numeric-value-java
+		{
+		   time += ((long) packet[i] & 0xffL) << (4 * i);
+		}
+		System.out.println(packet[0] +" for "+ packet[1]+" ("+playerPos.getX()+","+playerPos.getY()+") @ "+time);
+		return new MovePlayerAction((int)packet[Packet.IDX_PID], (int)packet[3], 
+				playerPos, byteToDirection(packet[6]), time);
 	}
 
 	@Override
@@ -44,10 +53,10 @@ class MovePlayerPacket implements Packet {
 		packet[index++] = (byte)(int)ma.getPlayerId();
 		packet[index++] = (byte)(int)ma.getCurrent().getX();
 		packet[index++] = (byte)(int)ma.getCurrent().getY();
-		packet[index++] = (byte)(int)ma.getCurrentDirection();
-		packet[index++] = (byte)(int)ma.getDestination().getX();
-		packet[index++] = (byte)(int)ma.getDestination().getY();
-		packet[index++] = (byte)(int)ma.getDestinationDirection();
+		packet[index++] = directionToByte(ma.getCurrentDirection());
+//		packet[index++] = (byte)(int)ma.getDestination().getX();
+//		packet[index++] = (byte)(int)ma.getDestination().getY();
+//		packet[index++] = directionToByte(ma.getDestinationDirection());
 		packet[index] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
@@ -75,5 +84,33 @@ class MovePlayerPacket implements Packet {
 		packet[index] = (byte)Integer.MAX_VALUE;
 		
 		return packet;
+	}
+	
+	public static Direction byteToDirection(int i) {
+		switch (i) {
+			case N:
+				return Direction.NORTH;
+			case E:
+				return Direction.EAST;
+			case S:
+				return Direction.SOUTH;
+			case W:
+				return Direction.SOUTH;
+		}
+		return Direction.SOUTH;
+	}
+	
+	public static byte directionToByte(Direction d) {
+		switch (d) {
+			case NORTH:
+				return N;
+			case EAST:
+				return E;
+			case SOUTH:
+				return S;
+			case WEST:
+				return W;
+		}
+		return S;
 	}
 }

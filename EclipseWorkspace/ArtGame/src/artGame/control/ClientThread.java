@@ -1,61 +1,109 @@
 package artGame.control;
 
+import java.awt.Point;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
+import artGame.control.cmds.Action;
 import artGame.control.cmds.BasicPacketParser;
+import artGame.control.cmds.GetItemAction;
+import artGame.control.cmds.MovePlayerAction;
 import artGame.control.cmds.Packet;
+import artGame.game.Character.Direction;
 import artGame.main.Game;
 
+/**
+ */
 public class ClientThread extends SocketThread {
+	private static final short TYPE = 120; // TODO in a world with more than one map,
+										 // we'd need to get this from the loaded Game
+										 // so we can only connect to a server running the same map
 	private final Game game;
 	private Socket socket;
 	private boolean isPlaying = true;
 	private int pid = 404;
 	private volatile long timeout;
+	private final DataInputStream IN;
+	private final DataOutputStream OUT;
 	
-	public ClientThread(Socket s, Game g) {
+	public ClientThread(Socket s, Game g) throws IOException {
 		this.socket = s;
 		game = g;
 		timeout = System.currentTimeMillis() + SocketThread.CONNECTION_TIMEOUT;
-		System.err.println("SERVER INFO:\nPID: "+pid
-				+ "\nSOCKETADDR  "+socket.getLocalAddress()+" PORT: "+socket.getLocalPort()
+		IN = new DataInputStream(socket.getInputStream());
+		OUT = new DataOutputStream(socket.getOutputStream());
+		System.err.println("/=/=/=/=/=/=/=/=/= CLIENT INFO /=/=/=/=/=/=/=/=/=\nPID: "+pid
+				+ "\nSOCKETADDR: "+socket.getLocalAddress()+" PORT: "+socket.getLocalPort()
 				+ "\nCONNECT TO: "+socket.getInetAddress() +" PORT: "+socket.getPort());
 	}
 	
+	/** Does the work of setting up the client/server's shared player ID.
+	 */
+	private void receiveGameInfo() {
+		System.out.println("Sending game info...");
+		try {			
+			// first: read the server game type
+			System.out.println("Getting server game type...");
+			short gameType = IN.readShort();
+			
+			// write response
+			OUT.writeBoolean(gameType == TYPE);
+			if (gameType == TYPE) {
+				System.out.println("Server is running game map "+TYPE+"; checking ID.");
+			} else {
+				System.err.println("Server isn't running the requested game map.");
+				close();
+				return;
+			}
+			
+			// get the server's id
+			pid = IN.readInt();
+			boolean validId = game.isAvailablePlayerId(pid);
+			// tell the server that this is OK (or not)
+			OUT.writeBoolean(validId);
+			// then close ourselves if it wasn't valid
+			if (validId) {
+				System.out.println("Success! Using id "+pid+".");
+			} else {
+				System.err.println("Fatal desync: cannot use requested PID.");
+				close();
+			}
+		} catch (IOException e) {
+			System.err.println("Connection error: could not get startup info from server!");
+			e.printStackTrace();
+		}
+	}
+	
 	public void run() {
-		System.out.println("RUN");
+		receiveGameInfo();
+		
+		System.out.println("=-=-=-=-=-=-=-=-=- RUNNING CLIENT "+ pid +" =-=-=-=-=-=-=-=-=-");
 		int runcount = 0; 
 		int curX = 0;
 		int curY = 0;
 		int r = 0;
 		while (!socket.isClosed()) {
 			try {
-				DataInputStream input = new DataInputStream(socket.getInputStream());
-				DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+				r = (int)(Math.random()*100);
 				// write first
-				byte[] packet;
-				if (r == 0) {
-					packet = BasicPacketParser.createPacket(0, pid, Packet.MOVE, 
-							pid, curX, curY, (curX+1), (curY+1), Packet.TERMINAL);
-					System.out.println("GAVE: "+packet[3]+" is moving ("+packet[4]+", "+packet[5]+") going to ("+packet[6]+","+packet[7]+"), size "+packet.length);
+				if (r < 70) {
+					MovePlayerAction a = new MovePlayerAction(pid, pid, new Point(curX,curY), Direction.NORTH, System.currentTimeMillis());
 					curX++;
 					curY++;
-					output.write(packet);
-				} else if (r==1) {
-					packet = BasicPacketParser.createPacket(0, pid, Packet.ITEM_GAIN, 400, 60, Packet.TERMINAL);
-					System.err.println("GAVE: "+ packet[4]);
-					output.write(packet);
+					System.out.println(a.toString());
+					BasicPacketParser.writeActionToStream(OUT, a);
+				} else if (r < 80) {
+					MovePlayerAction a = new MovePlayerAction(pid, pid, new Point(-1,-1), Direction.NORTH, System.currentTimeMillis());
+					System.out.println(a.toString());
+					BasicPacketParser.writeActionToStream(OUT, a);
 				} else {
-					packet = BasicPacketParser.createPacket(0, pid, Packet.MOVE, 
-							pid, curX, curY, (curX+1), (curY+1), Packet.TERMINAL);
-					System.out.println("GAVE: "+packet[3]+" is moving ("+packet[4]+", "+packet[5]+") going to ("+packet[6]+","+packet[7]+"), size "+packet.length);
-					curX++;
-					curY++;
-					output.write(packet);
+					GetItemAction a = new GetItemAction(false, pid, pid, r);
+					System.err.println(a.toString());
+					BasicPacketParser.writeActionToStream(OUT, a);
 				}
 				// TODO this is where the part that reads the messages goes!
 				// [get time]
@@ -64,10 +112,13 @@ public class ClientThread extends SocketThread {
 				// [if timeout, close]
 				// [otherwise, keep looping!]
 				r++;
-				Thread.sleep(500);
+				Thread.sleep(1000);
 			} catch (IOException e) { 
 				e.printStackTrace(); 
 			} catch (InterruptedException e) { 
+				e.printStackTrace();
+			} catch (IncompatiblePacketException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 			runcount++;
