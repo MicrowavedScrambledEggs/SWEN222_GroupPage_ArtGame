@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import artGame.control.ClientThread;
+import artGame.main.Game;
 import artGame.ui.RenderWindowTest;
 import artGame.ui.screens.Screen;
 import artGame.ui.screens.UIRenderer;
@@ -122,7 +123,7 @@ public class GameLauncher extends JPanel {
 	private static ClientThread runClient(String addr, int port) throws IOException {
 		Socket s = new Socket(addr,port);
 		System.out.println("The client has connected to " + s.getInetAddress() +":"+s.getPort());
-		ClientThread th = new ClientThread(s);
+		ClientThread th = new ClientThread(s,new Game()); // FIXME Vicki: just added this to match constructor.
 		th.start();
 		return th;
 	}

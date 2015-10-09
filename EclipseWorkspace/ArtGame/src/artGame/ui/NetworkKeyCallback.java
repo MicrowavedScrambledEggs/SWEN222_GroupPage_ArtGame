@@ -92,9 +92,10 @@ public class NetworkKeyCallback extends GLFWKeyCallback {
 		connection.sendAction(a);
 	}
 
+	/** A gets a 'stop' action for the player at the time the method is called. */
 	private Action sendStop(Player p, Direction d) {
 		Action a = new MovePlayerAction(p.getId(), p.getId(), 
-				new Point(p.getRow(),p.getCol()), d, System.currentTimeMillis());
+				new Point(-1,-1), d, System.currentTimeMillis());
 		return a;
 	}
 }
