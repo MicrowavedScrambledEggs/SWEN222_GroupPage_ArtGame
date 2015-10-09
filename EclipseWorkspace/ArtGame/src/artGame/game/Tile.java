@@ -11,6 +11,7 @@ public abstract class Tile {
 	protected Character occupant;
 	private boolean viewable; // whether or not the tile is visible
 	public abstract boolean walkable();
+	private Room room;
 
 	public Tile(boolean nwall, boolean wwall, boolean swall, boolean ewall) {
 		walls = new Wall[4];
@@ -27,6 +28,21 @@ public abstract class Tile {
 			this.walls[3] = new Wall();
 		}
 	}
+
+	/**
+	 * Gets the room this tile belongs to
+	 */
+	public Room getRoom() {
+		return room;
+	}
+
+	/**
+	 * Sets the room this tile belongs to
+	 */
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
 
 	/**
 	 * Returns whether or not we can see this tile
