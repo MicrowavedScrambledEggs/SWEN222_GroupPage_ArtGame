@@ -88,20 +88,39 @@ public class ClientThread extends SocketThread {
 		int r = 0;
 		while (!socket.isClosed()) {
 			try {
-				// check the queue for messages to send to server
-				if (hasNext()) {
-					BasicPacketParser.writeActionToStream(OUT, poll());
+				r = (int)(Math.random()*100);
+				// write first
+				if (r < 70) {
+					MovePlayerAction a = new MovePlayerAction(pid, pid, new Point(curX,curY), Direction.NORTH, System.currentTimeMillis());
+					curX++;
+					curY++;
+					System.out.println(a.toString());
+					BasicPacketParser.writeActionToStream(OUT, a);
+				} else if (r < 80) {
+					MovePlayerAction a = new MovePlayerAction(pid, pid, new Point(-1,-1), Direction.NORTH, System.currentTimeMillis());
+					System.out.println(a.toString());
+					BasicPacketParser.writeActionToStream(OUT, a);
+				} else {
+					GetItemAction a = new GetItemAction(false, pid, pid, r);
+					System.err.println(a.toString());
+					BasicPacketParser.writeActionToStream(OUT, a);
 				}
+				// TODO this is where the part that reads the messages goes!
+				// [get time]
 				timeout = System.currentTimeMillis() + SocketThread.CONNECTION_TIMEOUT;
-				// then, if the server has sent us anything, read this
-				// TODO
-				
-				//
+				// [read for]
+				// [if timeout, close]
+				// [otherwise, keep looping!]
 				r++;
 				Thread.sleep(1000);
-			} catch (IOException | InterruptedException | IncompatiblePacketException e) { 
+			} catch (IOException e) { 
 				e.printStackTrace(); 
-			}
+			} catch (InterruptedException e) { 
+				e.printStackTrace();
+			} catch (IncompatiblePacketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 			runcount++;
 		}
 	}

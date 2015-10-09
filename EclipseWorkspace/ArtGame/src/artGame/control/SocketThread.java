@@ -40,14 +40,4 @@ public abstract class SocketThread extends Thread {
 		// TODO some checks here 
 		return queue.add(a);
 	}
-	
-	/** */
-	protected Action poll() {
-		return queue.poll();
-	}
-	
-	/** returns true if this SocketThread has queued actions to process. */
-	protected boolean hasNext() {
-		return queue.size() > 0;
-	}
 }
