@@ -1,47 +1,66 @@
 package artGame.game;
 
 import java.util.ArrayList;
-import java.util.List; 
+import java.util.List;
 
+/**
+ * Represents a guard who will catch Players he sees. Can either path or move in
+ * a predetermined path
+ * 
+ * @author Kaishuo
+ *
+ */
 public class Guard extends Character {
 
 	private List<Coordinate> path;
 
-	// for static guard
+	/**
+	 *Static guard 
+	 */
 	public Guard(Direction dir, int ID) {
 		super(dir, ID);
+		this.path = null;
 	}
 
-	// for pathing guard
+	/**
+	 * Pathing guard
+	 */
 	public Guard(Direction dir, int ID, List<Coordinate> path) {
 		super(dir, ID);
 		this.path = path;
 	}
 
+	@Override
 	public String toString() {
 		return "G";
 	}
 
+	/**
+	 * Gets the next position on the path this guard should move to
+	 * @return
+	 */
 	public Coordinate nextCoord() {
 		if (path != null) {
 			Coordinate current = new Coordinate(this.col, this.row);
 			int step = path.indexOf(current);
-			step = step+1;
-			if(step == path.size()) step = 0;
+			step = step + 1;
+			if (step == path.size())
+				step = 0;
 			return path.get(step);
-		}
-		else return new Coordinate(this.col,this.row);
+		} else
+			return new Coordinate(this.col, this.row);
 	}
-	
+
 	/**
-	 * offsets a guards path by a given amount. must be used when adding guards
+	 * Offsets a guards path by a given amount. Must be used when adding guards
 	 * to any floor except ground floor
 	 */
-	public void offsetPath(int offset){
-		if(path==null) throw new GameError("attempting to offset a guard without path. wtf happened?");
+	public void offsetPath(int offset) {
+		if (path == null)
+			return;
 		List<Coordinate> newPath = new ArrayList<Coordinate>();
-		for(Coordinate c:path){
-			newPath.add(new Coordinate(c.getX(),c.getY()+offset));
+		for (Coordinate c : path) {
+			newPath.add(new Coordinate(c.getX(), c.getY() + offset));
 		}
 		this.path = newPath;// //
 	}
@@ -68,10 +87,9 @@ public class Guard extends Character {
 				return false;
 		} else if (!path.equals(other.path))
 			return false;
-		if (ID!=other.ID)
+		if (ID != other.ID)
 			return false;
 		return true;
 	}
-	
-	
+
 }

@@ -1,6 +1,7 @@
 package artGame.game;
 /**
- * a piece of art in the players inventory
+ * Represents a piece of art in the players inventory
+ * @author Kaishuo
  */
 public class Art extends Item{
 	public final String name;
@@ -9,6 +10,7 @@ public class Art extends Item{
 		super(ID);
 		this.name = name;
 		this.value = value;
+		this.description = "A work of art. It is " + name + " worth " + value;
 	}
 
 }

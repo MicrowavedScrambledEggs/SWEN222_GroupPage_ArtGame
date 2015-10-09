@@ -9,20 +9,22 @@ import artGame.game.Tile;
 import artGame.xml.XMLHandler;
 
 public class TileBuilder implements BuildStrategy {
-	
+
 	private GameMaker gameMaker;
 	private boolean northWall = false;
 	private boolean westWall = false;
 	private boolean southWall = false;
 	private boolean eastWall = false;
 	private Coordinate coord;
+	private int level;
 	private HashMap<Direction, Integer> doorReference = new HashMap<Direction, Integer>();
 	private HashMap<Direction, Integer> artReference = new HashMap<Direction, Integer>();
 
-	public TileBuilder(GameMaker gameMaker) {
+	public TileBuilder(int level, GameMaker gameMaker) {
+		this.level = level;
 		this.gameMaker = gameMaker;
 	}
-	
+
 	@Override
 	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
@@ -42,7 +44,7 @@ public class TileBuilder implements BuildStrategy {
 			}
 		}
 	}
-	
+
 	private void setDoor(Object[] values) {
 		Direction dir = setWall((String) values[1]);
 		doorReference.put(dir, Integer.parseInt((String) values[0]));
@@ -58,7 +60,7 @@ public class TileBuilder implements BuildStrategy {
 			artReference.put(dir, Integer.parseInt((String) values[1]));
 		}
 	}
-	
+
 	private Direction setWall(String direction) {
 		if(direction.equals(XMLHandler.NORTH_VALUE)){
 			this.northWall = true;
@@ -77,13 +79,13 @@ public class TileBuilder implements BuildStrategy {
 					+ "is not a valid direction.\n", direction));
 		}
 	}
-	
+
 	@Override
 	public void addToGame() {
 		Tile tile = new EmptyTile(northWall, westWall, southWall, eastWall);
-		gameMaker.addTile(coord, tile);
-		gameMaker.addDoorMap(coord, doorReference);
-		gameMaker.addArtMap(coord, artReference);
+		gameMaker.addTile(level, coord, tile);
+		gameMaker.addDoorMap(level, coord, doorReference);
+		gameMaker.addArtMap(level, coord, artReference);
 	}
 
 	/**
@@ -141,9 +143,13 @@ public class TileBuilder implements BuildStrategy {
 	public HashMap<Direction, Integer> getArtReference() {
 		return artReference;
 	}
-	
+
+	public int getLevel() {
+		return level;
+	}
+
 	public TileBuilder clone(){
-		TileBuilder clone = new TileBuilder(gameMaker);
+		TileBuilder clone = new TileBuilder(level, gameMaker);
 		clone.artReference = this.artReference;
 		clone.coord = this.coord;
 		clone.doorReference = this.doorReference;
@@ -153,7 +159,7 @@ public class TileBuilder implements BuildStrategy {
 		clone.westWall = this.westWall;
 		return clone;
 	}
-	
+
 	public void setCoord(Coordinate coord){
 		this.coord = coord;
 	}

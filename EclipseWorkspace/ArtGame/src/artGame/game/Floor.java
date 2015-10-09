@@ -9,70 +9,26 @@ import java.util.Set;
 import artGame.game.Character.Direction;
 
 /**
- * game floor TODO proper docs
+ * Represents the entire game Floor/world where the action is taking place. Most
+ * of the logic happens here
+ * 
+ * @author Kaishuo
  *
  */
 public class Floor {
 	private int maxR = 3;
 	private int maxC = 7;
-	
-	private int offset = 0; // used for calculating coordinate offsets
+
+	private int offset = 0; // used for calculating coordinate offsets for
+							// multiple floors
 	private Tile[][] floor;
 	private List<ExitTile> exits;
 	private List<Guard> guards;
 
-	private int itemIDC; // counter for item IDs
-
-	public Floor(Tile[][] tiles, int maxR, int maxC, Collection<ExitTile> exits) {
-		floor = tiles;
-		this.exits = new ArrayList<ExitTile>(exits);
-		this.guards = new ArrayList<Guard>();
-		this.maxR = maxR;
-		this.maxC = maxC;
-		this.itemIDC = 0;
-	}
-	
+	private int itemIDC; // Item ID Counter
 
 	/**
-	 * upgraded version of constructor, takes a variable number of floors
-	 * and automatically determines maximum row and column numbers
-	 */
-	public Floor(Collection<ExitTile> exits,Tile[][]... floors) {
-		//calculating offset
-		int localC = 0; //local number of cols of a floor
-		int localR = 0; //local number of rows
-		for(Tile[][] tiles:floors){
-			if(tiles.length>localR) localR=tiles.length;
-			if(tiles[0].length>localC) localC=tiles[0].length;
-		}
-		offset = localC*2; //offset is double the maximum width of a floor
-		//moving tiles of non 0 floors to correct location
-		for(int i=1;i<floors.length;i++){
-			Tile[][] currentFloor = floors[i];
-			for(int r=0;r<currentFloor.length;r++){
-				for(int c=0;c<currentFloor[0].length;c++){
-					floor[r][c+offset*i] = currentFloor[r][c];
-				}
-			}
-		}
-		this.exits = new ArrayList<ExitTile>(exits);
-		this.guards = new ArrayList<Guard>();
-		this.maxR = localR;
-		this.maxC = offset*floors.length;
-		this.itemIDC = 0;
-	}
-
-	/**
-	 * gets the next availible item id, incrementing it in the process
-	 *
-	 * @return
-	 */
-	public int nextItemID() {
-		return itemIDC++;
-	}
-
-	/*
-	 * generating the floor for demo version of game
+	 * Default simple floor used for testing games without a XML file
 	 */
 	public Floor() {
 		// initial sweep
@@ -84,7 +40,6 @@ public class Floor {
 			floor[2][i] = new EmptyTile(false, false, true, false);
 		}
 
-		// cleanup
 		// setting west walls
 		floor[0][0].setWall(Direction.WEST, new Wall(new Art("Art1", 1000,
 				itemIDC++)));
@@ -115,50 +70,118 @@ public class Floor {
 		setCharacter(guard, 2, 5);
 	}
 
-	
 	/**
-	 * returns tile at target coordinate
+	 * Original version of the constructor for single floor games
+	 */
+	public Floor(Tile[][] tiles, int maxR, int maxC, Collection<ExitTile> exits) {
+		floor = tiles;
+		this.exits = new ArrayList<ExitTile>(exits);
+		this.guards = new ArrayList<Guard>();
+		this.maxR = maxR;
+		this.maxC = maxC;
+		this.itemIDC = 0;
+	}
+
+	/**
+	 * Upgraded version of constructor, takes a variable number of floors and
+	 * automatically converges them into a single array
+	 */
+	public Floor(Collection<ExitTile> exits, Tile[][]... floors) {
+		// calculating offset
+		int localC = 0; // local number of cols of a floor
+		int localR = 0; // local number of rows
+		for (Tile[][] tiles : floors) {
+			if (tiles.length > localR)
+				localR = tiles.length;
+			if (tiles[0].length > localC)
+				localC = tiles[0].length;
+		}
+		offset = localC * 2; // offset is double the maximum width of a floor
+		// moving tiles of non 0 floors to correct location
+		this.maxC = localC * (floors.length * 2 - 1);
+		floor = new Tile[localR][maxC];
+		for (int i = 0; i < floors.length; i++) {
+			Tile[][] currentFloor = floors[i];
+			for (int r = 0; r < currentFloor.length; r++) {
+				for (int c = 0; c < currentFloor[0].length; c++) {
+					floor[r][c + offset * i] = currentFloor[r][c];
+				}
+			}
+		}
+		this.exits = new ArrayList<ExitTile>(exits);
+		this.guards = new ArrayList<Guard>();
+		this.maxR = localR;
+		this.itemIDC = 0;
+	}
+
+	/**
+	 * Gets the next available item id, incrementing it in the process
+	 */
+	public int nextItemID() {
+		return itemIDC++;
+	}
+
+	/**
+	 * Returns tile at target coordinate
 	 */
 	public Tile getTile(int row, int col) {
 		return floor[row][col];
 	}
-	
+
 	/**
-	 * returns tile at target coordinate of a specified floor
+	 * Returns tile at target coordinate of a specified floor
 	 */
-	public Tile getTile(int row, int col,int floorNumber) {
-		return floor[row][col+offset*floorNumber];
+	public Tile getTile(int row, int col, int floorNumber) {
+		return floor[row][col + offset * floorNumber];
 	}
 
 	/**
-	 * sets the character c to position row, col without regard to legality of
-	 * move or face direction. useful for initialising positions
+	 * Links the two stair tiles specified by r,c,f coordinates. Throws a error
+	 * if either tile is not a stair tile
+	 */
+	public void linkStairs(int row1, int col1, int floor1, int row2, int col2,
+			int floor2) {
+		if (!(floor[row1][col1 + offset * floor1] instanceof StairTile)) {
+			throw new GameError("First position not stair, link fail");
+		}
+		if (!(floor[row2][col2 + offset * floor2] instanceof StairTile)) {
+			throw new GameError("Second position not stair, link fail");
+		}
+		StairTile st1 = (StairTile) floor[row1][col1 + offset * floor1];
+		StairTile st2 = (StairTile) floor[row2][col2 + offset * floor2];
+		st1.setLinkedTile(st2);
+		st2.setLinkedTile(st1);
+	}
+
+	/**
+	 * Sets the character c to position row, col without regard to legality of
+	 * move or face direction. Useful for initialising positions
 	 */
 	public void setCharacter(Character c, int row, int col) {
 		floor[row][col].setOccupant(c);
 		c.setRow(row);
 		c.setCol(col);
-		if(c instanceof Guard && !guards.contains((Guard)c)){
-			guards.add((Guard)c);
-		}
-	}
-	
-	/**
-	 * sets the character c to position row, col of a given floor without regard 
-	 * to legality of move or face direction. useful for initialising positions
-	 */
-	public void setCharacter(Character c, int row, int col,int floorNumber) {
-		floor[row][col+offset*floorNumber].setOccupant(c);
-		c.setRow(row);
-		c.setCol(col);
-		if(c instanceof Guard && !guards.contains((Guard)c)){
-			((Guard)c).offsetPath(offset*floorNumber);
-			guards.add((Guard)c);
+		if (c instanceof Guard && !guards.contains((Guard) c)) {
+			guards.add((Guard) c);
 		}
 	}
 
 	/**
-	 * checks if any characters are on exit tiles
+	 * Sets the character c to position row, col of a given floor without regard
+	 * to legality of move or face direction. Useful for initialising positions
+	 */
+	public void setCharacter(Character c, int row, int col, int floorNumber) {
+		floor[row][col + offset * floorNumber].setOccupant(c);
+		c.setRow(row);
+		c.setCol(col);
+		if (c instanceof Guard && !guards.contains((Guard) c)) {
+			((Guard) c).offsetPath(offset * floorNumber);
+			guards.add((Guard) c);
+		}
+	}
+
+	/**
+	 * Gets all characters(players) currently on exit tiles
 	 */
 	public Character isOnExit() {
 		for (ExitTile exit : exits) {
@@ -170,7 +193,7 @@ public class Floor {
 	}
 
 	/**
-	 * prints the floor
+	 * Prints the floor. Used in debugging console version only
 	 */
 	public void printFloor() {
 		for (int i = 0; i < maxR; i++) {
@@ -187,7 +210,7 @@ public class Floor {
 	}
 
 	/**
-	 * moves a character 1 tile in the direction theyre facing(does nothing if
+	 * Moves a character 1 tile in the direction they're facing(does nothing if
 	 * invalid move)
 	 */
 	public void moveCharacter(Character c) {
@@ -218,52 +241,45 @@ public class Floor {
 	}
 
 	/**
-	 * moves a character to a targetted square and faces them the right way.
-	 * throws a error if invalid move
+	 * Moves a character to a targeted square and faces them the right way.
+	 * Throws a error if invalid move
 	 */
 	public void moveCharacter(Character c, int row, int col) {
 		int colDiff = c.getCol() - col;
 		int rowDiff = c.getRow() - row;
-		//invalid move if one of them not 0 and trying to move >1 in any direction
-		if (colDiff * rowDiff != 0 && (Math.abs(colDiff)>1 || Math.abs(rowDiff)>1))
+		// invalid move if one of them not 0 and trying to move >1 in any
+		// direction
+		if (colDiff * rowDiff != 0
+				&& (Math.abs(colDiff) > 1 || Math.abs(rowDiff) > 1))
 			throw new GameError("trying to move more than 1 square at once");
-		if(colDiff==1){
+		if (colDiff == 1) {
 			c.setDir(Direction.WEST);
 			this.moveCharacter(c);
-		}
-		else if(colDiff==-1){
+		} else if (colDiff == -1) {
 			c.setDir(Direction.EAST);
 			this.moveCharacter(c);
-		}
-		else if(rowDiff==1){
+		} else if (rowDiff == 1) {
 			c.setDir(Direction.NORTH);
 			this.moveCharacter(c);
-		}
-		else if(rowDiff==-1){
+		} else if (rowDiff == -1) {
 			c.setDir(Direction.SOUTH);
 			this.moveCharacter(c);
 		}
-		//base case character not moving, direction update not required
+		// base case character not moving, direction update not required
 	}
 
 	/**
-	 * updates the positions of all guards as specified by their path
-	 * TODO for server version, potentially put this on a seperate thread
-	 * TODO similar to pacman handling ghosts?
+	 * Updates the positions of all guards as specified by their path
 	 */
 	public void moveGuards() {
 		for (Guard g : guards) {
 			Coordinate nextCoord = g.nextCoord();
-			moveCharacter(g,nextCoord.getY(),nextCoord.getX());
+			moveCharacter(g, nextCoord.getY(), nextCoord.getX());
 		}
-//		for(int i=0;i<guards.size();i++){
-//			Coordinate nextCoord = guards.get(i).nextCoord();
-//			moveCharacter(guards.get(i),nextCoord.getY(),nextCoord.getX());
-//		}
 	}
 
 	/**
-	 * returns the tile that the given character is currently facing
+	 * Returns the tile directly in front of the given character
 	 */
 	public Tile tileCharacterFacing(Character c) {
 		if (c.getDir() == Direction.NORTH) {
@@ -291,7 +307,7 @@ public class Floor {
 	}
 
 	/**
-	 * helper method to check if target coord is valid
+	 * Helper method to check if target coordinate is valid
 	 */
 	private boolean validLocation(int row, int col) {
 		if (row >= maxR || row < 0)
@@ -301,6 +317,9 @@ public class Floor {
 		return true;
 	}
 
+	/**
+	 * Gets the wall that the character c is currently facing
+	 */
 	public Wall wallCharacterFacing(Character c) {
 		if (c.getDir() == Direction.NORTH) {
 			return floor[c.getRow()][c.getCol()].getWall(c.getDir());
@@ -315,8 +334,8 @@ public class Floor {
 	}
 
 	/**
-	 * has the player interact with whatever is in front of or on their tile
-	 * priority is art>chest>door
+	 * Has the player interact with whatever is in front of or on their tile.
+	 * Priority is door>art>chest>sculpture>guard
 	 */
 	public void interact(Player p) {
 		// checking if wall
@@ -341,19 +360,19 @@ public class Floor {
 			p.addItem(stolenSculpture);
 			tileCharacterFacing(p).setOccupant(null);
 		}
-		//guards
-		else if (tileCharacterFacing(p).getOccupant() instanceof Guard){
-			Guard g = ( Guard)tileCharacterFacing(p).getOccupant();
-			for(Item i:g.getInventory()){
+		// guards
+		else if (tileCharacterFacing(p).getOccupant() instanceof Guard) {
+			Guard g = (Guard) tileCharacterFacing(p).getOccupant();
+			for (Item i : g.getInventory()) {
 				p.addItem(i);
 			}
 			g.clearInventory();
 		}
-		// otherwise no action should be taken
+		// nothing valid to interact with
 	}
 
 	/**
-	 * checks if a specific guard can see a player. if not, returns a null
+	 * Returns the first Player that Guard g can see
 	 */
 	private Player checkGuard(Guard g) {
 		Direction dir = g.getDir();
@@ -387,7 +406,7 @@ public class Floor {
 	}
 
 	/**
-	 * returns set of caught players
+	 * Returns set of Players caught by Guards
 	 */
 	public Set<Player> checkGuards() {
 		Set<Player> caught = new HashSet<Player>();
@@ -404,7 +423,7 @@ public class Floor {
 	}
 
 	/**
-	 * has the player p inspect whatever is in front of them
+	 * Has the Player p inspect whatever is in front of them
 	 */
 	public void inspect(Player p) {
 		// checking if wall
@@ -431,15 +450,24 @@ public class Floor {
 
 	}
 
+	/**
+	 * returns the height of the entire floor array(number of rows)
+	 */
 	public int getHeight() {
 		return floor.length;
 	}
-
+	
+	/**
+	 * returns the width of the entire floor array(number of cols)
+	 */
 	public int getWidth() {
 		return floor[0].length;
 	}
-	
-	public List<Guard> getGuards(){
+
+	/**
+	 * Returns list of Guards in this floor
+	 */
+	public List<Guard> getGuards() {
 		return guards;
 	}
 
