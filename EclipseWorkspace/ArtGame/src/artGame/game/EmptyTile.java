@@ -2,17 +2,23 @@ package artGame.game;
 
 import artGame.game.Character.Direction;
 
+/**
+ * A empty tile representing general places players can walk on. Can hold a 
+ * occupant character and has four positions for walls
+ * @author Kaishuo
+ *
+ */
 public class EmptyTile extends Tile{
 	public EmptyTile(boolean nwall, boolean wwall, boolean swall, boolean ewall) {
 		super(nwall, wwall, swall, ewall);
 	}
-
 
 	@Override
 	public boolean walkable() {
 		return occupant==null;
 	}
 
+	@Override
 	public String toString(){
 		if(occupant!=null){
 			if(occupant instanceof Player) return "P";
@@ -24,8 +30,10 @@ public class EmptyTile extends Tile{
 			return getWallString();
 		}
 	}
-
-
+	
+	/**
+	 * A helper method used for testing the console based version of the game
+	 */
 	private String getWallString() {
 		Wall northWall = super.getWall(Direction.NORTH);
 		Wall westWall = super.getWall(Direction.WEST);

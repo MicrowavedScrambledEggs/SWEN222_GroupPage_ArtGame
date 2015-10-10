@@ -1,5 +1,10 @@
 package artGame.game;
 
+/**
+ * The exit where the player can flee to safety
+ * @author Kaishuo
+ *
+ */
 public class ExitTile extends Tile{
 
 	public ExitTile(boolean nwall, boolean wwall, boolean swall, boolean ewall) {

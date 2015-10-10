@@ -1,5 +1,9 @@
 package artGame.game;
-
+/**
+ * Represents a chest which can contain a single item
+ * @author Kaishuo
+ *
+ */
 public class Chest extends Tile {
 	public final int id;
 	private Item content;
@@ -9,6 +13,10 @@ public class Chest extends Tile {
 		this.id = id;
 	}
 
+	/**
+	 * Makes the Player p to take the item from the 
+	 * chest if it is not empty
+	 */
 	public void takeItem(Player p) {
 		if (content != null) {
 			p.addItem(content);
@@ -16,10 +24,17 @@ public class Chest extends Tile {
 		}
 	}
 
+	/**
+	 * Returns the item currently in the chest
+	 */
 	public Item getContent() {
 		return content;
 	}
 
+	/**
+	 * Sets the chest's item
+	 * @param content
+	 */
 	public void setContent(Item content) {
 		this.content = content;
 	}
@@ -33,6 +48,9 @@ public class Chest extends Tile {
 		return "C";
 	}
 	
+	/**
+	 * String returned when a player inspects the chest
+	 */
 	public String getDescription(){
 		return "A chest. What could be inside?";
 	}

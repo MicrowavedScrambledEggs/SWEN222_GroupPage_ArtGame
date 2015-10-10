@@ -1,6 +1,8 @@
-package artGame.control;
+package artGame.control.cmds;
+
 
 public class EscapeAction implements Action {
+	private final int type = Packet.ESCAPE;
 	private final int pid;
 	private final boolean isWorld;
 	
@@ -28,5 +30,9 @@ public class EscapeAction implements Action {
 	
 	public String toString() {
 		return "EscapeAction for client ID "+ pid;
+	}
+	
+	public int type() {
+		return type;
 	}
 }

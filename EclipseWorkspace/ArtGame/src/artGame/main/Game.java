@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import artGame.control.Action;
+import artGame.control.cmds.Action;
 import artGame.game.*;
 import artGame.game.Character.Direction;
 import artGame.xml.XMLHandler;
@@ -107,7 +107,7 @@ public class Game {
 			floor.inspect(p);
 		}
 		else{
-			
+			//do nothing
 		}
 	}
 	
@@ -119,6 +119,49 @@ public class Game {
 		return p;
 	}
 	
+	/**
+	 * TESTING
+	 */
+	public void playGame(){
+		this.initialise();
+		char nextCommand = 'z';
+		Scanner sc = new Scanner(System.in);
+		while(true){
+			if(nextCommand!='z'){
+				doAction(p,nextCommand);
+				nextCommand = 'z';
+			}
+
+			this.floor.printFloor();//replace with gui display
+			this.printMenu();
+			nextCommand = sc.next().charAt(0);			
+			this.getFloor().moveGuards();
+			if(this.getFloor().checkGuards().contains(this.getPlayer())){
+				break;
+			}
+			
+		}
+		
+		if(this.getPlayer().isCaught()){
+			System.out.println("you got arrested");
+		}
+		else{
+			System.out.println("you ran off");
+			int score = 0;
+			for(Item i:this.getPlayer().getInventory()){
+				if(i instanceof Art){
+					score = score + ((Art)i).value;
+				}
+			}
+			System.out.println("you made off with $"+score+" worth of art");
+		}
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static void main(String[] args) {
 		Game game = null;
 		if(args.length == 0){
@@ -169,10 +212,27 @@ public class Game {
 	
 	/* Vicki messes with networking below this line. */
 
-	public Player addPlayer() {
+	
+	
+	/** Adds a new player to the Game. */
+//	public Player addPlayer() {
+//		int id = 1;
+//		if (players != null && players.size() > 1) {
+//			id = players.get(players.size()-1).getId() + 1;
+//		}
+//		Player newPlayer = new Player(Direction.SOUTH, id);
+//		players.add(newPlayer);
+//		return newPlayer;
+//	}
+	
+	/** Adds an existing player to this Game instance. */
+	public Player addPlayer(int i) throws IllegalArgumentException {
+		if (players == null) {
+			players = new ArrayList<Player>();
+		}
 		int id = 1;
-		if (players != null && players.size() > 1) {
-			id = players.get(players.size()-1).getId() + 1;
+		if (!isAvailablePlayerId(i)) {
+			throw new IllegalArgumentException();
 		}
 		Player newPlayer = new Player(Direction.SOUTH, id);
 		players.add(newPlayer);
@@ -185,7 +245,7 @@ public class Game {
 	 * @return True if the player was removed, false otherwise.
 	 */
 	public boolean removePlayer(int pid) {
-		if (players.size() == 0) { return false; } // alternatively, calls some kind of game over message
+		if (players == null || players.size() == 0) { return false; } // alternatively, calls some kind of game over message
 		if (pid >= 1 && pid < players.size()) {
 			for(Player p : players) {
 				if (p.getId() == pid) {
@@ -196,6 +256,18 @@ public class Game {
 		}
 		return false;
 	}
+
+	public boolean isAvailablePlayerId(int pid) {
+		if (players == null || players.size() == 0) return true;
+		for (Player p : players) {
+			if (p.getId() == pid) {
+				return false;
+			}
+		}
+		return true;
+	}
 	
-	
+	public List<Player> getPlayers(){
+		return players;
+	}
 }
