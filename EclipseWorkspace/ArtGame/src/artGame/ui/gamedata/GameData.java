@@ -38,7 +38,7 @@ public class GameData {
 		return game.getFloor().getTile(game.getPlayer().getRow(), game.getPlayer().getCol());
 	}
 
-	public static artGame.game.Character[] getChsaracters() {
+	public static artGame.game.Character[] getCharacters() {
 
 		chars = new ArrayList<>();
 
