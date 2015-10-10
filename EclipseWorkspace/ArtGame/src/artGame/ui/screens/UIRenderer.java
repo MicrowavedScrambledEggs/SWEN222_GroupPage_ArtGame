@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 
 import artGame.game.Item;
-import artGame.ui.GameData;
 import artGame.ui.ItemSlot;
 import artGame.ui.Widget;
 import artGame.ui.renderer.Camera;

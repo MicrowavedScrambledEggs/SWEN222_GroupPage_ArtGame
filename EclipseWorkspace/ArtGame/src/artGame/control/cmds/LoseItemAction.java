@@ -1,6 +1,8 @@
-package artGame.control;
+package artGame.control.cmds;
+
 
 public class LoseItemAction implements Action {
+	private static final int type = Packet.ITEM_LOSE;
 	private final boolean isWorld;
 	private final int recipientId;
 	private final int loserId;
@@ -13,10 +15,12 @@ public class LoseItemAction implements Action {
 		this.isWorld = isWorld;
 	}
 
-	public int getLoserId() {
+	/** Returns the ID of the entity whose inventory the item should be removed from. */
+	public int getItemSource() {
 		return loserId;
 	}
 	
+	/** Returns the ID of the item being lost. */
 	public int getItemId() {
 		return itemId;
 	}
@@ -36,7 +40,7 @@ public class LoseItemAction implements Action {
 		LoseItemAction a = (LoseItemAction)o;
 		if (getClient() == a.getClient()
 			&& isWorldUpdate() == a.isWorldUpdate()
-			&& getLoserId() == a.getLoserId()
+			&& getItemSource() == a.getItemSource()
 			&& getItemId() == a.getItemId() ) { 
 			return true; 
 		}
@@ -45,5 +49,9 @@ public class LoseItemAction implements Action {
 	
 	public String toString() {
 		return "LoseItemAction: RECIEVER:"+getClient()+"\tLOSER_ID:"+loserId+"\tITEM_ID:"+itemId;
+	}
+	
+	public int type() {
+		return type;
 	}
 }

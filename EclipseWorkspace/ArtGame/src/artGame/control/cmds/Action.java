@@ -1,4 +1,4 @@
-package artGame.control;
+package artGame.control.cmds;
 
 import java.util.Collection;
 
@@ -22,5 +22,7 @@ public interface Action {
 	 * given Game.
 	 */
 	// public void execute(Game g);
-	
+
+	/** Returns the corresponding packet type of this packet.*/
+	int type();
 }

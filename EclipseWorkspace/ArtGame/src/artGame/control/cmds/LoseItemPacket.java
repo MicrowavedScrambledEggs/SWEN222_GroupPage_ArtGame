@@ -1,4 +1,6 @@
-package artGame.control;
+package artGame.control.cmds;
+
+import artGame.control.IncompatiblePacketException;
 
 /** */
 class LoseItemPacket implements Packet {
@@ -11,12 +13,12 @@ class LoseItemPacket implements Packet {
 	public LoseItemAction read(byte[] packet) throws IncompatiblePacketException {
 		if (packet.length < packetLength() + Packet.HEAD_LENGTH) {
 			throw new IncompatiblePacketException("This packet is too short!");
-		} else if (packet[Packet.IDX_TYPE] != Packet.ITEM_GAIN) {
+		} else if (packet[Packet.IDX_TYPE] != Packet.ITEM_LOSE) {
 			throw new IncompatiblePacketException("This packet is not an item loss packet!");
 		}
-		System.out.println("TAKEPACKET: Reading a TAKE packet");
+		System.out.println("LOSEITEM: Reading a LOSEITEM packet");
 		boolean isWorld = (packet[0] == 1) ? true : false;
-		return new LoseItemAction(isWorld, (int)packet[1], (int)packet[3], (int)packet[5]);
+		return new LoseItemAction(isWorld, (int)packet[Packet.IDX_PID], (int)packet[3], (int)packet[4]);
 	}
 	
 	@Override	
@@ -33,7 +35,7 @@ class LoseItemPacket implements Packet {
 		packet[index++] = (byte)(lia.isWorldUpdate() ? 0 : 1);
 		packet[index++] = (byte)lia.getClient();
 		packet[index++] = Packet.ITEM_LOSE;
-		packet[index++] = (byte)(int)lia.getLoserId();
+		packet[index++] = (byte)(int)lia.getItemSource();
 		packet[index++] = (byte)(int)lia.getItemId();
 		packet[index] = (byte)Integer.MAX_VALUE;
 		
@@ -44,7 +46,7 @@ class LoseItemPacket implements Packet {
 	public byte[] write(int... values) throws IncompatiblePacketException {
 		if (values.length < packetLength() + Packet.HEAD_LENGTH) {
 			throw new IncompatiblePacketException("This packet is too short!");
-		} else if (values[Packet.IDX_TYPE] != Packet.ITEM_GAIN) {
+		} else if (values[Packet.IDX_TYPE] != Packet.ITEM_LOSE) {
 			throw new IncompatiblePacketException("This packet is not an item loss packet!");
 		}
 		byte[] packet = new byte[packetLength() + Packet.HEAD_LENGTH + 1];

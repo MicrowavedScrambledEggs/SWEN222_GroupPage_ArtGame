@@ -1,4 +1,6 @@
-package artGame.control;
+package artGame.control.cmds;
+
+import artGame.control.IncompatiblePacketException;
 
 public class CapturedPacket implements Packet {
 	private final int PACKET_LENGTH = 0;

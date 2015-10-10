@@ -1,9 +1,11 @@
-package artGame.control;
+package artGame.control.cmds;
 
-public class GameEndAction implements Action {
+
+public class GameStartAction implements Action {
+	private final int type = Packet.GAME_START;
 	private final int recipientId;
 	
-	public GameEndAction(int recipientId) {
+	public GameStartAction(int recipientId) {
 		this.recipientId = recipientId;
 	}
 
@@ -18,8 +20,8 @@ public class GameEndAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
-		if (!(o instanceof GameEndAction)) return false;
-		GameEndAction a = (GameEndAction)o;
+		if (!(o instanceof GameStartAction)) return false;
+		GameStartAction a = (GameStartAction)o;
 		if (isWorldUpdate() == a.isWorldUpdate()
 			&& getClient() == a.getClient()) {
 			return true;
@@ -28,6 +30,10 @@ public class GameEndAction implements Action {
 	}
 	
 	public String toString() {
-		return "GameEnd: for client "+ recipientId;
+		return "GameStart: for client "+ recipientId;
+	}
+	
+	public int type() {
+		return type;
 	}
 }

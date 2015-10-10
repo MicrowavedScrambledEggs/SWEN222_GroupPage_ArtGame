@@ -17,7 +17,7 @@ import java.util.concurrent.Future;
 import artGame.control.ClientThread;
 import artGame.control.SocketThread;
 import artGame.control.ServerThread;
-import artGame.xml.XMLReader;
+import artGame.xml.XMLHandler;
 
 public class Main {
 	public static final String GAME_NAME = "Wherefore Art Thou";
@@ -28,10 +28,6 @@ public class Main {
 	
 	private static volatile SocketThread[] children = new SocketThread[0];
 	private static Game GAME;
-
-	/* TODO:	 * 
-	 * stop/interrupt server
-	 */
 	
 	public static void main (String[] args) {
 		// mostly stolen from Dave's PacMan code.
@@ -49,7 +45,12 @@ public class Main {
 				readFileName = false;
 				String arg = args[i];
 				if(arg.equals("-help")) {
-					System.out.println("help text pending");
+					System.out.println("Commands:");
+					System.out.println("-server <numclients>	| starts a server that can accept n clients");
+					System.out.println("-connect <IP>			| starts a client that connects to the IP");
+					System.out.println("-clock <time>			| if server, sets min delay between updates [NOT IMPLEMENTED]");
+					System.out.println("-port <num>				| port to use");
+					System.out.println("-loadworld <path>		| gametype to run");
 					System.exit(0);
 				} else if(arg.equals("-server")) {
 					server = true;
@@ -60,8 +61,6 @@ public class Main {
 					gameClock = Integer.parseInt(args[++i]);
 				} else if(arg.equals("-port")) {
 					port = Integer.parseInt(args[++i]);
-				} else if (arg.equals("-clients")) {
-					maxClients = Integer.parseInt(args[++i]);
 				} else if (arg.equals("-loadworld")) {
 					filename = args[++i];
 					readFileName = true;
@@ -73,8 +72,9 @@ public class Main {
 
 		if (filename != null) {
 			File f = new File(filename);
-			XMLReader xmlreader = new XMLReader(f);
-			GAME = xmlreader.getGame();
+			XMLHandler xmlh = new XMLHandler();
+			GAME = xmlh.loadGame(f);
+			System.out.println(GAME.toString());
 		}
 
 		// Sanity checks, also stolen directly from Dave's PacMan code
@@ -95,10 +95,10 @@ public class Main {
 		try {
 			if(server) {
 				// Run as server
-				runPublicSocket(port,gameClock,broadcastClock,maxClients);
+				runPublicSocket(port,gameClock,maxClients);
 			} else if(serverURL != null) {
 				// Run as client
-				runClient(GAME, serverURL,port);
+				runClient(serverURL, port);
 			} else {
 				// single user game
 			}
@@ -111,16 +111,23 @@ public class Main {
 		System.exit(0);
 	}
 
-	private static void runClient(Game game, String addr, int port) throws IOException {
+	private static void runClient(String addr, int port) throws IOException {
 		Socket s = new Socket(addr,port);
 		children = null;
 		System.out.println("The client has connected to " + s.getInetAddress() +":"+s.getPort());
-		new ClientThread(s, game).run();
+		new ClientThread(s, GAME).run();
 	}
 
 
+	/** This method runs a public socket out of the given port that
+	 * clients can connect to in order to join the game. 
+	 * 
+	 * @param port Port to use
+	 * @param gameClock Start time of the game clock
+	 * @param maxClients
+	 */
 	@SuppressWarnings("resource") // (otherwise it complains that the publicSocket is never used.)
-	private static void runPublicSocket(int port, int gameClock, int broadcastClock, int maxClients) {
+	private static void runPublicSocket(int port, int gameClock, int maxClients) {
 		if (maxClients <= 0) {
 			throw new IllegalArgumentException("The server must be capable of accepting at least one client request.");
 		} else if (children == null) { 
@@ -141,7 +148,7 @@ public class Main {
 			while (1 == 1) {
 				try {
 					Socket s = publicSocket.accept();
-					children[numConnected] = new ServerThread(null, s, WAIT_PERIOD);
+					children[numConnected] = new ServerThread(GAME, s, WAIT_PERIOD);
 					children[numConnected].start();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -178,33 +185,4 @@ public class Main {
 			s.close();
 		}
 	}
-
-//	private static void runServer(int port, int nclients, int gameClock, int broadcastClock, Board game) {
-//	GameClock clk = new GameClock(gameClock,game,null);
-//
-//	// Listen for connections
-//	System.out.println("PACMAN SERVER LISTENING ON PORT " + port);
-//	System.out.println("PACMAN SERVER AWAITING " + nclients + " CLIENTS");
-//	try {
-//		Master[] connections = new Master[nclients];
-//		// Now, we await connections.
-//		ServerSocket ss = new ServerSocket(port);
-//		while (1 == 1) {
-//			// 	Wait for a socket
-//			Socket s = ss.accept();
-//			System.out.println("ACCEPTED CONNECTION FROM: " + s.getInetAddress());
-//			int uid = game.registerPacman();
-//			connections[--nclients] = new Master(s,uid,broadcastClock,game);
-//			connections[nclients].start();
-//			if(nclients == 0) {
-//				System.out.println("ALL CLIENTS ACCEPTED --- GAME BEGINS");
-//				multiUserGame(clk,game,connections);
-//				System.out.println("ALL CLIENTS DISCONNECTED --- GAME OVER");
-//				return; // done
-//			}
-//		}
-//	} catch(IOException e) {
-//		System.err.println("I/O error: " + e.getMessage());
-//	}
-//}
 }

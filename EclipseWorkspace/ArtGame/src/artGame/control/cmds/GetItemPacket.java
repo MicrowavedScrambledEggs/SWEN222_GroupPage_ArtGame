@@ -1,4 +1,6 @@
-package artGame.control;
+package artGame.control.cmds;
+
+import artGame.control.IncompatiblePacketException;
 
 /** GetItemPacket contains the name of 
  * 
@@ -34,7 +36,7 @@ class GetItemPacket implements Packet {
 		packet[index++] = (byte)(tia.isWorldUpdate() ? 0 : 1);
 		packet[index++] = (byte)tia.getClient();
 		packet[index++] = Packet.ITEM_GAIN;
-		packet[index++] = (byte)(int)tia.getItemSource();
+		packet[index++] = (byte)(int)tia.getItemDestination();
 		packet[index++] = (byte)(int)tia.getItemId();
 		packet[index] = (byte)Integer.MAX_VALUE;
 		

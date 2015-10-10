@@ -1,4 +1,6 @@
-package artGame.control;
+package artGame.control.cmds;
+
+import artGame.control.IncompatiblePacketException;
 
 /** */
 public class GameStartPacket implements Packet {

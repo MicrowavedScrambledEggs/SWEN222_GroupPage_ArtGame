@@ -1,7 +1,8 @@
-package artGame.control;
+package artGame.control.cmds;
 
 import java.util.Arrays;
 
+import artGame.control.IncompatiblePacketException;
 import artGame.main.Main;
 
 class ReadInventoryPacket implements Packet {
@@ -11,7 +12,7 @@ class ReadInventoryPacket implements Packet {
 	public ReadInventoryAction read(byte[] packet) throws IncompatiblePacketException {
 		if (packet.length <= Packet.HEAD_LENGTH) {
 			throw new IncompatiblePacketException("This packet is too short!");
-		} else if (packet[Packet.IDX_TYPE] != Packet.INVENTORY) {
+		} else if (packet[Packet.IDX_TYPE] != Packet.READ_INVENTORY) {
 			throw new IncompatiblePacketException("This packet is not an inventory-read packet!");
 		}
 		System.out.println("INVENTORY: Reading an INVENTORY packet");
@@ -42,8 +43,8 @@ class ReadInventoryPacket implements Packet {
 		int[] items = rinva.getInventory(); 
 		byte[] packet = new byte[rinva.getInventory().length + Packet.HEAD_LENGTH + 1];
 		packet[0] = (byte)(rinva.isWorldUpdate() ? 0 : 1);
-		packet[1] = (byte)rinva.getRecipient();
-		packet[2] = Packet.INVENTORY;
+		packet[1] = (byte)rinva.getClient();
+		packet[2] = Packet.READ_INVENTORY;
 		packet[3] = (byte)rinva.getInventoryOwner();
 		int i = 4;
 		for ( ; i < items.length; i++) {
@@ -67,7 +68,7 @@ class ReadInventoryPacket implements Packet {
 		int index = 0;
 		packet[index++] = (byte)values[0];
 		packet[index++] = (byte)values[1];
-		packet[index++] = Packet.INVENTORY;
+		packet[index++] = Packet.READ_INVENTORY;
 		packet[index++] = (byte)values[3];
 		packet[index++] = (byte)values[4];
 		packet[index++] = (byte)values[5];

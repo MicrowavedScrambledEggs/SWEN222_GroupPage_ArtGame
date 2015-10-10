@@ -1,20 +1,22 @@
-package artGame.control;
+package artGame.control.cmds;
+
 
 public class GetItemAction implements Action {
+	private static final int type = Packet.ITEM_GAIN;
 	private final int recipientId;
 	private final boolean isWorld;
-	private final int sourceId;
+	private final int itemDestination;
 	private final int itemId;
 	
-	public GetItemAction(boolean isWorld, int recipientId, int sourceId, int itemId) {
+	public GetItemAction(boolean isWorld, int recipientId, int itemDestination, int itemId) {
 		this.recipientId = recipientId;
-		this.sourceId = sourceId;
+		this.itemDestination = itemDestination;
 		this.itemId = itemId;
 		this.isWorld = isWorld;
 	}
 
-	public int getItemSource() {
-		return sourceId;
+	public int getItemDestination() {
+		return itemDestination;
 	}
 	
 	public int getItemId() {
@@ -36,7 +38,7 @@ public class GetItemAction implements Action {
 		GetItemAction a = (GetItemAction)o;
 		if (isWorldUpdate() == a.isWorldUpdate()
 			&& getClient() == a.getClient()
-			&& getItemSource() == a.getItemSource()
+			&& getItemDestination() == a.getItemDestination()
 			&& getItemId() == a.getItemId()) {
 			return true;
 		}
@@ -44,6 +46,10 @@ public class GetItemAction implements Action {
 	}
 	
 	public String toString() {
-		return "GetItem: item #"+itemId+" for client "+ recipientId +" from "+recipientId+", isWorld "+isWorld;
+		return "GetItem: item #"+itemId+" for client "+ recipientId +" to entity "+itemDestination+", isWorld "+isWorld;
+	}
+	
+	public int type() {
+		return type;
 	}
 }
