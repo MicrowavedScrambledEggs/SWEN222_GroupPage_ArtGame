@@ -75,7 +75,7 @@ public class GameRenderer implements Screen{
 	@Override
 	public void render(float delta) {
 		List<Asset> renderList = getRenderList();
-		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition());
+		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
 
 		for (Asset a : renderList) {
 			a.draw(camera, light);

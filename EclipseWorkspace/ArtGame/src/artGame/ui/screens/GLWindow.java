@@ -219,7 +219,7 @@ public class GLWindow {
 	private void initScreens() {
 		screens = new ArrayList<Screen>();
 
-		this.gameRender = new GameRenderer(new GameData());
+		this.gameRender = new GameRenderer();
 		screens.add(this.gameRender);
 		screens.add(new UIRenderer(window));
 
