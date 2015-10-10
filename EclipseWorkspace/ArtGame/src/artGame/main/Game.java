@@ -270,4 +270,12 @@ public class Game {
 	public List<Player> getPlayers(){
 		return players;
 	}
+	
+
+	public void printGame() {
+		if (getFloor().isOnExit() == null) {
+			floor.printFloor();//replace with gui display
+			printMenu();
+		}
+	}
 }

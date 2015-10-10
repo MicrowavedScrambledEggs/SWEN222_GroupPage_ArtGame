@@ -1,6 +1,6 @@
 package artGame.control.cmds;
 
-
+@Deprecated
 public class CapturedAction implements Action {
 	private static int type = Packet.LOSE;
 	private final int pid;

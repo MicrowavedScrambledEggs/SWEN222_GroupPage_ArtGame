@@ -16,6 +16,7 @@ import artGame.game.Character.Direction;
  * Note to self: there could just be an array of Packets and you can loop around those
  * to look for the one that doesn't throw an exception... Massive if-blocks are non-essential. 
  */
+@Deprecated
 public class BasicPacketParser {
 	private static final int N = 1;
 	private static final int S = 3;
@@ -69,6 +70,8 @@ public class BasicPacketParser {
 						return readAsStart(in, pid);
 					case Packet.GAME_END:
 						return readAsEnd(in, pid);
+					case Packet.INTERACT:
+						return readAsInteract(in, pid);
 				}
 			} catch (IncompatiblePacketException e) {
 				System.err.println("error! could not read values.");
@@ -79,8 +82,8 @@ public class BasicPacketParser {
 		}
 		throw new IncompatiblePacketException("Could not recognise the type from data stream.");
 	}
-	
-	
+
+
 	/** This method manages the writing of actions to the output stream.
 	 * 
 	 * @param out Output stream being written to.
@@ -122,10 +125,14 @@ public class BasicPacketParser {
 			case Packet.GAME_END:
 				writeAsGameEnd(out, (GameEndAction)a);
 				return;
+			case Packet.INTERACT:
+				writeAsInteract(out, (InteractAction)a);
+				return;
 		}
 		throw new IncompatiblePacketException("BasicPacketParser is unable to parse this type ("+type+"), Action "+a.toString());
 	}
-	
+
+
 	private static void writeHeader(DataOutputStream o, boolean isWorld, int recipient) {
 		try {
 			o.writeBoolean(isWorld);
@@ -141,6 +148,22 @@ public class BasicPacketParser {
 	 * =============================================================
 	 * =============================================================
 	 */
+	
+	
+	private static InteractAction readAsInteract(DataInputStream in, int pid) throws IncompatiblePacketException {
+		try {
+			int x = in.readInt();
+			int y = in.readInt();
+			Direction d = byteToDirection(in.readInt());
+			InteractAction a = new InteractAction(pid, x, y, d);
+			if (in.readInt() == Packet.TERMINAL) {
+				return a;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		throw new IncompatiblePacketException("Couldn't read this interact action.");
+	}
 	
 	/** Attempts to read a GameEndAction from the stream. */
 	private static GameEndAction readAsEnd(DataInputStream in, int pid) throws IncompatiblePacketException {
@@ -278,7 +301,7 @@ public class BasicPacketParser {
 			int x = in.readInt();
 			int y = in.readInt();
 			byte dir = in.readByte();
-				Direction d = MovePlayerPacket.byteToDirection(dir);
+				Direction d = byteToDirection(dir);
 			long time = in.readLong();
 			int terminal = in.readInt();
 			if (terminal == Packet.TERMINAL) {
@@ -298,6 +321,18 @@ public class BasicPacketParser {
 	 * =============================================================
 	 */
 	
+	private static void writeAsInteract(DataOutputStream o, InteractAction m) {
+		try {
+			o.writeInt(Packet.INTERACT);
+			o.writeInt((int)m.getX());
+			o.writeInt((int)m.getY());
+			o.writeByte(directionToByte(m.getDirection()));
+			o.writeInt(Packet.TERMINAL);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/** Writes the packet type followed by the move action contents to the output stream. 
 	 * REQUIRES: writeHeader() has been called with appropriate parameters. */
 	private static void writeAsMove(DataOutputStream o, MovePlayerAction m) {
@@ -306,7 +341,7 @@ public class BasicPacketParser {
 			o.writeInt(m.getPlayerId());
 			o.writeInt((int)m.getCurrent().getX());
 			o.writeInt((int)m.getCurrent().getY());
-			o.writeByte(MovePlayerPacket.directionToByte(m.getCurrentDirection()));
+			o.writeByte(directionToByte(m.getCurrentDirection()));
 			o.writeLong(m.getTime());
 			o.writeInt(Packet.TERMINAL);
 		} catch (IOException e) {

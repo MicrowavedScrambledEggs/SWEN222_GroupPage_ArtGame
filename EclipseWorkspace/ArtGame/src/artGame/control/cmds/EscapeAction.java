@@ -1,6 +1,6 @@
 package artGame.control.cmds;
 
-
+@Deprecated
 public class EscapeAction implements Action {
 	private final int type = Packet.ESCAPE;
 	private final int pid;

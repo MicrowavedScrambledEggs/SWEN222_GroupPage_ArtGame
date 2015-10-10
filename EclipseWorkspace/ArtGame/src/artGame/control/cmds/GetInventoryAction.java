@@ -1,6 +1,6 @@
 package artGame.control.cmds;
 
-
+@Deprecated
 public class GetInventoryAction implements Action {
 	private static final int type = Packet.GET_INVENTORY;
 	private final int recipientId;
