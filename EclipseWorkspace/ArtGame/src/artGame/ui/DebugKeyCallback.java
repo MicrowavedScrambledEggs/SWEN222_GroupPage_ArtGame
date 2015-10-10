@@ -57,10 +57,10 @@ public class DebugKeyCallback extends GLFWKeyCallback {
 			System.out.println("Here we'd do some examining or something");
 		}
 
-		if (key == GLFW_KEY_Q && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_Q && action == GLFW_RELEASE) {
 			GLWindow.rotateLeft();
 		}
-		if (key == GLFW_KEY_E && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_E && action == GLFW_RELEASE) {
 			GLWindow.rotateRight();
 		}
 
