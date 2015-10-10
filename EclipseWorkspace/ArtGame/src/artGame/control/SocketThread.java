@@ -1,10 +1,14 @@
 package artGame.control;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import artGame.control.cmds.Action;
+import artGame.control.cmds.Command;
 
 /** TODO
  * 
@@ -12,7 +16,8 @@ import artGame.control.cmds.Action;
  *
  */
 public abstract class SocketThread extends Thread {
-	private final ConcurrentLinkedQueue<Action> queue = new ConcurrentLinkedQueue<Action>();
+	private final ConcurrentLinkedQueue<Action> queue = new ConcurrentLinkedQueue<Action>(); // FIXME TO BE DELETED
+	private final ConcurrentLinkedQueue<Command> cmdQueue = new ConcurrentLinkedQueue<Command>();
 	static final int CONNECTION_TIMEOUT = 10000;
 	static final int LARGE_PACKET_SIZE = 1024; // used for testing 
 
@@ -35,9 +40,46 @@ public abstract class SocketThread extends Thread {
 	/** Returns the ID of the player connected to this socket.*/
 	public abstract int getPlayerId();
 
+	@Deprecated
 	/** Readies an Action to be sent along the connection. */
 	public boolean sendAction(Action a) {
 		// TODO some checks here 
 		return queue.add(a);
+	}
+	
+	/** Polls an action to send from the queue */
+	@Deprecated
+	protected Action poll() {
+		return queue.poll();
+	}
+	
+	@Deprecated
+	/** Returns true if there are queued actions to process. */
+	protected boolean hasActions() {
+		return queue.size() > 0;
+	}
+	
+	/** Readies a command to be sent */
+	public boolean sendCommand(Command c) {
+		return cmdQueue.add(c);
+	}
+	
+	/** Polls the next command to be sent */
+	protected Command pollCommand() {
+		return cmdQueue.poll();
+	}
+	
+	/** Returns true if there are commands to be sent. */
+	protected boolean hasCommands() {
+		return (cmdQueue.size() > 0);
+	}
+	
+	protected Command readCommand(DataInputStream in) throws IOException {
+		return new Command(in.readChar(), in.readInt());
+	}
+	
+	protected void writeCommand(DataOutputStream out, Command c) throws IOException {
+		out.writeChar(c.key());
+		out.writeChar(c.id());
 	}
 }

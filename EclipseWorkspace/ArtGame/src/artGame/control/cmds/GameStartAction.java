@@ -1,6 +1,5 @@
 package artGame.control.cmds;
 
-
 public class GameStartAction implements Action {
 	private final int type = Packet.GAME_START;
 	private final int recipientId;

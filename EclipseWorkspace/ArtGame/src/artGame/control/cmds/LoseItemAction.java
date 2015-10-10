@@ -1,6 +1,6 @@
 package artGame.control.cmds;
 
-
+@Deprecated
 public class LoseItemAction implements Action {
 	private static final int type = Packet.ITEM_LOSE;
 	private final boolean isWorld;

@@ -10,6 +10,7 @@ import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -26,7 +27,7 @@ public class Main {
 	public static final int CONNECTION_TIMEOUT = 60000;
 	public static final int LARGE_PACKET_SIZE = 1024;
 	
-	private static volatile SocketThread[] children = new SocketThread[0];
+	private static volatile ServerThread[] children = new ServerThread[0];
 	private static Game GAME;
 	
 	public static void main (String[] args) {
@@ -115,7 +116,7 @@ public class Main {
 		Socket s = new Socket(addr,port);
 		children = null;
 		System.out.println("The client has connected to " + s.getInetAddress() +":"+s.getPort());
-		new ClientThread(s, GAME).run();
+		new ClientThread(s, GAME, Main.BROADCAST_PERIOD).run();
 	}
 
 
@@ -134,7 +135,7 @@ public class Main {
 			System.err.println("Cannot run a public server when the server has been closed.");
 			return; 
 		} else if (children.length == 0) {
-			children = new SocketThread[maxClients];
+			children = new ServerThread[maxClients];
 		}
 		// now we've passed the sanity checks, enter the main listen loop
 		ServerSocket publicSocket = null;
@@ -173,6 +174,10 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static ServerThread[] getKids() {
+		return Arrays.copyOf(children,children.length);
 	}
 
 	public static void stop() {

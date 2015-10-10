@@ -1,17 +1,14 @@
 package artGame.control;
 
-import java.awt.Point;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Arrays;
 
-import artGame.control.cmds.Action;
-import artGame.control.cmds.BasicPacketParser;
-import artGame.control.cmds.Packet;
+import artGame.control.cmds.Command;
+import artGame.game.Player;
 import artGame.main.Game;
 import artGame.main.Main;
 
@@ -24,11 +21,12 @@ public class ServerThread extends SocketThread {
 	private static final int PID_START = 1; // the id of the first player
 	private static final short TYPE = 120; // TODO in a world with more than one map,
 										 // we'd need to get this from the loaded Game
-										 // so only clients running the same level can connect. 
+										 // so only clients running the same level can connect.
+	private final Game game; 
+	private final GameClock gameRunner;
 	private Socket socket;
-	private final Game game;
 	private final int wait;
-	private int pid; // FIXME
+	private int pid;
 	private boolean timedout = false;
 	private final DataInputStream IN;
 	private final DataOutputStream OUT;
@@ -44,6 +42,7 @@ public class ServerThread extends SocketThread {
 	 * @throws IOException 
 	 */
 	public ServerThread(Game game, Socket socket, int wait) throws IOException {
+		gameRunner = new GameClock(game);
 		this.game = game;
 		this.socket = socket;
 		this.wait = wait;
@@ -103,13 +102,35 @@ public class ServerThread extends SocketThread {
 		int runcount = 0; // debugging
 		while (!socket.isClosed()) {
 			try {
+				long then = System.currentTimeMillis();
 				// read first
-//				IN.readInt(); //FIXME
 				waitFor(IN);
-				Action a = BasicPacketParser.getActionFromStream(IN);
-				System.out.println(a.toString());
-				runcount++;
-			} catch (IncompatiblePacketException e) {  }
+				// FIXME terrible implementation
+				Command clientCmd = super.readCommand(IN);
+				ServerThread[] ss = Main.getKids();
+				for (ServerThread s : ss) {
+					if (s != this) {
+						s.sendCommand(clientCmd);
+					}
+				}
+				for (Player x : game.getPlayers()) {
+					if (x.getId() == clientCmd.id) {
+						game.doAction(x, clientCmd.action);
+						break;
+					}
+				}
+				// then do our work!
+				long now = System.currentTimeMillis();
+				while (then + wait > now) {
+					if (super.hasCommands()) {
+						Command serverCmd = super.pollCommand();
+						super.writeCommand(OUT, serverCmd);
+					}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			runcount++;
 		}
 	}
@@ -143,58 +164,26 @@ public class ServerThread extends SocketThread {
 		}
 	}
 
-	/* The process of translating the stream data is gloriously repetitive.
-	 * Let's have methods for dealing with that!
-	 *
-	 * Working on getting the PacketParsers and an Action class to do this job.
-	 */
-//	private void processDataStream(DataInputStream input, int action, int gotId) throws IOException {
-//		if (gotId == 0) { // client-sent packets should never be 0!
-//			
-//		} else if (gotId == pid) { // this packet is about an action taken by our client player
-//			waitFor(input);
-//			if (action == Packet.MOVE) {
-//				readMove(input,gotId);
-//			} else if (action == Packet.ITEM_LOSE) {
-//				readTakeItem(input,gotId);
-//			} else if (action == Packet.ESCAPE) {
-//				readEscape(input,gotId);
-//			} else if (action == Packet.ITEM_GAIN) {
-//				readGiveItem(input,gotId);
-//			} else if (action == Packet.LOSE) {
-//				readCaught(input,gotId);
-//			} else if (action == Packet.INVENTORY) {
-//				readInventory(input,gotId);
-//			} else {
-//				throw new IllegalArgumentException();
-//			}
-//		} else { // this packet is an action taken on something in the world
-//			System.out.println("ACTION "+action+" FOR ACTOR "+gotId+" IS INVALID");
-//		}
-//		// wait for terminating character
-//		waitFor(input);
-//		if (input.readInt() == Integer.MAX_VALUE) {
-//			System.out.println("DONE");
-//		} else {
-//			System.err.println("ERR");
-//		}
-//	}
-
 	@Override
 	public InetAddress getInetAddress() {
 		return socket.getInetAddress();
 	}
 
+	/** Returns the client's port number. */
 	@Override
 	public int getPort() {
 		return socket.getPort();
 	}
 
+	/** Returns true only if there is still a useable connection to the client.*/
 	@Override
 	public boolean isSocketSafe() {
 		return socket.isBound() && socket.isConnected() && !socket.isClosed();
 	}
 
+	/** Closes the socket and unlinks server and client. 
+	 * @return True if socket is successfully closed.
+	 */
 	@Override
 	public boolean close() {
 		if (socket.isClosed()) {
@@ -210,6 +199,7 @@ public class ServerThread extends SocketThread {
 		return true;
 	}
 
+	/** Returns whether the connection has timed out, and therefore should be closed. */
 	@Override
 	public boolean isTimedOut() {
 		return timedout;
