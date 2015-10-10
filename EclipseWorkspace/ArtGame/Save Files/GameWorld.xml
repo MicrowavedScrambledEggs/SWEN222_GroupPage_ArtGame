@@ -1851,7 +1851,7 @@
                 <y value = "0"/>
             </position>
             <wall direction = "NORTH" />
-            <door doorId ="9" direction = "WEST" locked = "FALSE"/>
+            <door doorId ="9" direction = "EAST" locked = "FALSE"/>
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -1859,7 +1859,7 @@
                 <y value = "0"/>
             </position>
             <wall direction = "NORTH" />
-            <door doorId ="9" direction = "EAST" locked = "FALSE"/>
+            <door doorId ="9" direction = "WEST" locked = "FALSE"/>
             <wall direction = "WEST" />
 		</empty_tile>
 		<empty_tile>
@@ -2064,7 +2064,7 @@
         </empty_tile>
         <chest id = "11">
 			<position>
-				<x value = "14"/>
+				<x value = "19"/>
                 <y value = "2"/>
             </position>
             <wall direction = "EAST" />

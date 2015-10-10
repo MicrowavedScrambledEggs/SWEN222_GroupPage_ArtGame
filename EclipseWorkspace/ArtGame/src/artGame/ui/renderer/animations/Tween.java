@@ -1,5 +1,6 @@
 package artGame.ui.renderer.animations;
 
-public class Tween {
-
+public interface Tween<E> {
+	public E tween(float time);
+	public boolean isFinished();
 }
