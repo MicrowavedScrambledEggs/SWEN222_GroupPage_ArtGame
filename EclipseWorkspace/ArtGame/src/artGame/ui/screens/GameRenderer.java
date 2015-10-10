@@ -99,7 +99,7 @@ public class GameRenderer implements Screen{
 
 	private Map<artGame.game.Character, Asset> loadCharacters() {
 		Map<artGame.game.Character, Asset> chars = new HashMap<artGame.game.Character, Asset>();
-		for (artGame.game.Character c : GameData.getChsaracters()) {
+		for (artGame.game.Character c : GameData.getCharacters()) {
 			if (c instanceof Player) {
 				chars.put(c, playerSprite.instantiate());
 			} else if (c instanceof Guard) {
