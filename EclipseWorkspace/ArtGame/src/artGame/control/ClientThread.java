@@ -10,11 +10,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import artGame.control.cmds.Action;
 import artGame.control.cmds.BasicPacketParser;
+import artGame.control.cmds.Command;
 import artGame.control.cmds.GetItemAction;
 import artGame.control.cmds.MovePlayerAction;
 import artGame.control.cmds.Packet;
 import artGame.game.Character.Direction;
 import artGame.main.Game;
+import artGame.main.Main;
 
 /**
  */
@@ -26,13 +28,22 @@ public class ClientThread extends SocketThread {
 	private Socket socket;
 	private boolean isPlaying = true;
 	private int pid = 404;
+	private final int wait;
 	private volatile long timeout;
 	private final DataInputStream IN;
 	private final DataOutputStream OUT;
 	
+	/**
+	 * @deprecated Use {@link #ClientThread(Socket,Game,int)} instead
+	 */
 	public ClientThread(Socket s, Game g) throws IOException {
+		this(s, g, Main.BROADCAST_PERIOD);
+	}
+
+	public ClientThread(Socket s, Game g, int wait) throws IOException {
 		this.socket = s;
 		game = g;
+		this.wait = wait;
 		timeout = System.currentTimeMillis() + SocketThread.CONNECTION_TIMEOUT;
 		IN = new DataInputStream(socket.getInputStream());
 		OUT = new DataOutputStream(socket.getOutputStream());
@@ -82,42 +93,22 @@ public class ClientThread extends SocketThread {
 		receiveGameInfo();
 		
 		System.out.println("=-=-=-=-=-=-=-=-=- RUNNING CLIENT "+ pid +" =-=-=-=-=-=-=-=-=-");
-		int runcount = 0; 
-		int curX = 0;
-		int curY = 0;
-		int r = 0;
+		int runcount = 0;
 		while (!socket.isClosed()) {
 			try {
-				r = (int)(Math.random()*100);
-				// write first
-				if (r < 70) {
-					MovePlayerAction a = new MovePlayerAction(pid, pid, new Point(curX,curY), Direction.NORTH, System.currentTimeMillis());
-					curX++;
-					curY++;
-					System.out.println(a.toString());
-					BasicPacketParser.writeActionToStream(OUT, a);
-				} else if (r < 80) {
-					MovePlayerAction a = new MovePlayerAction(pid, pid, new Point(-1,-1), Direction.NORTH, System.currentTimeMillis());
-					System.out.println(a.toString());
-					BasicPacketParser.writeActionToStream(OUT, a);
-				} else {
-					GetItemAction a = new GetItemAction(false, pid, pid, r);
-					System.err.println(a.toString());
-					BasicPacketParser.writeActionToStream(OUT, a);
+				long then = System.currentTimeMillis();
+				// first, write to server
+				if (super.hasCommands()) {
+					Command c = super.pollCommand();
+					super.writeCommand(OUT, c);
 				}
-				// TODO this is where the part that reads the messages goes!
-				// [get time]
-				timeout = System.currentTimeMillis() + SocketThread.CONNECTION_TIMEOUT;
-				// [read for]
-				// [if timeout, close]
-				// [otherwise, keep looping!]
-				r++;
-				Thread.sleep(1000);
-			} catch (IOException e) { 
-				e.printStackTrace(); 
-			} catch (InterruptedException e) { 
-				e.printStackTrace();
-			} catch (IncompatiblePacketException e) {
+				long now = System.currentTimeMillis();
+				while (then + wait > now && IN.available() > 0) {
+					Command c = super.readCommand(IN);
+					System.out.print(c.toString()+" | ");
+					// TODO actually... do stuff here. 
+				}
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 

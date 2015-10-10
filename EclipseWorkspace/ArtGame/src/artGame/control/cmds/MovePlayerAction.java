@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import artGame.game.Character.Direction;
 
+@Deprecated
 public class MovePlayerAction implements Action {
 	private static final int type = Packet.MOVE; 
 	private final Direction curDir;

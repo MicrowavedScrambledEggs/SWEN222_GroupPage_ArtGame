@@ -1,6 +1,6 @@
 package artGame.control.cmds;
 
-
+@Deprecated
 public class GetItemAction implements Action {
 	private static final int type = Packet.ITEM_GAIN;
 	private final int recipientId;
