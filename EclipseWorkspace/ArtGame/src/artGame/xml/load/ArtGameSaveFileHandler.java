@@ -8,6 +8,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 import artGame.game.Character.Direction;
+import artGame.game.GameError;
 import artGame.main.Game;
 import artGame.xml.XMLHandler;
 
@@ -168,6 +169,9 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	 * @param value value of Variable
 	 */
 	private void addFieldToCurrentBuilder(String localName, Object... values) {
+		if(buildStack.isEmpty()){
+			throw new GameError("Problem when parsing a " + localName + " with " + values[0].toString());
+		}
 		ObjectBuilder current = buildStack.peek();
 		current.addField(localName, values);
 	}
