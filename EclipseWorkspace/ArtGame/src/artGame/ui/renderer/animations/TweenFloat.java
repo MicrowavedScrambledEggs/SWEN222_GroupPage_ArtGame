@@ -12,21 +12,30 @@ public class TweenFloat implements Tween<Float> {
 	    this.duration = duration;
 	    this.valueRange = valueRange;
 	    this.startTime = startTime;
+	    
+	    System.out.println("Initial start value: " + startValue);
 	}
 
 	@Override
 	public Float tween(float time) {
 		float currentTime = (time - startTime)/1000.0f;
+		System.out.println("float tween time: " + currentTime);
 	    float t = currentTime / duration;
 	    t = Math.max(0, Math.min(1, t));
 	    
-	    float val = startValue / (1 - t) +  (startValue + valueRange) / t;
+	    System.out.println("float tween param: " + t);
+	    
+	    float val = startValue + t * valueRange;
 	    currentValue = val;
 	    return val;
 	}
 
 	@Override
-	public boolean isFinished() {
-		return currentValue >= startValue + valueRange;
+	public boolean isFinished(float time) {
+		float currentTime = (time - startTime)/1000.0f;
+		System.out.println("float tween time: " + currentTime);
+	    float t = currentTime / duration;
+	    t = Math.max(0, Math.min(1, t));
+		return t >= 1;
 	}
 }

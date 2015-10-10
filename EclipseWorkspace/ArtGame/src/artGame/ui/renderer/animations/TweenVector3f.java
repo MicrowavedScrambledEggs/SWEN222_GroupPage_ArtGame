@@ -28,8 +28,8 @@ public class TweenVector3f implements Tween<Vector3f> {
 	}
 
 	@Override
-	public boolean isFinished() {
-		return currentValue.length() >= startValue.add(valueRange).length();
+	public boolean isFinished(float time) {
+		return time >= startTime + duration * 1000;
 	}
 
 }
