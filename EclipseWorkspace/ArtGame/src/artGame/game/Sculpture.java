@@ -11,12 +11,14 @@ public class Sculpture extends Character {
 	private int value;
 	private String name;
 	private String description;
+	private boolean taken;
 
 	public Sculpture(Direction dir, int ID, int value, String name) {
 		super(dir, ID);
 		this.value = value;
 		this.name = name;
 		this.description = "A sculpture. It is " + name +".";
+		this.taken = false;
 	}
 
 	/**
@@ -25,6 +27,7 @@ public class Sculpture extends Character {
 	public Art toItem(Floor f) {
 		Art artItem = new Art(name, value, f.nextItemID());
 		artItem.setDescription("A sculpture. It is " + name +" worth " + value);
+		this.taken = true;
 		return artItem;
 	}
 
@@ -40,6 +43,10 @@ public class Sculpture extends Character {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public boolean isTaken(){
+		return taken;
 	}
 
 }
