@@ -82,6 +82,7 @@ public class StairTile extends Tile {
 	public void setOccupant(Character occupant) {
 		if (occupant != null)
 			this.linkedTile.setOccupantHelper(occupant);
+		else this.occupant = null;
 	}
 
 	/**
