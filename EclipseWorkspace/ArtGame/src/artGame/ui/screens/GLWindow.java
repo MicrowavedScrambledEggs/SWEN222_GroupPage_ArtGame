@@ -85,7 +85,7 @@ public class GLWindow {
 
 	static {
 		XMLHandler gameLoader = new XMLHandler();
-		game = gameLoader.loadGame(new File("Save Files/GroundFloorBasic.xml"));
+		game = gameLoader.loadGame(new File("Save Files/GameWorld.xml"));
 		GameData.updateGame(game);
 	}
 
