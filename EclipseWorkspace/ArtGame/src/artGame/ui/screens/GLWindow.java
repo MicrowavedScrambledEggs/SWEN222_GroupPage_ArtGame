@@ -90,6 +90,9 @@ public class GLWindow {
 	private long lastRender;
 	private float deltaMS;
 
+	private static boolean rotateLeft = false;
+	private static boolean rotateRight = false;
+
 	static {
 		XMLHandler gameLoader = new XMLHandler();
 		game = gameLoader.loadGame(new File("Save Files/GameWorld.xml"));
@@ -152,7 +155,12 @@ public class GLWindow {
 				out = true;
 			}
 
-
+			if(rotateLeft){
+				gameRender.rotateLeft();
+			}
+			if(rotateRight){
+				gameRender.rotateRight();
+			}
 
 			loop();
 			long time = System.nanoTime();
@@ -253,6 +261,14 @@ public class GLWindow {
 
 	public static void setCamera(Camera cam) {
 		GLWindow.bufferedCam = cam;
+	}
+
+	public static void rotateLeft(){
+		rotateLeft = true;
+	}
+
+	public static void rotateRight(){
+		rotateRight = true;
 	}
 
 	public static void main(String[] args) {
