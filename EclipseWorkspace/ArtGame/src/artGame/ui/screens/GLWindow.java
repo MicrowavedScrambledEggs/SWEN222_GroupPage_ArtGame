@@ -83,9 +83,11 @@ public class GLWindow {
 
 	private static Game game;
 
+	private boolean out = false;
+
 	static {
 		XMLHandler gameLoader = new XMLHandler();
-		game = gameLoader.loadGame(new File("Save Files/GroundFloorBasic.xml"));
+		game = gameLoader.loadGame(new File("Save Files/GameWorld.xml"));
 		GameData.updateGame(game);
 	}
 
@@ -134,7 +136,11 @@ public class GLWindow {
 
 	public void begin() {
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
-			System.out.println(GameData.getAllArt().length);
+
+			if(!out && game.getPlayer().isCaught()){
+				out = true;
+			}
+
 			loop();
 		}
 		dispose();
@@ -165,8 +171,13 @@ public class GLWindow {
 		/* Flip buffers for next loop */
 		width.flip();
 		height.flip();
-		getCamera().translate(debugKeys.getCameraMove());
-		gameRender.getCamera().translate(debugKeys.getCameraMove());
+
+		if(out){
+			getCamera().translate(debugKeys.getCameraMove());
+			gameRender.getCamera().translate(debugKeys.getCameraMove());
+		}
+
+
 		camera = bufferedCam;
 		light = bufferedLight;
 		// System.out.println(GL11.glGetError());

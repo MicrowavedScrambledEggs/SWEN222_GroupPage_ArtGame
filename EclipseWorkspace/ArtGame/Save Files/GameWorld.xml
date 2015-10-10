@@ -1,0 +1,2256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game>
+	<floor level="0">
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+            <door doorId ="1" direction = "EAST" locked = "TRUE" keyID = "1" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "1"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <door doorId ="1" direction = "WEST" locked = "TRUE" keyID = "1" />
+		</empty_tile>
+		<tile_stretch length = "4">
+			<position>
+				<x value = "2"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "EAST" />
+            <door doorId ="2" direction = "SOUTH" locked = "FALSE"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile isExit = "TRUE">
+            <position>
+                <x value = "8"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <empty_tile isExit = "TRUE">
+            <position>
+                <x value = "9"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <empty_tile isExit = "TRUE">
+            <position>
+                <x value = "10"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <empty_tile isExit = "TRUE">
+            <position>
+                <x value = "11"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "13"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "EAST" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "1"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <tile_stretch length = "2">
+			<position>
+				<x value = "2"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" />
+		</tile_stretch>
+		<chest id = "1">
+			<position>
+				<x value = "4"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <inventory>
+            	<item type = "ART" id = "59"/>
+            </inventory>
+		</chest>
+		<chest id = "0">
+			<position>
+				<x value = "5"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "EAST" />
+            <wall direction = "SOUTH" />
+            <inventory>
+            	<item type = "KEY" id = "1"/>
+            </inventory>
+        </chest>
+        <empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "WEST" />
+            <door doorId ="2" direction = "NORTH" locked = "FALSE"/>
+        </empty_tile>
+        <tile_stretch length = "5">
+			<position>
+				<x value = "7"/>
+                <y value = "1"/>
+            </position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "EAST" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "13"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "WEST" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "1"/>
+            </position>
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "EAST" />
+        </empty_tile>
+        <stair_tile direction = "SOUTH" up = "TRUE">
+        	<position>
+				<x value = "17"/>
+                <y value = "1"/>
+            </position>
+            <linked_tile level = "1">
+				<x value="16" />
+				<y value="1" />
+            </linked_tile>
+        </stair_tile>
+        <empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "WEST" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "EAST" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "EAST" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "1"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <tile_stretch length = "3">
+			<position>
+				<x value = "2"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "NORTH" />
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "5"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "EAST" />
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "WEST" />
+            <door doorId ="3" direction = "SOUTH" locked = "FALSE"/>
+        </empty_tile>
+        <tile_stretch length = "5">
+			<position>
+				<x value = "7"/>
+                <y value = "2"/>
+            </position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "EAST" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "13"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "WEST" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "2"/>
+            </position>
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "EAST" />
+        </empty_tile>
+       <empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <tile_stretch length = "2">
+			<position>
+				<x value = "17"/>
+                <y value = "2"/>
+            </position>
+		</tile_stretch>
+        <empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "EAST" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "WEST" />
+            <door doorId ="4" direction = "EAST" locked = "TRUE" keyID = "1" />
+            <door doorId ="5" direction = "SOUTH" locked = "TRUE" keyID = "1" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "1"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <door doorId ="4" direction = "WEST" locked = "TRUE" keyID = "1" />
+		</empty_tile>
+		<tile_stretch length = "4">
+			<position>
+				<x value = "2"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <wall direction = "EAST" />
+            <door doorId ="3" direction = "NORTH" locked = "FALSE"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "4">
+			<position>
+				<x value = "8"/>
+                <y value = "3"/>
+            </position>
+		</tile_stretch>
+        <empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "3"/>
+            </position>
+            <door doorId ="6" direction = "EAST" locked = "FALSE"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "13"/>
+                <y value = "3"/>
+            </position>
+            <door doorId ="6" direction = "WEST" locked = "FALSE"/>
+            <wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <door doorId ="7" direction = "EAST" locked = "FALSE"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <door doorId ="7" direction = "WEST" locked = "FALSE"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "17"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "WEST" />
+			<door doorId ="5" direction = "NORTH" locked = "TRUE" keyID = "1" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "NORTH" artID = "1"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "5"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "NORTH"/>
+		</tile_stretch>
+		<tile_stretch length = "6">
+			<position>
+				<x value = "7"/>
+                <y value = "4"/>
+			</position>
+		</tile_stretch>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "13"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "NORTH"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "17"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "NORTH" artID = "2"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "5"/>
+			</position>
+			<wall direction = "WEST" artID = "3"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "5"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "5"/>
+			</position>
+			<wall direction = "EAST" artID = "4"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "5"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "10">
+			<position>
+				<x value = "5"/>
+                <y value = "5"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "5"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "5"/>
+			</position>
+			<wall direction = "WEST" artID = "5" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "17"/>
+                <y value = "5"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "5"/>
+			</position>
+			<wall direction = "EAST" artID = "6" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "6"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "6"/>
+			</position>
+			<wall direction = "SOUTH" artID = "7" />
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "6"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "6"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "10">
+			<position>
+				<x value = "5"/>
+                <y value = "6"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "6"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "6"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "17"/>
+                <y value = "6"/>
+			</position>
+			<wall direction = "EAST" artID = "8" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "6"/>
+			</position>
+			<wall direction = "WEST" artID = "9"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "6"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "NORTH" artID = "10"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "3">
+			<position>
+				<x value = "5"/>
+                <y value = "7"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "8"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "9"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "SOUTH" artID = "11" />
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "11"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<tile_stretch length = "3">
+			<position>
+				<x value = "12"/>
+                <y value = "7"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "WEST" artID = "12" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "17"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "WEST"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "7"/>
+			</position>
+			<wall direction = "EAST" artID = "13" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "8"/>
+			</position>
+			<wall direction = "WEST" artID = "14" />
+		</empty_tile>
+		<tile_stretch length = "6">
+			<position>
+				<x value = "1"/>
+                <y value = "8"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "8"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "8"/>
+                <y value = "8"/>
+			</position>
+			<wall direction = "WEST"/>
+			<wall direction = "NORTH"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "9"/>
+                <y value = "8"/>
+			</position>
+			<wall direction = "NORTH"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "11"/>
+                <y value = "8"/>
+			</position>
+			<wall direction = "EAST"/>
+			<wall direction = "NORTH"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "8"/>
+			</position>
+			<wall direction = "WEST"/>
+		</empty_tile>
+		<tile_stretch length = "4">
+			<position>
+				<x value = "13"/>
+                <y value = "8"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "17"/>
+                <y value = "8"/>
+			</position>
+			<wall direction = "EAST" artID = "15"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "8"/>
+			</position>
+			<wall direction = "WEST" artID = "16"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "8"/>
+			</position>
+			<wall direction = "EAST"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "9"/>
+			</position>
+			<wall direction = "WEST"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "9"/>
+			</position>
+			<wall direction = "SOUTH" artID = "17"/>
+		</tile_stretch>
+		<tile_stretch length = "4">
+			<position>
+				<x value = "3"/>
+                <y value = "9"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "9"/>
+			</position>
+			<wall direction = "EAST" artID = "18"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "8"/>
+                <y value = "9"/>
+			</position>
+			<wall direction = "WEST"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "9"/>
+                <y value = "9"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "11"/>
+                <y value = "9"/>
+			</position>
+			<wall direction = "EAST"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "9"/>
+			</position>
+			<wall direction = "WEST" artID = "19"/>
+		</empty_tile>
+		<tile_stretch length = "6">
+			<position>
+				<x value = "13"/>
+                <y value = "9"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "9"/>
+			</position>
+			<wall direction = "EAST" artID = "20"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "NORTH" artID = "21"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+        	<position>
+				<x value = "4"/>
+                <y value = "10"/>
+            </position>
+            <wall direction = "WEST" />
+        </empty_tile>
+        <tile_stretch length = "2">
+            <position>
+				<x value = "5"/>
+                <y value = "10"/>
+            </position>
+        </tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "EAST" artID = "18"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "8"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "9"/>
+                <y value = "10"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "11"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "WEST" artID = "19"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "13"/>
+                <y value = "10"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "EAST"/>
+		</empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "WEST" artID = "22"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "17"/>
+                <y value = "10"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "EAST" artID = "20"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "WEST" artID = "23"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "11"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "EAST" artID = "24"/>
+		</empty_tile>
+		<empty_tile>
+        	<position>
+				<x value = "4"/>
+                <y value = "11"/>
+            </position>
+            <wall direction = "WEST" />
+        </empty_tile>
+        <tile_stretch length = "2">
+            <position>
+				<x value = "5"/>
+                <y value = "11"/>
+            </position>
+        </tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "8"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "9"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "10"/>
+                <y value = "11"/>
+			</position>
+			<door doorID = "8" direction = "SOUTH" locked = "TRUE" keyID = "2" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "11"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "13"/>
+                <y value = "11"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "EAST"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "17"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "EAST" artID = "25" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "WEST" artID = "26" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "11"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "SOUTH" artID = "27"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<!--<stair_tile direction = "NORTH" up = "TRUE">
+		    <position>
+				<x value = "4"/>
+                <y value = "12"/>
+			</position>
+			<linked_tile level = "1">
+				<x value="4" />
+				<y value="13" />
+            </linked_tile>
+			<wall direction = "WEST" />
+		</stair_tile>
+		<stair_tile direction = "NORTH" up = "TRUE">
+		    <position>
+				<x value = "5"/>
+                <y value = "12"/>
+			</position>
+			<linked_tile level = "1">
+				<x value="5" />
+				<y value="13" />
+            </linked_tile>
+			<wall direction = "EAST" />
+		</stair_tile>
+		-->
+		<empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "12"/>
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "8"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "9"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "NORTH" artID = "28" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "10"/>
+                <y value = "12"/>
+			</position>
+			<door doorID = "8" direction = "NORTH" locked = "TRUE" keyID = "2" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "11"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "12"/>
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "13"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<!--  <stair_tile direction = "NORTH" up = "TRUE">
+		    <position>
+				<x value = "14"/>
+                <y value = "12"/>
+			</position>
+			<linked_tile level = "1">
+				<x value="14" />
+				<y value="13" />
+            </linked_tile>
+			<wall direction = "WEST" />
+		</stair_tile>
+		<stair_tile direction = "NORTH" up = "TRUE">
+		    <position>
+				<x value = "15"/>
+                <y value = "12"/>
+			</position>
+			<linked_tile level = "1">
+				<x value="15" />
+				<y value="13" />
+            </linked_tile>
+			<wall direction = "EAST" />
+		</stair_tile>
+		-->
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "WEST" artID = "29" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "17"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "12"/>
+			</position>
+			<wall direction = "EAST" artID = "30" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "NORTH" artID = "31"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "5"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "6">
+			<position>
+				<x value = "7"/>
+                <y value = "13"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "13"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "17"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "EAST" artID = "32" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "WEST" artID = "33" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "13"/>
+			</position>
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "14"/>
+			</position>
+			<wall direction = "WEST" artID = "34"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "14"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "14"/>
+			</position>
+			<wall direction = "EAST" artID = "35"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "14"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "5"/>
+                <y value = "14"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<tile_stretch length = "8">
+			<position>
+				<x value = "6"/>
+                <y value = "14"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "14"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "14"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "14"/>
+			</position>
+			<wall direction = "WEST" artID = "36" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "17"/>
+                <y value = "14"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "14"/>
+			</position>
+			<wall direction = "EAST" artID = "37" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "15"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "5"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "SOUTH" artID = "38" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "SOUTH" artID = "39" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "8"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "9"/>
+                <y value = "15"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "11"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "SOUTH" artID = "40" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "13"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "SOUTH" artID = "41" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "17"/>
+                <y value = "15"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "15"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "WEST" />
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "16"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" artID = "42" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "5"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" artID = "43" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "8"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" artID = "44" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "9"/>
+                <y value = "16"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "11"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" artID = "45" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "12"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "13"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" artID = "46" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" artID = "47" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "17"/>
+                <y value = "16"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "16"/>
+			</position>
+			<wall direction = "EAST" />
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "17"/>
+			</position>
+			<wall direction = "WEST" artID = "49"/>
+		</empty_tile>
+		<tile_stretch length = "18">
+			<position>
+				<x value = "1"/>
+                <y value = "17"/>
+			</position>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "17"/>
+			</position>
+			<wall direction = "EAST" artID = "50"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "WEST"/>
+			<wall direction = "SOUTH"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "1"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH" artID = "51"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "2"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH" artID = "51"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH" artID = "52"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "5"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH" artID = "53"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "7"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH" artID = "53"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "8"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "9"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH" artID = "54"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "11"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "12"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH" artID = "55"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH" artID = "56"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "16"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH"/>
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "17"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH" artID = "57"/>
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "19"/>
+                <y value = "18"/>
+			</position>
+			<wall direction = "SOUTH"/>
+			<wall direction = "EAST"/>
+		</empty_tile>
+	</floor>
+	<floor level="1">
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "1"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" artID = "60"/>
+		</tile_stretch>
+		<empty_tile>
+		    <position>
+				<x value = "3"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+		</empty_tile>
+		<tile_stretch length = "2">
+			<position>
+				<x value = "4"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" artID = "61"/>
+		</tile_stretch>
+		<chest id = "2">
+			<position>
+				<x value = "6"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "EAST" />
+	        <inventory>
+	        	<item type = "KEY" id = "2"/>
+	        </inventory>
+		</chest>
+		<empty_tile>
+			<position>
+				<x value = "13"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "14"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <door doorId ="9" direction = "EAST" locked = "FALSE"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <door doorId ="9" direction = "WEST" locked = "FALSE"/>
+            <wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+		</empty_tile>
+		<chest id = "5">
+			<position>
+				<x value = "19"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" />
+            <wall direction = "EAST" />
+		</chest>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "WEST" artID = "63"/>
+        </empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "1"/>
+                <y value = "1"/>
+            </position>
+        </empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "2"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" artID = "62"/>
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "5"/>
+                <y value = "1"/>
+            </position>
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "EAST" artID = "64"/>
+        </empty_tile>
+        <chest id = "6">
+			<position>
+				<x value = "13"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "SOUTH" />
+        </chest>
+        <chest id = "7">
+			<position>
+				<x value = "14"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "EAST" />
+            <wall direction = "SOUTH" />
+        </chest>
+        <empty_tile>
+			<position>
+				<x value = "15"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "EAST" />
+        </empty_tile>
+        <stair_tile direction = "SOUTH" up = "FALSE">
+        	<position>
+				<x value = "16"/>
+                <y value = "1"/>
+            </position>
+            <linked_tile level = "0">
+				<x value="17" />
+				<y value="1" />
+            </linked_tile>
+        </stair_tile>
+        <empty_tile>
+			<position>
+				<x value = "18"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "WEST" />
+        </empty_tile>
+        <chest id ="8">
+			<position>
+				<x value = "19"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "EAST" />
+        </chest>
+        <empty_tile>
+			<position>
+				<x value = "0"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "WEST" artID = "63"/>
+        </empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "1"/>
+                <y value = "2"/>
+            </position>
+        </empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "2"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "3"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "NORTH" artID = "65"/>
+        </empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "5"/>
+                <y value = "2"/>
+            </position>
+        </empty_tile>
+        <empty_tile>
+			<position>
+				<x value = "6"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "EAST" artID = "64"/>
+        </empty_tile>
+        <chest id = "9">
+			<position>
+				<x value = "13"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "NORTH" />
+        </chest>
+        <chest id = "10">
+			<position>
+				<x value = "14"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "EAST" />
+            <wall direction = "NORTH" />
+        </chest>
+        <empty_tile>
+            <position>
+				<x value = "15"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "WEST" />
+        </empty_tile>
+        <empty_tile>
+            <position>
+				<x value = "16"/>
+                <y value = "2"/>
+            </position>
+        </empty_tile>
+        <empty_tile>
+            <position>
+				<x value = "17"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "NORTH" />
+        </empty_tile>
+        <empty_tile>
+            <position>
+				<x value = "18"/>
+                <y value = "2"/>
+            </position>
+        </empty_tile>
+        <chest id = "11">
+			<position>
+				<x value = "19"/>
+                <y value = "2"/>
+            </position>
+            <wall direction = "EAST" />
+        </chest>
+        <empty_tile>
+            <position>
+				<x value = "0"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <tile_stretch length = "2">
+            <position>
+				<x value = "1"/>
+                <y value = "3"/>
+            </position>
+        </tile_stretch>
+        <empty_tile>
+            <position>
+				<x value = "3"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <tile_stretch length = "2">
+            <position>
+				<x value = "4"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" artID = "66" />
+        </tile_stretch>
+        <empty_tile>
+            <position>
+				<x value = "6"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "EAST" />
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <empty_tile>
+            <position>
+				<x value = "13"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "WEST" />
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <empty_tile>
+            <position>
+				<x value = "14"/>
+                <y value = "3"/>
+            </position>
+            <door id = "10" direction = "EAST" locked = "FALSE"/>
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <empty_tile>
+            <position>
+				<x value = "15"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <chest id = "12">
+            <position>
+				<x value = "16"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+        </chest>
+        <chest id = "13">
+            <position>
+				<x value = "17"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+        </chest>
+        <empty_tile>
+            <position>
+				<x value = "18"/>
+                <y value = "3"/>
+            </position>
+            <wall direction = "SOUTH" />
+        </empty_tile>
+        <empty_tile>
+            <position>
+				<x value = "19"/>
+                <y value = "3"/>
+            </position>
+            <door id = "13" direction = "SOUTH" locked = "TRUE" keyID = "3" />
+            <wall direction = "EAST" />
+        </empty_tile>
+	</floor>
+	<players>
+		<player id = "1">
+	    	<direction>EAST</direction>
+	        <position>
+	            <x value = "8"/>
+	            <y value = "1"/>
+	        </position>
+	    </player>
+	</players>
+	<art>
+	    <painting artID = "1">
+	    	<name>A Really Good Painting</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "2">
+	    	<name>A Really Shit Painting</name>
+	    	<value>10</value>
+	    </painting>
+	    <sculpture artID = "58">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "6"/>
+	            <y value = "6"/>
+	        </position>
+	    	<name>Michelangelo's David (J Pearce)</name>
+	    	<value>10000</value>
+	    </sculpture>
+	    <painting artID = "59">
+	    	<name>Someone Forgot to Flush</name>
+	    	<value>-999</value>
+	    </painting>
+	</art>
+	<guards>
+		<guard id = "2">
+		    <level value = "0" />
+			<direction>EAST</direction>
+	        <position>
+	            <x value = "7"/>
+	            <y value = "7"/>
+	        </position>
+	        <patrol>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "8"/>
+	            		<y value = "7"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "12"/>
+	            		<y value = "7"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "12"/>
+	            		<y value = "8"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "12"/>
+	            		<y value = "12"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "11"/>
+	            		<y value = "12"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "7"/>
+	            		<y value = "12"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "7"/>
+	            		<y value = "11"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "7"/>
+	            		<y value = "7"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        </patrol>
+		</guard>
+		<guard id = "3">
+		    <direction>EAST</direction>
+		    <position>
+	            <x value = "18"/>
+	            <y value = "0"/>
+	        </position>
+	        <inventory>
+	        	<item type = "KEY" id = "3"/>
+	        </inventory>
+		</guard>
+	</guards>
+</game>

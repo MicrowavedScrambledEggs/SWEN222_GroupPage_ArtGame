@@ -1,5 +1,6 @@
 package artGame.xml.load;
 
+import artGame.game.Character.Direction;
 import artGame.game.Coordinate;
 import artGame.game.ExitTile;
 import artGame.game.StairTile;
@@ -10,9 +11,13 @@ public class StairTileBuilder extends TileBuilder {
 
 	private int linkedLevel;
 	private Coordinate linkedCoord;
+	private boolean up;
+	private Direction dir;
 
-	public StairTileBuilder(int level, GameMaker gameMaker) {
+	public StairTileBuilder(int level, Direction dir, boolean up, GameMaker gameMaker) {
 		super(level, gameMaker);
+		this.dir = dir;
+		this.up = up;
 	}
 
 	@Override
@@ -35,11 +40,11 @@ public class StairTileBuilder extends TileBuilder {
 
 	@Override
 	public void addToGame() {
-		StairTile tile = new StairTile(isNorthWall(), isWestWall(), isSouthWall(), isEastWall());
+		StairTile tile = new StairTile(isNorthWall(), isWestWall(), isSouthWall(), isEastWall(), dir, up);
 		getGameMaker().addTile(getLevel(), getCoord(), tile);
 		getGameMaker().addDoorMap(getLevel(), getCoord(), getDoorReference());
 		getGameMaker().addArtMap(getLevel(), getCoord(), getArtReference());
-		getGameMaker().addLinkedTileReference(tile, linkedLevel, linkedCoord);
+		getGameMaker().addLinkedTileReference(tile, getLevel(), linkedLevel, getCoord(), linkedCoord);
 	}
 
 }
