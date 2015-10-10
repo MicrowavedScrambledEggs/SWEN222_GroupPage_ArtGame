@@ -2986,7 +2986,7 @@
 				<x value = "0"/>
                 <y value = "16"/>
             </position>
-            <wall direction = "EAST" />
+            <wall direction = "WEST" />
             <wall direction = "NORTH" />
         </empty_tile>
         <tile_stretch length = "2">
