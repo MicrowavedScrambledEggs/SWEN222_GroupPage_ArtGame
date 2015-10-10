@@ -202,14 +202,14 @@
             </position>
             <wall direction = "EAST" />
         </empty_tile>
-        <stair_tile>
+        <stair_tile direction = "SOUTH" up = "TRUE">
         	<position>
 				<x value = "17"/>
                 <y value = "1"/>
             </position>
             <linked_tile level = "1">
 				<x value="16" />
-				<y value="2" />
+				<y value="1" />
             </linked_tile>
         </stair_tile>
         <empty_tile>
@@ -1109,28 +1109,29 @@
 			</position>
 			<wall direction = "EAST" />
 		</empty_tile>
-		<stair_tile>
+		<!--<stair_tile direction = "NORTH" up = "TRUE">
 		    <position>
 				<x value = "4"/>
                 <y value = "12"/>
 			</position>
 			<linked_tile level = "1">
 				<x value="4" />
-				<y value="14" />
+				<y value="13" />
             </linked_tile>
 			<wall direction = "WEST" />
 		</stair_tile>
-		<stair_tile>
+		<stair_tile direction = "NORTH" up = "TRUE">
 		    <position>
 				<x value = "5"/>
                 <y value = "12"/>
 			</position>
 			<linked_tile level = "1">
 				<x value="5" />
-				<y value="14" />
+				<y value="13" />
             </linked_tile>
 			<wall direction = "EAST" />
 		</stair_tile>
+		-->
 		<empty_tile>
 			<position>
 				<x value = "6"/>
@@ -1185,28 +1186,29 @@
 			</position>
 			<wall direction = "EAST" />
 		</empty_tile>
-		<stair_tile>
+		<!--  <stair_tile direction = "NORTH" up = "TRUE">
 		    <position>
 				<x value = "14"/>
                 <y value = "12"/>
 			</position>
 			<linked_tile level = "1">
 				<x value="14" />
-				<y value="14" />
+				<y value="13" />
             </linked_tile>
 			<wall direction = "WEST" />
 		</stair_tile>
-		<stair_tile>
+		<stair_tile direction = "NORTH" up = "TRUE">
 		    <position>
 				<x value = "15"/>
                 <y value = "12"/>
 			</position>
 			<linked_tile level = "1">
 				<x value="15" />
-				<y value="14" />
+				<y value="13" />
             </linked_tile>
 			<wall direction = "EAST" />
 		</stair_tile>
+		-->
 		<empty_tile>
 			<position>
 				<x value = "16"/>
@@ -1947,14 +1949,14 @@
             <wall direction = "WEST" />
             <wall direction = "EAST" />
         </empty_tile>
-        <stair_tile>
+        <stair_tile direction = "SOUTH" up = "FALSE">
         	<position>
 				<x value = "16"/>
                 <y value = "1"/>
             </position>
             <linked_tile level = "0">
 				<x value="17" />
-				<y value="2" />
+				<y value="1" />
             </linked_tile>
         </stair_tile>
         <empty_tile>

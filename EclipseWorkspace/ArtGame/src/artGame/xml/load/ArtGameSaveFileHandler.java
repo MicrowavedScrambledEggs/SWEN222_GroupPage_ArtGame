@@ -7,6 +7,7 @@ import java.util.Stack;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import artGame.game.Character.Direction;
 import artGame.main.Game;
 import artGame.xml.XMLHandler;
 
@@ -48,7 +49,9 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 			buildStack.push(new ObjectBuilder(new TileStretchBuilder(currentLevel, gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
 		} else if(qName.equals(XMLHandler.STAIR_TILE_ELEMENT)){
-			buildStack.push(new ObjectBuilder(new StairTileBuilder(currentLevel, gameMaker)));
+			Direction dir = directionFromString(attributes.getValue(0));
+			boolean up = Boolean.parseBoolean(attributes.getValue(1));
+			buildStack.push(new ObjectBuilder(new StairTileBuilder(currentLevel, dir, up, gameMaker)));
 		} else if(qName.equals(XMLHandler.POSITION_ELEMENT) || qName.equals(XMLHandler.START_ELEMENT)
 				|| qName.equals(XMLHandler.FINISH_ELEMENT)){
 			currentCoord = new CoordinateBuilder();
@@ -94,6 +97,21 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		} else if(qName.equals(XMLHandler.CHEST_ELEMENT)){
 			buildStack.push(new ObjectBuilder(new ChestBuilder(currentLevel, gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
+		}
+	}
+
+	private Direction directionFromString(String direction) {
+		if(direction.equals(XMLHandler.NORTH_VALUE)){
+			return Direction.NORTH;
+		} else if (direction.equals(XMLHandler.SOUTH_VALUE)){
+			return Direction.SOUTH;
+		} else if (direction.equals(XMLHandler.WEST_VALUE)){
+			return Direction.WEST;
+		} else if (direction.equals(XMLHandler.EAST_VALUE)){
+			return Direction.EAST;
+		} else {
+			throw new IllegalArgumentException(String.format("Need a valid direction. \"%s\" "
+					+ "is not a valid direction.\n", direction));
 		}
 	}
 

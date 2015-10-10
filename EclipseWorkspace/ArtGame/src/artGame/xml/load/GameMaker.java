@@ -76,44 +76,28 @@ public class GameMaker {
 		doors.put(doorId, new Door(locked, keyId));
 	}
 
-	public void addLinkedTileReference(StairTile tile, int linkedLevel,
-			Coordinate linkedCoord) {
-		stairLinks.add(new LinkedTileReference(tile, linkedLevel, linkedCoord));
+	public void addLinkedTileReference(StairTile tile, int tileLevel, int linkedLevel,
+			Coordinate stairCoord, Coordinate linkedCoord) {
+		stairLinks.add(new LinkedTileReference(tile, linkedLevel, tileLevel, stairCoord, linkedCoord));
 
 	}
 
 	private class LinkedTileReference{
 		private StairTile stairTile;
 		private int linkedLevel;
+		private int stairLevel;
+		private Coordinate stairCoordinate;
 		private Coordinate linkedCoordinate;
 
 		public LinkedTileReference(StairTile stairTile, int linkedLevel,
+				int stairLevel, Coordinate stairCoordinate,
 				Coordinate linkedCoordinate) {
 			super();
 			this.stairTile = stairTile;
 			this.linkedLevel = linkedLevel;
+			this.stairLevel = stairLevel;
+			this.stairCoordinate = stairCoordinate;
 			this.linkedCoordinate = linkedCoordinate;
-		}
-
-		/**
-		 * @return the stairTile
-		 */
-		public StairTile getStairTile() {
-			return stairTile;
-		}
-
-		/**
-		 * @return the linkedLevel
-		 */
-		public int getLinkedLevel() {
-			return linkedLevel;
-		}
-
-		/**
-		 * @return the linkedCoordinate
-		 */
-		public Coordinate getLinkedCoordinate() {
-			return linkedCoordinate;
 		}
 	}
 
@@ -138,7 +122,19 @@ public class GameMaker {
 		fillInventories();
 		Floor floor = new Floor(exits, tileArrays);
 		addNPCsToFloor(floor);
+		linkStairs(floor);
 		return new Game(floor, players);
+	}
+
+	private void linkStairs(Floor floor) {
+		for(LinkedTileReference lt : this.stairLinks){
+			Coordinate stairCoord = lt.stairCoordinate;
+			Coordinate linkedCoord = lt.linkedCoordinate;
+			StairTile linkedTile =
+					(StairTile) tileArrays[lt.linkedLevel][linkedCoord.getY()][linkedCoord.getX()];
+			floor.linkStairs(stairCoord.getY(), stairCoord.getX(), lt.stairLevel,
+					linkedCoord.getY(), linkedCoord.getX(), lt.linkedLevel);
+		}
 	}
 
 	private void buildTileArrays() {
