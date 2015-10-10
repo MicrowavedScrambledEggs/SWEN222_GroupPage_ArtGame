@@ -60,7 +60,7 @@ public class GLWindow {
 			.errorCallbackPrint(System.err);
 	private static long window;
 
-	private GLFWKeyCallback keyCallback = new NetworkKeyCallback(null);
+	private GLFWKeyCallback keyCallback;
 
 	private List<Screen> screens;
 
@@ -101,8 +101,10 @@ public class GLWindow {
 
 	public GLWindow() {
 		try {
-			client = new ClientThread(new Socket("130.195.6.64", 32768), game);
+			client = new ClientThread(new Socket("130.195.6.64", 32768), game, 10);
 			client.start();
+
+			keyCallback = new NetworkKeyCallback(client);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -127,8 +129,8 @@ public class GLWindow {
 		}
 
 		// associate window with key callback
-		// glfwSetKeyCallback(window, keyCallback);
-		glfwSetKeyCallback(window, debugKeys);
+		 glfwSetKeyCallback(window, keyCallback);
+		//lfwSetKeyCallback(window, debugKeys);
 
 		// create OpenGL context
 		glfwMakeContextCurrent(window);
@@ -150,6 +152,8 @@ public class GLWindow {
 
 	public void begin() {
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
+
+			GameData.updateGame(game);
 
 			if(!out && game.getPlayer().isCaught()){
 				out = true;

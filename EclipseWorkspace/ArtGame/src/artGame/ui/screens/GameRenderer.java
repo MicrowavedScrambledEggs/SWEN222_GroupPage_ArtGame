@@ -88,6 +88,8 @@ public class GameRenderer implements Screen{
 		List<Asset> renderList = getRenderList();
 		
 		// update tweens
+		currentTime += delta;
+		
 		for (Sprite s : spriteTweens.keySet()) {
 			s.setPosition(spriteTweens.get(s).tween(currentTime));
 		}
@@ -95,9 +97,10 @@ public class GameRenderer implements Screen{
 		if (cameraTween != null) {
 			float tween = cameraTween.tween(currentTime);
 			currentCameraAngle = tween;
-			camera.setRotation(new Vector3f(0, tween, 0));
-		} else {
-			if (cameraTween.isFinished()) {
+			camera.setRotation(new Vector3f(CAMERA_ANGLE, tween, 0));
+			System.out.println("Camera Tween value: " + tween);
+			
+			if (cameraTween.isFinished(currentTime)) {
 				cameraTween = null;
 			}
 		}
@@ -106,7 +109,6 @@ public class GameRenderer implements Screen{
 		for (Asset a : renderList) {
 			a.draw(camera, light);
 		}
-		currentTime += delta;
 	}
 
 	private List<Asset> getRenderList() {
