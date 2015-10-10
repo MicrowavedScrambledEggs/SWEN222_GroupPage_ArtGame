@@ -9,6 +9,8 @@ import artGame.game.Character.Direction;
  *
  */
 public class StairTile extends Tile {
+	private int col;
+	private int row;
 	private StairTile linkedTile;
 	private boolean goingUp;
 	private Direction dir;
@@ -86,6 +88,8 @@ public class StairTile extends Tile {
 	 */
 	public void setOccupantHelper(Character occupant) {
 		this.occupant = occupant;
+		occupant.setCol(col);
+		occupant.setRow(row);
 	}
 
 	@Override
@@ -93,4 +97,10 @@ public class StairTile extends Tile {
 		return "S";
 	}
 
+	public void setLoc(int row,int col) {
+		this.row = row;
+		this.col = col;
+	}
+
+	
 }
