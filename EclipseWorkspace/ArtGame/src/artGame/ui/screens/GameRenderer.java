@@ -24,6 +24,8 @@ import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Model;
 import artGame.ui.renderer.Sprite;
+import artGame.ui.renderer.animations.Tween;
+import artGame.ui.renderer.animations.TweenFloat;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 import artGame.ui.screens.Screen;
@@ -36,6 +38,7 @@ public class GameRenderer implements Screen{
 	private Vector3f light;
 
 	private static final float CAMERA_ANGLE = 60f;
+	private float currentCameraAngle;
 
 	private Model floor;
 	private Model topWall;
@@ -51,12 +54,20 @@ public class GameRenderer implements Screen{
 	private List<Model> levelCache;
 	private Map<artGame.game.Character, Asset> characters;
 	
+	Map<Sprite, Tween<Vector3f>> spriteTweens;
+	Tween<Float> cameraTween;
+	
 	private float currentTime;
 
 	public GameRenderer(){
 		resetAssets();
 		levelCache = loadFullLevel();
 		characters = loadCharacters();
+		
+		spriteTweens = new HashMap<Sprite, Tween<Vector3f>>();
+		cameraTween = null;
+		
+		currentCameraAngle = 0;
 		
 		currentTime = 0;
 
@@ -75,6 +86,21 @@ public class GameRenderer implements Screen{
 	@Override
 	public void render(float delta) {
 		List<Asset> renderList = getRenderList();
+		
+		// update tweens
+		for (Sprite s : spriteTweens.keySet()) {
+			s.setPosition(spriteTweens.get(s).tween(currentTime));
+		}
+		
+		if (cameraTween != null) {
+			float tween = cameraTween.tween(currentTime);
+			currentCameraAngle = tween;
+			camera.setRotation(new Vector3f(0, tween, 0));
+		} else {
+			if (cameraTween.isFinished()) {
+				cameraTween = null;
+			}
+		}
 		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
 
 		for (Asset a : renderList) {
@@ -191,11 +217,11 @@ public class GameRenderer implements Screen{
 	}
 	
 	public void rotateLeft() {
-		camera.rotate(new Vector3f(0, 90, 0));
+		cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90, currentTime);
 	}
 	
 	public void rotateRight() {
-		camera.rotate(new Vector3f(0, -90, 0));
+		cameraTween = new TweenFloat(currentCameraAngle, 0.5f, -90, currentTime);
 	}
 
 	@Override
