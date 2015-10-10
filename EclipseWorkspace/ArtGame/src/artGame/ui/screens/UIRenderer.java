@@ -17,6 +17,7 @@ import org.lwjgl.BufferUtils;
 import artGame.game.Item;
 import artGame.ui.ItemSlot;
 import artGame.ui.Widget;
+import artGame.ui.gamedata.GameData;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Texture;
 import artGame.ui.renderer.math.Matrix4f;
