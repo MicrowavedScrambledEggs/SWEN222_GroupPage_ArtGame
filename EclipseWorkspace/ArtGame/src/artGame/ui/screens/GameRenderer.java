@@ -2,7 +2,9 @@ package artGame.ui.screens;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
@@ -11,15 +13,19 @@ import artGame.game.Chest;
 import artGame.game.EmptyTile;
 import artGame.game.ExitTile;
 import artGame.game.Floor;
+import artGame.game.Guard;
+import artGame.game.Player;
+import artGame.game.Sculpture;
 import artGame.game.StairTile;
 import artGame.game.Tile;
-import artGame.main.Game;
 import artGame.ui.gamedata.GameData;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Model;
 import artGame.ui.renderer.Sprite;
+import artGame.ui.renderer.animations.Tween;
+import artGame.ui.renderer.animations.TweenFloat;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 import artGame.ui.screens.Screen;
@@ -32,8 +38,8 @@ public class GameRenderer implements Screen{
 	private Vector3f light;
 
 	private static final float CAMERA_ANGLE = 60f;
+	private float currentCameraAngle;
 
-	private GameData game;
 	private Model floor;
 	private Model topWall;
 	private Model bottomWall;
@@ -43,16 +49,27 @@ public class GameRenderer implements Screen{
 	private Model sculpture1;
 	private Model crates;
 	private Sprite playerSprite;
+	private Sprite guardSprite;
 
 	private List<Model> levelCache;
-	private List<Asset> characters;
+	private Map<artGame.game.Character, Asset> characters;
+	
+	Map<Sprite, Tween<Vector3f>> spriteTweens;
+	Tween<Float> cameraTween;
+	
+	private float currentTime;
 
-	public GameRenderer(GameData game){
-		this.game = game;
-
+	public GameRenderer(){
 		resetAssets();
 		levelCache = loadFullLevel();
 		characters = loadCharacters();
+		
+		spriteTweens = new HashMap<Sprite, Tween<Vector3f>>();
+		cameraTween = null;
+		
+		currentCameraAngle = 0;
+		
+		currentTime = 0;
 
 		window = GLFW.glfwGetCurrentContext();
         IntBuffer width = BufferUtils.createIntBuffer(1);
@@ -67,14 +84,29 @@ public class GameRenderer implements Screen{
 	}
 
 	@Override
-	public void render() {
+	public void render(float delta) {
 		List<Asset> renderList = getRenderList();
-		camera.setPosition(new Vector3f(-game.getPlayer().getCol(), 0, -game.getPlayer().getRow()));
+		
+		// update tweens
+		for (Sprite s : spriteTweens.keySet()) {
+			s.setPosition(spriteTweens.get(s).tween(currentTime));
+		}
+		
+		if (cameraTween != null) {
+			float tween = cameraTween.tween(currentTime);
+			currentCameraAngle = tween;
+			camera.setRotation(new Vector3f(0, tween, 0));
+		} else {
+			if (cameraTween.isFinished()) {
+				cameraTween = null;
+			}
+		}
+		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
 
 		for (Asset a : renderList) {
 			a.draw(camera, light);
 		}
-
+		currentTime += delta;
 	}
 
 	private List<Asset> getRenderList() {
@@ -87,26 +119,47 @@ public class GameRenderer implements Screen{
 		scene.addAll(levelCache);
 
 		updateCharacters();
-		scene.addAll(characters);
+		scene.addAll(characters.values());
 		return scene;
 	}
 
-	private List<Asset> loadCharacters() {
-		List<Asset> chars = new ArrayList<Asset>();
-		chars.add(playerSprite.instantiate());
+	private Map<artGame.game.Character, Asset> loadCharacters() {
+		Map<artGame.game.Character, Asset> chars = new HashMap<artGame.game.Character, Asset>();
+		for (artGame.game.Character c : GameData.getCharacters()) {
+			if (c instanceof Player) {
+				chars.put(c, playerSprite.instantiate());
+			} else if (c instanceof Guard) {
+				chars.put(c, guardSprite.instantiate());
+			} else if (c instanceof Sculpture) {
+				Matrix4f pos = new Matrix4f();
+				pos = pos.multiply(Matrix4f.translate(new Vector3f(c.getCol(), 0, c.getRow())));
+				chars.put(c, sculpture1.instantiate(pos));
+			}
+		}
 		return chars;
 	}
 
 	private void updateCharacters() {
 		// replace this with something like game.getCharacters() and iterate over it
-		if (characters.get(0) instanceof Sprite) {
-			((Sprite)characters.get(0)).setPosition(new Vector3f(game.getPlayer().getCol(), 0, game.getPlayer().getRow()));
+		List<artGame.game.Character> toRemove = new ArrayList<artGame.game.Character>();
+		for (artGame.game.Character c : characters.keySet()) {
+			if (c instanceof Player || c instanceof Guard) {
+				((Sprite)characters.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+			} else if (c instanceof Sculpture) {
+				if (((Sculpture)c).isTaken()) {
+					toRemove.add(c);
+				}
+			}
+		}
+		
+		for (artGame.game.Character c : toRemove) {
+			characters.remove(c);
 		}
 	}
 
 	private List<Model> loadFullLevel() {
 		List<Model> level = new ArrayList<Model>();
-		Floor world = game.getFloor();
+		Floor world = GameData.getFloor();
 		for (int row = 0; row < world.getHeight(); row++) {
 			for (int col = 0; col < world.getWidth(); col++) {
 				Tile t = world.getTile(row, col);
@@ -156,6 +209,7 @@ public class GameRenderer implements Screen{
 		sculpture1 = AssetLoader.instance().loadOBJ("res/sculpture_david.obj", new Vector3f(1,1,1));
 		crates = AssetLoader.instance().loadOBJ("res/crates.obj", new Vector3f(0.45f, 0.29f, 0.16f));
 		playerSprite = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32);
+		guardSprite = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32); // TODO Add guard sprite
 	}
 
 	public Camera getCamera(){
@@ -163,11 +217,11 @@ public class GameRenderer implements Screen{
 	}
 	
 	public void rotateLeft() {
-		
+		cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90, currentTime);
 	}
 	
 	public void rotateRight() {
-		
+		cameraTween = new TweenFloat(currentCameraAngle, 0.5f, -90, currentTime);
 	}
 
 	@Override

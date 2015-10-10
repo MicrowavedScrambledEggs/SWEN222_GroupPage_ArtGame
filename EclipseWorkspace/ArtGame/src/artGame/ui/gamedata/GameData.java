@@ -5,7 +5,9 @@ import java.util.List;
 
 import artGame.game.Art;
 import artGame.game.Character.Direction;
+import artGame.game.Floor;
 import artGame.game.Player;
+import artGame.game.StairTile;
 import artGame.game.Tile;
 import artGame.main.Game;
 
@@ -24,8 +26,16 @@ public class GameData {
 		GameData.game = game;
 	}
 
-	public Player getPlayer(){
+	public static Floor getFloor(){
+		return game.getFloor();
+	}
+
+	public static Player getPlayer(){
 		return game.getPlayer();
+	}
+
+	public static Tile getPlayerTile(){
+		return game.getFloor().getTile(game.getPlayer().getRow(), game.getPlayer().getCol());
 	}
 
 	public static artGame.game.Character[] getCharacters() {

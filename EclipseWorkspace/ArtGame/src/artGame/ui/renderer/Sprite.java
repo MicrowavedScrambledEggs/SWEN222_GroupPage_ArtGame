@@ -147,9 +147,12 @@ public class Sprite implements Asset {
 	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
+	
+	public Vector3f getPosition() {
+		return position;
+	}
 
 	public Sprite instantiate() {
 		return new Sprite(spritesheet, position);
 	}
-
 }
