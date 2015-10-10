@@ -23,11 +23,10 @@ public class ServerThread extends SocketThread {
 										 // we'd need to get this from the loaded Game
 										 // so only clients running the same level can connect.
 	private final Game game; 
-	private final GameClock gameRunner;
 	private Socket socket;
 	private final int wait;
 	private int pid;
-	private boolean timedout = false;
+	private long timesOutAt = 0;
 	private final DataInputStream IN;
 	private final DataOutputStream OUT;
 
@@ -42,21 +41,17 @@ public class ServerThread extends SocketThread {
 	 * @throws IOException 
 	 */
 	public ServerThread(Game game, Socket socket, int wait) throws IOException {
-		gameRunner = new GameClock(game);
 		this.game = game;
 		this.socket = socket;
 		this.wait = wait;
 		IN = new DataInputStream(socket.getInputStream());
 		OUT = new DataOutputStream(socket.getOutputStream());
-		System.err.println("================== SERVER INFO ==================\nPID: "+pid
-				+ "\nSOCKETADDR: "+socket.getLocalAddress()+" PORT: "+socket.getLocalPort()
-				+ "\nCONNECT TO: "+socket.getInetAddress() +" PORT: "+socket.getPort());
+		System.err.println("================== SERVER INFO ==================\n"+toString());
 		// OK, so the ServerThread's constructor will also responsible for sending the
 		// information a client needs to set up the game
 	}
 
-	/** Does the work of setting up the client/server's shared player ID.
-	 */
+	/** Does the work of setting up the client/server's shared player ID. */
 	private void sendGameInfo() {
 		try {
 			// first, send the game type
@@ -72,7 +67,7 @@ public class ServerThread extends SocketThread {
 				close();
 				return;
 			}
-			
+			// TODO server game isn't being updated with player IDs
 			// get the next player ID
 			pid = PID_START;
 			while (!game.isAvailablePlayerId(pid)) {
@@ -98,36 +93,47 @@ public class ServerThread extends SocketThread {
 
 	public void run() {
 		sendGameInfo();
+		
 		System.out.println("=-=-=-=-=-=-=-=-=- RUNNING SERVER "+pid+" =-=-=-=-=-=-=-=-=-");
 		int runcount = 0; // debugging
 		while (!socket.isClosed()) {
 			try {
 				long then = System.currentTimeMillis();
 				// read first
+				timesOutAt = System.currentTimeMillis() + Main.CONNECTION_TIMEOUT;
 				waitFor(IN);
 				// FIXME terrible implementation
 				Command clientCmd = super.readCommand(IN);
+				if (clientCmd.action == '!') {
+					System.out.println("Stop-moving packet for "+clientCmd.id);
+				}
 				ServerThread[] ss = Main.getKids();
 				for (ServerThread s : ss) {
 					if (s != this) {
-						s.sendCommand(clientCmd);
+						s.sendCommand(clientCmd); // make sure everyone else gets this command
 					}
 				}
 				for (Player x : game.getPlayers()) {
 					if (x.getId() == clientCmd.id) {
-						game.doAction(x, clientCmd.action);
+						game.doAction(x, clientCmd.action); // now make sure we do the action
 						break;
 					}
 				}
 				// then do our work!
+				if (super.hasCommands()) {
+					Command serverCmd = super.pollCommand();
+					System.out.println("(In queue: "+queueSize()+")");
+					super.writeCommand(OUT, serverCmd);
+				}
 				long now = System.currentTimeMillis();
-				while (then + wait > now) {
-					if (super.hasCommands()) {
-						Command serverCmd = super.pollCommand();
-						super.writeCommand(OUT, serverCmd);
-					}
+				if (now < then + Main.BROADCAST_PERIOD
+						&& 0 > then + Main.BROADCAST_PERIOD - now) {
+					sleep (then + Main.BROADCAST_PERIOD - now);
 				}
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -154,7 +160,7 @@ public class ServerThread extends SocketThread {
 			if (s.available() > 0) { // great, there's input, let's get back to business
 				return;
 			}
-			timedout = true;
+			timesOutAt = 0;
 			System.err.println("Connection timed out! Closing.");
 			socket.close();
 		} catch (IOException e) {
@@ -190,6 +196,7 @@ public class ServerThread extends SocketThread {
 			return true;
 		}
 		try {
+			game.removePlayer(pid);
 			socket.shutdownInput();
 			socket.shutdownOutput();
 			socket.close();
@@ -202,11 +209,15 @@ public class ServerThread extends SocketThread {
 	/** Returns whether the connection has timed out, and therefore should be closed. */
 	@Override
 	public boolean isTimedOut() {
-		return timedout;
+		return timesOutAt < System.currentTimeMillis();
 	}
 	
 	@Override
 	public int getPlayerId() {
 		return pid;
+	}
+	
+	public String toString() {
+		return "Server("+pid+") @"+socket.getLocalAddress()+":"+socket.getLocalPort()+" 2 "+socket.getInetAddress() +":"+socket.getPort();
 	}
 }

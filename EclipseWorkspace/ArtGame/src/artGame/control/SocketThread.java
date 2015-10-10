@@ -61,7 +61,10 @@ public abstract class SocketThread extends Thread {
 	
 	/** Readies a command to be sent */
 	public boolean sendCommand(Command c) {
-		return cmdQueue.add(c);
+		if (c != null) {
+			return cmdQueue.add(c);
+		} 
+		return false;
 	}
 	
 	/** Polls the next command to be sent */
@@ -80,6 +83,14 @@ public abstract class SocketThread extends Thread {
 	
 	protected void writeCommand(DataOutputStream out, Command c) throws IOException {
 		out.writeChar(c.key());
-		out.writeChar(c.id());
+		out.writeInt(c.id());
+	}
+	
+	protected int queueSize() {
+		return cmdQueue.size();
+	}
+	
+	public Command peek() {
+		return cmdQueue.peek();
 	}
 }
