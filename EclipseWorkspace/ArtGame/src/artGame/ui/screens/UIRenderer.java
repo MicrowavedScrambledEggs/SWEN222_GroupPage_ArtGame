@@ -153,7 +153,7 @@ public class UIRenderer implements Screen {
 		}
 
 		//test key item id == 2
-		Widget icon2 = loadWidget("res/key_placeholder.png", 64, 0.8f, 0.8f);
+		Widget icon2 = loadWidget("res/key.png", 32, 0.8f, 0.8f);
 
 		if(icon2 != null){
 			icon2.setScale(scale);
