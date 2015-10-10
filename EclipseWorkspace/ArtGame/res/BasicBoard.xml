@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game>
+    <floor>
+        <empty_tile>
+            <position>
+                <x value = "0"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" artID = "1"/>
+            <wall direction = "WEST" />
+        </empty_tile>
+        <empty_tile>
+            <position>
+                <x value = "1"/>
+                <y value = "0"/>
+            </position>
+            <wall direction = "NORTH" artID = "1"/>
+            <wall direction = "EAST"  />
+        </empty_tile>
+        <empty_tile>
+            <position>
+                <x value = "0"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <wall direction = "WEST"  />
+        </empty_tile>
+        <empty_tile isExit = "TRUE">
+            <position>
+                <x value = "1"/>
+                <y value = "1"/>
+            </position>
+            <wall direction = "SOUTH" />
+            <wall direction = "EAST"  />
+        </empty_tile>
+    </floor>
+    <player id = "1">
+    	<direction>EAST</direction>
+        <position>
+            <x value = "0"/>
+            <y value = "0"/>
+        </position>
+    </player>
+    <painting artID = "1">
+    	<name>A Really Good Painting</name>
+    	<value>1000</value>
+    </painting>
+</game>

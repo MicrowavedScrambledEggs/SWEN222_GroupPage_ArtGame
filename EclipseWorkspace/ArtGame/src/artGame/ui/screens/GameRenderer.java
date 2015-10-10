@@ -7,6 +7,7 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 
+import artGame.game.Chest;
 import artGame.game.EmptyTile;
 import artGame.game.ExitTile;
 import artGame.game.Floor;
@@ -39,6 +40,7 @@ public class GameRenderer implements Screen{
 	private Model rightWall;
 	private Model stairs;
 	private Model sculpture1;
+	private Model crates;
 	private Sprite playerSprite;
 
 	private List<Model> levelCache;
@@ -66,7 +68,7 @@ public class GameRenderer implements Screen{
 	@Override
 	public void render() {
 		List<Asset> renderList = getRenderList();
-		//camera.setPosition(new Vector3f(game.getPlayer().getCol(), 0, game.getPlayer().getRow()));
+		camera.setPosition(new Vector3f(-game.getPlayer().getCol(), 0, -game.getPlayer().getRow()));
 
 		for (Asset a : renderList) {
 			a.draw(camera, light);
@@ -133,6 +135,9 @@ public class GameRenderer implements Screen{
 					level.add(stairs.instantiate(pos));
 				} else if (t instanceof ExitTile) {
 					level.add(floor.instantiate(pos));
+				} else if (t instanceof Chest) {
+					level.add(crates.instantiate(pos));
+					level.add(floor.instantiate(pos));
 				}
 			}
 		}
@@ -141,13 +146,14 @@ public class GameRenderer implements Screen{
 	}
 
 	private void resetAssets() {
-		floor = AssetLoader.instance().loadOBJ("res/floor.obj");
-		topWall = AssetLoader.instance().loadOBJ("res/top_wall.obj");
-		bottomWall = AssetLoader.instance().loadOBJ("res/bottom_wall.obj");
-		leftWall = AssetLoader.instance().loadOBJ("res/left_wall.obj");
-		rightWall = AssetLoader.instance().loadOBJ("res/right_wall.obj");
-		stairs = AssetLoader.instance().loadOBJ("res/stair.obj");
-		sculpture1 = AssetLoader.instance().loadOBJ("res/sculpture_david.obj");
+		floor = AssetLoader.instance().loadOBJ("res/floor.obj", new Vector3f(0.9f, 0.9f, 0.9f));
+		topWall = AssetLoader.instance().loadOBJ("res/top_wall.obj", new Vector3f(1,1,1));
+		bottomWall = AssetLoader.instance().loadOBJ("res/bottom_wall.obj", new Vector3f(1,1,1));
+		leftWall = AssetLoader.instance().loadOBJ("res/left_wall.obj", new Vector3f(1,1,1));
+		rightWall = AssetLoader.instance().loadOBJ("res/right_wall.obj", new Vector3f(1,1,1));
+		stairs = AssetLoader.instance().loadOBJ("res/stair.obj",new Vector3f(1,1,1));
+		sculpture1 = AssetLoader.instance().loadOBJ("res/sculpture_david.obj", new Vector3f(1,1,1));
+		crates = AssetLoader.instance().loadOBJ("res/crates.obj", new Vector3f(0.45f, 0.29f, 0.16f));
 		playerSprite = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32);
 	}
 

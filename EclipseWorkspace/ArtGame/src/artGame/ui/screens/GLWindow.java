@@ -38,16 +38,12 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.Callbacks;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GLContext;
 
-import artGame.game.Character.Direction;
-import artGame.game.Item;
 import artGame.main.Game;
 import artGame.ui.DebugKeyCallback;
-import artGame.ui.GameData;
 import artGame.ui.NetworkKeyCallback;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.math.Matrix4f;
@@ -85,7 +81,7 @@ public class GLWindow {
 
 	static {
 		XMLHandler gameLoader = new XMLHandler();
-		game = gameLoader.loadGame(new File("Save Files/GroundFloorBasic.xml"));
+		game = gameLoader.loadGame(new File("res/GroundFloorBasic.xml"));
 		//game = new Game();
 		//game.initialise();
 	}
@@ -165,6 +161,7 @@ public class GLWindow {
 		/* Flip buffers for next loop */
 		width.flip();
 		height.flip();
+		//gameRender.getCamera().setPosition(new Vector3f(10, 0, 10));
 		getCamera().translate(debugKeys.getCameraMove());
 		gameRender.getCamera().translate(debugKeys.getCameraMove());
 		camera = bufferedCam;
