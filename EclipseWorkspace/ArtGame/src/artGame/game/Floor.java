@@ -150,7 +150,9 @@ public class Floor {
 		StairTile st1 = (StairTile) floor[row1][col1 + offset * floor1];
 		StairTile st2 = (StairTile) floor[row2][col2 + offset * floor2];
 		st1.setLinkedTile(st2);
+		st1.setLoc(row1, col1+offset*floor1);
 		st2.setLinkedTile(st1);
+		st2.setLoc(row2, col2+offset*floor2);
 	}
 
 	/**

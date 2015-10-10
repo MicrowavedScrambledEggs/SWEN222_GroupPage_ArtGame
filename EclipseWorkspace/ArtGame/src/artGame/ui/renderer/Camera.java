@@ -42,6 +42,6 @@ public class Camera {
 		this.position = position;
 	}
 	public void setRotation(Vector3f rotation) {
-		
+		this.rotation = rotation;
 	}
 }

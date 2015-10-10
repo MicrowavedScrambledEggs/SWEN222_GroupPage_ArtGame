@@ -25,9 +25,12 @@ public class Model implements Asset {
 	private Matrix4f model;
 	private int numVerts;
 	private Material material;
+	private Vector3f color;
 
-	public Model(List<Vector3f> verts, List<Vector2f> uvs, List<Vector3f> norms, Matrix4f modelMatrix) {
+	public Model(List<Vector3f> verts, List<Vector2f> uvs, List<Vector3f> norms, Vector3f color, Matrix4f modelMatrix) {
 		numVerts = verts.size();
+		
+		this.color = color;
 		
 		model = modelMatrix;
 		vao = new VertexArrayObject();
@@ -63,13 +66,15 @@ public class Model implements Asset {
         normBufferObject.bind(GL_ARRAY_BUFFER);
         normBufferObject.uploadBufferData(GL_ARRAY_BUFFER, normBuffer, GL_STATIC_DRAW);
 		
-		material = new Material(vertBufferObject, uvBufferObject, normBufferObject, new Vector3f(1f, 1f, 1f),
+		material = new Material(vertBufferObject, uvBufferObject, normBufferObject, color,
 				AssetLoader.instance().loadShaderSource("res/BasicLit.vert"),
 				AssetLoader.instance().loadShaderSource("res/Basic.frag"));
 	}
 	
-	public Model(FloatBuffer verts, FloatBuffer uvs, FloatBuffer norms, Matrix4f modelMatrix) {
+	public Model(FloatBuffer verts, FloatBuffer uvs, FloatBuffer norms, Vector3f color, Matrix4f modelMatrix) {
 		numVerts = verts.capacity();
+		
+		this.color = color;
 		
 		model = modelMatrix;
 		vao = new VertexArrayObject();
@@ -91,7 +96,7 @@ public class Model implements Asset {
         normBufferObject.bind(GL_ARRAY_BUFFER);
         normBufferObject.uploadBufferData(GL_ARRAY_BUFFER, normBuffer, GL_STATIC_DRAW);
 		
-		material = new Material(vertBufferObject, uvBufferObject, normBufferObject, new Vector3f(1f, 1f, 1f),
+		material = new Material(vertBufferObject, uvBufferObject, normBufferObject, color,
 				AssetLoader.instance().loadShaderSource("res/BasicLit.vert"),
 				AssetLoader.instance().loadShaderSource("res/Basic.frag"));
 	}
@@ -108,7 +113,7 @@ public class Model implements Asset {
 	}
 	
 	public Model instantiate(Matrix4f model) {
-		return new Model(vertBuffer, uvBuffer, normBuffer, model);
+		return new Model(vertBuffer, uvBuffer, normBuffer, color, model);
 	}
 	
 	@Override

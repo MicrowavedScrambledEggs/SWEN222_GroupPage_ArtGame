@@ -31,7 +31,7 @@ public class AssetLoader {
 		
 	}
 
-	public Model loadOBJ(String filepath) {
+	public Model loadOBJ(String filepath, Vector3f color) {
 		List<Vector3f> vertList = new ArrayList<Vector3f>();
 		List<Vector2f> uvList = new ArrayList<Vector2f>();
 		List<Vector3f> normList = new ArrayList<Vector3f>();
@@ -85,7 +85,7 @@ public class AssetLoader {
 				outNorms.add(normList.get(normIndex - 1));
 			}
 			
-			return new Model(outVerts, outUVs, outNorms, new Matrix4f());
+			return new Model(outVerts, outUVs, outNorms, color, new Matrix4f());
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
