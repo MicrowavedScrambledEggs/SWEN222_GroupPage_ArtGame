@@ -6,7 +6,7 @@ import artGame.ui.renderer.math.Vector3f;
 
 public interface Screen {
 
-	public void render();
+	public void render(float delta);
 	public void dispose();
 
 }

@@ -48,7 +48,7 @@ public class UIRenderer implements Screen {
 	}
 
 	@Override
-	public void render() {
+	public void render(float delta) {
 		Camera cam = GLWindow.getCamera();
 		Matrix4f view = null;
 		if(cam != null){
