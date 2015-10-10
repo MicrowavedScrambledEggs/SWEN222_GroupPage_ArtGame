@@ -47,8 +47,8 @@ import artGame.game.Character.Direction;
 import artGame.game.Item;
 import artGame.main.Game;
 import artGame.ui.DebugKeyCallback;
-import artGame.ui.GameData;
 import artGame.ui.NetworkKeyCallback;
+import artGame.ui.gamedata.GameData;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
@@ -86,8 +86,7 @@ public class GLWindow {
 	static {
 		XMLHandler gameLoader = new XMLHandler();
 		game = gameLoader.loadGame(new File("Save Files/GroundFloorBasic.xml"));
-		//game = new Game();
-		//game.initialise();
+		GameData.updateGame(game);
 	}
 
 	public GLWindow() {
@@ -135,6 +134,7 @@ public class GLWindow {
 
 	public void begin() {
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
+			System.out.println(GameData.getAllArt().length);
 			loop();
 		}
 		dispose();
