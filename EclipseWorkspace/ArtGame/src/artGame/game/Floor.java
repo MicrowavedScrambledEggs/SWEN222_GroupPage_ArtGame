@@ -160,9 +160,9 @@ public class Floor {
 	 * move or face direction. Useful for initialising positions
 	 */
 	public void setCharacter(Character c, int row, int col) {
-		floor[row][col].setOccupant(c);
 		c.setRow(row);
 		c.setCol(col);
+		floor[row][col].setOccupant(c);
 		if (c instanceof Guard && !guards.contains((Guard) c)) {
 			guards.add((Guard) c);
 		}

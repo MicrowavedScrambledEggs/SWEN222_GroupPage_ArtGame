@@ -80,7 +80,8 @@ public class StairTile extends Tile {
 	 */
 	@Override
 	public void setOccupant(Character occupant) {
-		this.linkedTile.setOccupantHelper(occupant);
+		if (occupant != null)
+			this.linkedTile.setOccupantHelper(occupant);
 	}
 
 	/**
@@ -97,10 +98,9 @@ public class StairTile extends Tile {
 		return "S";
 	}
 
-	public void setLoc(int row,int col) {
+	public void setLoc(int row, int col) {
 		this.row = row;
 		this.col = col;
 	}
 
-	
 }
