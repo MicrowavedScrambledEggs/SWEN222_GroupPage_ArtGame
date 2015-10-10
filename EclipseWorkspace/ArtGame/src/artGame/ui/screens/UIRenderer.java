@@ -17,6 +17,7 @@ import org.lwjgl.BufferUtils;
 import artGame.game.Item;
 import artGame.ui.ItemSlot;
 import artGame.ui.Widget;
+import artGame.ui.gamedata.GameData;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Texture;
 import artGame.ui.renderer.math.Matrix4f;
@@ -47,7 +48,7 @@ public class UIRenderer implements Screen {
 	}
 
 	@Override
-	public void render() {
+	public void render(float delta) {
 		Camera cam = GLWindow.getCamera();
 		Matrix4f view = null;
 		if(cam != null){
@@ -153,7 +154,7 @@ public class UIRenderer implements Screen {
 		}
 
 		//test key item id == 2
-		Widget icon2 = loadWidget("res/key_placeholder.png", 64, 0.8f, 0.8f);
+		Widget icon2 = loadWidget("res/key.png", 32, 0.8f, 0.8f);
 
 		if(icon2 != null){
 			icon2.setScale(scale);

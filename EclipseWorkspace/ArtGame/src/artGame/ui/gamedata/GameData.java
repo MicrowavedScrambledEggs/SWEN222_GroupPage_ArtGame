@@ -5,7 +5,9 @@ import java.util.List;
 
 import artGame.game.Art;
 import artGame.game.Character.Direction;
-import artGame.game.Sculpture;
+import artGame.game.Floor;
+import artGame.game.Player;
+import artGame.game.StairTile;
 import artGame.game.Tile;
 import artGame.main.Game;
 
@@ -24,6 +26,18 @@ public class GameData {
 		GameData.game = game;
 	}
 
+	public static Floor getFloor(){
+		return game.getFloor();
+	}
+
+	public static Player getPlayer(){
+		return game.getPlayer();
+	}
+
+	public static Tile getPlayerTile(){
+		return game.getFloor().getTile(game.getPlayer().getRow(), game.getPlayer().getCol());
+	}
+
 	public static artGame.game.Character[] getCharacters() {
 
 		chars = new ArrayList<>();
@@ -34,8 +48,11 @@ public class GameData {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 
-				Tile t = game.getFloor().getTile(x, y);
+				Tile t = game.getFloor().getTile(y, x);
 
+				if(t == null){
+					continue;
+				}
 				if(t.getOccupant() != null){
 					chars.add(t.getOccupant());
 				}
@@ -54,7 +71,7 @@ public class GameData {
 	}
 
 	/**
-	 * Gets all the art inthe current game world.
+	 * Gets all the art in the current game world.
 	 *
 	 * @return
 	 */
@@ -68,7 +85,11 @@ public class GameData {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 
-				Tile t = game.getFloor().getTile(x, y);
+				Tile t = game.getFloor().getTile(y, x);
+
+				if(t == null){
+					continue;
+				}
 
 				for (Direction dir : Direction.values()) {
 					if (t.getWall(dir) != null) {

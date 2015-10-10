@@ -14,6 +14,7 @@ import artGame.game.Floor;
 import artGame.game.StairTile;
 import artGame.game.Tile;
 import artGame.main.Game;
+import artGame.ui.gamedata.GameData;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Camera;
@@ -32,7 +33,7 @@ public class GameRenderer implements Screen{
 
 	private static final float CAMERA_ANGLE = 60f;
 
-	private Game game;
+	private GameData game;
 	private Model floor;
 	private Model topWall;
 	private Model bottomWall;
@@ -46,7 +47,7 @@ public class GameRenderer implements Screen{
 	private List<Model> levelCache;
 	private List<Asset> characters;
 
-	public GameRenderer(Game game){
+	public GameRenderer(GameData game){
 		this.game = game;
 
 		resetAssets();
@@ -159,6 +160,14 @@ public class GameRenderer implements Screen{
 
 	public Camera getCamera(){
 		return camera;
+	}
+	
+	public void rotateLeft() {
+		
+	}
+	
+	public void rotateRight() {
+		
 	}
 
 	@Override

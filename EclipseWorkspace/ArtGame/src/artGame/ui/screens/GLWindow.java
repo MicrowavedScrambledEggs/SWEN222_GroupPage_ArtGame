@@ -32,19 +32,19 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.Socket;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.Callbacks;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GLContext;
 
-import artGame.game.Character.Direction;
-import artGame.game.Item;
+import artGame.control.ClientThread;
 import artGame.main.Game;
 import artGame.ui.DebugKeyCallback;
 import artGame.ui.NetworkKeyCallback;
@@ -83,14 +83,30 @@ public class GLWindow {
 
 	private static Game game;
 
+	private boolean out = false;
+
+	private ClientThread client;
+
+	private long lastRender;
+	private float deltaMS;
+
+	private static boolean rotateLeft = false;
+	private static boolean rotateRight = false;
+
 	static {
 		XMLHandler gameLoader = new XMLHandler();
-		game = gameLoader.loadGame(new File("Save Files/GroundFloorBasic.xml"));
+		game = gameLoader.loadGame(new File("Save Files/GameWorld.xml"));
 		GameData.updateGame(game);
 	}
 
 	public GLWindow() {
-
+		try {
+			client = new ClientThread(new Socket("130.195.6.64", 32768), game);
+			client.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		debugKeys = new DebugKeyCallback();
 		glfwSetErrorCallback(errorCallback);
 
@@ -134,8 +150,24 @@ public class GLWindow {
 
 	public void begin() {
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
-			System.out.println(GameData.getAllArt().length);
+
+			if(!out && game.getPlayer().isCaught()){
+				out = true;
+			}
+
+			if(rotateLeft){
+				gameRender.rotateLeft();
+			}
+			if(rotateRight){
+				gameRender.rotateRight();
+			}
+
 			loop();
+			long time = System.nanoTime();
+			deltaMS = (time-lastRender)/1000000;
+			lastRender = System.nanoTime();
+
+			System.out.println(deltaMS);
 		}
 		dispose();
 	}
@@ -165,8 +197,13 @@ public class GLWindow {
 		/* Flip buffers for next loop */
 		width.flip();
 		height.flip();
-		getCamera().translate(debugKeys.getCameraMove());
-		gameRender.getCamera().translate(debugKeys.getCameraMove());
+
+		if(out){
+			getCamera().translate(debugKeys.getCameraMove());
+			gameRender.getCamera().translate(debugKeys.getCameraMove());
+		}
+
+
 		camera = bufferedCam;
 		light = bufferedLight;
 		// System.out.println(GL11.glGetError());
@@ -175,14 +212,14 @@ public class GLWindow {
 
 	private void render() {
 		for (Screen screen : screens) {
-			screen.render();
+			screen.render(deltaMS);
 		}
 	}
 
 	private void initScreens() {
 		screens = new ArrayList<Screen>();
 
-		this.gameRender = new GameRenderer(game);
+		this.gameRender = new GameRenderer(new GameData());
 		screens.add(this.gameRender);
 		screens.add(new UIRenderer(window));
 
@@ -224,6 +261,14 @@ public class GLWindow {
 
 	public static void setCamera(Camera cam) {
 		GLWindow.bufferedCam = cam;
+	}
+
+	public static void rotateLeft(){
+		rotateLeft = true;
+	}
+
+	public static void rotateRight(){
+		rotateRight = true;
 	}
 
 	public static void main(String[] args) {
