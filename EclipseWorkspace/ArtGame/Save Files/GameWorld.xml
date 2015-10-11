@@ -78,7 +78,7 @@
             <wall direction = "NORTH" />
             <wall direction = "EAST" />
 		</empty_tile>
-		<chest id = "22">
+		<chest id = "40">
 			<position>
 				<x value = "13"/>
                 <y value = "0"/>
@@ -93,7 +93,7 @@
             </position>
             <wall direction = "NORTH" />
 		</empty_tile>
-		<chest id = "23">
+		<chest id = "41">
 			<position>
 				<x value = "15"/>
                 <y value = "0"/>
@@ -109,7 +109,7 @@
             <wall direction = "NORTH" />
             <wall direction = "WEST" />
 		</empty_tile>
-		<chest id = "24">
+		<chest id = "50">
 			<position>
 				<x value = "19"/>
                 <y value = "0"/>
@@ -125,39 +125,44 @@
             <wall direction = "WEST" />
             <wall direction = "EAST" />
         </empty_tile>
-        <chest id = "25">
+        <chest id = "0">
 			<position>
 				<x value = "1"/>
                 <y value = "1"/>
             </position>
-            <wall direction = "WEST" />
+            <wall direction = "WEST" />            
+            <wall direction = "EAST" />
             <wall direction = "SOUTH" />
         </chest>
-		<chest id = "26">
+		<chest id = "1">
 			<position>
 				<x value = "2"/>
                 <y value = "1"/>
             </position>
             <wall direction = "SOUTH" />
+            <wall direction = "WEST" />            
+            <wall direction = "EAST" />
             <inventory>
             	<item type = "ART" id = "59"/>
             </inventory>
 		</chest>
-		<chest id = "27">
+		<chest id = "2">
 			<position>
 				<x value = "3"/>
                 <y value = "1"/>
             </position>
             <wall direction = "SOUTH" />
+            <wall direction = "WEST" />            
+            <wall direction = "EAST" />
         </chest>
-        <chest id = "28">
+        <chest id = "20">
 			<position>
 				<x value = "4"/>
                 <y value = "1"/>
             </position>
             <wall direction = "SOUTH" />
         </chest>
-		<chest id = "29">
+		<chest id = "21">
 			<position>
 				<x value = "5"/>
                 <y value = "1"/>
@@ -189,7 +194,7 @@
             </position>
             <wall direction = "EAST" />
         </empty_tile>
-        <chest id = "30">
+        <chest id = "42">
 			<position>
 				<x value = "13"/>
                 <y value = "1"/>
@@ -202,7 +207,7 @@
                 <y value = "1"/>
             </position>
         </empty_tile>
-        <chest id = "31">
+        <chest id = "43">
 			<position>
 				<x value = "15"/>
                 <y value = "1"/>
@@ -226,7 +231,7 @@
             </position>
             <wall direction = "WEST" />
         </empty_tile>
-        <chest id = "32">
+        <chest id = "51">
 			<position>
 				<x value = "19"/>
                 <y value = "1"/>
@@ -241,36 +246,41 @@
             <wall direction = "WEST" />
             <wall direction = "EAST" />
         </empty_tile>
-        <chest id = "33">
+        <chest id = "3">
 			<position>
 				<x value = "1"/>
                 <y value = "2"/>
             </position>
-            <wall direction = "WEST" />
+            <wall direction = "WEST" />            
+            <wall direction = "EAST" />
             <wall direction = "NORTH" />
         </chest>
-		<chest id = "34">
+		<chest id = "4">
 			<position>
 				<x value = "2"/>
                 <y value = "2"/>
             </position>
             <wall direction = "NORTH" />
+            <wall direction = "WEST" />            
+            <wall direction = "EAST" />
 		</chest>
-		<chest id = "35">
+		<chest id = "5">
 			<position>
 				<x value = "3"/>
                 <y value = "2"/>
             </position>
             <wall direction = "NORTH" />
+            <wall direction = "WEST" />            
+            <wall direction = "EAST" />
         </chest>
-        <chest id = "36">
+        <chest id = "22">
 			<position>
 				<x value = "4"/>
                 <y value = "2"/>
             </position>
             <wall direction = "NORTH" />
         </chest>
-		<chest id = "37">
+		<chest id = "23">
 			<position>
 				<x value = "5"/>
                 <y value = "2"/>
@@ -299,7 +309,7 @@
             </position>
             <wall direction = "EAST" />
         </empty_tile>
-        <chest id = "38">
+        <chest id = "44">
 			<position>
 				<x value = "13"/>
                 <y value = "2"/>
@@ -312,13 +322,13 @@
                 <y value = "2"/>
             </position>
         </empty_tile>
-        <empty_tile>
+        <chest id = "45">
 			<position>
 				<x value = "15"/>
                 <y value = "2"/>
             </position>
             <wall direction = "EAST" />
-        </empty_tile>
+        </chest>
        <empty_tile>
 			<position>
 				<x value = "16"/>
@@ -333,7 +343,7 @@
                 <y value = "2"/>
             </position>
 		</tile_stretch>
-        <chest id = "39">
+        <chest id = "52">
 			<position>
 				<x value = "19"/>
                 <y value = "2"/>
@@ -431,7 +441,7 @@
             </position>
             <wall direction = "SOUTH" />
 		</tile_stretch>
-		<chest id = "40">
+		<chest id = "53">
 			<position>
 				<x value = "19"/>
                 <y value = "3"/>
@@ -1845,7 +1855,7 @@
             </position>
             <wall direction = "NORTH" artID = "61"/>
 		</tile_stretch>
-		<chest id = "2">
+		<chest id = "70">
 			<position>
 				<x value = "6"/>
                 <y value = "0"/>
@@ -1889,7 +1899,7 @@
             <wall direction = "NORTH" />
             <wall direction = "WEST" />
 		</empty_tile>
-		<chest id = "5">
+		<chest id = "60">
 			<position>
 				<x value = "19"/>
                 <y value = "0"/>
@@ -1950,9 +1960,10 @@
                 <y value = "1"/>
             </position>
             <wall direction = "WEST" />
-            <wall direction = "SOUTH" />
+            <wall direction = "SOUTH" />          
+            <wall direction = "EAST" />
         </chest>
-        <chest id = "7">
+        <chest id = "24">
 			<position>
 				<x value = "14"/>
                 <y value = "1"/>
@@ -1985,7 +1996,7 @@
             </position>
             <wall direction = "WEST" />
         </empty_tile>
-        <chest id ="8">
+        <chest id ="61">
 			<position>
 				<x value = "19"/>
                 <y value = "1"/>
@@ -2039,15 +2050,16 @@
             </position>
             <wall direction = "EAST" artID = "64"/>
         </empty_tile>
-        <chest id = "9">
+        <chest id = "7">
 			<position>
 				<x value = "13"/>
                 <y value = "2"/>
             </position>
             <wall direction = "WEST" />
             <wall direction = "NORTH" />
+            <wall direction = "EAST" />
         </chest>
-        <chest id = "10">
+        <chest id = "25">
 			<position>
 				<x value = "14"/>
                 <y value = "2"/>
@@ -2081,7 +2093,7 @@
                 <y value = "2"/>
             </position>
         </empty_tile>
-        <chest id = "11">
+        <chest id = "62">
 			<position>
 				<x value = "19"/>
                 <y value = "2"/>
@@ -2147,14 +2159,14 @@
             </position>
             <wall direction = "SOUTH" />
         </empty_tile>
-        <chest id = "12">
+        <chest id = "63">
             <position>
 				<x value = "16"/>
                 <y value = "3"/>
             </position>
             <wall direction = "SOUTH" />
         </chest>
-        <chest id = "13">
+        <chest id = "26">
             <position>
 				<x value = "17"/>
                 <y value = "3"/>
@@ -2241,7 +2253,7 @@
                 <y value = "5"/>
             </position>
         </empty_tile>
-        <chest id = "14">
+        <chest id = "71">
             <position>
 				<x value = "2"/>
                 <y value = "5"/>
@@ -2294,7 +2306,7 @@
                 <y value = "6"/>
             </position>
         </empty_tile>
-        <chest id = "15">
+        <chest id = "72">
             <position>
 				<x value = "2"/>
                 <y value = "6"/>
@@ -2348,7 +2360,7 @@
                 <y value = "6"/>
             </position>
         </empty_tile>
-        <chest id = "15">
+        <chest id = "73">
             <position>
 				<x value = "2"/>
                 <y value = "6"/>
@@ -2444,7 +2456,7 @@
             </position>
             <wall direction = "WEST" />
         </empty_tile>
-        <chest id = "16">
+        <chest id = "74">
             <position>
 				<x value = "1"/>
                 <y value = "8"/>
@@ -2504,7 +2516,7 @@
             </position>
             <wall direction = "WEST" />
         </empty_tile>
-        <chest id = "16">
+        <chest id = "75">
             <position>
 				<x value = "2"/>
                 <y value = "9"/>
@@ -2557,7 +2569,7 @@
             </position>
             <wall direction = "EAST" artID = "76"/>
         </empty_tile>
-        <chest id = "17">
+        <chest id = "76">
         	<position>
 				<x value = "0"/>
                 <y value = "10"/>
@@ -2624,7 +2636,7 @@
                 <y value = "11"/>
             </position>
         </empty_tile>
-        <chest id ="18">
+        <chest id ="77">
             <position>
 				<x value = "2"/>
                 <y value = "11"/>
@@ -2684,7 +2696,7 @@
                 <y value = "12"/>
             </position>
         </empty_tile>
-        <chest id ="19">
+        <chest id ="78">
             <position>
 				<x value = "1"/>
                 <y value = "12"/>
@@ -2744,7 +2756,7 @@
                 <y value = "13"/>
             </position>
         </tile_stretch>
-        <chest id ="20">
+        <chest id ="79">
             <position>
 				<x value = "3"/>
                 <y value = "13"/>
@@ -2840,7 +2852,7 @@
                 <y value = "14"/>
             </position>
         </tile_stretch>
-        <chest id ="21">
+        <chest id ="80">
             <position>
 				<x value = "3"/>
                 <y value = "14"/>
@@ -2909,14 +2921,14 @@
                 <y value = "15"/>
             </position>
         </tile_stretch>
-        <chest id ="21">
+        <empty_tile>
             <position>
 				<x value = "3"/>
                 <y value = "15"/>
             </position>
             <wall direction = "EAST" />
             <wall direction = "SOUTH" />
-        </chest>
+        </empty_tile>
         <empty_tile>
             <position>
 				<x value = "4"/>
