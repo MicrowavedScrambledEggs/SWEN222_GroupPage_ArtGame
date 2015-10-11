@@ -11,6 +11,7 @@ import artGame.control.ClientThread;
 import artGame.control.cmds.*;
 import artGame.game.Player;
 import artGame.game.Character.Direction;
+import artGame.ui.gamedata.GameData;
 import artGame.ui.screens.GLWindow;
 
 public class NetworkKeyCallback extends GLFWKeyCallback {
@@ -26,7 +27,7 @@ public class NetworkKeyCallback extends GLFWKeyCallback {
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
 		
-		Player p = GLWindow.getGame().getPlayer(); // we want our player, not someone else's
+		Player p = GameData.getPlayer(); // we want our player, not someone else's
 		Command c = null;
 		//Send press commands..
 		

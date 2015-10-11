@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -23,6 +24,8 @@ import artGame.game.Player;
 import artGame.game.Character.Direction;
 import artGame.main.Game;
 import artGame.main.Main;
+import artGame.ui.gamedata.GameData;
+import artGame.ui.gamedata.GamePacketData;
 
 /** The ClientThread provides a means of sending and receiving commands from the server.
  * Like the ServerThread, it requires a reference to a running game in order to work properly. 
@@ -38,6 +41,7 @@ public class ClientThread extends SocketThread {
 	private final int wait;
 	private final DataInputStream IN;
 	private final DataOutputStream OUT;
+	private GamePacketData gameData;
 	
 	/**
 	 * @deprecated Use {@link #ClientThread(Socket,Game,int)} instead
@@ -118,15 +122,28 @@ public class ClientThread extends SocketThread {
 			try {
 				long then = System.currentTimeMillis();
 				// first, write to server
+				super.writeCommand(OUT, new Command('x', -1));
 				write();
 				long now = System.currentTimeMillis();
 				// then, read server's command
-				while (then + wait > System.currentTimeMillis() && IN.available() == 0) {}
-				if (IN.available() > 0) {
-					Command c = super.readCommand(IN);
-					System.out.print(c.toString());
-					// TODO process server command
+		
+				while (then + wait > System.currentTimeMillis() && IN.available() == 0) {
+					
 				}
+				//System.out.println(IN.available());
+				if (IN.available() > 0) {
+					byte[] bytes = new byte[IN.available()];
+					IN.readFully(bytes);
+					try {
+						gameData = GameData.read(bytes);
+						GameData.updateGame(gameData);
+					} catch (IncompatiblePacketException e) {
+						e.printStackTrace();
+					}
+					//Command c = super.readCommand(IN);
+					//System.out.print("command: " + c.toString());
+					//TODO read game data input and any other commands ########	
+				} 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -135,11 +152,15 @@ public class ClientThread extends SocketThread {
 		}
 	}
 
+	public synchronized GamePacketData getGameData(){
+		return gameData;
+	}
+	
 	private void write() throws IOException {
 		if (super.hasCommands()) {
 			Command c = super.pollCommand();
 			super.writeCommand(OUT, c);
-		}
+		}	
 	}
 	
 	private void getPlayerCmd() {

@@ -83,6 +83,7 @@ public class ServerGUI extends JPanel {
 
 		//Init Text fields/buttons
 		fileURL = new JTextField(20);
+		fileURL.setText("Save Files/GameWorld.xml");
 		loadFile = new JButton("load");
 		fileLabel = new JLabel("Map file");
 		//fileURL.setHorizontalAlignment(JTextField.CENTER);
@@ -108,14 +109,17 @@ public class ServerGUI extends JPanel {
 		});
 
 		maxClient = new JTextField(8);
+		maxClient.setText("6");
 		maxClientLabel = new JLabel("Max clients");
 		//maxClient.setHorizontalAlignment(JTextField.CENTER);
 
 		gameClock = new JTextField(10);
+		gameClock.setText("20");
 		gameClockLabel = new JLabel("Game clock (MS)");
 		//gameClock.setHorizontalAlignment(JTextField.CENTER);
 
 		port = new JTextField(10);
+		port.setText("32768");
 		portLabel = new JLabel("Port");
 		//port.setHorizontalAlignment(JTextField.CENTER);
 
@@ -151,7 +155,7 @@ public class ServerGUI extends JPanel {
 
 						@Override
 						public void run() {
-							artGame.main.Main.main(args);
+							artGame.main.Main.startServer(fileURL.getText(), Integer.valueOf(maxClient.getText()) ,Integer.valueOf(gameClock.getText()), Integer.valueOf(port.getText()));
 						}
 
 					});

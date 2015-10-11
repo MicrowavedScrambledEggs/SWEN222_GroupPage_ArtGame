@@ -134,7 +134,6 @@ public class Sprite implements Asset {
         //System.out.println(GL11.glGetError());
         verts.unbind(GL_ARRAY_BUFFER);
         vao.unbind();
-        System.out.println();
 	}
 
 	@Override

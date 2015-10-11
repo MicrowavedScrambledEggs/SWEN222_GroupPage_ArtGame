@@ -45,10 +45,14 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GLContext;
 
 import artGame.control.ClientThread;
+import artGame.control.IncompatiblePacketException;
+import artGame.game.Guard;
+import artGame.game.Player;
 import artGame.main.Game;
 import artGame.ui.DebugKeyCallback;
 import artGame.ui.NetworkKeyCallback;
 import artGame.ui.gamedata.GameData;
+import artGame.ui.gamedata.GamePacketData;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
@@ -103,12 +107,12 @@ public class GLWindow {
 		try {
 			client = new ClientThread(new Socket("192.168.178.20", 32768), game, 10);
 			client.start();
-
+			
 			keyCallback = new NetworkKeyCallback(client);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 		debugKeys = new DebugKeyCallback();
 		glfwSetErrorCallback(errorCallback);
 
@@ -130,7 +134,7 @@ public class GLWindow {
 
 		// associate window with key callback
 		 glfwSetKeyCallback(window, keyCallback);
-		//lfwSetKeyCallback(window, debugKeys);
+		//glfwSetKeyCallback(window, debugKeys);
 
 		// create OpenGL context
 		glfwMakeContextCurrent(window);
@@ -152,9 +156,9 @@ public class GLWindow {
 
 	public void begin() {
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
+			
 
-			GameData.updateGame(game);
-
+			
 			if(!out && game.getPlayer().isCaught()){
 				out = true;
 			}
@@ -214,6 +218,10 @@ public class GLWindow {
 	}
 
 	private void render() {
+		if(GameData.getPlayer() == null){
+			System.out.println("player is null..");
+			return;
+		}
 		for (Screen screen : screens) {
 			screen.render(deltaMS);
 		}

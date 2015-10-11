@@ -95,7 +95,7 @@ public class UIRenderer implements Screen {
 
 	private void updateInventory() {
 		resetInventory();
-		for(Item item: GLWindow.getGame().getPlayer().getInventory()){
+		for(Item item: GameData.getPlayer().getInventory()){
 			int freeSlot = -1;
 			for(int i = 0; i < inventory.size(); i++){
 				ItemSlot slot = inventory.get(i);

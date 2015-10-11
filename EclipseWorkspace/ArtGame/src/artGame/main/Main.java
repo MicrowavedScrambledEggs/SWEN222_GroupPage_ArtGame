@@ -1,42 +1,36 @@
 package artGame.main;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.Proxy;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.time.Clock;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.List;
 
 import artGame.control.ClientThread;
+import artGame.control.ConnectionHandler;
 import artGame.control.GameClock;
-import artGame.control.SocketThread;
 import artGame.control.ServerThread;
+import artGame.control.SocketThread;
 import artGame.xml.XMLHandler;
 
 public class Main {
 	public static final String GAME_NAME = "Wherefore Art Thou";
 	public static final int WAIT_PERIOD = 20;
-	public static final int BROADCAST_PERIOD = 2000; // cranked up to obscene levels to make output easier to read
+	public static final int BROADCAST_PERIOD = 2000; // cranked up to obscene
+														// levels to make output
+														// easier to read
 	public static final int CONNECTION_TIMEOUT = 60000;
 	public static final int LARGE_PACKET_SIZE = 1024;
-	
+
 	public static GameClock clock;
-	
+
 	private static volatile ServerThread[] children = new ServerThread[0];
 	private static Game GAME;
-	
+
 	/** For testing only */
 	@Deprecated
-	public static void main (String[] args) {
+	public static void main(String[] args) {
 		// logic mostly stolen from Dave's PacMan code.
 		String filename = null;
 		String serverURL = null;
@@ -46,34 +40,37 @@ public class Main {
 		int broadcastClock = BROADCAST_PERIOD;
 		int port = 32768; // default
 		boolean readFileName = false;
-		
+
 		for (int i = 0; i != args.length; ++i) {
 			if (args[i].startsWith("-")) {
 				readFileName = false;
 				String arg = args[i];
-				if(arg.equals("-help")) {
+				if (arg.equals("-help")) {
 					System.out.println("Commands:");
-					System.out.println("-server <numclients>	| starts a server that can accept n clients");
-					System.out.println("-connect <IP>			| starts a client that connects to the IP");
-					System.out.println("-clock <time>			| if server, sets min delay between updates [NOT IMPLEMENTED]");
+					System.out
+							.println("-server <numclients>	| starts a server that can accept n clients");
+					System.out
+							.println("-connect <IP>			| starts a client that connects to the IP");
+					System.out
+							.println("-clock <time>			| if server, sets min delay between updates [NOT IMPLEMENTED]");
 					System.out.println("-port <num>				| port to use");
 					System.out.println("-loadworld <path>		| gametype to run");
 					System.exit(0);
-				} else if(arg.equals("-server")) {
+				} else if (arg.equals("-server")) {
 					server = true;
 					maxClients = Integer.parseInt(args[++i]);
-				} else if(arg.equals("-connect")) {
+				} else if (arg.equals("-connect")) {
 					serverURL = args[++i];
-				} else if(arg.equals("-clock")) {
+				} else if (arg.equals("-clock")) {
 					gameClock = Integer.parseInt(args[++i]);
-				} else if(arg.equals("-port")) {
+				} else if (arg.equals("-port")) {
 					port = Integer.parseInt(args[++i]);
 				} else if (arg.equals("-loadworld")) {
 					filename = args[++i];
 					readFileName = true;
 				}
 			} else if (readFileName) {
-				filename = filename + " "+ args[i];
+				filename = filename + " " + args[i];
 			}
 		}
 
@@ -85,31 +82,35 @@ public class Main {
 		}
 
 		// Sanity checks, also stolen directly from Dave's PacMan code
-		if(serverURL != null && server) {
-			System.out.println("Cannot be a server and connect to another server!");
+		if (serverURL != null && server) {
+			System.out
+					.println("Cannot be a server and connect to another server!");
 			System.exit(-1);
-		} else if(serverURL != null && gameClock != WAIT_PERIOD) {
-			System.out.println("Cannot overide clock period when connecting to server.");
+		} else if (serverURL != null && gameClock != WAIT_PERIOD) {
+			System.out
+					.println("Cannot overide clock period when connecting to server.");
 			System.exit(-1);
 		} else if (server && maxClients <= 0) {
-			System.out.println("Server must be able to connect at least one client.");
+			System.out
+					.println("Server must be able to connect at least one client.");
 			System.exit(-1);
 		} else if (!server && maxClients > 1) {
-			System.out.println("Cannot override number of clients when connecting to server.");
+			System.out
+					.println("Cannot override number of clients when connecting to server.");
 			System.exit(-1);
 		}
 
 		try {
-			if(server) {
+			if (server) {
 				// Run as server
-				runPublicSocket(port,gameClock,maxClients);
-			} else if(serverURL != null) {
+				runPublicSocket(port, gameClock, maxClients);
+			} else if (serverURL != null) {
 				// Run as client
 				runClient(serverURL, port);
 			} else {
 				// single user game
 			}
-		} catch(IOException ioe) {
+		} catch (IOException ioe) {
 			System.out.println("I/O error: " + ioe.getMessage());
 			ioe.printStackTrace();
 			System.exit(1);
@@ -118,76 +119,110 @@ public class Main {
 		System.exit(0);
 	}
 
+	public static synchronized Game getGame() {
+		return GAME;
+	}
+
+	public static void startServer(String filename, int maxClients,
+			int gameClock, int port) {
+
+		if (filename != null) {
+			File f = new File(filename);
+			XMLHandler xmlh = new XMLHandler();
+			GAME = xmlh.loadGame(f);
+		}
+
+		runPublicSocket(port, gameClock, maxClients);
+	}
+
 	private static void runClient(String addr, int port) throws IOException {
-		Socket s = new Socket(addr,port);
+		Socket s = new Socket(addr, port);
 		children = null;
-		System.out.println("The client has connected to " + s.getInetAddress() +":"+s.getPort());
+		System.out.println("The client has connected to " + s.getInetAddress()
+				+ ":" + s.getPort());
 		new ClientThread(s, GAME, Main.BROADCAST_PERIOD).run();
 	}
 
-
-	/** This method runs a public socket out of the given port that
-	 * clients can connect to in order to join the game. 
+	/**
+	 * This method runs a public socket out of the given port that clients can
+	 * connect to in order to join the game.
 	 * 
-	 * @param port Port to use
-	 * @param gameClock Start time of the game clock
+	 * @param port
+	 *            Port to use
+	 * @param gameClock
+	 *            Start time of the game clock
 	 * @param maxClients
 	 */
-	@SuppressWarnings("resource") // (otherwise it complains that the publicSocket is never used.)
+	@SuppressWarnings("resource")
+	// (otherwise it complains that the publicSocket is never used.)
 	private static void runPublicSocket(int port, int gameClock, int maxClients) {
 		clock = new GameClock(GAME);
 		clock.start();
 		if (maxClients <= 0) {
-			throw new IllegalArgumentException("The server must be capable of accepting at least one client request.");
-		} else if (children == null) { 
-			System.err.println("Cannot run a public server when the server has been closed.");
-			return; 
+			throw new IllegalArgumentException(
+					"The server must be capable of accepting at least one client request.");
+		} else if (children == null) {
+			System.err
+					.println("Cannot run a public server when the server has been closed.");
+			return;
 		} else if (children.length == 0) {
 			children = new ServerThread[maxClients];
 		}
 		// now we've passed the sanity checks, enter the main listen loop
-		ServerSocket publicSocket = null;
-		long starttime = System.currentTimeMillis();
-		try {
-			publicSocket = new ServerSocket(port, maxClients+1, InetAddress.getLocalHost());
-			System.out.println("The server has set up shop at "+publicSocket.getLocalSocketAddress());
-			long[] timeout = new long[maxClients];
-			int nextServerIdx = 0;
-			// this is the while loop that manages the public socket
-			while (1 == 1) {
-				try {
-					Socket s = publicSocket.accept();
-					children[nextServerIdx] = new ServerThread(GAME, s, WAIT_PERIOD);
-					children[nextServerIdx].start();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		final ConnectionHandler handler = new ConnectionHandler(port,
+				gameClock, maxClients);
+		final List<ServerThread> childrenList = new ArrayList<>();
+
+		long[] timeout = new long[maxClients];
+
+		int nextServerIdx = 0;
+		
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				ServerThread client = handler.waitForClient();
+				if(client != null){
+					childrenList.add(client);
+					//client.start();
 				}
-				// this loop checks if we should close any of our child sockets
-				// we don't expect to have more than six players, so this should be OK.
-				for (int i = 0; i < children.length; i++) {
-					if (children[i] != null && children[i].isTimedOut()) {
-						if (timeout[i] >= System.currentTimeMillis()) {
-							children[i].close();
-							children[i] = null;
-							timeout[i] = 0;
-							if (i < nextServerIdx) {
-								nextServerIdx = i;
-							}
-						} else if (children[i] != null && timeout[i] == 0){
-							timeout[i] = System.currentTimeMillis() + (long)CONNECTION_TIMEOUT;
+			}
+
+		}).start();
+		
+		// this is the while loop that manages the public socket
+		while (1 == 1) {
+
+			// this loop checks if we should close any of our child sockets
+			// we don't expect to have more than six players, so this should be
+			// OK.
+
+			for (int i = 0; i < childrenList.size(); i++) {
+				ServerThread child = childrenList.get(i);
+				if (child != null) {
+					child.updateGame(GAME);
+				}
+
+				if (child != null && child.isTimedOut()) {
+					if (timeout[i] >= System.currentTimeMillis()) {
+						// System.out.println("closing client connection");
+						child.close();
+						child = null;
+						timeout[i] = 0;
+						if (i < nextServerIdx) {
+							nextServerIdx = i;
 						}
+					} else if (child != null && timeout[i] == 0) {
+						timeout[i] = System.currentTimeMillis()
+								+ (long) CONNECTION_TIMEOUT;
 					}
 				}
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
-	
+
 	public static ServerThread[] getKids() {
-		return Arrays.copyOf(children,children.length);
+		return Arrays.copyOf(children, children.length);
 	}
 
 	public static void stop() {
@@ -197,7 +232,8 @@ public class Main {
 		}
 		for (SocketThread s : children) {
 			if (s != null) {
-				System.err.println("Closing socket on port "+s.getPort()+" to "+s.getPlayerId());
+				System.err.println("Closing socket on port " + s.getPort()
+						+ " to " + s.getPlayerId());
 				s.close();
 			}
 		}
