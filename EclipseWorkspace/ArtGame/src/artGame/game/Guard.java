@@ -92,4 +92,13 @@ public class Guard extends Character {
 		return true;
 	}
 
+	/**
+	 * @return the patrol path
+	 */
+	public List<Coordinate> getPath() {
+		return path;
+	}
+	
+	
+
 }

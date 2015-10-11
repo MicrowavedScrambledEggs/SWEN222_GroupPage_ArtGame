@@ -56,6 +56,8 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		} else if(qName.equals(XMLHandler.POSITION_ELEMENT) || qName.equals(XMLHandler.START_ELEMENT)
 				|| qName.equals(XMLHandler.FINISH_ELEMENT)){
 			currentCoord = new CoordinateBuilder();
+		} else if(qName.equals(XMLHandler.PATROL_STEP_ELEMENT)){
+			currentCoord = new PatrolStep();
 		} else if(qName.equals(XMLHandler.LINKED_TILE_ELEMENT)){
 			ObjectBuilder stairBuilder = buildStack.peek();
 			stairBuilder.addField(attributes.getQName(0), attributes.getValue(0));
@@ -129,6 +131,8 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		if(qName.equals(XMLHandler.POSITION_ELEMENT) || qName.equals(XMLHandler.START_ELEMENT)
 				|| qName.equals(XMLHandler.FINISH_ELEMENT) || qName.equals(XMLHandler.LINKED_TILE_ELEMENT)){
 			addFieldToCurrentBuilder(qName, currentCoord.buildCoordinate());
+		} else if(qName.equals(XMLHandler.PATROL_STEP_ELEMENT)){
+			addFieldToCurrentBuilder(qName, currentCoord);
 		} else if(qName.equals(XMLHandler.X_PATH_ELEMENT) || qName.equals(XMLHandler.Y_PATH_ELEMENT)
 				|| qName.equals(XMLHandler.PATROL_ELEMENT)){
 			completePatrolSegment(qName);

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -19,14 +21,14 @@ import artGame.xml.XMLHandler;
 public class ArtGameSaver {
 	
 	private ArrayList<Door> doors;
-	private ArrayList<Art> paintings;
+	private HashSet<Art> paintings;
 	private ArrayList<Player> players;
 	private ArrayList<Guard> guards;
 	private ArrayList<Sculpture> sculptures;
 
 	public void saveGame(Game game, String fileName) {
 		this.doors = new ArrayList<Door>();
-		this.paintings = new ArrayList<Art>();
+		this.paintings = new HashSet<Art>();
 		this.players = new ArrayList<Player>();
 		this.guards = new ArrayList<Guard>();
 		this.sculptures = new ArrayList<Sculpture>();
@@ -64,7 +66,14 @@ public class ArtGameSaver {
 			writer.writeEndElement();
 			writeCoordinate(guard.getRow(), guard.getCol(), writer, XMLHandler.POSITION_ELEMENT);
 			writeCharacterInventory(guard.getInventory(), writer);
-			//TODO: write patrol path. Might have to add 'step' element
+			List<Coordinate> path = guard.getPath();
+			if(path != null){
+				writer.writeStartElement(XMLHandler.PATROL_ELEMENT);
+				for(Coordinate step : path){
+					writeCoordinate(step.getRow(), step.getCol(), writer, XMLHandler.PATROL_STEP_ELEMENT);
+				}
+				writer.writeEndElement();
+			}
 			writer.writeEndElement();
 		}
 		writer.writeEndElement();

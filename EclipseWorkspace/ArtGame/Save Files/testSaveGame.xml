@@ -7,6 +7,7 @@
 				<y value="0" />
 			</position>
 			<wall direction="NORTH" />
+			<door doorID="0" direction="EAST" locked="TRUE" keyID="1" />
 			<wall direction="WEST" />
 		</empty_tile>
 		<empty_tile>
@@ -15,6 +16,7 @@
 				<y value="0" />
 			</position>
 			<wall direction="NORTH" />
+			<door doorID="0" direction="WEST" locked="TRUE" keyID="1" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -22,7 +24,6 @@
 				<y value="0" />
 			</position>
 			<wall direction="NORTH" />
-			<wall direction="EAST" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -30,7 +31,6 @@
 				<y value="0" />
 			</position>
 			<wall direction="NORTH" />
-			<wall direction="WEST" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -45,7 +45,6 @@
 				<y value="0" />
 			</position>
 			<wall direction="NORTH" />
-			<wall direction="EAST" artID="3" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -53,145 +52,2535 @@
 				<y value="0" />
 			</position>
 			<wall direction="NORTH" />
+			<door doorID="1" direction="SOUTH" locked="FALSE" />
+			<wall direction="EAST" />
 		</empty_tile>
-		<chest id="0">
+		<empty_tile>
 			<position>
-				<x value="0" />
-				<y value="1" />
+				<x value="7" />
+				<y value="0" />
 			</position>
+			<wall direction="NORTH" />
 			<wall direction="WEST" />
-		</chest>
-		<empty_tile>
-			<position>
-				<x value="1" />
-				<y value="1" />
-			</position>
-		</empty_tile>
-		<empty_tile>
-			<position>
-				<x value="2" />
-				<y value="1" />
-			</position>
-			<door doorID="0" direction="EAST" locked="FALSE" keyID="1" />
-		</empty_tile>
-		<empty_tile>
-			<position>
-				<x value="3" />
-				<y value="1" />
-			</position>
-			<door doorID="0" direction="WEST" locked="FALSE" keyID="1" />
-		</empty_tile>
-		<empty_tile>
-			<position>
-				<x value="4" />
-				<y value="1" />
-			</position>
-		</empty_tile>
-		<empty_tile>
-			<position>
-				<x value="5" />
-				<y value="1" />
-			</position>
 		</empty_tile>
 		<empty_tile isExit="TRUE">
 			<position>
-				<x value="6" />
-				<y value="1" />
+				<x value="8" />
+				<y value="0" />
 			</position>
 			<wall direction="NORTH" />
-			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile isExit="TRUE">
+			<position>
+				<x value="9" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile isExit="TRUE">
+			<position>
+				<x value="10" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile isExit="TRUE">
+			<position>
+				<x value="11" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
 			<wall direction="EAST" />
 		</empty_tile>
 		<empty_tile>
 			<position>
 				<x value="0" />
-				<y value="2" />
+				<y value="1" />
 			</position>
-			<wall direction="SOUTH" />
+			<wall direction="EAST" />
 			<wall direction="WEST" />
 		</empty_tile>
 		<empty_tile>
 			<position>
 				<x value="1" />
-				<y value="2" />
+				<y value="1" />
 			</position>
 			<wall direction="SOUTH" />
+			<wall direction="WEST" />
 		</empty_tile>
 		<empty_tile>
 			<position>
 				<x value="2" />
-				<y value="2" />
+				<y value="1" />
 			</position>
 			<wall direction="SOUTH" />
-			<wall direction="EAST" />
 		</empty_tile>
 		<empty_tile>
 			<position>
 				<x value="3" />
-				<y value="2" />
+				<y value="1" />
 			</position>
 			<wall direction="SOUTH" />
-			<wall direction="WEST" />
 		</empty_tile>
-		<empty_tile>
+		<chest id="1">
 			<position>
 				<x value="4" />
-				<y value="2" />
+				<y value="1" />
 			</position>
+			<inventory>
+				<item type="ART" id="59" />
+			</inventory>
 			<wall direction="SOUTH" />
-		</empty_tile>
-		<empty_tile>
+		</chest>
+		<chest id="0">
 			<position>
 				<x value="5" />
-				<y value="2" />
-			</position>
-			<wall direction="SOUTH" />
-			<wall direction="EAST" />
-		</empty_tile>
-		<empty_tile>
-			<position>
-				<x value="6" />
-				<y value="2" />
-			</position>
-			<wall direction="SOUTH" />
-		</empty_tile>
-	</floor>
-	<players>
-		<player id="1">
-			<direction>SOUTH</direction>
-			<position>
-				<x value="1" />
 				<y value="1" />
 			</position>
 			<inventory>
 				<item type="KEY" id="1" />
-				<item type="ART" id="2" />
-				<item type="ART" id="0" />
 			</inventory>
-		</player>
-	</players>
-	<guards>
-		<guard id="0">
-			<direction>WEST</direction>
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</chest>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="1" />
+			</position>
+			<door doorID="1" direction="NORTH" locked="FALSE" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="1" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="1" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="1" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="1" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="1" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="1" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="1" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="1" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="1" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="1" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="1" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="2" />
+			</position>
+			<wall direction="EAST" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="2" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="2" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="2" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="2" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
 			<position>
 				<x value="5" />
 				<y value="2" />
 			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="2" />
+			</position>
+			<door doorID="2" direction="SOUTH" locked="FALSE" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="2" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="2" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="2" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="2" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="2" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="2" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="2" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="2" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="2" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="2" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="2" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="2" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="2" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="3" />
+			</position>
+			<door doorID="3" direction="SOUTH" locked="TRUE" keyID="1" />
+			<door doorID="4" direction="EAST" locked="TRUE" keyID="1" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+			<door doorID="4" direction="WEST" locked="TRUE" keyID="1" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="3" />
+			</position>
+			<door doorID="2" direction="NORTH" locked="FALSE" />
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="3" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="3" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="3" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="3" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="3" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="3" />
+			</position>
+			<door doorID="5" direction="EAST" locked="FALSE" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+			<door doorID="5" direction="WEST" locked="FALSE" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+			<door doorID="6" direction="EAST" locked="FALSE" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+			<door doorID="6" direction="WEST" locked="FALSE" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="3" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="4" />
+			</position>
+			<door doorID="3" direction="NORTH" locked="TRUE" keyID="1" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" artID="1" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" artID="1" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="4" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="4" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="4" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="4" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="4" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="4" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" artID="2" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="4" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="5" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="5" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="5" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="5" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="5" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="5" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="5" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="6" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="6" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="6" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="6" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="6" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="6" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="6" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="6" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="6" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="6" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="6" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="7" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="7" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="7" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="7" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="7" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="7" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="7" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="7" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="7" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="7" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="7" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="7" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="7" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="7" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="7" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="7" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="7" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="7" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="7" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="7" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="8" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="8" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="8" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="8" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="8" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="8" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="8" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="8" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="8" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="8" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="8" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="9" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="9" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="9" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="9" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="9" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="9" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="9" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="9" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="9" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="10" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="10" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="10" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="10" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="10" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="10" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="10" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="10" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="10" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="10" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="10" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="10" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="10" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="10" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="10" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="10" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="11" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="11" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="11" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="11" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="11" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="11" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="11" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="11" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="11" />
+			</position>
+			<door doorID="7" direction="SOUTH" locked="TRUE" keyID="2" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="11" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="11" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="11" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="11" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="11" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="11" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="11" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="12" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="12" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="12" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="12" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="12" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="12" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="12" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="12" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="12" />
+			</position>
+			<door doorID="7" direction="NORTH" locked="TRUE" keyID="2" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="12" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="12" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="12" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="12" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="12" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="12" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="12" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="13" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="13" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="13" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="13" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="13" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="13" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="13" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="13" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="13" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="13" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="13" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="13" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="13" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="13" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="13" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="13" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="14" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="14" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="14" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="14" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="14" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="14" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="14" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="14" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="14" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="15" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="15" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="15" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="15" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="15" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="15" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="15" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="16" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="16" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="16" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="16" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="16" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="16" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="16" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="17" />
+			</position>
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="17" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="17" />
+			</position>
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="7" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="8" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="9" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="10" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="11" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="12" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="13" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="14" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="15" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="16" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="17" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="18" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="19" />
+				<y value="18" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+	</floor>
+	<players>
+		<player id="1">
+			<direction>NORTH</direction>
+			<position>
+				<x value="17" />
+				<y value="4" />
+			</position>
+			<inventory>
+				<item type="KEY" id="3" />
+				<item type="ART" id="2" />
+			</inventory>
+		</player>
+	</players>
+	<guards>
+		<guard id="3">
+			<direction>EAST</direction>
+			<position>
+				<x value="18" />
+				<y value="0" />
+			</position>
 			<inventory></inventory>
+		</guard>
+		<guard id="2">
+			<direction>NORTH</direction>
+			<position>
+				<x value="7" />
+				<y value="9" />
+			</position>
+			<inventory>
+				<item type="KEY" id="2" />
+			</inventory>
+			<patrol>
+				<step>
+					<x value="8" />
+					<y value="7" />
+				</step>
+				<step>
+					<x value="9" />
+					<y value="7" />
+				</step>
+				<step>
+					<x value="10" />
+					<y value="7" />
+				</step>
+				<step>
+					<x value="11" />
+					<y value="7" />
+				</step>
+				<step>
+					<x value="12" />
+					<y value="7" />
+				</step>
+				<step>
+					<x value="12" />
+					<y value="8" />
+				</step>
+				<step>
+					<x value="12" />
+					<y value="9" />
+				</step>
+				<step>
+					<x value="12" />
+					<y value="10" />
+				</step>
+				<step>
+					<x value="12" />
+					<y value="11" />
+				</step>
+				<step>
+					<x value="12" />
+					<y value="12" />
+				</step>
+				<step>
+					<x value="11" />
+					<y value="12" />
+				</step>
+				<step>
+					<x value="10" />
+					<y value="12" />
+				</step>
+				<step>
+					<x value="9" />
+					<y value="12" />
+				</step>
+				<step>
+					<x value="8" />
+					<y value="12" />
+				</step>
+				<step>
+					<x value="7" />
+					<y value="12" />
+				</step>
+				<step>
+					<x value="7" />
+					<y value="11" />
+				</step>
+				<step>
+					<x value="7" />
+					<y value="10" />
+				</step>
+				<step>
+					<x value="7" />
+					<y value="9" />
+				</step>
+				<step>
+					<x value="7" />
+					<y value="8" />
+				</step>
+				<step>
+					<x value="7" />
+					<y value="7" />
+				</step>
+			</patrol>
 		</guard>
 	</guards>
 	<art>
-		<painting artID="3">
-			<name>Art3</name>
-			<value>9000</value>
+		<painting artID="59">
+			<name>Someone Forgot to Flush</name>
+			<value>-999</value>
 		</painting>
 		<painting artID="2">
-			<name>Art2</name>
-			<value>4000</value>
+			<name>A Really Shit Painting</name>
+			<value>10</value>
 		</painting>
-		<painting artID="0">
-			<name>Art1</name>
+		<painting artID="1">
+			<name>A Really Good Painting</name>
 			<value>1000</value>
 		</painting>
+		<sculpture artID="58">
+			<direction>EAST</direction>
+			<position>
+				<x value="6" />
+				<y value="6" />
+			</position>
+			<name>Michelangelo's David (J Pearce)</name>
+			<value>10000</value>
+		</sculpture>
 	</art>
 </game>

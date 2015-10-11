@@ -52,6 +52,7 @@ public class XMLHandler {
 	public static final String Y_PATH_ELEMENT = "north_south_stretch";
 	public static final String START_ELEMENT = "start";
 	public static final String FINISH_ELEMENT = "finish";
+	public static final String PATROL_STEP_ELEMENT = "step";
 	public static final String DIRECTION_ELEMENT = "direction";
 	public static final String PAINTING_ELEMENT = "painting";
 	public static final String SCULPTURE_ELEMENT = "sculpture";

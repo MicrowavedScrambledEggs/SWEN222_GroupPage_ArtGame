@@ -13,7 +13,8 @@ public class Patrol implements Stretch {
 	@Override
 	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
-		if(name.equals(XMLHandler.X_PATH_ELEMENT) || name.equals(XMLHandler.Y_PATH_ELEMENT)){
+		if(name.equals(XMLHandler.X_PATH_ELEMENT) || name.equals(XMLHandler.Y_PATH_ELEMENT)
+				|| name.equals(XMLHandler.PATROL_STEP_ELEMENT)){
 			if(values[0] instanceof Stretch){
 				stretches.add((Stretch) values[0]);
 			} else {
