@@ -120,7 +120,7 @@ public class Widget implements Asset {
        // Matrix4f projection = Matrix4f.persp(80f, ratio, 1f, 100f);
        // Matrix4f projection = new Matrix4f();
         bottom = bottom/ratio;
-        System.out.println("Right: " + right + ", Bottom: " + bottom);
+
         Matrix4f projection = Matrix4f.ortho(0, right, 0, bottom, 1f, 16777215.0f);
         projUniform = program.getUniformLocation("projection");
         program.setUniform(projUniform, projection);
@@ -171,7 +171,7 @@ public class Widget implements Asset {
         //System.out.println(GL11.glGetError());
         verts.unbind(GL_ARRAY_BUFFER);
         vao.unbind();
-        System.out.println();
+     
 	}
 	
 	public void draw() {
@@ -213,7 +213,7 @@ public class Widget implements Asset {
         //System.out.println(GL11.glGetError());
         verts.unbind(GL_ARRAY_BUFFER);
         vao.unbind();
-        System.out.println();
+        //System.out.println();
 	}
 	
 	public void setScale(float scale){
