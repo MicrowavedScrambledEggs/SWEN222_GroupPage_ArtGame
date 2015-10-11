@@ -48,8 +48,8 @@ public class GameMaker {
 			floors.add(level, new FloorBuilder(this));
 		}
 		floors.get(level).addTile(coord, tile);
-		if(coord.getX() > maxCol) {maxCol = coord.getX();}
-		if(coord.getY() > maxRow) {maxRow = coord.getY();}
+		if(coord.getCol() > maxCol) {maxCol = coord.getCol();}
+		if(coord.getRow() > maxRow) {maxRow = coord.getRow();}
 		if(tile instanceof ExitTile){
 			exits.add((ExitTile) tile);
 		}
@@ -131,9 +131,9 @@ public class GameMaker {
 			Coordinate stairCoord = lt.stairCoordinate;
 			Coordinate linkedCoord = lt.linkedCoordinate;
 			StairTile linkedTile =
-					(StairTile) tileArrays[lt.linkedLevel][linkedCoord.getY()][linkedCoord.getX()];
-			floor.linkStairs(stairCoord.getY(), stairCoord.getX(), lt.stairLevel,
-					linkedCoord.getY(), linkedCoord.getX(), lt.linkedLevel);
+					(StairTile) tileArrays[lt.linkedLevel][linkedCoord.getRow()][linkedCoord.getCol()];
+			floor.linkStairs(stairCoord.getRow(), stairCoord.getCol(), lt.stairLevel,
+					linkedCoord.getRow(), linkedCoord.getCol(), lt.linkedLevel);
 		}
 	}
 

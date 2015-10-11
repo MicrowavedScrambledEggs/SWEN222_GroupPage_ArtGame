@@ -10,12 +10,14 @@ import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.time.Clock;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import artGame.control.ClientThread;
+import artGame.control.GameClock;
 import artGame.control.SocketThread;
 import artGame.control.ServerThread;
 import artGame.xml.XMLHandler;
@@ -27,11 +29,15 @@ public class Main {
 	public static final int CONNECTION_TIMEOUT = 60000;
 	public static final int LARGE_PACKET_SIZE = 1024;
 	
+	public static GameClock clock;
+	
 	private static volatile ServerThread[] children = new ServerThread[0];
 	private static Game GAME;
 	
+	/** For testing only */
+	@Deprecated
 	public static void main (String[] args) {
-		// mostly stolen from Dave's PacMan code.
+		// logic mostly stolen from Dave's PacMan code.
 		String filename = null;
 		String serverURL = null;
 		boolean server = false;
@@ -129,6 +135,8 @@ public class Main {
 	 */
 	@SuppressWarnings("resource") // (otherwise it complains that the publicSocket is never used.)
 	private static void runPublicSocket(int port, int gameClock, int maxClients) {
+		clock = new GameClock(GAME);
+		clock.start();
 		if (maxClients <= 0) {
 			throw new IllegalArgumentException("The server must be capable of accepting at least one client request.");
 		} else if (children == null) { 
@@ -144,18 +152,17 @@ public class Main {
 			publicSocket = new ServerSocket(port, maxClients+1, InetAddress.getLocalHost());
 			System.out.println("The server has set up shop at "+publicSocket.getLocalSocketAddress());
 			long[] timeout = new long[maxClients];
-			int numConnected = 0;
+			int nextServerIdx = 0;
 			// this is the while loop that manages the public socket
 			while (1 == 1) {
 				try {
 					Socket s = publicSocket.accept();
-					children[numConnected] = new ServerThread(GAME, s, WAIT_PERIOD);
-					children[numConnected].start();
+					children[nextServerIdx] = new ServerThread(GAME, s, WAIT_PERIOD);
+					children[nextServerIdx].start();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				numConnected ++;
 				// this loop checks if we should close any of our child sockets
 				// we don't expect to have more than six players, so this should be OK.
 				for (int i = 0; i < children.length; i++) {
@@ -164,6 +171,9 @@ public class Main {
 							children[i].close();
 							children[i] = null;
 							timeout[i] = 0;
+							if (i < nextServerIdx) {
+								nextServerIdx = i;
+							}
 						} else if (children[i] != null && timeout[i] == 0){
 							timeout[i] = System.currentTimeMillis() + (long)CONNECTION_TIMEOUT;
 						}
@@ -182,12 +192,14 @@ public class Main {
 
 	public static void stop() {
 		if (children == null) {
-			System.err.println("The socket has already been closed.");
+			System.err.println("The main socket has already been closed.");
 			return;
 		}
 		for (SocketThread s : children) {
-			System.err.println("Closing socket on port "+s.getPort()+" to "+s.getPlayerId());
-			s.close();
+			if (s != null) {
+				System.err.println("Closing socket on port "+s.getPort()+" to "+s.getPlayerId());
+				s.close();
+			}
 		}
 	}
 }

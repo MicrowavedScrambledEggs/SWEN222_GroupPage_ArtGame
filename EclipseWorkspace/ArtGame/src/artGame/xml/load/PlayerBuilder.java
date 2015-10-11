@@ -12,8 +12,8 @@ public class PlayerBuilder extends CharacterBuilder {
 	@Override
 	public void addToGame() {
 		Player toAdd = new Player(super.getDirection(), super.getiD());
-		toAdd.setRow(super.getCoord().getY());
-		toAdd.setCol(super.getCoord().getX());
+		toAdd.setRow(super.getCoord().getRow());
+		toAdd.setCol(super.getCoord().getCol());
 		getGameMaker().addPlayer(toAdd);
 		getGameMaker().addCharacterArtRefs(toAdd, getArtRefs());
 		getGameMaker().addCharacterKeyRefs(toAdd, getKeyRefs());

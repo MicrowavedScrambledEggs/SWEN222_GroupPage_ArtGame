@@ -7,33 +7,33 @@ package artGame.game;
  */
 public class Coordinate implements Comparable<Coordinate>{
 	
-	private int x;
-	private int y;
+	private int col;
+	private int row;
 	
-	public Coordinate(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Coordinate(int col, int row) {
+		this.col = col;
+		this.row = row;
 	}
 
-	public int getX() {
-		return x;
+	public int getCol() {
+		return col;
 	}
 
-	public int getY() {
-		return y;
+	public int getRow() {
+		return row;
 	}
 
 	@Override
 	public String toString() {
-		return "(" + x + ", " + y + ")";
+		return "(" + col + ", " + row + ")";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
+		result = prime * result + col;
+		result = prime * result + row;
 		return result;
 	}
 
@@ -46,16 +46,16 @@ public class Coordinate implements Comparable<Coordinate>{
 		if (getClass() != obj.getClass())
 			return false;
 		Coordinate other = (Coordinate) obj;
-		if (x != other.x)
+		if (col != other.col)
 			return false;
-		if (y != other.y)
+		if (row != other.row)
 			return false;
 		return true;
 	}
 
 	@Override
 	public int compareTo(Coordinate o) {
-		return (int) (Math.hypot(o.getX(), o.getY()) - Math.hypot(this.getX(), this.getY()) + 0.5);
+		return (int) (Math.hypot(o.getCol(), o.getRow()) - Math.hypot(this.getCol(), this.getRow()) + 0.5);
 	}
 	
 	
