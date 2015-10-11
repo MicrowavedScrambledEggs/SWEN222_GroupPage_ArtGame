@@ -84,6 +84,7 @@ public class Game {
 	 * executes a action for the player
 	 */
 	public void doAction(Player p, char id){
+		System.out.println("GAME doing action "+id+" on player "+p.getId());
 		if(id=='w'){
 			p.setDir(Direction.NORTH);
 			floor.moveCharacter(p);
@@ -210,9 +211,8 @@ public class Game {
 		return gameLoader.loadGame(loadFile);
 	}
 	
-	/* Vicki messes with networking below this line. */
-
 	
+	/* Vicki messes with networking below this line. */
 	
 	/** Adds a new player to the Game. */
 //	public Player addPlayer() {
@@ -268,13 +268,14 @@ public class Game {
 	}
 	
 	public List<Player> getPlayers(){
-		return players;
+		List<Player> nl = new ArrayList<Player>();
+		nl.addAll(players);
+		return nl;
 	}
-	
 
 	public void printGame() {
 		if (getFloor().isOnExit() == null) {
-			floor.printFloor();//replace with gui display
+			floor.printFloor(); // TODO replace with gui display
 			printMenu();
 		}
 	}

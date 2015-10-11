@@ -19,6 +19,7 @@ import artGame.control.cmds.MovePlayerAction;
 import artGame.control.cmds.Packet;
 import artGame.game.Art;
 import artGame.game.Item;
+import artGame.game.Player;
 import artGame.game.Character.Direction;
 import artGame.main.Game;
 import artGame.main.Main;
@@ -35,7 +36,6 @@ public class ClientThread extends SocketThread {
 	private boolean isPlaying = true;
 	private int pid = 404;
 	private final int wait;
-	private volatile long timeout;
 	private final DataInputStream IN;
 	private final DataOutputStream OUT;
 	
@@ -57,7 +57,6 @@ public class ClientThread extends SocketThread {
 		this.socket = s;
 		game = g;
 		this.wait = wait;
-		timeout = System.currentTimeMillis() + SocketThread.CONNECTION_TIMEOUT;
 		IN = new DataInputStream(socket.getInputStream());
 		OUT = new DataOutputStream(socket.getOutputStream());
 		System.err.println("/=/=/=/=/=/=/=/=/= CLIENT INFO /=/=/=/=/=/=/=/=/=\n"+toString());
@@ -119,13 +118,10 @@ public class ClientThread extends SocketThread {
 			try {
 				long then = System.currentTimeMillis();
 				// first, write to server
-				if (super.hasCommands()) {
-					Command c = super.pollCommand();
-					super.writeCommand(OUT, c);
-				}
+				write();
 				long now = System.currentTimeMillis();
 				// then, read server's command
-				while (then + wait > now && IN.available() == 0) {}
+				while (then + wait > System.currentTimeMillis() && IN.available() == 0) {}
 				if (IN.available() > 0) {
 					Command c = super.readCommand(IN);
 					System.out.print(c.toString());
@@ -136,6 +132,13 @@ public class ClientThread extends SocketThread {
 				e.printStackTrace();
 			} 
 			runcount++;
+		}
+	}
+
+	private void write() throws IOException {
+		if (super.hasCommands()) {
+			Command c = super.pollCommand();
+			super.writeCommand(OUT, c);
 		}
 	}
 	
@@ -175,16 +178,85 @@ public class ClientThread extends SocketThread {
 	}
 
 	@Override
-	public boolean isTimedOut() {
-		return System.currentTimeMillis() < timeout;
-	}
-
-	@Override
 	public int getPlayerId() {
 		return pid;
 	}
 	
 	public String toString() {
 		return "Client("+pid+") @"+socket.getLocalAddress()+":"+socket.getLocalPort()+" 2 "+socket.getInetAddress() +":"+socket.getPort();
+	}
+	
+	/** ===========================================================================*/
+	
+	/** Testing method. Reads/writes the parameter Commands instead of the queue
+	 * 
+	 * @param send Command to be send
+	 * @return Command received from client
+	 */
+	protected void writeAndReadParameters(Command send, Command read) {
+		
+		if (!socket.isClosed()) {
+			try {
+				long then = System.currentTimeMillis();
+				write();
+				long now = System.currentTimeMillis();
+				// then, read server's command
+				while (then + wait > now && IN.available() == 0) {}
+				if (IN.available() > 0) {
+					Command c = super.readCommand(IN);
+					System.out.print(c.toString());
+					// TODO process server command
+				}
+				// instead of reading from input, acts on the parameter
+				for (Player x : game.getPlayers()) {
+					if (x.getId() == read.id) {
+						game.doAction(x, read.action); // now make sure we do the action
+						break;
+					}
+				}
+				// then write from our queue as normal
+				if (send != null) {
+					super.writeCommand(OUT, send);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/** Testing method. Writes the parameter command 
+	 * and reads command from the queue.
+	 * 
+	 * @param send Command to be sent
+	 * @return Command received from server
+	 */
+	protected Command writeParameterReadQueue(Command send) {
+		if (!socket.isClosed()) {
+			try {
+				long then = System.currentTimeMillis();
+				// first, write our parameter to server
+				super.writeCommand(OUT, send);
+				// then, read server's command
+				while (then + wait > System.currentTimeMillis() && IN.available() == 0) {}
+				if (IN.available() > 0) {
+					Command c = super.readCommand(IN);
+					System.out.print(c.toString());
+					for (Player p : game.getPlayers()) {
+						game.doAction(p, c.action);
+					}
+					return c;
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public int maxWait() {
+		return SocketThread.CONNECTION_TIMEOUT;
 	}
 }

@@ -15,8 +15,13 @@ public class GameClock extends Thread {
 		while(1 == 1) { // this is a strange tradition
 			// Loop forever			
 			try {
+				long then = System.currentTimeMillis();
 				game.getFloor().moveGuards();
-				Thread.sleep(TICK_MS);
+				long now = System.currentTimeMillis();
+				long sleep = (then+TICK_MS) - now;
+				if (sleep > 0) {
+					Thread.sleep(sleep);
+				}
 			} catch(InterruptedException e) {
 				// should never happen
 			}			
