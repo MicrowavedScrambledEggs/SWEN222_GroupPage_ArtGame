@@ -397,11 +397,12 @@ public class Floor {
 			// row or col offset will be nonzero
 			int tarRow = g.getRow() + i * rOff;
 			int tarCol = g.getCol() + i * cOff;
+			if(tarRow<0 || tarRow>maxR || tarCol<0 || tarCol>maxC) return null;
 			if (floor[tarRow][tarCol].getOccupant() instanceof Player) {
 				return (Player) floor[tarRow][tarCol].getOccupant();
 			}
 			if (floor[tarRow][tarCol].getWall(dir) != null) {
-				break;
+				return null;
 			}
 		}
 		return null;
