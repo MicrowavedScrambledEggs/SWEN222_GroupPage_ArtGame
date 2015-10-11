@@ -95,13 +95,13 @@ public class GameRenderer implements Screen{
 		}
 		
 		if (cameraTween != null) {
-			float tween = cameraTween.tween(currentTime);
-			currentCameraAngle = tween;
-			camera.setRotation(new Vector3f(CAMERA_ANGLE, tween, 0));
-			System.out.println("Camera Tween value: " + tween);
-			
 			if (cameraTween.isFinished(currentTime)) {
 				cameraTween = null;
+				camera.setRotation(new Vector3f(CAMERA_ANGLE, 90*(Math.round(currentCameraAngle/90)), 0));
+			} else {
+				float tween = cameraTween.tween(currentTime);
+				currentCameraAngle = tween;
+				camera.setRotation(new Vector3f(CAMERA_ANGLE, tween, 0));
 			}
 		}
 		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
@@ -219,11 +219,15 @@ public class GameRenderer implements Screen{
 	}
 	
 	public void rotateLeft() {
-		cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90, currentTime);
+		if (cameraTween == null) {
+			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90, currentTime);
+		}
 	}
 	
 	public void rotateRight() {
-		cameraTween = new TweenFloat(currentCameraAngle, 0.5f, -90, currentTime);
+		if (cameraTween == null) {
+			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, -90, currentTime);
+		}
 	}
 
 	@Override
