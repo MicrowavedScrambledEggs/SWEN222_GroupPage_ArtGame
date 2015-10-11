@@ -175,7 +175,7 @@ public class Floor {
 	public void setCharacter(Character c, int row, int col, int floorNumber) {
 		floor[row][col + offset * floorNumber].setOccupant(c);
 		c.setRow(row);
-		c.setCol(col);
+		c.setCol(col + offset * floorNumber);
 		if (c instanceof Guard && !guards.contains((Guard) c)) {
 			((Guard) c).offsetPath(offset * floorNumber);
 			guards.add((Guard) c);
@@ -253,7 +253,10 @@ public class Floor {
 		// direction
 		if (colDiff * rowDiff != 0
 				&& (Math.abs(colDiff) > 1 || Math.abs(rowDiff) > 1))
-			throw new GameError("trying to move more than 1 square at once");
+			throw new GameError(String.format("Trying to move more than 1 "
+					+ "square at once.\nHappened when attempting to move "
+					+ "Character %d from row %d col %d to row %d col %d",
+					c.getId(), c.getRow(), c.getCol(), row, col));
 		if (colDiff == 1) {
 			c.setDir(Direction.WEST);
 			this.moveCharacter(c);

@@ -60,7 +60,7 @@ public class Guard extends Character {
 			return;
 		List<Coordinate> newPath = new ArrayList<Coordinate>();
 		for (Coordinate c : path) {
-			newPath.add(new Coordinate(c.getCol(), c.getRow() + offset));
+			newPath.add(new Coordinate(c.getCol() + offset, c.getRow()));
 		}
 		this.path = newPath;// //
 	}

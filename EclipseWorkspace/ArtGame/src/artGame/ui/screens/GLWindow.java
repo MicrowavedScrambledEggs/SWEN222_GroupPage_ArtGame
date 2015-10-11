@@ -130,7 +130,7 @@ public class GLWindow {
 
 		// associate window with key callback
 		glfwSetKeyCallback(window, keyCallback);
-		//glfwSetKeyCallback(window, debugKeys);
+//		glfwSetKeyCallback(window, debugKeys);
 
 		// create OpenGL context
 		glfwMakeContextCurrent(window);
