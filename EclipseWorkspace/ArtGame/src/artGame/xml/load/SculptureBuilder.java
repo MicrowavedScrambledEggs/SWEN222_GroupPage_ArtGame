@@ -37,8 +37,8 @@ public class SculptureBuilder extends CharacterBuilder {
 	@Override
 	public void addToGame() {
 		Sculpture sculpture = new Sculpture(super.getDirection(), super.getiD(), value, artName);
-		sculpture.setCol(super.getCoord().getX());
-		sculpture.setRow(super.getCoord().getY());
+		sculpture.setCol(super.getCoord().getCol());
+		sculpture.setRow(super.getCoord().getRow());
 		getGameMaker().addNPC(level, sculpture);
 	}
 

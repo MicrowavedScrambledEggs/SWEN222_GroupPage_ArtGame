@@ -45,8 +45,8 @@ public class GuardBuilder extends CharacterBuilder {
 		} else {
 			guard = new Guard(super.getDirection(), super.getiD());
 		}
-		guard.setRow(super.getCoord().getY());
-		guard.setCol(super.getCoord().getX());
+		guard.setRow(super.getCoord().getRow());
+		guard.setCol(super.getCoord().getCol());
 		getGameMaker().addNPC(level, guard);
 		getGameMaker().addCharacterArtRefs(guard, getArtRefs());
 		getGameMaker().addCharacterKeyRefs(guard, getKeyRefs());

@@ -61,10 +61,4 @@ public class NetworkKeyCallback extends GLFWKeyCallback {
 		
 		connection.sendCommand(c);
 	}
-
-	private Action sendStop(Player p, Direction d) {
-		Action a = new MovePlayerAction(p.getId(), p.getId(), 
-				new Point(p.getRow(),p.getCol()), d, System.currentTimeMillis());
-		return a;
-	}
 }
