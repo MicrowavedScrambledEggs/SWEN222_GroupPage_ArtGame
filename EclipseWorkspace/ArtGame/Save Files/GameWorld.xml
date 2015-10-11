@@ -143,7 +143,7 @@
             <wall direction = "WEST" />            
             <wall direction = "EAST" />
             <inventory>
-            	<item type = "ART" id = "59"/>
+            	<item type = "ART" id = "101"/>
             </inventory>
 		</chest>
 		<chest id = "2">

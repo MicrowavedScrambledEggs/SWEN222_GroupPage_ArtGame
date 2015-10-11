@@ -1,0 +1,197 @@
+<?xml version="1.0" ?>
+<game>
+	<floor level="0">
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="EAST" artID="3" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="0" />
+			</position>
+			<wall direction="NORTH" />
+		</empty_tile>
+		<chest id="0">
+			<position>
+				<x value="0" />
+				<y value="1" />
+			</position>
+			<wall direction="WEST" />
+		</chest>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="1" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="1" />
+			</position>
+			<door doorID="0" direction="EAST" locked="FALSE" keyID="1" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="1" />
+			</position>
+			<door doorID="0" direction="WEST" locked="FALSE" keyID="1" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="1" />
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="1" />
+			</position>
+		</empty_tile>
+		<empty_tile isExit="TRUE">
+			<position>
+				<x value="6" />
+				<y value="1" />
+			</position>
+			<wall direction="NORTH" />
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="0" />
+				<y value="2" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="1" />
+				<y value="2" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="2" />
+				<y value="2" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="3" />
+				<y value="2" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="4" />
+				<y value="2" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="5" />
+				<y value="2" />
+			</position>
+			<wall direction="SOUTH" />
+			<wall direction="EAST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value="6" />
+				<y value="2" />
+			</position>
+			<wall direction="SOUTH" />
+		</empty_tile>
+	</floor>
+	<players>
+		<player id="1">
+			<direction>SOUTH</direction>
+			<position>
+				<x value="1" />
+				<y value="1" />
+			</position>
+			<inventory>
+				<item type="KEY" id="1" />
+				<item type="ART" id="2" />
+				<item type="ART" id="0" />
+			</inventory>
+		</player>
+	</players>
+	<guards>
+		<guard id="0">
+			<direction>WEST</direction>
+			<position>
+				<x value="5" />
+				<y value="2" />
+			</position>
+			<inventory></inventory>
+		</guard>
+	</guards>
+	<art>
+		<painting artID="3">
+			<name>Art3</name>
+			<value>9000</value>
+		</painting>
+		<painting artID="2">
+			<name>Art2</name>
+			<value>4000</value>
+		</painting>
+		<painting artID="0">
+			<name>Art1</name>
+			<value>1000</value>
+		</painting>
+	</art>
+</game>

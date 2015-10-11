@@ -44,7 +44,9 @@ public class XMLHandler {
 	public static final String X_COORD_ELEMENT = "x";
 	public static final String Y_COORD_ELEMENT = "y";
 	public static final String PLAYER_ELEMENT = "player";
+	public static final String PLAYERS_ELEMENT = "players";
 	public static final String GUARD_ELEMENT = "guard";
+	public static final String GUARDS_ELEMENT = "guards";
 	public static final String PATROL_ELEMENT = "patrol";
 	public static final String X_PATH_ELEMENT = "west_east_stretch";
 	public static final String Y_PATH_ELEMENT = "north_south_stretch";
@@ -59,6 +61,7 @@ public class XMLHandler {
 	public static final String ITEM_ELEMENT = "item";
 	public static final String CHEST_ELEMENT = "chest";
 	public static final String FLOOR_ELEMENT = "floor";
+	public static final String ART_ELEMENT = "art";
 	
 	public static final String LEVEL_ATTRIBUTE = "level";
 	public static final String DIRECTION_ATTRIBUTE = "direction";
@@ -70,12 +73,14 @@ public class XMLHandler {
 	public static final String LOCKED_ATTRIBUTE = "locked";
 	public static final String EXIT_ATTRIBUTE = "isExit";
 	public static final String TYPE_ATTRIBUTE = "type";
+	public static final String UP_ATTRIBUTE = "up";
 	
 	public static final String NORTH_VALUE = "NORTH";
 	public static final String WEST_VALUE = "WEST";
 	public static final String SOUTH_VALUE = "SOUTH";
 	public static final String EAST_VALUE = "EAST";
 	public static final String TRUE_VALUE = "TRUE";
+	public static final String FALSE_VALUE = "FALSE";
 	public static final String ART_VALUE = "ART";
 	public static final String KEY_VALUE = "KEY";
 	

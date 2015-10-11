@@ -78,6 +78,7 @@ public class Game {
 		System.out.println("D: move right");
 		System.out.println("F: interact");
 		System.out.println("R: inspect");
+		System.out.println("K: save game");
 	}
 	
 	/**
@@ -184,10 +185,14 @@ public class Game {
 			game.floor.printFloor();//replace with gui display
 			game.printMenu();
 			String s = sc.next();
-			game.doAction(game.getPlayer(),s.charAt(0)); //replace with keylistener
-			game.getFloor().moveGuards();
-			if(game.getFloor().checkGuards().contains(game.getPlayer())){
-				break;
+			if(s.charAt(0) == 'k'){
+				saveGame(game);
+			} else {
+				game.doAction(game.getPlayer(),s.charAt(0)); //replace with keylistener
+				game.getFloor().moveGuards();
+				if(game.getFloor().checkGuards().contains(game.getPlayer())){
+					break;
+				}
 			}
 		}
 		if(game.getPlayer().isCaught()){
@@ -203,6 +208,11 @@ public class Game {
 			}
 			System.out.println("you made off with $"+score+" worth of art");
 		}
+	}
+
+	private static void saveGame(Game game) {
+		XMLHandler gameSaver = new XMLHandler();
+		gameSaver.saveGame(game, "Save Files/testSaveGame.xml");
 	}
 
 	private static Game loadGame(String fileName) {
