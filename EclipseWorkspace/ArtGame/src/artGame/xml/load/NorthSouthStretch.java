@@ -40,9 +40,9 @@ public class NorthSouthStretch implements Stretch {
 
 	@Override
 	public ArrayList<Coordinate> getSteps() {
-		int yStart = start.getY();
-		int yFinish = finish.getY();
-		int x = start.getX();
+		int yStart = start.getRow();
+		int yFinish = finish.getRow();
+		int x = start.getCol();
 		int yIncrement = yStart < yFinish ? 1 : -1;
 		ArrayList<Coordinate> steps = new ArrayList<Coordinate>();
 		for(; yStart != yFinish + yIncrement; yStart+=yIncrement){
