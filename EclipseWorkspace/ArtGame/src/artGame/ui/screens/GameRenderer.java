@@ -48,6 +48,7 @@ public class GameRenderer implements Screen{
 	private Model stairs;
 	private Model sculpture1;
 	private Model crates;
+	private Model loo;
 	private Sprite playerSprite;
 	private Sprite guardSprite;
 
@@ -188,12 +189,60 @@ public class GameRenderer implements Screen{
 				if (t instanceof EmptyTile) {
 					level.add(floor.instantiate(pos));
 				} else if (t instanceof StairTile) {
+					StairTile st = (StairTile) t;
+					switch(st.getDir()) {
+					case NORTH:
+						break;
+					case EAST:
+						pos = pos.multiply(Matrix4f.rotate(90, 0, 1, 0));
+						break;
+					case SOUTH:
+						pos = pos.multiply(Matrix4f.rotate(180, 0, 1, 0));
+						break;
+					case WEST:
+						pos = pos.multiply(Matrix4f.rotate(270, 0, 1, 0));
+						break;
+					}
 					level.add(stairs.instantiate(pos));
 				} else if (t instanceof ExitTile) {
 					level.add(floor.instantiate(pos));
 				} else if (t instanceof Chest) {
-					level.add(crates.instantiate(pos));
 					level.add(floor.instantiate(pos));
+					
+					int id = ((Chest) t).id;
+					if (0 <= id && id < 20 ) { // loo
+						forloop:
+						for (artGame.game.Character.Direction d : artGame.game.Character.Direction.values()) {
+							switch (d) {
+							case NORTH:
+								if (t.getWall(d) == null) {
+									pos = pos.multiply(Matrix4f.rotate(180, 0, 1, 0));
+									break forloop;
+								}
+								break;
+							case EAST:
+								if (t.getWall(d) == null) {
+									pos = pos.multiply(Matrix4f.rotate(270, 0, 1, 0));
+									break forloop;
+								}
+								break;
+							case SOUTH:
+								if (t.getWall(d) == null) {
+									break forloop;
+								}
+								break;
+							case WEST:
+								if (t.getWall(d) == null) {
+									pos = pos.multiply(Matrix4f.rotate(90, 0, 1, 0));
+									break forloop;
+								}
+								break;
+							}
+						}
+						level.add(loo.instantiate(pos));
+					} else { // crate
+						level.add(crates.instantiate(pos));
+					}
 				}
 			}
 		}
@@ -210,8 +259,9 @@ public class GameRenderer implements Screen{
 		stairs = AssetLoader.instance().loadOBJ("res/stair.obj",new Vector3f(1,1,1));
 		sculpture1 = AssetLoader.instance().loadOBJ("res/sculpture_david.obj", new Vector3f(1,1,1));
 		crates = AssetLoader.instance().loadOBJ("res/crates.obj", new Vector3f(0.45f, 0.29f, 0.16f));
+		loo = AssetLoader.instance().loadOBJ("res/loo.obj", new Vector3f(1,1,1));
 		playerSprite = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32);
-		guardSprite = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32); // TODO Add guard sprite
+		guardSprite = AssetLoader.instance().loadSpritesheet("res/guard.png", 32);
 	}
 
 	public Camera getCamera(){
