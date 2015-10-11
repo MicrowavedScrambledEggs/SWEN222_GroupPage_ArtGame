@@ -24,8 +24,8 @@ public class FloorBuilder {
 
 	public void addTile(Coordinate coord, Tile tile) {
 		tiles.put(coord, tile);
-		if(coord.getX() > maxCol) {maxCol = coord.getX();}
-		if(coord.getY() > maxRow) {maxRow = coord.getY();}
+		if(coord.getCol() > maxCol) {maxCol = coord.getCol();}
+		if(coord.getRow() > maxRow) {maxRow = coord.getRow();}
 	}
 
 	public void addDoorMap(Coordinate coord,
@@ -70,7 +70,7 @@ public class FloorBuilder {
 		tileArray = new Tile[maxRow+1][maxCol+1];
 		for(Coordinate coord : tiles.keySet()){
 			Tile toAdd = tiles.get(coord);
-			tileArray[coord.getY()][coord.getX()] = tiles.get(coord);
+			tileArray[coord.getRow()][coord.getCol()] = tiles.get(coord);
 		}
 		return tileArray;
 	}

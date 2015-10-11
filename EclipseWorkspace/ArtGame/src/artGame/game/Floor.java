@@ -276,7 +276,7 @@ public class Floor {
 	public void moveGuards() {
 		for (Guard g : guards) {
 			Coordinate nextCoord = g.nextCoord();
-			moveCharacter(g, nextCoord.getY(), nextCoord.getX());
+			moveCharacter(g, nextCoord.getRow(), nextCoord.getCol());
 		}
 	}
 

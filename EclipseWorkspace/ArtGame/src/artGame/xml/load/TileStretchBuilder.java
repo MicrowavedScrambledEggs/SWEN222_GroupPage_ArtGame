@@ -16,7 +16,7 @@ public class TileStretchBuilder extends TileBuilder {
 		Coordinate currentCoord = getCoord();
 		for(int i = 0; i < length; i++){
 			TileBuilder tileBuilder = super.clone();
-			currentCoord = new Coordinate(getCoord().getX() + i, getCoord().getY());
+			currentCoord = new Coordinate(getCoord().getCol() + i, getCoord().getRow());
 			tileBuilder.setCoord(currentCoord);
 			tileBuilder.addToGame();
 		}
