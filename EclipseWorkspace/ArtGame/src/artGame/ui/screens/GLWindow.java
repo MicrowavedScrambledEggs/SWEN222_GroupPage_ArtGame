@@ -129,8 +129,8 @@ public class GLWindow {
 		}
 
 		// associate window with key callback
-		glfwSetKeyCallback(window, keyCallback);
-		//glfwSetKeyCallback(window, debugKeys);
+		//glfwSetKeyCallback(window, keyCallback);
+		glfwSetKeyCallback(window, debugKeys);
 
 		// create OpenGL context
 		glfwMakeContextCurrent(window);
@@ -161,9 +161,11 @@ public class GLWindow {
 
 			if(rotateLeft){
 				gameRender.rotateLeft();
+				rotateLeft = false;
 			}
 			if(rotateRight){
 				gameRender.rotateRight();
+				rotateRight = false;
 			}
 
 			loop();

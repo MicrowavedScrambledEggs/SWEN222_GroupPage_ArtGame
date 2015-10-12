@@ -10,6 +10,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 
 import artGame.game.Chest;
+import artGame.game.Door;
 import artGame.game.EmptyTile;
 import artGame.game.ExitTile;
 import artGame.game.Floor;
@@ -45,10 +46,16 @@ public class GameRenderer implements Screen{
 	private Model bottomWall;
 	private Model leftWall;
 	private Model rightWall;
+	private Model topDoor;
+	private Model bottomDoor;
+	private Model leftDoor;
+	private Model rightDoor;
 	private Model stairs;
 	private Model sculpture1;
 	private Model crates;
-	private Model loo;
+	private Model loos;
+	private Model sinks;
+	private Model desks;
 	private Sprite playerSprite;
 	private Sprite guardSprite;
 
@@ -78,7 +85,7 @@ public class GameRenderer implements Screen{
         GLFW.glfwGetFramebufferSize(window, width, height);
         float ratio = width.get() / (float) height.get();
 
-		camera = new Camera(Matrix4f.persp(80f, ratio, 1f, 100f), 5);
+		camera = new Camera(Matrix4f.persp(80f, ratio, 1f, 100f), 4);
 		light = new Vector3f(1.0f, 1.0f, 1.0f).normalized();
 
 		camera.rotate(new Vector3f(CAMERA_ANGLE, 0, 0));
@@ -174,16 +181,32 @@ public class GameRenderer implements Screen{
 				}
 
 				if (t.getWall(artGame.game.Character.Direction.NORTH) != null){
-					level.add(topWall.instantiate(pos));
+					if (t.getWall(artGame.game.Character.Direction.NORTH) instanceof Door) {
+						level.add(topDoor.instantiate(pos));
+					} else {
+						level.add(topWall.instantiate(pos));
+					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.SOUTH) != null){
-					level.add(bottomWall.instantiate(pos));
+					if (t.getWall(artGame.game.Character.Direction.SOUTH) instanceof Door) {
+						level.add(bottomDoor.instantiate(pos));
+					} else {
+						level.add(bottomWall.instantiate(pos));
+					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.EAST) != null){
-					level.add(rightWall.instantiate(pos));
+					if (t.getWall(artGame.game.Character.Direction.EAST) instanceof Door) {
+						level.add(rightDoor.instantiate(pos));
+					} else {
+						level.add(rightWall.instantiate(pos));
+					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.WEST) != null){
-					level.add(leftWall.instantiate(pos));
+					if (t.getWall(artGame.game.Character.Direction.WEST) instanceof Door) {
+						level.add(leftDoor.instantiate(pos));
+					} else {
+						level.add(leftWall.instantiate(pos));
+					}
 				}
 
 				if (t instanceof EmptyTile) {
@@ -192,15 +215,16 @@ public class GameRenderer implements Screen{
 					StairTile st = (StairTile) t;
 					switch(st.getDir()) {
 					case NORTH:
-						break;
-					case EAST:
-						pos = pos.multiply(Matrix4f.rotate(90, 0, 1, 0));
-						break;
-					case SOUTH:
 						pos = pos.multiply(Matrix4f.rotate(180, 0, 1, 0));
 						break;
-					case WEST:
+					case EAST:
 						pos = pos.multiply(Matrix4f.rotate(270, 0, 1, 0));
+						break;
+					case SOUTH:
+						
+						break;
+					case WEST:
+						pos = pos.multiply(Matrix4f.rotate(90, 0, 1, 0));
 						break;
 					}
 					level.add(stairs.instantiate(pos));
@@ -239,7 +263,15 @@ public class GameRenderer implements Screen{
 								break;
 							}
 						}
-						level.add(loo.instantiate(pos));
+						level.add(loos.instantiate(pos));
+					} else if (20 <= id && id < 40) {
+						// rotate 180 if there's a wall at the bottom
+						if (t.getWall(artGame.game.Character.Direction.SOUTH) != null) {
+							pos = pos.multiply(Matrix4f.rotate(180, 0, 1, 0));
+						}
+						level.add(sinks.instantiate(pos));
+					} else if (40 <= id && id < 60) {
+						level.add(desks.instantiate(pos));
 					} else { // crate
 						level.add(crates.instantiate(pos));
 					}
@@ -256,10 +288,18 @@ public class GameRenderer implements Screen{
 		bottomWall = AssetLoader.instance().loadOBJ("res/bottom_wall.obj", new Vector3f(1,1,1));
 		leftWall = AssetLoader.instance().loadOBJ("res/left_wall.obj", new Vector3f(1,1,1));
 		rightWall = AssetLoader.instance().loadOBJ("res/right_wall.obj", new Vector3f(1,1,1));
+		
+		topDoor = AssetLoader.instance().loadOBJ("res/top_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));
+		bottomDoor = AssetLoader.instance().loadOBJ("res/bottom_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));
+		leftDoor = AssetLoader.instance().loadOBJ("res/left_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));
+		rightDoor = AssetLoader.instance().loadOBJ("res/right_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));
+		
 		stairs = AssetLoader.instance().loadOBJ("res/stair.obj",new Vector3f(1,1,1));
 		sculpture1 = AssetLoader.instance().loadOBJ("res/sculpture_david.obj", new Vector3f(1,1,1));
 		crates = AssetLoader.instance().loadOBJ("res/crates.obj", new Vector3f(0.45f, 0.29f, 0.16f));
-		loo = AssetLoader.instance().loadOBJ("res/loo.obj", new Vector3f(1,1,1));
+		loos = AssetLoader.instance().loadOBJ("res/loo.obj", new Vector3f(1,1,1));
+		sinks = AssetLoader.instance().loadOBJ("res/sink.obj", new Vector3f(1,1,1));
+		desks = AssetLoader.instance().loadOBJ("res/desk.obj", new Vector3f(0.95f, 0.95f, 0.95f));
 		playerSprite = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32);
 		guardSprite = AssetLoader.instance().loadSpritesheet("res/guard.png", 32);
 	}
