@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import artGame.control.ClientThread;
 import artGame.control.ConnectionHandler;
 import artGame.control.GameClock;
@@ -198,14 +200,12 @@ public class Main {
 
 		// this is the while loop that manages the public socket
 		while (1 == 1) {
-
 			// this loop checks if we should close any of our child sockets
 			// we don't expect to have more than six players, so this should be
 			// OK.
 			nextServerIdx = childrenList.size();
 			for (int i = 0; i < childrenList.size(); i++) {
 
-				System.out.println("here");
 				ServerThread child = childrenList.get(i);
 
 				if(child.isClosed()){

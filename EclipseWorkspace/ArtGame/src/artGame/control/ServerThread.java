@@ -8,6 +8,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 
+import javax.swing.SwingUtilities;
+
 import artGame.control.cmds.Command;
 import artGame.game.Player;
 import artGame.main.Game;
@@ -134,11 +136,10 @@ public class ServerThread extends SocketThread {
 	public void run() {
 		while (!socket.isClosed() && socket.isConnected()) {
 			try {
-
 				game = Main.getGame();
 
 				long then = System.currentTimeMillis();
-				super.waitFor(IN);
+				//super.waitFor(IN);
 
 				// read first
 				timesOutAt = System.currentTimeMillis()
@@ -189,11 +190,12 @@ public class ServerThread extends SocketThread {
 
 				OUT.flush();
 				long now = System.currentTimeMillis();
-				//sleep(Main.BROADCAST_PERIOD);
+			
 				if (now < then + Main.BROADCAST_PERIOD
 						&& 0 > then + Main.BROADCAST_PERIOD - now) {
 					sleep(then + Main.BROADCAST_PERIOD - now);
 				}
+	
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

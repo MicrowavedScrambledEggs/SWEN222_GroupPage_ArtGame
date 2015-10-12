@@ -48,6 +48,9 @@ public class ClientThread extends SocketThread {
 	private final DataOutputStream OUT;
 	private GamePacketData gameData;
 
+	private long lastPing;
+	private static int PING_DELAY = 10;
+	
 	/**
 	 * @deprecated Use {@link #ClientThread(Socket,Game,int)} instead
 	 */
@@ -139,12 +142,16 @@ public class ClientThread extends SocketThread {
 			try {
 				long then = System.currentTimeMillis();
 				// first, write to server
-
-				super.sendCommand(new Command('x', pid));
+				
+				if(then - lastPing >= PING_DELAY){
+					super.sendCommand(new Command('x', pid));
+					lastPing = then;
+				}	
+				
+				//flush any commands to the server
 				write();
-				long now = System.currentTimeMillis();
-				// then, read server's command
-				super.waitFor(IN);
+				
+				//super.waitFor(IN);
 				// System.out.println(IN.available());
 				if (IN.available() > 0) {
 					byte[] bytes = new byte[IN.available()];
@@ -160,9 +167,15 @@ public class ClientThread extends SocketThread {
 					// Command c = super.readCommand(IN);
 					// System.out.print("command: " + c.toString());
 					// TODO read game data input and any other commands ########
-
+	
 				}
-			} catch (IOException e) {
+				long now = System.currentTimeMillis();
+				if (now < then + Main.BROADCAST_PERIOD
+						&& 0 > then + Main.BROADCAST_PERIOD - now) {
+					sleep(then + Main.BROADCAST_PERIOD - now);
+				}
+				
+			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -181,7 +194,7 @@ public class ClientThread extends SocketThread {
 	}
 
 	private void write() throws IOException {
-		if (super.hasCommands()) {
+		while (super.hasCommands()) {
 			Command c = super.pollCommand();
 			super.writeCommand(OUT, c);
 		}

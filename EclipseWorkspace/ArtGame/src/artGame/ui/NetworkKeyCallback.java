@@ -68,7 +68,8 @@ public class NetworkKeyCallback extends GLFWKeyCallback {
 				|| key == GLFW_KEY_D && action == GLFW_RELEASE) {
 			c = new Command('!',p.getId());
 		}
-
-		connection.sendCommand(c);
+		if(c != null){
+			GLWindow.addCommand(c);
+		}
 	}
 }

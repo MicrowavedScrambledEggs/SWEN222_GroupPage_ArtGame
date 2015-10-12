@@ -141,7 +141,7 @@ public class GameData {
 		int pid = -1;
 
 		String text = new String(packet, Charset.forName("UTF-8"));
-
+		
 		Scanner sc = new Scanner(text);
 
 		try {

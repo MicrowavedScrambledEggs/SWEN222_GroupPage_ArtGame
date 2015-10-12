@@ -93,6 +93,7 @@ public class GameRenderer implements Screen{
 
 	@Override
 	public void render(float delta) {
+	
 		List<Asset> renderList = getRenderList();
 		
 		// update tweens

@@ -84,7 +84,6 @@ public class Game {
 	 * executes a action for the player
 	 */
 	public void doAction(Player p, char id){
-		System.out.println("GAME doing action "+id+" on player "+p.getId());
 		if(id=='w'){
 			p.setDir(Direction.NORTH);
 			floor.moveCharacter(p);

@@ -35,8 +35,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.IntBuffer;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.Callbacks;
@@ -46,6 +48,7 @@ import org.lwjgl.opengl.GLContext;
 
 import artGame.control.ClientThread;
 import artGame.control.IncompatiblePacketException;
+import artGame.control.cmds.Command;
 import artGame.game.Guard;
 import artGame.game.Player;
 import artGame.main.Game;
@@ -96,8 +99,13 @@ public class GLWindow {
 
 	private static boolean rotateLeft = false;
 	private static boolean rotateRight = false;
+	
+	private static Queue<Command> cmds;
 
 	static {
+		
+		cmds = new ArrayDeque<Command>();
+		
 		XMLHandler gameLoader = new XMLHandler();
 		game = gameLoader.loadGame(new File("Save Files/GameWorld.xml"));
 		GameData.updateGame(game);
@@ -171,6 +179,11 @@ public class GLWindow {
 				gameRender.rotateRight();
 				rotateRight = false;
 			}
+			
+			//Send any key presses to server..
+			while(!cmds.isEmpty()){
+				client.sendCommand(cmds.poll());
+			}
 
 			loop();
 			long time = System.nanoTime();
@@ -182,7 +195,6 @@ public class GLWindow {
 	}
 
 	private void loop() {
-
 		/* Get width and height to calcualte the ratio */
 		glfwGetFramebufferSize(window, width, height);
 
@@ -201,8 +213,9 @@ public class GLWindow {
 
 		/* Swap buffers and poll Events */
 		glfwSwapBuffers(window);
-		glfwPollEvents();
 
+		glfwPollEvents();
+		
 		/* Flip buffers for next loop */
 		width.flip();
 		height.flip();
@@ -224,9 +237,11 @@ public class GLWindow {
 			System.out.println("player is null..");
 			return;
 		}
+
 		for (Screen screen : screens) {
 			screen.render(deltaMS);
 		}
+
 	}
 
 	private void initScreens() {
@@ -247,14 +262,9 @@ public class GLWindow {
 		glfwTerminate();
 		errorCallback.release();
 	}
-
-	public static void setView(Matrix4f view) {
-		// GLWindow.bufferedCam = view;
-	}
-
-	public static Matrix4f getView() {
-		// return camera;
-		return null;
+	
+	public static void addCommand(Command c){
+		cmds.offer(c);
 	}
 
 	public static void setLight(Vector3f light) {

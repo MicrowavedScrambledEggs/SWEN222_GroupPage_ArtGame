@@ -177,7 +177,7 @@ public class ServerGUI extends JPanel {
 				}
 				frame.getContentPane().repaint();
 			}
-
+			
 		});
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -219,20 +219,6 @@ public class ServerGUI extends JPanel {
 		frame.setVisible(true);
 		frame.pack();
 
-		run();
-
-	}
-
-	public void run(){
-
-		Thread th = new Thread(new Runnable(){
-			public void run(){
-				while(1 == 1){
-					frame.repaint();
-				}
-			}
-		});
-		th.start();
 	}
 
 	private void setInputEnabled(boolean enabled){
@@ -248,7 +234,15 @@ public class ServerGUI extends JPanel {
 	}
 
 	public static void main(String[] args) {
-		ServerGUI gui = new ServerGUI(400, 200);
+		SwingUtilities.invokeLater(new Runnable(){
+
+			@Override
+			public void run() {
+				ServerGUI gui = new ServerGUI(400, 200);
+			}
+			
+		});
+		
 	}
 
 }

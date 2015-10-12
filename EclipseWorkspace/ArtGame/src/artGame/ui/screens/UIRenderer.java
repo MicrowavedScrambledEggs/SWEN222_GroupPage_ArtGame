@@ -90,7 +90,6 @@ public class UIRenderer implements Screen {
 
 		width.rewind();
 		height.rewind();
-
 	}
 
 	private void updateInventory() {
