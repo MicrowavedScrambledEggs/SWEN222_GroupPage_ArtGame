@@ -208,9 +208,21 @@ public class ArtGameSaver {
 		String upValue = stairs.isGoingUp() ? XMLHandler.TRUE_VALUE : XMLHandler.FALSE_VALUE;
 		writer.writeAttribute(XMLHandler.UP_ATTRIBUTE, upValue);
 		writeCoordinate(r, c, writer, XMLHandler.POSITION_ELEMENT);
-		//TODO: linked tile's coordinate. Talk to Kai
+		StairTile linkedTile = stairs.getLinkedTile();
+		writeLinkedTile(writer, linkedTile);
 		writeWalls(stairs, writer);
 		storeCharacter(stairs.getOccupant());
+		writer.writeEndElement();
+	}
+
+	private void writeLinkedTile(XMLStreamWriter writer, StairTile linkedTile)
+			throws XMLStreamException {
+		writer.writeStartElement(XMLHandler.LINKED_TILE_ELEMENT);
+		writer.writeAttribute(XMLHandler.LEVEL_ATTRIBUTE, String.valueOf(0));
+		writer.writeEmptyElement(XMLHandler.X_COORD_ELEMENT);
+		writer.writeAttribute(XMLHandler.VALUE_ATTRIBUTE, String.valueOf(linkedTile.getCol()));
+		writer.writeEmptyElement(XMLHandler.Y_COORD_ELEMENT);
+		writer.writeAttribute(XMLHandler.VALUE_ATTRIBUTE, String.valueOf(linkedTile.getRow()));
 		writer.writeEndElement();
 	}
 

@@ -8,7 +8,7 @@
             </position>
             <wall direction = "NORTH" />
             <wall direction = "WEST" />
-            <door doorId ="1" direction = "EAST" locked = "TRUE" keyID = "1" />
+            <door doorId ="1" direction = "EAST" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -16,7 +16,7 @@
                 <y value = "0"/>
             </position>
             <wall direction = "NORTH" />
-            <door doorId ="1" direction = "WEST" locked = "TRUE" keyID = "1" />
+            <door doorId ="1" direction = "WEST" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<tile_stretch length = "4">
 			<position>
@@ -356,8 +356,8 @@
                 <y value = "3"/>
             </position>
             <wall direction = "WEST" />
-            <door doorId ="4" direction = "EAST" locked = "TRUE" keyID = "1" />
-            <door doorId ="5" direction = "SOUTH" locked = "TRUE" keyID = "1" />
+            <door doorId ="4" direction = "EAST" locked = "TRUE" keyID = "200" />
+            <door doorId ="5" direction = "SOUTH" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -365,7 +365,7 @@
                 <y value = "3"/>
             </position>
             <wall direction = "SOUTH" />
-            <door doorId ="4" direction = "WEST" locked = "TRUE" keyID = "1" />
+            <door doorId ="4" direction = "WEST" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<tile_stretch length = "4">
 			<position>
@@ -455,7 +455,7 @@
                 <y value = "4"/>
 			</position>
 			<wall direction = "WEST" />
-			<door doorId ="5" direction = "NORTH" locked = "TRUE" keyID = "1" />
+			<door doorId ="5" direction = "NORTH" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<tile_stretch length = "2">
 			<position>
@@ -1061,7 +1061,7 @@
 				<x value = "10"/>
                 <y value = "11"/>
 			</position>
-			<door doorID = "8" direction = "SOUTH" locked = "TRUE" keyID = "2" />
+			<door doorID = "8" direction = "SOUTH" locked = "TRUE" keyID = "202" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -1194,7 +1194,7 @@
 				<x value = "10"/>
                 <y value = "12"/>
 			</position>
-			<door doorID = "8" direction = "NORTH" locked = "TRUE" keyID = "2" />
+			<door doorID = "8" direction = "NORTH" locked = "TRUE" keyID = "202" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -2185,7 +2185,7 @@
 				<x value = "19"/>
                 <y value = "3"/>
             </position>
-            <door id = "13" direction = "SOUTH" locked = "TRUE" keyID = "3" />
+            <door id = "13" direction = "SOUTH" locked = "TRUE" keyID = "201" />
             <wall direction = "EAST" />
         </empty_tile>
         <empty_tile>
@@ -2237,7 +2237,7 @@
 				<x value = "19"/>
                 <y value = "4"/>
             </position>
-            <door id = "13" direction = "NORTH" locked = "TRUE" keyID = "3" />
+            <door id = "13" direction = "NORTH" locked = "TRUE" keyID = "201" />
             <wall direction = "EAST" />
         </empty_tile>
         <empty_tile>
