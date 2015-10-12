@@ -4,6 +4,7 @@ import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Model;
+import artGame.ui.renderer.Painting;
 import artGame.ui.renderer.Sprite;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
@@ -31,7 +32,7 @@ public class TestWindow {
 	private static long window;
 	private static Camera camera;
 	private Vector3f light;
-	private float angle = 60f;
+	private float angle = 37.5f;
 	private float speed = 0.01f;
 	private GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
 	    @Override
@@ -90,12 +91,8 @@ public class TestWindow {
 		
 		camera.rotate(new Vector3f(angle, 0, 0));
         
-        // temporary list of assets so something can be displayed
-        // TODO replace with better scene-loading solution from game
         List<Asset> renderList = createScene();
 
-		// no proper 'game loop', as this is a test.
-		// TODO associate proper Window class with Game class
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
 
             /* Get width and height to calcualte the ratio */
@@ -128,7 +125,7 @@ public class TestWindow {
             height.flip();
 
             //System.out.println(GL11.glGetError());
-            //camera.rotate(new Vector3f(0, speed, 0));
+            camera.rotate(new Vector3f(0, speed, 0));
 		}
 		
 		// shut down
@@ -142,22 +139,20 @@ public class TestWindow {
 		List<Asset> scene = new ArrayList<Asset>();
 		
 		///*
-		Model david = AssetLoader.instance().loadOBJ("res/left_wall.obj");
-		if (david != null) {
-			scene.add(david);
-		} else {
-			System.out.println("David not loaded");
+		Model topWall = AssetLoader.instance().loadOBJ("res/top_wall.obj", new Vector3f(1,1,1));
+		if (topWall != null) {
+			scene.add(topWall);
 		}
 		//*/
 		
-		Model floor = AssetLoader.instance().loadOBJ("res/floor.obj");
+		Model floor = AssetLoader.instance().loadOBJ("res/floor.obj", new Vector3f(0.9f, 0.9f, 0.9f));
 		if (floor != null) {
 			scene.add(floor);
 		}
 		
-		Sprite player = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32);
-		if (player != null) {
-			scene.add(player);
+		Painting djp = AssetLoader.instance().loadPainting("res/paintings/painting_1.png", 64);
+		if (djp != null) {
+			scene.add(djp);
 		}
 		return scene;
 	}

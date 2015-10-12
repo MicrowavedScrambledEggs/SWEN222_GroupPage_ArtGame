@@ -101,12 +101,12 @@ public class GameRenderer implements Screen{
 			if (c.getCol() != entityPositions.get(c).getX() || 
 				c.getRow() != entityPositions.get(c).getZ()) {
 				
-				Vector3f start = entityPositions.get(c);
+				//Vector3f start = entityPositions.get(c);
 				Vector3f end = new Vector3f(c.getCol(), 0, c.getRow());
 				entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
-				//if (spriteTweens.get((Sprite)characters.get(c)) == null) {
+				if (spriteTweens.get((Sprite)characters.get(c)) == null) {
 					spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), 0.5f, end, currentTime));
-				//}
+				}
 			}
 		}
 			
@@ -124,6 +124,7 @@ public class GameRenderer implements Screen{
 		}
 		
 		for (Sprite s : stopTweening) {
+			s.setPosition(spriteTweens.get(s).getEndValue());
 			spriteTweens.remove(s);
 		}
 		
