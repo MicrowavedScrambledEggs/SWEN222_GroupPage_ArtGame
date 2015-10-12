@@ -6,12 +6,15 @@ package artGame.game;
  */
 public class Wall{
 	private Art art;
+	public final boolean hadArt; // Vicki: so new player clients can know which walls should be empty
 	/**
 	 * Creates a wall with a piece of art on it
 	 */
 	public Wall(Art art){
 		this.art = art;
 		art.addWall(this);
+		if (art != null) { hadArt = true; }
+		else { hadArt = false; }
 	}
 	
 	/**
@@ -19,6 +22,7 @@ public class Wall{
 	 */
 	public Wall(){
 		this.art = null;
+		hadArt = false;
 	}
 	
 	/**
