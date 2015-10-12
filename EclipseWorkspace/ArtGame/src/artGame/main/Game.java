@@ -18,6 +18,7 @@ public class Game {
 	private Floor floor;
 	private static Player p;
 	private List<Player> players;
+	private String name = null;
 	
 	public Game(Floor floor,Collection<Player> players){
 		this.floor = floor;
@@ -32,12 +33,20 @@ public class Game {
 	public Game() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void setName(String s) {
+		if (s!=null) name = s;
+	}
+	
+	public String getName() {
+		return (name==null) ? "unnamed game" : name;
+	}
 
 	//placeholder for init, will need to read from xml eventually for players' positions
 	public void initialise(){
 		floor = new Floor();
-		p = new Player(Direction.EAST,1);
-		floor.setCharacter(p, 1, 1);
+		//p = new Player(Direction.EAST,1);
+		//floor.setCharacter(p, 1, 1);
 	}
 	
 	/**
@@ -84,8 +93,8 @@ public class Game {
 	/**
 	 * executes a action for the player
 	 */
-	public void doAction(Player p, char id){
-		System.out.println("GAME doing action "+id+" on player "+p.getId());
+	public synchronized void doAction(Player p, char id){
+		System.out.println(getName()+" doing action "+id+" on player "+p.getId());
 		if(id=='w'){
 			p.setDir(Direction.NORTH);
 			floor.moveCharacter(p);
@@ -236,15 +245,14 @@ public class Game {
 //	}
 	
 	/** Adds an existing player to this Game instance. */
-	public Player addPlayer(int i) throws IllegalArgumentException {
+	public Player addPlayer(int pid) throws IllegalArgumentException {
 		if (players == null) {
 			players = new ArrayList<Player>();
 		}
-		int id = 1;
-		if (!isAvailablePlayerId(i)) {
+		if (!isAvailablePlayerId(pid)) {
 			throw new IllegalArgumentException();
 		}
-		Player newPlayer = new Player(Direction.SOUTH, id);
+		Player newPlayer = new Player(Direction.SOUTH, pid);
 		players.add(newPlayer);
 		return newPlayer;
 	}
@@ -254,7 +262,7 @@ public class Game {
 	 * @param pid
 	 * @return True if the player was removed, false otherwise.
 	 */
-	public boolean removePlayer(int pid) {
+	public synchronized boolean removePlayer(int pid) {
 		if (players == null || players.size() == 0) { return false; } // alternatively, calls some kind of game over message
 		if (pid >= 1 && pid < players.size()) {
 			for(Player p : players) {
@@ -267,7 +275,7 @@ public class Game {
 		return false;
 	}
 
-	public boolean isAvailablePlayerId(int pid) {
+	synchronized public boolean isAvailablePlayerId(int pid) {
 		if (players == null || players.size() == 0) return true;
 		for (Player p : players) {
 			if (p.getId() == pid) {
@@ -288,5 +296,46 @@ public class Game {
 			floor.printFloor(); // TODO replace with gui display
 			printMenu();
 		}
+	}
+	
+	public boolean equals(Object o) {
+		if (o instanceof Game) {
+			Game g = (Game)o;
+			if (getPlayers().size() != g.getPlayers().size()) {
+				return false;
+			}
+			for (int i = 0; i < getPlayers().size(); i++) {
+				boolean equals = false;
+				for (int j = 0; j < g.getPlayers().size(); j++) {
+					int myId = getPlayers().get(i).getId();
+					int yourId = g.getPlayers().get(j).getId();
+					if (myId == myId) {
+						equals = true;
+						continue;
+					} else if (!equals && i == g.getPlayers().size()-1) {
+						return false;
+					}
+				}
+			}
+			if (g.getFloor().equals(getFloor())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public String toString() {
+		String s = ((name != null) ? name : "GAME") +": PLAYERS ";
+		for (Player p : players) {
+			s += p.getId() +" ";
+		}
+		s += "\n\t";
+		s += "FLOOR ("+ floor.getWidth() + ",";
+		s += floor.getHeight()+")";
+		return s;
+	}
+	
+	public boolean hasPlayers() {
+		return players.size() > 0;
 	}
 }

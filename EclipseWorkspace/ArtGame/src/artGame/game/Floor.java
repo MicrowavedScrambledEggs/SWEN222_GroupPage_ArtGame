@@ -483,4 +483,23 @@ public class Floor {
 		return guards;
 	}
 
+	public boolean equals(Object o) {
+		if (o instanceof Floor) {
+			Floor f = (Floor)o;
+			if (floor.length != f.getHeight()
+					|| floor[0].length != f.getWidth()) {
+				return false;
+			}
+			for (int x = 0; x < floor.length; x++) {
+				for (int y = 0; y < floor[0].length; y++) {
+					if (  ( (floor[x][y] == null) == (f.getTile(x, y) == null) )
+							|| !floor[x][y].equals(f.getTile(x, y))  ) {
+						System.out.println(floor[x][y] +" and "+ f.getTile(x,y));
+						return false;
+					}
+				}
+			}
+		}
+		return false;
+	}
 }
