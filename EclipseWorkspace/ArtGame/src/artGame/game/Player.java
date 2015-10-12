@@ -31,4 +31,21 @@ public class Player extends Character{
 		this.caught = true;
 	}
 
+	@Override
+	public int hashCode(){
+		return 37*getId();
+	}
+
+	@Override
+	public boolean equals(Object o){
+
+		if(o instanceof Player){
+			if(((Player)o).getId() == getId()){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

@@ -190,7 +190,6 @@ public class Main {
 						Player p = Main.getGame().addPlayer(client.getPlayerId());
 						Main.getGame().getFloor().setCharacter(p, 1, 5+client.getPlayerId());
 						client.start();
-						System.out.println("Player amount : " + Main.getGame().getPlayers().size());
 					}
 				}
 			}

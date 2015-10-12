@@ -67,10 +67,17 @@ public class GameData {
 		return data.players;
 	}
 
-	@Deprecated
 	public static artGame.game.Character[] getCharacters() {
-
-		return new artGame.game.Character[]{};
+		artGame.game.Character[] characters = new artGame.game.Character[data.players.size()+data.guards.size()];
+		int index = 0;
+		for(int i = 0; i < data.players.size(); i++){
+			characters[i] = data.players.get(i);
+			index = i;
+		}
+		for(int i = 0; i < data.guards.size(); i++){
+			characters[i+index+1] = data.guards.get(i);
+		}
+		return characters;
 
 	}
 
@@ -156,7 +163,7 @@ public class GameData {
 
 				sc.next("player:");
 				int id = sc.nextInt();
-				data.pid = id;
+
 				sc.next(",");
 				int row = sc.nextInt();
 				sc.next(",");

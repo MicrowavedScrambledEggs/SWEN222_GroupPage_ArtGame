@@ -52,7 +52,7 @@ public class GameRenderer implements Screen {
 	private Sprite guardSprite;
 
 	private List<Model> levelCache;
-	private Map<Integer, Asset> characters;
+	private Map<artGame.game.Character, Asset> characters;
 
 	Map<Sprite, Tween<Vector3f>> spriteTweens;
 	Tween<Float> cameraTween;
@@ -105,8 +105,11 @@ public class GameRenderer implements Screen {
 				camera.setRotation(new Vector3f(CAMERA_ANGLE, tween, 0));
 			}
 		}
-		camera.setPosition(((Sprite) characters.get(0))
-				.getPosition().scale(-1));
+
+		if(characters.get(GameData.getPlayer()) != null){
+			camera.setPosition(((Sprite) characters.get(GameData.getPlayer()))
+					.getPosition().scale(-1));
+		}
 
 		for (Asset a : renderList) {
 			a.draw(camera, light);
@@ -127,33 +130,30 @@ public class GameRenderer implements Screen {
 		return scene;
 	}
 
-	private Map<Integer, Asset> loadCharacters() {
-		Map<Integer, Asset> chars = new HashMap<Integer, Asset>();
-		chars.put(0, playerSprite.instantiate());
-		//for (artGame.game.Character c : GameData.getCharacters()) {
-		//	if (c instanceof Player) {
-		//		chars.put(c, playerSprite.instantiate());
-		//	} else if (c instanceof Guard) {
-		//		chars.put(c, guardSprite.instantiate());
-		//	} else if (c instanceof Sculpture) {
-		//		Matrix4f pos = new Matrix4f();
-		//		pos = pos.multiply(Matrix4f.translate(new Vector3f(c.getCol(),
-		//				0, c.getRow())));
-		//		chars.put(c, sculpture1.instantiate(pos));
-		//	}
-		//}
+	private Map<artGame.game.Character, Asset> loadCharacters() {
+
+		Map<artGame.game.Character, Asset> chars = new HashMap<artGame.game.Character, Asset>();
+		for (artGame.game.Character c : GameData.getCharacters()) {
+			if (c instanceof Player) {
+				chars.put(c, playerSprite.instantiate());
+			} else if (c instanceof Guard) {
+				chars.put(c, guardSprite.instantiate());
+			} else if (c instanceof Sculpture) {
+				Matrix4f pos = new Matrix4f();
+				pos = pos.multiply(Matrix4f.translate(new Vector3f(c.getCol(),
+						0, c.getRow())));
+				chars.put(c, sculpture1.instantiate(pos));
+			}
+		}
 		return chars;
 	}
 
 	private void updateCharacters() {
-		Player p = GameData.getPlayer();
-		((Sprite) characters.get(0)).setPosition(new Vector3f(p
-				.getCol(), 0, p.getRow()));
-		
+
 		// replace this with something like game.getCharacters() and iterate
 		// over it
-		/*List<artGame.game.Character> toRemove = new ArrayList<artGame.game.Character>();
-		for (artGame.game.Character c : characters.keySet()) {
+		List<artGame.game.Character> toRemove = new ArrayList<artGame.game.Character>();
+		for (artGame.game.Character c : GameData.getCharacters()) {
 			if (c instanceof Player || c instanceof Guard) {
 				((Sprite) characters.get(c)).setPosition(new Vector3f(c
 						.getCol(), 0, c.getRow()));
@@ -161,12 +161,12 @@ public class GameRenderer implements Screen {
 				if (((Sculpture) c).isTaken()) {
 					toRemove.add(c);
 				}
-			}*/
-		//}
+			}
+		}
 
-		//for (artGame.game.Character c : toRemove) {
-		//	characters.remove(c);
-		//}
+		for (artGame.game.Character c : toRemove) {
+			characters.remove(c);
+		}
 	}
 
 	private List<Model> loadFullLevel() {
