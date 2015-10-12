@@ -12,12 +12,13 @@ import artGame.control.ConnectionHandler;
 import artGame.control.GameClock;
 import artGame.control.ServerThread;
 import artGame.control.SocketThread;
+import artGame.ui.gamedata.GameData;
 import artGame.xml.XMLHandler;
 
 public class Main {
 	public static final String GAME_NAME = "Wherefore Art Thou";
 	public static final int WAIT_PERIOD = 20;
-	public static final int BROADCAST_PERIOD = 2000; // cranked up to obscene
+	public static final int BROADCAST_PERIOD = 20; // cranked up to obscene
 														// levels to make output
 														// easier to read
 	public static final int CONNECTION_TIMEOUT = 60000;
@@ -181,10 +182,11 @@ public class Main {
 
 			@Override
 			public void run() {
-				ServerThread client = handler.waitForClient();
-				if(client != null){
-					childrenList.add(client);
-					//client.start();
+				while(1==1){
+					ServerThread client = handler.waitForClient();
+					if(client != null){
+						childrenList.add(client);
+					}
 				}
 			}
 
@@ -192,13 +194,21 @@ public class Main {
 		
 		// this is the while loop that manages the public socket
 		while (1 == 1) {
-
+			
 			// this loop checks if we should close any of our child sockets
 			// we don't expect to have more than six players, so this should be
 			// OK.
-
+			nextServerIdx = childrenList.size();
 			for (int i = 0; i < childrenList.size(); i++) {
+				
+				System.out.println("here");
 				ServerThread child = childrenList.get(i);
+				
+				if(child.isClosed()){
+					childrenList.remove(i);
+					continue;
+				}
+				
 				if (child != null) {
 					child.updateGame(GAME);
 				}

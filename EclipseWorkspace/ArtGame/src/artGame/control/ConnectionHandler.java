@@ -48,9 +48,8 @@ public class ConnectionHandler {
 		}
 		
 		try {
-			System.out.println("waiting fo rtclient");
+			System.out.println("waiting for client");
 			Socket s = publicSocket.accept();
-
 			ServerThread client = new ServerThread(Main.getGame(), s, Main.WAIT_PERIOD);
 			
 			return client;

@@ -239,6 +239,7 @@ public class GLWindow {
 	}
 
 	public void dispose() {
+		client.close();
 		glfwDestroyWindow(window);
 		keyCallback.release();
 		glfwTerminate();

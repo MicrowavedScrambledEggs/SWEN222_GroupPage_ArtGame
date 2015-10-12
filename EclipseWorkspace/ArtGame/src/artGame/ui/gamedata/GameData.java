@@ -31,7 +31,7 @@ public class GameData {
 		GameData.data=data;
 	}
 	
-	@Deprecated
+
 	public static void updateGame(Game game) {
 		GameData.game = game;
 	}
@@ -46,6 +46,9 @@ public class GameData {
 	}
 
 	public static Player getPlayer() {
+		if(data == null || data.players == null){
+			return null;
+		}
 		for(Player player : data.players){
 			if(player.getId() == data.pid){
 				return player;
@@ -266,6 +269,8 @@ public class GameData {
 		
 		} catch (NoSuchElementException e){
 			System.out.println("invalid game data packet");
+			sc.close();
+			return null;
 		}
 		
 		sc.close();

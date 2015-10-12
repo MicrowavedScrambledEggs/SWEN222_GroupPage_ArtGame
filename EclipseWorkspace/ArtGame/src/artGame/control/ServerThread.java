@@ -106,8 +106,8 @@ public class ServerThread extends SocketThread {
 			// TODO server game isn't being updated with player IDs
 			// get the next player ID
 			pid = PID_START;
-
-			while (!game.isAvailablePlayerId(pid)) {
+			
+			while (!Main.getGame().isAvailablePlayerId(pid)) {
 				pid++;
 			}
 			System.out.println("Assigning client the shared ID " + pid);
@@ -132,27 +132,24 @@ public class ServerThread extends SocketThread {
 
 	@Override
 	public void run() {
-
-		while (!socket.isClosed()) {
+		while (!socket.isClosed() && socket.isConnected()) {
 			try {
-				try {
-					OUT.write(GameData
-							.toByteArray(new GamePacketData(pid, game))); 									
-				} catch (IncompatiblePacketException e) { 													
-															
-				}
+				game = Main.getGame();
+				
 				long then = System.currentTimeMillis();
+				super.waitFor(IN);		
+				
 				// read first
 				timesOutAt = System.currentTimeMillis()
 						+ SocketThread.CONNECTION_TIMEOUT;
 
-				// super.waitFor(IN); // TODO MAY HAVE TO PUT THIS BACK IN..
-
 				// FIXME terrible implementation
 				Command clientCmd = super.readCommand(IN);
-				if (clientCmd.action == 'x') {
-					// client connection confirmation
+				
+				if (clientCmd.action == 'x' && clientCmd.id == pid) {
+					
 				}
+				
 				if (clientCmd.action == '!') {
 					System.out
 							.println("Stop-moving packet for " + clientCmd.id);
@@ -160,7 +157,7 @@ public class ServerThread extends SocketThread {
 				ServerThread[] ss = Main.getKids();
 				//System.out.println("cmd: " + clientCmd.action);
 				for (ServerThread s : ss) {
-					if (s != null) {
+					if (s != null && s != this) {
 						s.sendCommand(clientCmd); // make sure everyone else
 													// gets this command
 					}
@@ -180,7 +177,19 @@ public class ServerThread extends SocketThread {
 					super.writeCommand(OUT, serverCmd);
 				}
 
+				try {
+					byte[] bytes = GameData
+							.toByteArray(new GamePacketData(pid, game));
+					if(bytes != null){
+						OUT.write(bytes); 		
+					}
+				} catch (IncompatiblePacketException e) { 													
+															
+				}
+				
+				OUT.flush();
 				long now = System.currentTimeMillis();
+				//sleep(Main.BROADCAST_PERIOD);
 				if (now < then + Main.BROADCAST_PERIOD
 						&& 0 > then + Main.BROADCAST_PERIOD - now) {
 					sleep(then + Main.BROADCAST_PERIOD - now);
@@ -192,8 +201,14 @@ public class ServerThread extends SocketThread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
-
+		System.out.println("socket closed");
+		
+	}
+	
+	public synchronized boolean isClosed(){
+		return socket.isClosed();
 	}
 
 	@Override

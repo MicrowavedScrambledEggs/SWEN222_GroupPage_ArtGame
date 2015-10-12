@@ -71,7 +71,7 @@ public abstract class SocketThread extends Thread {
 	}
 	
 	/** Readies a command to be sent */
-	public boolean sendCommand(Command c) {
+	public synchronized boolean sendCommand(Command c) {
 		if (c != null) {
 			return cmdQueue.add(c);
 		} 
