@@ -105,5 +105,12 @@ public class Character {
 	public int getId() {
 		return ID;
 	}
+	
+	/**
+	 *  Returns the unique ID of the character. 
+	 */
+	public void setID(int ID) {
+		this.ID = ID;
+	}
 
 }

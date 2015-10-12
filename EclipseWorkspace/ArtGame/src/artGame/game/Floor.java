@@ -175,7 +175,7 @@ public class Floor {
 	public void setCharacter(Character c, int row, int col, int floorNumber) {
 		floor[row][col + offset * floorNumber].setOccupant(c);
 		c.setRow(row);
-		c.setCol(col);
+		c.setCol(col + offset * floorNumber);
 		if (c instanceof Guard && !guards.contains((Guard) c)) {
 			((Guard) c).offsetPath(offset * floorNumber);
 			guards.add((Guard) c);
@@ -253,7 +253,10 @@ public class Floor {
 		// direction
 		if (colDiff * rowDiff != 0
 				&& (Math.abs(colDiff) > 1 || Math.abs(rowDiff) > 1))
-			throw new GameError("trying to move more than 1 square at once");
+			throw new GameError(String.format("Trying to move more than 1 "
+					+ "square at once.\nHappened when attempting to move "
+					+ "Character %d from row %d col %d to row %d col %d",
+					c.getId(), c.getRow(), c.getCol(), row, col));
 		if (colDiff == 1) {
 			c.setDir(Direction.WEST);
 			this.moveCharacter(c);
@@ -347,7 +350,9 @@ public class Floor {
 				((Door) wall).unlock(p);
 			} else if (wall.getArt() != null) {
 				p.addItem(wall.getArt());
-				wall.setArt(null);
+				for(Wall w:wall.getArt().getWalls()){
+					w.setArt(null);
+				}
 			}
 		}
 		// dealing with chests
@@ -392,12 +397,16 @@ public class Floor {
 		}
 		// cycle through offset tiles and check for players
 		// using distance = 3, straight line
-		for (int i = 1; i < 4; i++) {
+		for (int i = 0; i < 4; i++) {
 			// target coords. works because only one of
 			// row or col offset will be nonzero
 			int tarRow = g.getRow() + i * rOff;
 			int tarCol = g.getCol() + i * cOff;
 			if(tarRow<0 || tarRow>maxR || tarCol<0 || tarCol>maxC) return null;
+			if(floor[tarRow][tarCol] == null){
+				return null; //Badi: Balcony was causing problems, no walls to 
+							 //stop guards looking at null tiles
+			}
 			if (floor[tarRow][tarCol].getOccupant() instanceof Player) {
 				return (Player) floor[tarRow][tarCol].getOccupant();
 			}

@@ -96,7 +96,6 @@ public class UIRenderer implements Screen {
 	private void updateInventory() {
 		resetInventory();
 		for(Item item: GLWindow.getGame().getPlayer().getInventory()){
-			System.out.println(item.ID);
 			int freeSlot = -1;
 			for(int i = 0; i < inventory.size(); i++){
 				ItemSlot slot = inventory.get(i);
@@ -137,7 +136,7 @@ public class UIRenderer implements Screen {
 		float size = (endX-startX)/invSlotCount;
 		//float size = 0.2f;
 		float scale = 0.3f;
-		System.out.println(scale);
+
 		float lastX = startX+gap;
 		for(int i = 0; i < invSlotCount; i++){
 
