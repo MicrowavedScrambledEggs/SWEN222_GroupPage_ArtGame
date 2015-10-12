@@ -105,7 +105,7 @@ public class GLWindow {
 
 	public GLWindow() {
 		try {
-			client = new ClientThread(new Socket("130.195.6.102", 32768), game, 10);
+			client = new ClientThread(new Socket("192.168.178.20", 32768), game, 10);
 			client.start();
 
 			keyCallback = new NetworkKeyCallback(client);
