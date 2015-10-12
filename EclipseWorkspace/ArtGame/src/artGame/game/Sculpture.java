@@ -49,4 +49,19 @@ public class Sculpture extends Character {
 		return taken;
 	}
 
+	/**
+	 * @return the value
+	 */
+	public int getValue() {
+		return value;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	
 }
