@@ -69,6 +69,9 @@ public class NetworkKeyCallback extends GLFWKeyCallback {
 			c = new Command('!',p.getId());
 		}
 		if(c != null){
+			
+			c = GLWindow.applyCameraRotation(c);
+			
 			GLWindow.addCommand(c);
 		}
 	}

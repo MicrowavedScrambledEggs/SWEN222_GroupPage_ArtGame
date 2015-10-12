@@ -45,7 +45,7 @@ public class GameData {
 		return game.getFloor();
 	}
 
-	public static Player getPlayer() {
+	public static synchronized Player getPlayer() {
 		if(data == null || data.players == null){
 			return null;
 		}
@@ -63,11 +63,11 @@ public class GameData {
 				game.getPlayer().getCol());
 	}
 
-	public static List<Player> getPlayers(){
+	public static synchronized List<Player> getPlayers(){
 		return data.players;
 	}
 
-	public static artGame.game.Character[] getCharacters() {
+	public static synchronized artGame.game.Character[] getCharacters() {
 		artGame.game.Character[] characters = new artGame.game.Character[data.players.size()+data.guards.size()];
 		int index = 0;
 		for(int i = 0; i < data.players.size(); i++){
@@ -81,7 +81,7 @@ public class GameData {
 
 	}
 
-	public static List<TileData> getOccupiedTiles(){
+	public static synchronized List<TileData> getOccupiedTiles(){
 		return data.occupied;
 	}
 
@@ -130,7 +130,7 @@ public class GameData {
 
 	}
 
-	public static GamePacketData read(byte[] packet)
+	public synchronized static GamePacketData read(byte[] packet)
 			throws IncompatiblePacketException {
 
 		GamePacketData data = new GamePacketData();
@@ -288,7 +288,7 @@ public class GameData {
 		return data;
 	}
 
-	public static byte[] toByteArray(GamePacketData data)
+	public static synchronized byte[] toByteArray(GamePacketData data)
 			throws IncompatiblePacketException {
 
 		StringBuilder build = new StringBuilder();

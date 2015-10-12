@@ -87,6 +87,7 @@ public class GLWindow {
 			.multiply(Matrix4f.rotate(35.2f, 1f, 0f, 0f));
 
 	private GameRenderer gameRender;
+	private static float cameraAngle;
 
 	private static Game game;
 
@@ -180,6 +181,8 @@ public class GLWindow {
 				rotateRight = false;
 			}
 			
+			cameraAngle = gameRender.getCameraAngle()%360;
+			
 			//Send any key presses to server..
 			while(!cmds.isEmpty()){
 				client.sendCommand(cmds.poll());
@@ -264,7 +267,9 @@ public class GLWindow {
 	}
 	
 	public static void addCommand(Command c){
-		cmds.offer(c);
+		if(c != null){
+			cmds.offer(c);
+		}
 	}
 
 	public static void setLight(Vector3f light) {
@@ -302,6 +307,121 @@ public class GLWindow {
 
 	public static Game getGame() {
 		return game;
+	}
+
+	public static Command applyCameraRotation(Command c) {
+		
+		char a = c.action;
+		
+		if(!(a == 'w' || a == 'a' || a =='d' || a == 's')){
+			return c;
+		}
+		
+		System.out.println(cameraAngle);
+		int[] range = {0, 90, 180, 270, 360};
+		
+		int i = getClosestValue(Math.abs(cameraAngle), range);
+	
+		Command newC = new Command(c.action, c.id);
+		
+		switch(i){
+		case 0 : 
+			
+			switch(c.action){
+			case 'w' : newC = new Command('w', c.id); break;
+			case 'a' : newC = new Command('a', c.id); break;
+			case 's' : newC = new Command('s', c.id); break;
+			case 'd' : newC = new Command('d', c.id); break;
+			}
+			
+			;break;
+			
+		case 90: 
+			
+			if(cameraAngle > 0){
+				switch(c.action){
+				case 'w' : newC = new Command('d', c.id); break;
+				case 'a' : newC = new Command('w', c.id); break;
+				case 's' : newC = new Command('a', c.id); break;
+				case 'd' : newC = new Command('s', c.id); break;
+				}
+			} else {
+				switch(c.action){
+				case 's' : newC = new Command('d', c.id); break;
+				case 'd' : newC = new Command('w', c.id); break;
+				case 'w' : newC = new Command('a', c.id); break;
+				case 'a' : newC = new Command('s', c.id); break;
+				}
+			}
+			
+			;break;
+			
+		case 180: 
+			
+			switch(c.action){
+			case 'w' : newC = new Command('s', c.id); break;
+			case 'a' : newC = new Command('d', c.id); break;
+			case 's' : newC = new Command('w', c.id); break;
+			case 'd' : newC = new Command('a', c.id); break;
+			}
+			
+			;break;
+			
+		case 270:
+			
+			if(cameraAngle > 0){
+				switch(c.action){
+				case 'w' : newC = new Command('a', c.id); break;
+				case 'a' : newC = new Command('s', c.id); break;
+				case 's' : newC = new Command('d', c.id); break;
+				case 'd' : newC = new Command('w', c.id); break;
+				}
+			} else {
+				switch(c.action){
+				case 's' : newC = new Command('a', c.id); break;
+				case 'd' : newC = new Command('s', c.id); break;
+				case 'w' : newC = new Command('d', c.id); break;
+				case 'a' : newC = new Command('w', c.id); break;
+				}
+			}
+			
+			
+			
+			break;
+			
+		case 360: 
+			
+			switch(c.action){
+			case 'w' : newC = new Command('w', c.id); break;
+			case 'a' : newC = new Command('a', c.id); break;
+			case 's' : newC = new Command('s', c.id); break;
+			case 'd' : newC = new Command('d', c.id); break;
+			}
+			
+			;break;
+			
+		}
+		
+		return newC;
+	}
+	
+	/**
+	 * Gets the closest value to val in array compare.
+	 * @param val The value you want to check
+	 * @param compare The array you want to check 'val' against
+	 * @return The integer in 'compare' that is closest to 'val'
+	 */
+	private static int getClosestValue(float val, int[] compare){
+		float distance = Math.abs(compare[0] - val);
+		int idx = 0;
+		for(int c = 1; c < compare.length; c++){
+		    float cdistance = Math.abs(compare[c] - val);
+		    if(cdistance < distance){
+		        idx = c;
+		        distance = cdistance;
+		    }
+		}
+		return compare[idx];
 	}
 
 }

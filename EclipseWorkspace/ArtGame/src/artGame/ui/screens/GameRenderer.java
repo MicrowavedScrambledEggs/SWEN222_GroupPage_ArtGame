@@ -320,6 +320,10 @@ public class GameRenderer implements Screen{
 			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, -90, currentTime);
 		}
 	}
+	
+	public float getCameraAngle(){
+		return this.currentCameraAngle;
+	}
 
 	@Override
 	public void dispose(){

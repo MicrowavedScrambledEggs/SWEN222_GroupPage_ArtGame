@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 
 import artGame.game.Item;
+import artGame.ui.FontHandler;
 import artGame.ui.ItemSlot;
 import artGame.ui.Widget;
 import artGame.ui.gamedata.GameData;
@@ -38,13 +39,22 @@ public class UIRenderer implements Screen {
 
 	private HashMap<Integer, Widget> itemsById;
 
+	private FontHandler fonts;
+	private Widget fontWidget;
+	
 	public UIRenderer(long window){
 		this.window = window;
-
+		
 		width = BufferUtils.createIntBuffer(1);
 		height = BufferUtils.createIntBuffer(1);
 		createUI();
-
+		
+		BufferedImage fontImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+		fontImage = FontHandler.process(fontImage, "looks like a toilet..");
+		
+		fontWidget = this.loadWidgetByImage(fontImage, 256, 0.5f, 0.3f);
+		fontWidget.setScale(1);
+		
 	}
 
 	@Override
@@ -87,6 +97,8 @@ public class UIRenderer implements Screen {
 			count++;
 
 		}
+		
+		fontWidget.draw();
 
 		width.rewind();
 		height.rewind();
@@ -173,6 +185,24 @@ public class UIRenderer implements Screen {
 			e.printStackTrace();
 			return null;
 		}
+		// TODO Fix spritesheet bug
+		BufferedImage[][] sprites = new BufferedImage[sheet.getWidth() / size][sheet.getHeight() / size];
+		Texture[][] textures = new Texture[sheet.getWidth() / size][sheet.getHeight() / size];
+		for (int col = 0; col < sprites.length; col++) {
+			for(int row = 0; row < sprites[col].length; row++) {
+				sprites[col][row] = sheet.getSubimage(col * size, row * size, size, size);
+				textures[row][col] = new Texture(sprites[col][row], size);
+			}
+		}
+		Widget w = new Widget(textures, new Vector3f(0, 0, 0));
+		w.setScreenLocation(x, y);
+		w.setScale(0.095f);
+		return w;
+	}
+	
+	private Widget loadWidgetByImage(BufferedImage img, int size, float x, float y) {
+		BufferedImage sheet = img;
+
 		// TODO Fix spritesheet bug
 		BufferedImage[][] sprites = new BufferedImage[sheet.getWidth() / size][sheet.getHeight() / size];
 		Texture[][] textures = new Texture[sheet.getWidth() / size][sheet.getHeight() / size];
