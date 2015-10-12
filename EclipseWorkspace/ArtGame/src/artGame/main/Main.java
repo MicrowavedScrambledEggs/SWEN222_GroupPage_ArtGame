@@ -153,12 +153,17 @@ public class Main {
 			System.out.println("The server has set up shop at "+publicSocket.getLocalSocketAddress());
 			long[] timeout = new long[maxClients];
 			int nextServerIdx = 0;
+			boolean firstPlayer = true;
 			// this is the while loop that manages the public socket
 			while (1 == 1) {
 				try {
 					Socket s = publicSocket.accept();
-					children[nextServerIdx] = new ServerThread(GAME, s, WAIT_PERIOD);
+					children[nextServerIdx] = new ServerThread(s, GAME, WAIT_PERIOD);
 					children[nextServerIdx].start();
+					if (firstPlayer) {
+						startMultiplayer();
+						firstPlayer = false;
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -186,6 +191,22 @@ public class Main {
 		}
 	}
 	
+	/** IMPORTANT: STARTS THE SERVER'S LOCAL GAME CLOCK.
+	 * @throws IOException
+	 */
+	private static void startMultiplayer() throws IOException {	
+		clock = new GameClock(GAME);
+		clock.start();
+		// now, wait for the game to finish
+		while(GAME.hasPlayers() && children != null) {
+			Thread.yield();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {}
+		}
+		System.out.println();
+	}
+	
 	public static ServerThread[] getKids() {
 		return Arrays.copyOf(children,children.length);
 	}
@@ -201,5 +222,6 @@ public class Main {
 				s.close();
 			}
 		}
+		children = null;
 	}
 }
