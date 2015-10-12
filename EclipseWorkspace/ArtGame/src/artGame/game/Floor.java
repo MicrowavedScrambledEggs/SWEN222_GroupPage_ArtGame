@@ -404,9 +404,8 @@ public class Floor {
 			int tarCol = g.getCol() + i * cOff;
 			if(tarRow<0 || tarRow>maxR || tarCol<0 || tarCol>maxC) return null;
 			if(floor[tarRow][tarCol] == null){
-				throw new GameError(String.format("Guard %d at row %d col %d was"
-						+ " looking out at the abyss! Null tile at row %d col %d",
-						g.ID, g.row, g.col, tarRow, tarCol));
+				return null; //Badi: Balcony was causing problems, no walls to 
+							 //stop guards looking at null tiles
 			}
 			if (floor[tarRow][tarCol].getOccupant() instanceof Player) {
 				return (Player) floor[tarRow][tarCol].getOccupant();
