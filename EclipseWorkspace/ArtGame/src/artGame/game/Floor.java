@@ -350,7 +350,9 @@ public class Floor {
 				((Door) wall).unlock(p);
 			} else if (wall.getArt() != null) {
 				p.addItem(wall.getArt());
-				wall.setArt(null);
+				for(Wall w:wall.getArt().getWalls()){
+					w.setArt(null);
+				}
 			}
 		}
 		// dealing with chests
