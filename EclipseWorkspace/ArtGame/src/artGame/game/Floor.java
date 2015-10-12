@@ -395,12 +395,17 @@ public class Floor {
 		}
 		// cycle through offset tiles and check for players
 		// using distance = 3, straight line
-		for (int i = 1; i < 4; i++) {
+		for (int i = 0; i < 4; i++) {
 			// target coords. works because only one of
 			// row or col offset will be nonzero
 			int tarRow = g.getRow() + i * rOff;
 			int tarCol = g.getCol() + i * cOff;
 			if(tarRow<0 || tarRow>maxR || tarCol<0 || tarCol>maxC) return null;
+			if(floor[tarRow][tarCol] == null){
+				throw new GameError(String.format("Guard %d at row %d col %d was"
+						+ " looking out at the abyss! Null tile at row %d col %d",
+						g.ID, g.row, g.col, tarRow, tarCol));
+			}
 			if (floor[tarRow][tarCol].getOccupant() instanceof Player) {
 				return (Player) floor[tarRow][tarCol].getOccupant();
 			}
