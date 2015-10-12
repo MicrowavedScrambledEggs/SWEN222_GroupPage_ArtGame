@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * Represents a character in the game represented by a id, position and face
  * direction
- * 
+ *
  * @author Kaishuo
  *
  */
@@ -100,10 +100,14 @@ public class Character {
 	}
 
 	/**
-	 *  Returns the unique ID of the character. 
+	 *  Returns the unique ID of the character.
 	 */
 	public int getId() {
 		return ID;
+	}
+
+	public void setId(int pid){
+		this.ID=pid;
 	}
 
 }

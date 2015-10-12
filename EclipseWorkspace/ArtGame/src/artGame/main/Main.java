@@ -12,7 +12,7 @@ import artGame.control.ConnectionHandler;
 import artGame.control.GameClock;
 import artGame.control.ServerThread;
 import artGame.control.SocketThread;
-import artGame.ui.gamedata.GameData;
+import artGame.game.Player;
 import artGame.xml.XMLHandler;
 
 public class Main {
@@ -147,7 +147,7 @@ public class Main {
 	/**
 	 * This method runs a public socket out of the given port that clients can
 	 * connect to in order to join the game.
-	 * 
+	 *
 	 * @param port
 	 *            Port to use
 	 * @param gameClock
@@ -177,7 +177,7 @@ public class Main {
 		long[] timeout = new long[maxClients];
 
 		int nextServerIdx = 0;
-		
+
 		new Thread(new Runnable() {
 
 			@Override
@@ -186,29 +186,34 @@ public class Main {
 					ServerThread client = handler.waitForClient();
 					if(client != null){
 						childrenList.add(client);
+						//Main.getGame().getPlayers().get(client.getPlayerId()).setId(client.getPlayerId());
+						Player p = Main.getGame().addPlayer(client.getPlayerId());
+						Main.getGame().getFloor().setCharacter(p, 1, 5+client.getPlayerId());
+						client.start();
+						System.out.println("Player amount : " + Main.getGame().getPlayers().size());
 					}
 				}
 			}
 
 		}).start();
-		
+
 		// this is the while loop that manages the public socket
 		while (1 == 1) {
-			
+
 			// this loop checks if we should close any of our child sockets
 			// we don't expect to have more than six players, so this should be
 			// OK.
 			nextServerIdx = childrenList.size();
 			for (int i = 0; i < childrenList.size(); i++) {
-				
+
 				System.out.println("here");
 				ServerThread child = childrenList.get(i);
-				
+
 				if(child.isClosed()){
 					childrenList.remove(i);
 					continue;
 				}
-				
+
 				if (child != null) {
 					child.updateGame(GAME);
 				}

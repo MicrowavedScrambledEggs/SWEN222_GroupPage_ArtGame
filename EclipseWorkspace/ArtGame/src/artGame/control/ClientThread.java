@@ -57,7 +57,7 @@ public class ClientThread extends SocketThread {
 
 	/**
 	 * Creates a new ClientThread that listens to the given socket.
-	 * 
+	 *
 	 * @param s
 	 *            A socket connected to a ServerThread
 	 * @param g
@@ -139,7 +139,7 @@ public class ClientThread extends SocketThread {
 			try {
 				long then = System.currentTimeMillis();
 				// first, write to server
-		
+
 				super.sendCommand(new Command('x', pid));
 				write();
 				long now = System.currentTimeMillis();
@@ -160,7 +160,7 @@ public class ClientThread extends SocketThread {
 					// Command c = super.readCommand(IN);
 					// System.out.print("command: " + c.toString());
 					// TODO read game data input and any other commands ########
-				
+
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -242,7 +242,7 @@ public class ClientThread extends SocketThread {
 
 	/**
 	 * Testing method. Reads/writes the parameter Commands instead of the queue
-	 * 
+	 *
 	 * @param send
 	 *            Command to be send
 	 * @return Command received from client
@@ -284,7 +284,7 @@ public class ClientThread extends SocketThread {
 	/**
 	 * Testing method. Writes the parameter command and reads command from the
 	 * queue.
-	 * 
+	 *
 	 * @param send
 	 *            Command to be sent
 	 * @return Command received from server

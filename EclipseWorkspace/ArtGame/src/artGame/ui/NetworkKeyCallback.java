@@ -16,23 +16,31 @@ import artGame.ui.screens.GLWindow;
 
 public class NetworkKeyCallback extends GLFWKeyCallback {
 	private ClientThread connection;
-	
+
 	public NetworkKeyCallback(ClientThread connection){
 		this.connection = connection;
 	}
-	
+
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods) {
+
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 			connection.close();
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
-		
+
+		if (key == GLFW_KEY_Q && action == GLFW_RELEASE) {
+			GLWindow.rotateLeft();
+		}
+		if (key == GLFW_KEY_E && action == GLFW_RELEASE) {
+			GLWindow.rotateRight();
+		}
+
 		Player p = GameData.getPlayer(); // we want our player, not someone else's
 		Command c = null;
 		//Send press commands..
-		
-		// none of these methods need to do sanity checking-- that is done by the 
+
+		// none of these methods need to do sanity checking-- that is done by the
 		// Game simply not updating state if the parameters are invalid.
 		if (key == GLFW_KEY_W && action == GLFW_PRESS) {
 			c = new Command('w',p.getId());
@@ -52,7 +60,7 @@ public class NetworkKeyCallback extends GLFWKeyCallback {
 		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
 			c = new Command('r',p.getId());
 		}
-		
+
 		//Send release commands..
 		if (key == GLFW_KEY_W && action == GLFW_RELEASE
 				|| key == GLFW_KEY_A && action == GLFW_RELEASE
@@ -60,7 +68,7 @@ public class NetworkKeyCallback extends GLFWKeyCallback {
 				|| key == GLFW_KEY_D && action == GLFW_RELEASE) {
 			c = new Command('!',p.getId());
 		}
-		
+
 		connection.sendCommand(c);
 	}
 }

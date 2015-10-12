@@ -1,11 +1,12 @@
 package artGame.control;
 
 import artGame.main.Game;
+import artGame.main.Main;
 import artGame.ui.TestWindow;
 
 public class GameClock extends Thread {
 	public static int TICK_MS = 1000;
-	private final Game game;
+	private Game game;
 
 	public GameClock(Game game) {
 		this.game = game;
@@ -15,7 +16,7 @@ public class GameClock extends Thread {
 		while (1 == 1) { // this is a strange tradition
 			// Loop forever
 			try {
-
+				game = Main.getGame();
 				long then = System.currentTimeMillis();
 				if (game != null) {
 					game.getFloor().moveGuards();

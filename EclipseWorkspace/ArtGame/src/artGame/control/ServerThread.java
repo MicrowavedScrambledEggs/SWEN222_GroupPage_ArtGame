@@ -17,9 +17,9 @@ import artGame.ui.gamedata.GamePacketData;
 
 /**
  * TODO
- * 
+ *
  * @author Vicki
- * 
+ *
  */
 public class ServerThread extends SocketThread {
 	private static final int PID_START = 1; // the id of the first player
@@ -40,7 +40,7 @@ public class ServerThread extends SocketThread {
 	/**
 	 * Creates a new ServerThread, which will manage the data input/output for a
 	 * single client/server connection.
-	 * 
+	 *
 	 * @param game
 	 *            The Game should be the same Game that is given to all other
 	 *            ServerThreads.
@@ -69,7 +69,6 @@ public class ServerThread extends SocketThread {
 				+ " =-=-=-=-=-=-=-=-=-");
 
 		sendGameInfo();
-		start();
 	}
 
 	/** Constructor for testing */
@@ -106,10 +105,11 @@ public class ServerThread extends SocketThread {
 			// TODO server game isn't being updated with player IDs
 			// get the next player ID
 			pid = PID_START;
-			
+
 			while (!Main.getGame().isAvailablePlayerId(pid)) {
 				pid++;
 			}
+
 			System.out.println("Assigning client the shared ID " + pid);
 			OUT.writeInt(pid);
 
@@ -134,22 +134,23 @@ public class ServerThread extends SocketThread {
 	public void run() {
 		while (!socket.isClosed() && socket.isConnected()) {
 			try {
+
 				game = Main.getGame();
-				
+
 				long then = System.currentTimeMillis();
-				super.waitFor(IN);		
-				
+				super.waitFor(IN);
+
 				// read first
 				timesOutAt = System.currentTimeMillis()
 						+ SocketThread.CONNECTION_TIMEOUT;
 
 				// FIXME terrible implementation
 				Command clientCmd = super.readCommand(IN);
-				
+
 				if (clientCmd.action == 'x' && clientCmd.id == pid) {
-					
+
 				}
-				
+
 				if (clientCmd.action == '!') {
 					System.out
 							.println("Stop-moving packet for " + clientCmd.id);
@@ -163,7 +164,6 @@ public class ServerThread extends SocketThread {
 					}
 				}
 				for (Player x : game.getPlayers()) {
-
 					if (x.getId() == clientCmd.id) {
 						game.doAction(x, clientCmd.action); // now make sure we
 															// do the action
@@ -181,12 +181,12 @@ public class ServerThread extends SocketThread {
 					byte[] bytes = GameData
 							.toByteArray(new GamePacketData(pid, game));
 					if(bytes != null){
-						OUT.write(bytes); 		
+						OUT.write(bytes);
 					}
-				} catch (IncompatiblePacketException e) { 													
-															
+				} catch (IncompatiblePacketException e) {
+
 				}
-				
+
 				OUT.flush();
 				long now = System.currentTimeMillis();
 				//sleep(Main.BROADCAST_PERIOD);
@@ -201,12 +201,12 @@ public class ServerThread extends SocketThread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 		System.out.println("socket closed");
-		
+
 	}
-	
+
 	public synchronized boolean isClosed(){
 		return socket.isClosed();
 	}
@@ -230,7 +230,7 @@ public class ServerThread extends SocketThread {
 
 	/**
 	 * Closes the socket and unlinks server and client.
-	 * 
+	 *
 	 * @return True if socket is successfully closed.
 	 */
 	@Override
@@ -273,7 +273,7 @@ public class ServerThread extends SocketThread {
 
 	/**
 	 * Testing method. Reads/writes the parameter Commands instead of the queue
-	 * 
+	 *
 	 * @param send
 	 *            Command to be send
 	 * @return Command received from client
@@ -309,7 +309,7 @@ public class ServerThread extends SocketThread {
 	/**
 	 * Testing method. Reads the parameter command and writes command from the
 	 * queue.
-	 * 
+	 *
 	 * @param send
 	 *            Command to be send
 	 * @return Command received from client
@@ -350,7 +350,7 @@ public class ServerThread extends SocketThread {
 	/**
 	 * Testing method. Reads the parameter command and writes command from the
 	 * queue.
-	 * 
+	 *
 	 * @param send
 	 *            Command to be send
 	 * @return Command received from client

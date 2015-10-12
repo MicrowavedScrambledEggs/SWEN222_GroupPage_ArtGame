@@ -14,7 +14,7 @@ public class ConnectionHandler {
 
 	private int port, gameClock, maxClients, nextServerIdx;
 	private long startTime;
-	
+
 	private ServerThread[] children;
 
 	public ConnectionHandler(int port, int gameClock, int maxClients) {
@@ -30,7 +30,7 @@ public class ConnectionHandler {
 					InetAddress.getLocalHost());
 			System.out.println("The server has set up shop at "
 					+ publicSocket.getLocalSocketAddress());
-			
+
 			nextServerIdx = 0;
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -46,18 +46,18 @@ public class ConnectionHandler {
 			System.out.println("public socket null");
 			return null;
 		}
-		
+
 		try {
 			System.out.println("waiting for client");
 			Socket s = publicSocket.accept();
 			ServerThread client = new ServerThread(Main.getGame(), s, Main.WAIT_PERIOD);
-			
+
 			return client;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 

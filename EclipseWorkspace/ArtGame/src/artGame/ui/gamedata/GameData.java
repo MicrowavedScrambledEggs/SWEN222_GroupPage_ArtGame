@@ -23,14 +23,14 @@ public class GameData {
 	private static Game game;
 
 	private static GamePacketData data;
-	
+
 	private static List<ArtItem> arts;
 	private static List<artGame.game.Character> chars;
 
 	public static void updateGame(GamePacketData data) {
 		GameData.data=data;
 	}
-	
+
 
 	public static void updateGame(Game game) {
 		GameData.game = game;
@@ -62,18 +62,18 @@ public class GameData {
 		return game.getFloor().getTile(game.getPlayer().getRow(),
 				game.getPlayer().getCol());
 	}
-	
+
 	public static List<Player> getPlayers(){
 		return data.players;
 	}
 
 	@Deprecated
 	public static artGame.game.Character[] getCharacters() {
-		
+
 		return new artGame.game.Character[]{};
 
 	}
-	
+
 	public static List<TileData> getOccupiedTiles(){
 		return data.occupied;
 	}
@@ -81,7 +81,7 @@ public class GameData {
 	@Deprecated
 	public static ArtItem[] getAllArt() {
 
-	
+
 		arts = new ArrayList<>();
 
 		float width = game.getFloor().getWidth();
@@ -127,20 +127,20 @@ public class GameData {
 			throws IncompatiblePacketException {
 
 		GamePacketData data = new GamePacketData();
-		
+
 		List<Player> players = new ArrayList<>();
 		List<Guard> guards = new ArrayList<>();
-		
+
 		int pid = -1;
-		
+
 		String text = new String(packet, Charset.forName("UTF-8"));
-		
+
 		Scanner sc = new Scanner(text);
-		
+
 		try {
-		
+
 		while(sc.hasNext()){
-		
+
 			if(sc.hasNext("<")){
 				sc.next("<");
 				pid = sc.nextInt();
@@ -149,11 +149,11 @@ public class GameData {
 				sc.next(">");
 				continue;
 			}
-			
+
 			if(sc.hasNext("player:")){
-	
+
 				List<Integer> items = new ArrayList<>();
-				
+
 				sc.next("player:");
 				int id = sc.nextInt();
 				data.pid = id;
@@ -163,9 +163,9 @@ public class GameData {
 				int col = sc.nextInt();
 				sc.next(",");
 				int dir = sc.nextInt();
-				
+
 				while(!sc.hasNext(";")){
-									
+
 					if(sc.hasNext(",")){
 						sc.next(",");
 					}
@@ -173,25 +173,25 @@ public class GameData {
 						items.add(sc.nextInt());
 					}
 				}
-				
+
 				sc.next(";");
-							
+
 				Player p = new Player(Direction.values()[dir], id);
 				p.setRow(row);
 				p.setCol(col);
 				for(int i : items){
 					p.addItem(new Item(i));
 				}
-				
+
 				players.add(p);
-				
+
 			}
-			
-			
+
+
 			if(sc.hasNext("guard:")){
-			
+
 				List<Integer> items = new ArrayList<>();
-				
+
 				sc.next("guard:");
 				int id = sc.nextInt();
 				sc.next(",");
@@ -200,33 +200,33 @@ public class GameData {
 				int col = sc.nextInt();
 				sc.next(",");
 				int dir = sc.nextInt();
-				
-				while(!sc.hasNext(";")){	
-					
+
+				while(!sc.hasNext(";")){
+
 					if(sc.hasNext(",")){
 						sc.next(",");
 					}
 					if(sc.hasNextInt()){
 						items.add(sc.nextInt());
 					}
-	
+
 				}
-				
+
 				sc.next(";");
-				
+
 				Guard g = new Guard(Direction.values()[dir], id);
 				g.setRow(row);
 				g.setCol(col);
 				for(int i : items){
 					g.addItem(new Item(i));
 				}
-				
+
 				guards.add(g);
-				
+
 			}
-			
+
 			//Now read any occupied tiles in..
-			
+
 			/* format
 			for(TileData tileData : data.occupied){
 				build.append(" tile: ");
@@ -234,56 +234,56 @@ public class GameData {
 				build.append(tileData.col + " ");
 				build.append(tileData.itemId + " ");
 				build.append(tileData.itemDir + " ");
-			
+
 				for(int i : tileData.artIds){
 					build.append(i + " ");
 				}
-				
+
 				build.append(" ; ");
-			} 
+			}
 			*/
-			
+
 			List<TileData> tiles = new ArrayList<>();
-			
+
 			if(sc.hasNext("tile:")){
 				sc.next("tile:");
 				int row = sc.nextInt();
 				int col = sc.nextInt();
 				int itemId = sc.nextInt();
 				int itemDir = sc.nextInt();
-				
+
 				int[] artIds = new int[4];
-				
+
 				for(int i = 0; i < 4; i++){
 					artIds[i] = sc.nextInt();
 				}
 				TileData tileData = new TileData(row, col, itemId, itemDir, artIds);
 				tiles.add(tileData);
-				
+
 				if(sc.hasNext(";")){
 					sc.next(";");
 				}
 			}
-			
+
 		}
-		
+
 		} catch (NoSuchElementException e){
 			System.out.println("invalid game data packet");
 			sc.close();
 			return null;
 		}
-		
+
 		sc.close();
-		
+		data.pid = pid;
 		data.guards = guards;
 		data.players = players;
-		
+
 		return data;
 	}
 
 	public static byte[] toByteArray(GamePacketData data)
 			throws IncompatiblePacketException {
-	
+
 		StringBuilder build = new StringBuilder();
 		build.append("< ");
 		build.append(" " + data.pid + " ");
@@ -328,7 +328,7 @@ public class GameData {
 			build.deleteCharAt(build.length() - 1);
 			build.append(" ; ");
 		}
-		
+
 		//Now append occupied tile data..
 		for(TileData tileData : data.occupied){
 			build.append(" tile: ");
@@ -336,11 +336,11 @@ public class GameData {
 			build.append(tileData.col + " ");
 			build.append(tileData.itemId + " ");
 			build.append(tileData.itemDir + " ");
-		
+
 			for(int i : tileData.artIds){
 				build.append(i + " ");
 			}
-			
+
 			build.append(" ; ");
 		}
 

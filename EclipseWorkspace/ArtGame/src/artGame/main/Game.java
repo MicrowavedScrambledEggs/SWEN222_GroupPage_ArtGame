@@ -18,7 +18,7 @@ public class Game {
 	private Floor floor;
 	private static Player p;
 	private List<Player> players;
-	
+
 	public Game(Floor floor,Collection<Player> players){
 		this.floor = floor;
 		this.players = new ArrayList<Player>();
@@ -28,7 +28,7 @@ public class Game {
 		}
 		this.p = players.iterator().next(); //TODO Badi: Just for now to get single player without nullpointerexceptions
 	}
-	
+
 	public Game() {
 		// TODO Auto-generated constructor stub
 	}
@@ -39,7 +39,7 @@ public class Game {
 		p = new Player(Direction.EAST,1);
 		floor.setCharacter(p, 1, 1);
 	}
-	
+
 	/**
 	 * returns the player with specified id
 	 * throws a error if player not found
@@ -50,7 +50,7 @@ public class Game {
 		}
 		throw new GameError("Player ID:" + id + " not found");
 	}
-	
+
 	/**
 	 * returns the Guard with specified id
 	 * throws a error if guard not found
@@ -61,7 +61,7 @@ public class Game {
 		}
 		throw new GameError("Guard ID:" + id + " not found");
 	}
-	
+
 	/**
 	 * prints menu options
 	 */
@@ -79,7 +79,7 @@ public class Game {
 		System.out.println("F: interact");
 		System.out.println("R: inspect");
 	}
-	
+
 	/**
 	 * executes a action for the player
 	 */
@@ -96,11 +96,11 @@ public class Game {
 		else if(id=='s'){
 			p.setDir(Direction.SOUTH);
 			floor.moveCharacter(p);
-		}		
+		}
 		else if(id=='d'){
 			p.setDir(Direction.EAST);
 			floor.moveCharacter(p);
-		}		
+		}
 		else if(id=='f'){
 			floor.interact(p);
 		}
@@ -111,7 +111,7 @@ public class Game {
 			//do nothing
 		}
 	}
-	
+
 	public Floor getFloor() {
 		return floor;
 	}
@@ -119,7 +119,7 @@ public class Game {
 	public Player getPlayer() {
 		return p;
 	}
-	
+
 	/**
 	 * TESTING
 	 */
@@ -135,14 +135,14 @@ public class Game {
 
 			this.floor.printFloor();//replace with gui display
 			this.printMenu();
-			nextCommand = sc.next().charAt(0);			
+			nextCommand = sc.next().charAt(0);
 			this.getFloor().moveGuards();
 			if(this.getFloor().checkGuards().contains(this.getPlayer())){
 				break;
 			}
-			
+
 		}
-		
+
 		if(this.getPlayer().isCaught()){
 			System.out.println("you got arrested");
 		}
@@ -177,7 +177,7 @@ public class Game {
 				game.initialise();
 			}
 		}
-		
+
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		while(game.getFloor().isOnExit()==null){
@@ -210,10 +210,10 @@ public class Game {
 		XMLHandler gameLoader = new XMLHandler();
 		return gameLoader.loadGame(loadFile);
 	}
-	
-	
+
+
 	/* Vicki messes with networking below this line. */
-	
+
 	/** Adds a new player to the Game. */
 //	public Player addPlayer() {
 //		int id = 1;
@@ -224,7 +224,7 @@ public class Game {
 //		players.add(newPlayer);
 //		return newPlayer;
 //	}
-	
+
 	/** Adds an existing player to this Game instance. */
 	public Player addPlayer(int i) throws IllegalArgumentException {
 		if (players == null) {
@@ -234,13 +234,13 @@ public class Game {
 		if (!isAvailablePlayerId(i)) {
 			throw new IllegalArgumentException();
 		}
-		Player newPlayer = new Player(Direction.SOUTH, id);
+		Player newPlayer = new Player(Direction.SOUTH, i);
 		players.add(newPlayer);
 		return newPlayer;
 	}
-	
+
 	/** Removes a given player ID from the game.
-	 * 
+	 *
 	 * @param pid
 	 * @return True if the player was removed, false otherwise.
 	 */
@@ -266,7 +266,7 @@ public class Game {
 		}
 		return true;
 	}
-	
+
 	public List<Player> getPlayers(){
 		List<Player> nl = new ArrayList<Player>();
 		nl.addAll(players);
