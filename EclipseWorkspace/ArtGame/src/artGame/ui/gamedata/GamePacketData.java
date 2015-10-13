@@ -26,8 +26,9 @@ public class GamePacketData {
 	public List<Sculpture> sculptures;
 	
 	public int pid;
+	public boolean out;
 	
-	public GamePacketData(int pid, Game game){
+	public GamePacketData(int pid, Game game, boolean out){
 		this.pid = pid;
 		players = new ArrayList<>();
 		guards = new ArrayList<>();
@@ -36,6 +37,8 @@ public class GamePacketData {
 		guards = game.getFloor().getGuards();
 
 		occupied = getOccupiedTiles(game);
+		
+		this.out = out;
 	}
 	
 	public GamePacketData(){

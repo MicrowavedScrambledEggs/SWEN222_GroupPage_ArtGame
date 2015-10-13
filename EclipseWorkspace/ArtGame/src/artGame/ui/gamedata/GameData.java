@@ -33,12 +33,17 @@ public class GameData {
 	private static List<ArtItem> arts;
 	private static List<artGame.game.Character> chars;
 
+	private static boolean out;
+	
 	/**
 	 * Updates the GameData class with an updated set of data from the server
 	 * @param data
 	 */
 	public static void updateGame(GamePacketData data) {
 		GameData.data=data;
+		if(data.out){
+			out = true;
+		}
 		updateGameObjects();
 	}
 
@@ -54,6 +59,8 @@ public class GameData {
 	public static void setGame(Game game) {
 		GameData.game = game;
 	}
+	
+	
 
 	/**
 	 * Gets the floor of the currently held Game in GameData
@@ -274,7 +281,6 @@ public class GameData {
 				int byteCount = sc.nextInt();
 				
 				if(Math.abs(packet.length-byteCount) > 10){
-					System.out.println(packet.length + " , " + byteCount);
 					sc.close();
 					return null;
 				}
@@ -284,6 +290,12 @@ public class GameData {
 				sc.next("<");
 				pid = sc.nextInt();
 			}
+			
+			if(sc.hasNext("out")){
+				sc.next("out");
+				data.out = true;
+			}
+			
 			if(sc.hasNext(">")){
 				sc.next(">");
 				continue;
@@ -476,7 +488,13 @@ public class GameData {
 
 		StringBuilder build = new StringBuilder();
 		build.append(" < ");
+		
 		build.append(" " + data.pid + " ");
+		
+		if(data.out){
+			build.append("out ");
+		}
+		
 		for (Player player : data.players) {
 			int id = player.getId();
 
@@ -575,5 +593,9 @@ public class GameData {
 		for (Byte b : bytes) {
 			list.add(b);
 		}
+	}
+
+	public static boolean isOut() {
+		return out;
 	}
 }

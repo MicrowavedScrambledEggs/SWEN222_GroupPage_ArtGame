@@ -182,8 +182,10 @@ public class GLWindow {
 
 
 
-			if(!out && game.getPlayer().isCaught()){
-				out = true;
+			if(!out && GameData.isOut()){
+				this.keyCallback = debugKeys;
+				 glfwSetKeyCallback(window, keyCallback);
+				 out = true;
 			}
 
 			if(rotateLeft){
@@ -251,8 +253,7 @@ public class GLWindow {
 
 	private void render() {
 		if(GameData.getPlayer() == null){
-			System.out.println("player is null..");
-			return;
+			
 		}
 
 		for (Screen screen : screens) {

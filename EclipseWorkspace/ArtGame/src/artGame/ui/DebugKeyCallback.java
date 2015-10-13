@@ -35,26 +35,26 @@ public class DebugKeyCallback extends GLFWKeyCallback {
 
 		// Send press commands..
 		if (key == GLFW_KEY_W && action == GLFW_PRESS) {
-			GLWindow.getGame().getPlayer().setDir(Direction.NORTH);
-			GLWindow.getGame().getFloor().moveCharacter(GLWindow.getGame().getPlayer());
+			//GLWindow.getGame().getPlayer().setDir(Direction.NORTH);
+			//GLWindow.getGame().getFloor().moveCharacter(GLWindow.getGame().getPlayer());
 		}
 		if (key == GLFW_KEY_A && action == GLFW_PRESS) {
-			GLWindow.getGame().getPlayer().setDir(Direction.WEST);
-			GLWindow.getGame().getFloor().moveCharacter(GLWindow.getGame().getPlayer());
+			//GLWindow.getGame().getPlayer().setDir(Direction.WEST);
+			//GLWindow.getGame().getFloor().moveCharacter(GLWindow.getGame().getPlayer());
 		}
 		if (key == GLFW_KEY_S && action == GLFW_PRESS) {
-			GLWindow.getGame().getPlayer().setDir(Direction.SOUTH);
-			GLWindow.getGame().getFloor().moveCharacter(GLWindow.getGame().getPlayer());
+			//GLWindow.getGame().getPlayer().setDir(Direction.SOUTH);
+			//GLWindow.getGame().getFloor().moveCharacter(GLWindow.getGame().getPlayer());
 		}
 		if (key == GLFW_KEY_D && action == GLFW_PRESS) {
-			GLWindow.getGame().getPlayer().setDir(Direction.EAST);
-			GLWindow.getGame().getFloor().moveCharacter(GLWindow.getGame().getPlayer());
+			//GLWindow.getGame().getPlayer().setDir(Direction.EAST);
+			//GLWindow.getGame().getFloor().moveCharacter(GLWindow.getGame().getPlayer());
 		}
 		if (key == GLFW_KEY_F && action == GLFW_PRESS) {
-			GLWindow.getGame().doAction(GLWindow.getGame().getPlayer(), 'f');
+			//GLWindow.getGame().doAction(GLWindow.getGame().getPlayer(), 'f');
 		}
 		if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-			System.out.println("Here we'd do some examining or something");
+			//System.out.println("Here we'd do some examining or something");
 		}
 
 		if (key == GLFW_KEY_Q && action == GLFW_RELEASE) {

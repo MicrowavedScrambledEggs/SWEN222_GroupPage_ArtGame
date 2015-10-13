@@ -164,10 +164,20 @@ public class ServerThread extends SocketThread {
 													// gets this command
 					}
 				}
+				
+				boolean out = false;
+				
 				for (Player x : game.getPlayers()) {
 					if (x.getId() == clientCmd.id) {
 						game.doAction(x, clientCmd.action); // now make sure we
 															// do the action
+						if(game.getFloor().checkGuards().contains(x)){
+							out = true;
+							if(game.getPlayers().size() == 0){
+								Main.getGame().gameover();
+							}
+							Main.getGame().removePlayer(x.getId());
+						}
 						break;
 					}
 				}
@@ -179,8 +189,9 @@ public class ServerThread extends SocketThread {
 				}
 
 				try {
+					
 					byte[] bytes = GameData
-							.toByteArray(new GamePacketData(pid, game));
+							.toByteArray(new GamePacketData(pid, game, out));
 					if(bytes != null){
 						OUT.write(bytes);
 					}

@@ -18,6 +18,7 @@ public class Game {
 	private Floor floor;
 	private static Player p;
 	private List<Player> players;
+	private boolean gameover;
 
 	public Game(Floor floor,Collection<Player> players){
 		this.floor = floor;
@@ -248,7 +249,7 @@ public class Game {
 	 */
 	public boolean removePlayer(int pid) {
 		if (players == null || players.size() == 0) { return false; } // alternatively, calls some kind of game over message
-		if (pid >= 1 && pid < players.size()) {
+		if (pid >= 1) {
 			for(Player p : players) {
 				if (p.getId() == pid) {
 					players.remove(p);
@@ -280,5 +281,13 @@ public class Game {
 			floor.printFloor(); // TODO replace with gui display
 			printMenu();
 		}
+	}
+
+	public void gameover() {
+		this.gameover = true;
+	}
+	
+	public boolean isGameover(){
+		return gameover;
 	}
 }

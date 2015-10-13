@@ -55,4 +55,11 @@ public class Door extends Wall {
 		else
 			return "A unlocked door";
 	}
+	
+	/**
+	 * @return the id of the key for this door
+	 */
+	public int getKeyID(){
+		return this.keyID;
+	}
 }

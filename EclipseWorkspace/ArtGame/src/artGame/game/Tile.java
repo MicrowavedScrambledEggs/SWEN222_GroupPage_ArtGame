@@ -103,4 +103,17 @@ public abstract class Tile {
 		} else
 			return null;
 	}
+	
+	public boolean equals(Object o) {
+		if (o instanceof Tile) {
+			Tile t = (Tile)o;
+			if ((walls[0] != null) == (t.walls[0] != null)
+					&& (walls[1] != null) == (t.walls[1] != null)
+					&& (walls[2] != null) == (t.walls[2] != null)
+					&& (walls[3] != null) == (t.walls[3] != null)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

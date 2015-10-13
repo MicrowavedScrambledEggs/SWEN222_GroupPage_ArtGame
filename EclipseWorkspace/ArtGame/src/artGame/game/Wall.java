@@ -11,6 +11,7 @@ public class Wall{
 	 */
 	public Wall(Art art){
 		this.art = art;
+		art.addWall(this);
 	}
 	
 	/**
@@ -32,6 +33,7 @@ public class Wall{
 	 */
 	public void setArt(Art art) {
 		this.art = art;
+		if(art!=null) art.addWall(this);
 	}
 	
 	/**

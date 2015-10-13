@@ -55,7 +55,7 @@ public class UIRenderer implements Screen {
 		height = BufferUtils.createIntBuffer(1);
 		createUI();
 		
-		setPopupText("welcome : - 0");
+		setPopupText("welcome : - 0000");
 		
 	}
 
@@ -69,6 +69,11 @@ public class UIRenderer implements Screen {
 		if(cam != null){
 			view = cam.getView();
 		}
+		
+		if(GameData.isOut()){
+			setPopupText("YOU ARE OUT");
+		}
+		
 		Vector3f light = GLWindow.getLight();
 
 		updateInventory();
@@ -123,6 +128,10 @@ public class UIRenderer implements Screen {
 	 */
 	private void updateInventory() {
 		resetInventory();
+		
+		if(GameData.getPlayer() == null){
+			return;
+		}
 		
 		List<Integer> sortedIds = new ArrayList<>();
 		
@@ -220,7 +229,7 @@ public class UIRenderer implements Screen {
 	 */
 	public void setPopupText(String string){
 		BufferedImage fontImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
-		fontImage = FontHandler.process(fontImage, string, new Color(0f, 0f, 0f, 0.8f));
+		fontImage = FontHandler.process(fontImage, string, new Color(0.2f, 0.2f, 0.9f, 0.8f));
 		
 		fontWidget = this.loadWidgetByImage(fontImage, 256, 0.5f, -0.3f);
 		fontWidget.setScale(1);

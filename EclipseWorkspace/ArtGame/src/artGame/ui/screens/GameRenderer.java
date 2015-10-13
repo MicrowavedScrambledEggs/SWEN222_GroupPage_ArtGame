@@ -74,6 +74,8 @@ public class GameRenderer implements Screen{
 	
 	private float currentTime;
 
+	private int playerCount;
+
 	public GameRenderer(){
 		resetAssets();
 		tiles = loadFullLevel();
@@ -108,13 +110,17 @@ public class GameRenderer implements Screen{
 		
 		if (SPRITE_TWEENING) {
 			for (artGame.game.Character c : entityPositions.keySet()) {
+	
+				if(c == null || entityPositions == null || entityPositions.get(c) == null){
+					continue;
+				}
 				if (c.getCol() != entityPositions.get(c).getX() || 
 					c.getRow() != entityPositions.get(c).getZ()) {
 					
 					//Vector3f start = entityPositions.get(c);
 					Vector3f end = new Vector3f(c.getCol(), 0, c.getRow());
 					entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
-					if (spriteTweens.get((Sprite)characters.get(c)) == null) {
+					if (spriteTweens.get((Sprite)characters.get(c)) == null && characters.get(c) != null) {
 						spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), 0.05f, end, currentTime));
 					}
 				}
@@ -152,7 +158,10 @@ public class GameRenderer implements Screen{
 		}
 		
 		camera.setRotation(new Vector3f(CAMERA_ANGLE, currentCameraAngle, 0));
-		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
+		
+		if(GameData.getPlayer() != null){
+			camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
+		}
 
 		for (Asset a : renderList) {
 			a.draw(camera, light);
@@ -182,7 +191,20 @@ public class GameRenderer implements Screen{
 			tiles = loadFullLevel();
 		}
 		
+		if(GameData.getPlayer() == null){
+			for(List<Model> models : rooms.values()){
+				scene.addAll(models);
+			}
+			if(GameData.getPlayers().size() != playerCount){
+				characters = loadCharacters();
+				playerCount = GameData.getPlayers().size();
+			} else {
+				updateCharacters();
+			}
 
+			return scene;
+		}
+		
 		int row = GameData.getPlayer().getRow();
 		int col = GameData.getPlayer().getCol();
 		Tile playerTile = GameData.getFloor().getTile(row, col);
@@ -190,7 +212,14 @@ public class GameRenderer implements Screen{
 		//System.out.println(rooms.get(playerTile.getRoom()) == null);
 		scene.addAll(rooms.get(playerTile.getRoom()));
 
-		updateCharacters();
+		if(GameData.getPlayers().size() != playerCount){
+			characters = loadCharacters();
+			System.out.println("reloading chars");
+			playerCount = GameData.getPlayers().size();
+		} else {
+			updateCharacters();
+		}
+
 		scene.addAll(characters.values());
 		return scene;
 	}

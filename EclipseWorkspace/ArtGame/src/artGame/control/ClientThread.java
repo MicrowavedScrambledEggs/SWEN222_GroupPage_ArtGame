@@ -49,7 +49,7 @@ public class ClientThread extends SocketThread {
 	private GamePacketData gameData;
 
 	private long lastPing;
-	private static int PING_DELAY = 10;
+	private static int PING_DELAY = 50;
 	
 	/**
 	 * @deprecated Use {@link #ClientThread(Socket,Game,int)} instead

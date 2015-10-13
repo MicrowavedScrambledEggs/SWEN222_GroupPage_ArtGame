@@ -1,4 +1,5 @@
-package artGame.game;
+
+	package artGame.game;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,7 +7,7 @@ import java.util.Set;
 /**
  * Represents a character in the game represented by a id, position and face
  * direction
- *
+ * 
  * @author Kaishuo
  *
  */
@@ -20,8 +21,8 @@ public class Character {
 	int col;
 	protected Direction dir; // face direction
 	protected Set<Item> inventory;
-	private boolean isMoving;
 	private long lastMove;
+	private boolean isMoving;
 
 	public Character(Direction dir, int ID) {
 		this.dir = dir;
@@ -100,6 +101,20 @@ public class Character {
 	public void setDir(Direction dir) {
 		this.dir = dir;
 	}
+
+	/**
+	 *  Returns the unique ID of the character. 
+	 */
+	public int getId() {
+		return ID;
+	}
+	
+	/**
+	 *  Returns the unique ID of the character. 
+	 */
+	public void setID(int ID) {
+		this.ID = ID;
+	}
 	
 	/**
 	 * Gets whether the character is moving
@@ -117,17 +132,6 @@ public class Character {
 		this.isMoving = moving;
 	}
 
-	/**
-	 *  Returns the unique ID of the character.
-	 */
-	public int getId() {
-		return ID;
-	}
-
-	public void setId(int pid){
-		this.ID=pid;
-	}
-
 	public long getLastMove() {
 		return lastMove;
 	}
@@ -135,5 +139,21 @@ public class Character {
 	public void setLastMove(long lastMove) {
 		this.lastMove = lastMove;
 	}
+	
+	@Override
+	public int hashCode(){
+		return ID*7;
+		
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof Character){
+			return ((Character)o).ID == ID;
+		}
+		return false;
+	}
+
 
 }
+	
