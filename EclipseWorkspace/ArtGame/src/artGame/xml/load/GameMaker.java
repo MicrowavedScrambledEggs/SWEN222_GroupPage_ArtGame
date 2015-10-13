@@ -16,6 +16,7 @@ import artGame.game.ExitTile;
 import artGame.game.Floor;
 import artGame.game.Key;
 import artGame.game.Player;
+import artGame.game.Room;
 import artGame.game.StairTile;
 import artGame.game.Tile;
 import artGame.game.Wall;
@@ -42,6 +43,7 @@ public class GameMaker {
 		= new HashMap<Character, HashSet<Integer>>();
 	private int maxCol = 0;
 	private int maxRow = 0;
+	private ArrayList<RoomBuilder> roomDefiners = new ArrayList<RoomBuilder>();
 
 	public void addTile(int level, Coordinate coord, Tile tile) {
 		if(level +1 > floors.size() || floors.get(level) == null){
@@ -121,9 +123,16 @@ public class GameMaker {
 		fillChests();
 		fillInventories();
 		Floor floor = new Floor(exits, tileArrays);
+		defineRooms(floor);
 		addNPCsToFloor(floor);
 		linkStairs(floor);
 		return new Game(floor, players);
+	}
+
+	private void defineRooms(Floor floor) {
+		for(RoomBuilder roomBuilder : roomDefiners ){
+			roomBuilder.defineRoom(floor);
+		}
 	}
 
 	private void linkStairs(Floor floor) {
@@ -213,5 +222,10 @@ public class GameMaker {
 
 	public Wall getDoor(Integer integer) {
 		return doors.get(integer);
+	}
+
+	public void addRoomDefiner(RoomBuilder roomBuilder) {
+		roomDefiners.add(roomBuilder);
+
 	}
 }
