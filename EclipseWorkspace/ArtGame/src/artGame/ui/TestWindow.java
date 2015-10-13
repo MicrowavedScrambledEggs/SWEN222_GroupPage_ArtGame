@@ -152,7 +152,7 @@ public class TestWindow {
 		
 		Painting djp = AssetLoader.instance().loadPainting("res/paintings/painting_1.png", 64);
 		if (djp != null) {
-			scene.add(djp);
+			scene.add(djp.instantiate(Matrix4f.rotate(90, 0, 1, 0)));
 		}
 		return scene;
 	}
