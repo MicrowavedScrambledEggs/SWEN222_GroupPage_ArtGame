@@ -3,9 +3,11 @@ package artGame.control;
 import static org.junit.Assert.*;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -18,6 +20,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import artGame.control.cmds.Command;
+import artGame.control.cmds.MoveCommand;
+import artGame.control.cmds.MoveCommand.Entity;
 import artGame.game.Player;
 import artGame.main.Game;
 import artGame.main.Main;
@@ -32,8 +36,8 @@ import artGame.xml.XMLHandler;
 public class TestControl {
 	private static final String BASIC = "Save Files/BasicBoard.xml";
 	private static final String WORLD = "Save Files/GameWorld.xml";
-	private static final int D_PORT = 8080;
-
+	static final int D_PORT = 8080;
+	
 	@Test
 	public void testIds() {
 		Game g_c = new XMLHandler().loadGame(new File(WORLD));
@@ -244,19 +248,26 @@ public class TestControl {
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 
-			Command toServer = new Command('w',server.getPlayerId());
+			Command toServer = new MoveCommand(Entity.PLAYER, client.getPlayerId(), 'w', 4, 4);
 			client.writeParameter(toServer);
 			Command fromClient = server.readFromClient();
 			assertTrue("Command received from client cannot be null",fromClient != null);
 			assertEquals("Command from server and client should be equivalent",fromClient,toServer);
 		} catch (IOException e) {
 			success = false;
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IncompatiblePacketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
 		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
-		assert(success);
+		assertTrue(success);
 	}
 	
 	@Test
@@ -271,13 +282,13 @@ public class TestControl {
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 
-			Command toClient = new Command('s',server.getPlayerId());
-			server.writeParameter(toClient);
-			Command fromServer = client.readSocket(new DataInputStream(privateSocket.getInputStream()));
+			Command toClient = new MoveCommand(Entity.PLAYER, server.getPlayerId(), 'w', 4, 4);
+			server.writeCommand(new DataOutputStream(privateSocket.getOutputStream()),toClient);
+			Command fromServer = client.readSocket(new DataInputStream(client.socket().getInputStream()));
 			assertTrue("Command received by client cannot be null",toClient != null);
 			System.out.println(toClient.toString()+", "+fromServer.toString());
 			assertEquals("Command from server and client should be equivalent",toClient,toClient);
-		} catch (IOException | InterruptedException e) {
+		} catch (IOException | InterruptedException | IncompatiblePacketException e) {
 			fail("Exception thrown");
 		} finally {
 			if (server!= null)
@@ -289,7 +300,7 @@ public class TestControl {
 		
 	
 	@Test
-	public void testClientQueue() { // FIXME FAILING. 
+	public void testClientQueue_MOVE() { // FIXME FAILING. 
 		Game g_c = new XMLHandler().loadGame(new File(WORLD));
 		Game g_s = new XMLHandler().loadGame(new File(WORLD));
 		ClientThread client = null;
@@ -297,10 +308,10 @@ public class TestControl {
 		try {
 			long then = System.currentTimeMillis();
 			ConcurrentLinkedQueue<Command> clntQ = new ConcurrentLinkedQueue<>();
-			clntQ.add(new Command('w',2));
-			clntQ.add(new Command('!',2));
-			clntQ.add(new Command('a',2));
-			clntQ.add(new Command('!',2));
+			clntQ.add(new MoveCommand(Entity.PLAYER, 4, 'w', 4, 4));
+			clntQ.add(new MoveCommand(Entity.PLAYER, 4, '!', 4, 4));
+			clntQ.add(new MoveCommand(Entity.PLAYER, 4, 'a', 3, 4));
+			clntQ.add(new MoveCommand(Entity.PLAYER, 4, '!', 3, 4));
 			
 			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
 			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, clntQ);
@@ -322,14 +333,17 @@ public class TestControl {
 	}
 	
 	@Test
-	public void testToServerQueueFromClientQueue() {
+	public void testToServerQueueFromClientQueue_MOVE() {
 		Game g_c = new XMLHandler().loadGame(new File(WORLD));
 		Game g_s = new XMLHandler().loadGame(new File(WORLD));
 		ClientThread client = null;
 		ServerThread server = null;
 		try {
 			long then = System.currentTimeMillis();
-			Command[] clntQ = { new Command('w',2), new Command('!',2), new Command('a',2), new Command('!',2) };
+			Command[] clntQ = { new MoveCommand(Entity.PLAYER, 4, 'w', 4, 4),
+					new MoveCommand(Entity.PLAYER, 4, '!', 4, 4), 
+					new MoveCommand(Entity.PLAYER, 4, 'w', 4, 3),
+					new MoveCommand(Entity.PLAYER, 4, '!', 4, 3) };
 			
 			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
 			// create a new basic client, with empty queue
@@ -342,11 +356,12 @@ public class TestControl {
 			for (int i = 0; i < clntQ.length; i++) {
 				client.sendCommand(clntQ[i]);
 				client.writeQueue();
-				Command servCommand = server.readFromClient();
+				Command servCommand = server.readSocket(new DataInputStream(privateSocket.getInputStream()));
 				assertEquals(clntQ[i],servCommand);
 			}
-		} catch (IOException e) {
-			fail("Ioexception");
+		} catch (IOException | InterruptedException | IncompatiblePacketException e) {
+			fail("Exception");
+			e.printStackTrace();
 		}
 		if (server!= null)
 			server.close();
@@ -355,7 +370,7 @@ public class TestControl {
 	}
 	
 	@Test
-	public void testClientAction() { // FIXME FAILING. 
+	public void testClientAction_MOVE() { // FIXME FAILING. 
 		Game g_c = new XMLHandler().loadGame(new File(WORLD));
 		g_c.setName("clientName");
 		Game g_s = new XMLHandler().loadGame(new File(WORLD));
@@ -364,7 +379,10 @@ public class TestControl {
 		ServerThread server = null;
 		try {
 			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			Command[] clntQ = { new Command('w',2), new Command('!',2), new Command('a',2), new Command('!',2) };
+			Command[] clntQ = { new MoveCommand(Entity.PLAYER, 4, 'w', 4, 4),
+					new MoveCommand(Entity.PLAYER, 4, '!', 4, 4),
+					new MoveCommand(Entity.PLAYER, 4, 's', 4, 5),
+					new MoveCommand(Entity.PLAYER, 4, '!', 4, 5) };
 			client =  new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, 2);
 			// create a new basic client, with empty queue
 			Socket privateSocket = openSocket.accept();
@@ -392,11 +410,14 @@ public class TestControl {
 				server.doAction(servCommand);
 			}
 			Thread.sleep(500);
-			assertTrue("Not equal:\n"+server.getGame().toString()+"\n"+client.getGame().toString(),server.getGame().equals(client.getGame()));
+			assertTrue("Not equal:\n"+server.game().toString()+"\n"+client.game().toString(),server.game().equals(client.game()));
 			
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 			fail("Threw exception");
+		} catch (IncompatiblePacketException e) {
+			fail("couldn't read packet");
+			e.printStackTrace();
 		} finally {
 			if (server!= null)
 				server.close();

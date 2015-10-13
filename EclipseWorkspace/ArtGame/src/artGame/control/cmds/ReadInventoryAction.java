@@ -44,6 +44,7 @@ public class ReadInventoryAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof ReadInventoryAction)) return false;
 		ReadInventoryAction a = (ReadInventoryAction) o;
 		if (Arrays.equals(inventory, a.getInventory())

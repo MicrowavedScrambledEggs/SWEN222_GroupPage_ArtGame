@@ -20,6 +20,7 @@ public class GameEndAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof GameEndAction)) return false;
 		GameEndAction a = (GameEndAction)o;
 		if (isWorldUpdate() == a.isWorldUpdate()

@@ -105,15 +105,42 @@ public abstract class Tile {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (o instanceof Tile) {
 			Tile t = (Tile)o;
-			if ((walls[0] != null) == (t.walls[0] != null)
-					&& (walls[1] != null) == (t.walls[1] != null)
-					&& (walls[2] != null) == (t.walls[2] != null)
-					&& (walls[3] != null) == (t.walls[3] != null)) {
-				return true;
+			if (wallEquals(t,0) 
+					&& wallEquals(t,1) 
+					&& wallEquals(t,2) 
+					&& wallEquals(t,3)
+					&& walkable() == t.walkable()) {
+				if (occupant != null) {
+					return occupant.equals(t.occupant);
+				} else {
+					return occupant==t.occupant;
+				}
 			}
 		}
 		return false;
+	}
+	
+	public String toPrintString() {
+		return "N: "+ (wallArt(0))
+				+" W: "+ (wallArt(1))
+				+" S: "+ (wallArt(2))
+				+" E: "+ (wallArt(3));
+	}
+	
+	private String wallArt(int i) {
+		if (walls[i] != null) {
+			if (walls[i].getArt() != null) {
+				return "\'"+walls[i].getArt().name+"\'";
+			}
+			return "W";
+		}
+		return " ";
+	}
+	
+	private boolean wallEquals(Tile t, int n) {
+		return (walls[n] != null && walls[n].equals(t.walls[n])) || walls[n] == t.walls[n];
 	}
 }

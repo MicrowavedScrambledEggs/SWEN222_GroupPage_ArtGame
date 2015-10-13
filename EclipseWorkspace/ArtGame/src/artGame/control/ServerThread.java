@@ -28,13 +28,10 @@ import artGame.main.Main;
  *
  */
 public class ServerThread extends SocketThread {
-	private final ConcurrentLinkedQueue<Command> cmdQueue = new ConcurrentLinkedQueue<Command>();
 	private static final int PID_START = 1; // the id of the first player
 	private static final short TYPE = 120; // TODO in a world with more than one map,
 										   // we'd need to get this from the loaded Game
 										   // so only clients running the same level can connect.
-	private final Game game; 
-	private final Socket socket;
 	private final int wait;
 	private volatile int pid;
 
@@ -48,44 +45,34 @@ public class ServerThread extends SocketThread {
 	 * @throws IOException 
 	 */
 	public ServerThread(Socket socket, Game game, int wait) throws IOException {
-		this.game = game;
-		this.socket = socket;
+		super(socket,game);
 		this.wait = wait;
 		System.err.println("================== SERVER INFO ==================\n"+toString());
 	}
 	
 	/** Testing constructor */
 	protected ServerThread(Game g, Socket s, ConcurrentLinkedQueue<Command> q) {
-		socket = s;
-		game = g;
+		super(s,g,q);
 		wait = SocketThread.wait;
-		ConcurrentLinkedQueue<Command> dup = new ConcurrentLinkedQueue<>();
-		dup.addAll(q);
-		q.addAll(dup);
 	}
 
 	/** Test constructor */
 	protected ServerThread(Socket socket, Game game, ConcurrentLinkedQueue<Command> cl) throws IOException {
-		this.game = game;
-		this.socket = socket;
+		super(socket,game, cl);
 		this.wait = Main.WAIT_PERIOD;
-		ConcurrentLinkedQueue<Command> dup = new ConcurrentLinkedQueue<Command>();
-		dup.addAll(cl);
-		cmdQueue.addAll(dup);
 	}
 	
 	/** Constructor for testing */
 	protected ServerThread(Socket s) throws IOException {
-		this.game = null;
-		this.socket = s;
+		super(s,null);
 		this.wait = Main.WAIT_PERIOD;
 	}
 
 	/** Does the work of setting up the client/server's shared player ID. */
 	synchronized void sendGameInfo() {
 		try {
-			DataInputStream IN =  new DataInputStream(socket.getInputStream());
-			DataOutputStream OUT = new DataOutputStream(socket.getOutputStream());
+			DataInputStream IN =  new DataInputStream(socket().getInputStream());
+			DataOutputStream OUT = new DataOutputStream(socket().getOutputStream());
 			// first, send the game type
 			boolean ok = validateGameType(IN, OUT); // kills connection if not true
 			
@@ -96,11 +83,17 @@ public class ServerThread extends SocketThread {
 			// get the client's response-- should be OK for them too
 			ok = IN.readBoolean();
 			if (ok) {
-				game.addPlayer(pid);
-				System.out.println("Our player ID is "+pid+" which corresponds to a player "+game.getPlayer(pid));
+				game().addPlayer(pid);
+				System.out.println("Our player ID is "+pid+" which corresponds to a player "+game().getPlayer(pid));
 			} else {
 				System.err.println("Fatal desync: client cannot use requested PID.");
 				close();
+			}
+			int numPlayers = game().getPlayers().size();
+			System.out.println("Server has "+numPlayers+" players to report on.");
+			// now update with the state of the other players:
+			for (Player p : game().getPlayers()) {
+				
 			}
 		} catch (IOException e) {
 			System.err.println("Connection error: could not send startup info to client!");
@@ -109,7 +102,7 @@ public class ServerThread extends SocketThread {
 	}
 
 	private int getNextPlayerId(int start) {
-		while (!game.isAvailablePlayerId(start) && start != Integer.MAX_VALUE) {
+		while (!game().isAvailablePlayerId(start) && start != Integer.MAX_VALUE) {
 			start++;
 		}
 		return start;
@@ -137,16 +130,15 @@ public class ServerThread extends SocketThread {
 		// send our information to the client, establish pid
 		sendGameInfo();
 		System.out.println("=-=-=-=-=-=-=-=-=- RUNNING SERVER "+pid+" =-=-=-=-=-=-=-=-=-");
-		while (!socket.isClosed() && isRunning() &&!isTimedOut()) {
+		while (!socket().isClosed() && isRunning() &&!isTimedOut()) {
 			try {
 				long then = System.currentTimeMillis();
-				final DataInputStream IN =  new DataInputStream(socket.getInputStream());
-				final DataOutputStream OUT = new DataOutputStream(socket.getOutputStream());
-				// read first 
-		        Command clientCmd = readCommand(IN); // will end() thread if it times out
-				if (clientCmd.action == '!') {
-					System.out.println("Stop-moving packet for "+clientCmd.id);
-				}
+				final DataInputStream IN =  new DataInputStream(socket().getInputStream());
+				final DataOutputStream OUT = new DataOutputStream(socket().getOutputStream());
+				// read first
+		        Command clientCmd = readSocket(IN); // will end() thread if it times out
+		        if (clientCmd == null) break;
+		        
 				// then update sister threads
 				ServerThread[] ss = Main.getKids();
 				for (ServerThread s : ss) {
@@ -155,9 +147,9 @@ public class ServerThread extends SocketThread {
 					}
 				}
 				// apply the action to our game
-				for (Player x : game.getPlayers()) {
-					if (x.getId() == clientCmd.id) {
-						game.doAction(x, clientCmd.action);
+				for (Player x : game().getPlayers()) {
+					if (x.getId() == clientCmd.id()) {
+						doAction(clientCmd);
 						break;
 					}
 				}
@@ -169,7 +161,7 @@ public class ServerThread extends SocketThread {
 					System.out.println("(In queue: "+queueSize()+")");
 					writeCommand(OUT, serverCmd);
 				}
-			} catch (IOException e) {
+			} catch (IOException | InterruptedException | IncompatiblePacketException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -178,19 +170,19 @@ public class ServerThread extends SocketThread {
 
 	@Override
 	public InetAddress getInetAddress() {
-		return socket.getInetAddress();
+		return socket().getInetAddress();
 	}
 
 	/** Returns the client's port number. */
 	@Override
 	public int getPort() {
-		return socket.getPort();
+		return socket().getPort();
 	}
 
 	/** Returns true only if there is still a usable connection to the client.*/
 	@Override
 	public boolean isSocketSafe() {
-		return socket.isBound() && socket.isConnected() && !socket.isClosed();
+		return socket().isBound() && socket().isConnected() && !socket().isClosed();
 	}
 
 	/** Closes the socket and unlinks server and client. 
@@ -198,14 +190,14 @@ public class ServerThread extends SocketThread {
 	 */
 	@Override
 	public synchronized boolean close() {
-		if (socket.isClosed()) {
+		if (socket().isClosed()) {
 			return true;
 		}
 		try {
-			game.removePlayer(pid);
-			socket.shutdownInput();
-			socket.shutdownOutput();
-			socket.close();
+			game().removePlayer(pid);
+			socket().shutdownInput();
+			socket().shutdownOutput();
+			socket().close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -219,50 +211,7 @@ public class ServerThread extends SocketThread {
 	}
 	
 	public String toString() {
-		return "Server("+pid+") @"+socket.getLocalAddress()+":"+socket.getLocalPort()+" 2 "+socket.getInetAddress() +":"+socket.getPort();
-	}
-
-	
-	/** Readies a command to be sent */
-	public synchronized boolean sendCommand(Command c) {
-		if (c != null) {
-			return cmdQueue.add(c);
-		} 
-		return false;
-	}
-	
-	/** Polls the next command to be sent */
-	protected synchronized Command pollCommand() {
-		return cmdQueue.poll();
-	}
-	
-	/** Returns true if there are commands to be sent. */
-	protected synchronized boolean hasCommands() {
-		return (cmdQueue.size() > 0);
-	}
-	
-	/** Writes the given command to the data stream. */
-	protected synchronized void writeCommand(DataOutputStream out, Command c) throws IOException {
-		out.writeChar(c.key());
-		out.writeInt(c.id());
-	}
-	
-	/** Returns the number of elements in the queue, waiting to be processed. */
-	protected int queueSize() {
-		return cmdQueue.size();
-	}
-	
-	/** Checks the first item in the queue. */
-	public synchronized Command peek() {
-		return cmdQueue.peek();
-	}
-	
-	protected synchronized Game getGame() {
-		return game;
-	}
-	
-	protected synchronized Collection<Command> getQueue() {
-		return new LinkedList<>(cmdQueue);
+		return "Server("+pid+") @"+socket().getLocalAddress()+":"+socket().getLocalPort()+" 2 "+socket().getInetAddress() +":"+socket().getPort();
 	}
 	
 	/** -================================================================== */
@@ -277,14 +226,14 @@ public class ServerThread extends SocketThread {
 	 * @return Command to be received from client
 	 */
 	protected void readAndWriteParameters(Command read, Command send) {
-		if (!socket.isClosed()) {
+		if (!socket().isClosed()) {
 			try {
-				DataOutputStream OUT = new DataOutputStream(socket.getOutputStream());
+				DataOutputStream OUT = new DataOutputStream(socket().getOutputStream());
 				// instead of reading from input, acts on the parameter
 				if (read != null) {
-					for (Player x : game.getPlayers()) {
-						if (x.getId() == read.id) {
-							game.doAction(x, read.action); // now make sure we do the action
+					for (Player x : game().getPlayers()) {
+						if (x.getId() == read.id()) {
+							doAction(read); // now make sure we do the action
 							break;
 						}
 					}
@@ -307,16 +256,16 @@ public class ServerThread extends SocketThread {
 	 */
 	protected Command readParameterWriteQueue(Command read) {
 		
-		if (!socket.isClosed()) {
+		if (!socket().isClosed()) {
 			try {
-				DataOutputStream OUT = new DataOutputStream(socket.getOutputStream());
+				DataOutputStream OUT = new DataOutputStream(socket().getOutputStream());
 				@SuppressWarnings("unused")
 				long then = System.currentTimeMillis();
 				// instead of reading from input, acts on the parameter
 				if (read != null) {
-					for (Player x : game.getPlayers()) {
-						if (x.getId() == read.id) {
-							game.doAction(x, read.action); // now make sure we do the action
+					for (Player x : game().getPlayers()) {
+						if (x.getId() == read.id()) {
+							doAction(read); // now make sure we do the action
 							break;
 						}
 					}
@@ -336,48 +285,19 @@ public class ServerThread extends SocketThread {
 		return null;
 	}
 	
-	/** Testing method. Writes command from the queue.
-	 * Nothing is read and the queue is not modified. 
-	 * 
-	 * @param send Command to be sent
-	 * @return Command received from client
-	 */
-	protected void writeParameter(Command send) {
-		
-		if (!socket.isClosed()) {
-			try {
-				DataOutputStream OUT = new DataOutputStream(socket.getOutputStream());
-				// then do our work!
-				if (send != null)
-					writeCommand(OUT, send);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	/** Testing method. Reads from the socket.
+	/** Testing method. Reads from the socket().
 	 * Nothing is changed in the queue.
 	 * @return Command from queue
+	 * @throws IncompatiblePacketException 
+	 * @throws InterruptedException 
 	 */
-	protected Command readFromClient() throws IOException {
-		DataInputStream IN = new DataInputStream(socket.getInputStream());
-		return readCommand(IN);
+	protected Command readFromClient() throws IOException, InterruptedException, IncompatiblePacketException {
+		DataInputStream IN = new DataInputStream(socket().getInputStream());
+		return readSocket(IN);
 	}
 
 	@Override
 	public int maxWait() {
 		return SocketThread.CONNECTION_TIMEOUT;
-	}
-	
-	/** Testing method. Performs action on Game */
-	protected boolean doAction(Command c) {
-		try {
-			game.doAction(game.getPlayer(c.id), c.action);
-			return true;
-		} catch (GameError e) { }
-		System.err.println("Player "+c.id+" was not found to perform "+ c.action +".");
-		return false;
 	}
 }

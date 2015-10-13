@@ -22,6 +22,7 @@ public class EscapeAction implements Action {
 	}
 		
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (o instanceof EscapeAction) {
 			return getClient() == ((EscapeAction)o).getClient();
 		}

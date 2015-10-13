@@ -36,6 +36,7 @@ public class LoseItemAction implements Action {
 	}
 
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof LoseItemAction)) return false;
 		LoseItemAction a = (LoseItemAction)o;
 		if (getClient() == a.getClient()

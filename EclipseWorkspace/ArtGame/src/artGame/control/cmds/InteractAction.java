@@ -42,6 +42,7 @@ public class InteractAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof InteractAction)) return false;
 		InteractAction a = (InteractAction)o;
 		if (isWorldUpdate() == a.isWorldUpdate()

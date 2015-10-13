@@ -34,6 +34,7 @@ public class GetItemAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof GetItemAction)) return false;
 		GetItemAction a = (GetItemAction)o;
 		if (isWorldUpdate() == a.isWorldUpdate()

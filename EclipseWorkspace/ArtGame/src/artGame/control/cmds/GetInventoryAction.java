@@ -26,6 +26,7 @@ public class GetInventoryAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof GetInventoryAction)) return false;
 		GetInventoryAction a = (GetInventoryAction)o;
 		if (getClient() == a.getClient()

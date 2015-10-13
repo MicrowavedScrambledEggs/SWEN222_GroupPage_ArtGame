@@ -1,5 +1,7 @@
 package artGame.control.cmds;
 
+import artGame.main.Game;
+
 /** TODO
  * 
  * @author Vicki
@@ -28,4 +30,10 @@ public interface Command {
 	
 	/** Returns the command as a stream-writeable array of bytes, of byte() size. */ 
 	public byte[] bytes();
+	
+	/** Performs the action on the game. Returns true if the action was successful. */
+	public boolean execute(Game g);
+	
+	/** Returns the time at which the command was created. */
+	public long time();
 }

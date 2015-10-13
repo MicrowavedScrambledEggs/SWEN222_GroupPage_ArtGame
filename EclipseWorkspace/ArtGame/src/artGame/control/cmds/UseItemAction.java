@@ -41,6 +41,7 @@ public class UseItemAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof UseItemAction)) return false;
 		UseItemAction a = (UseItemAction)o;
 		if (isWorldUpdate() == a.isWorldUpdate()

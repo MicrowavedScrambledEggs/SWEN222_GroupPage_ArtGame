@@ -63,5 +63,21 @@ public class Sculpture extends Character {
 		return name;
 	}
 
+	public boolean equals(Object o) {
+		if (o == null) { return false; }
+		if (o instanceof Sculpture) {
+			Sculpture s = (Sculpture)o;
+			return value == s.value
+					&& name.equals(s.name)
+					&& description.equals(s.description)
+					&& (taken == s.taken);
+		} else if (o instanceof Art) {
+			Art a = (Art)o;
+			return name.equals(a.name)
+				&& value == a.value
+				&& description.equals(a.description);
+		}
+		return false;
+	}
 	
 }

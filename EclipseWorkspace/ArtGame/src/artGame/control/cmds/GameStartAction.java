@@ -19,6 +19,7 @@ public class GameStartAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof GameStartAction)) return false;
 		GameStartAction a = (GameStartAction)o;
 		if (isWorldUpdate() == a.isWorldUpdate()

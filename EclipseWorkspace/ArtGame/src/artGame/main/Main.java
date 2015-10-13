@@ -135,8 +135,6 @@ public class Main {
 	 */
 	@SuppressWarnings("resource") // (otherwise it complains that the publicSocket is never used.)
 	private static void runPublicSocket(int port, int gameClock, int maxClients) {
-		clock = new GameClock(GAME);
-		clock.start();
 		if (maxClients <= 0) {
 			throw new IllegalArgumentException("The server must be capable of accepting at least one client request.");
 		} else if (children == null) { 
@@ -195,7 +193,7 @@ public class Main {
 	 * @throws IOException
 	 */
 	private static void startMultiplayer() throws IOException {	
-		clock = new GameClock(GAME);
+		clock = new GameClock(GAME,children);
 		clock.start();
 		// now, wait for the game to finish
 		while(GAME.hasPlayers() && children != null) {

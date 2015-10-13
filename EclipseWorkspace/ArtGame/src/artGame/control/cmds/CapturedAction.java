@@ -22,6 +22,7 @@ public class CapturedAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof CapturedAction)) return false;
 		CapturedAction a = (CapturedAction)o;
 		if (isWorldUpdate() == a.isWorldUpdate()

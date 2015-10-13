@@ -1,11 +1,15 @@
 package artGame.control.cmds;
 
+import artGame.game.Player;
+import artGame.game.Tile;
+import artGame.main.Game;
+
 /** TODO
  * 
  * @author Vicki
  *
  */
-public class MoveCommand implements Command {
+public final class MoveCommand implements Command {
 	public static final short PLAYER = 0;
 	public static final short GUARD = 1;
 	
@@ -13,12 +17,12 @@ public class MoveCommand implements Command {
 	
 	public static final int bytes = BYTES_SHORT + 3*(BYTES_INT) + BYTES_CHAR + BYTES_LONG;
 
-	private final MoveCommand.Entity entity; // represented as a short
-	private final int id;
-	private final char action;
-	private final int x;
-	private final int y;
-	private final long time;
+	public final MoveCommand.Entity entity; // represented as a short
+	public final int id;
+	public final char action;
+	public final int x;
+	public final int y;
+	public final long time;
 	
 	private static final String TAG = "MOVE";
 	
@@ -42,6 +46,24 @@ public class MoveCommand implements Command {
 		this.time = time;
 	}
 	
+	/** Creates a new MovePacket from bytes */
+	public MoveCommand(byte[] b) { // entity id action x y time
+		byte[] bytes = new byte[byteSize()];
+		int i = 0;
+		short entity = (short)((b[i++] << 8) + b[i++]);
+		if (entity == PLAYER) {
+			this.entity = Entity.PLAYER;
+		} else {
+			this.entity = Entity.GUARD;
+		}		
+		id = (b[i++] << 24) + (b[i++] << 16) + (b[i++] << 8) + b[i++];
+        action = (char)((b[i++] << 8) + (b[i++]));
+		x = (b[i++] << 24) + (b[i++] << 16) + (b[i++] << 8) + (b[i++]);
+		y = (b[i++] << 24) + (b[i++] << 16) + (b[i++] << 8) + (b[i++]);
+		time = (b[i++] << 64) + (b[i++] << 52) + (b[i++] << 48) + (b[i++] << 40)
+				+ (b[i++] << 32) + (b[i++] << 24) + (b[i++] << 16) + (b[i++] << 8) + (b[i++]);
+	}
+	
 	public int id() {
 		return id;
 	}
@@ -51,6 +73,7 @@ public class MoveCommand implements Command {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (o instanceof MoveCommand) {
 			MoveCommand m = (MoveCommand)o;
 			return m.id == id && m.action == action
@@ -115,5 +138,23 @@ public class MoveCommand implements Command {
 			}
 		}
 		return -1;
+	}
+
+	/** Takes the action specified by this command on the Game object. */
+	@Override
+	public boolean execute(Game g) {
+		Player p = g.getPlayer(id);
+		Tile t = g.getFloor().getTile(x, y);
+		if (g.getFloor().getTile(x, y).getOccupant() == null
+				|| !g.getFloor().getTile(x, y).getOccupant().equals(p)) {
+			System.err.println("This command moves Player "+id+" from ("+x+","+y+"), but they aren't there!");
+		}
+		g.doAction(p, action);
+		return true;
+	}
+	
+	@Override
+	public long time() {
+		return time;
 	}
 }

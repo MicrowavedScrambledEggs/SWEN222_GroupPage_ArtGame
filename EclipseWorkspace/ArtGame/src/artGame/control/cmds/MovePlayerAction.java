@@ -105,6 +105,7 @@ public class MovePlayerAction implements Action {
 	}
 	
 	public boolean equals(Object o) {
+		if (o == null) { return false; }
 		if (!(o instanceof MovePlayerAction)) return false;
 		MovePlayerAction a = (MovePlayerAction)o;
 		if (getCurrent().equals(a.getCurrent())
