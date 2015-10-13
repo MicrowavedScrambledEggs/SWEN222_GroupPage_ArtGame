@@ -1,0 +1,324 @@
+<!-- XML file for level for JUnit tests 
+Author: Badi James-->
+
+<?xml version="1.0" ?>
+<game>
+	<floor level = "0">
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+				<y value = "0"/>
+			</position>
+			<wall direction = "NORTH" />
+			<wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "1"/>
+				<y value = "0"/>
+			</position>
+			<wall direction = "NORTH" />
+			<wall direction = "EAST" artID = "0" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "2"/>
+				<y value = "0"/>
+			</position>
+			<wall direction = "NORTH" />
+			<wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+				<y value = "0"/>
+			</position>
+			<wall direction = "NORTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+				<y value = "0"/>
+			</position>
+			<wall direction = "NORTH" />
+			<wall direction = "EAST" />
+		</empty_tile>
+		<stair_tile direction = "EAST" up = "TRUE">
+			<position>
+				<x value = "0"/>
+				<y value = "1"/>
+			</position>
+			<wall direction = "WEST" />
+			<linked_tile level = "1">
+				<x value = "0"/>
+				<y value = "1"/>
+			</linked_tile>
+		</stair_tile>
+		<empty_tile>
+			<position>
+				<x value = "1"/>
+				<y value = "1"/>
+			</position>
+			<door doorId = "0" direction = "WEST" locked = "TRUE" keyID = "200"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "2"/>
+				<y value = "1"/>
+			</position>
+			<door doorId = "0" direction = "EAST" locked = "TRUE" keyID = "200"/>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+				<y value = "1"/>
+			</position>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+				<y value = "1"/>
+			</position>			
+			<wall direction = "EAST" />
+		</empty_tile>
+		<empty_tile isExit = "TRUE">
+			<position>
+				<x value = "0"/>
+				<y value = "2"/>
+			</position>
+			<wall direction = "SOUTH" />
+			<wall direction = "WEST" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "1"/>
+				<y value = "2"/>
+			</position>			
+			<wall direction = "EAST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "2"/>
+				<y value = "2"/>
+			</position>			
+			<wall direction = "WEST" />
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "3"/>
+				<y value = "2"/>
+			</position>			
+			<wall direction = "SOUTH" />
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+				<y value = "2"/>
+			</position>			
+			<wall direction = "SOUTH" />
+			<wall direction = "WEST" />
+		</empty_tile>
+		<room>
+			<segment>
+		        <from_col value = "0"/>
+		        <from_row value = "0"/>
+		        <to_col value = "0"/>
+		        <to_row value = "2"/>
+		    </segment>
+		    <square>
+		        <row value = "0"/>
+		        <col value = "1"/>
+		    </square>
+		    <square>
+		        <row value = "1"/>
+		        <col value = "1"/>
+		    </square>
+		    <square>
+		        <row value = "2"/>
+		        <col value = "1"/>
+		    </square>
+		</room>
+		<room>
+			<segment>
+				<from_col value = "2" />
+				<from_row value = "0" />
+		        <to_col value = "4"/>
+		        <to_row value = "2"/>
+			</segment>
+		</room>
+	</floor>
+	<floor level = "1">
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+				<y value = "0"/>
+			</position>
+			<wall direction = "NORTH" />
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "3">
+			<position>
+				<x value = "1"/>
+				<y value = "0"/>
+			</position>
+			<wall direction = "NORTH" />
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+				<y value = "0"/>
+			</position>
+			<wall direction = "NORTH" />
+			<wall direction = "EAST" />
+		</empty_tile>
+		<stair_tile>
+			<position>
+				<x value = "0"/>
+				<y value = "1"/>
+			</position>
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "3">
+			<position>
+				<x value = "1"/>
+				<y value = "1"/>
+			</position>
+		</tile_stretch>
+		<chest id = "70">
+			<position>
+				<x value = "4"/>
+				<y value = "1"/>
+			</position>
+			<wall direction = "EAST" />
+			<inventory>
+				<item type = "ART" id = "1"/>
+			</inventory>
+		</chest>
+		<empty_tile>
+			<position>
+				<x value = "0"/>
+				<y value = "2"/>
+			</position>
+			<wall direction = "SOUTH" />
+			<wall direction = "WEST" />
+		</empty_tile>
+		<tile_stretch length = "3">
+			<position>
+				<x value = "1"/>
+				<y value = "2"/>
+			</position>
+			<wall direction = "SOUTH" />
+		</tile_stretch>
+		<empty_tile>
+			<position>
+				<x value = "4"/>
+				<y value = "2"/>
+			</position>
+			<wall direction = "SOUTH" />
+			<wall direction = "EAST" />
+		</empty_tile>
+		<room>
+			<segment>
+				<from_col value = "0" />
+				<from_row value = "0" />
+		        <to_col value = "4"/>
+		        <to_row value = "2"/>
+			</segment>
+		</room>
+	</floor>
+	<players>
+		<player id = "0">
+			<level value = "0" />
+			<direction>EAST</direction>
+			<position>
+				<x value = "0"/>
+				<y value = "0"/>
+			</position>
+			<inventory>
+				<item type = "KEY" id = "200"/>
+				<item type = "ART" id = "2"/>
+			</inventory>
+		</player>
+	</players>
+	<guards>
+		<guard id = "1">
+			<level value = "0" />
+			<direction>EAST</direction>
+			<position>
+				<x value = "2"/>
+				<y value = "0"/>
+			</position>
+			<patrol>
+				<step>
+					<x value = "3"/>
+					<y value = "0"/>
+				</step>
+				<step>
+					<x value = "4"/>
+					<y value = "1"/>
+				</step>
+				<west_east_stretch>
+	        		<start>
+	        			<x value = "3"/>
+	            		<y value = "2"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "2"/>
+	            		<y value = "2"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "2"/>
+	            		<y value = "1"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "2"/>
+	            		<y value = "0"/>
+	        		</finish>
+	        	</north_south_stretch>
+			</patrol>
+		</guard>
+		<guard id = "2">
+			<level value = "1" />
+			<direction>NORTH</direction>
+			<position>
+				<x value = "1"/>
+				<y value = "2"/>
+			</position>
+			<inventory>
+				<item type = "ART" id = "3"/>
+			</inventory>
+		</guard>
+	</guards>
+	<art>
+		<painting artID="2">
+			<name>Banana</name>
+			<value>2</value>
+		</painting>
+		<painting artID="0">
+			<name>Mona Lisa</name>
+			<value>99999999999</value>
+		</painting>
+		<painting artID="1">
+			<name>Noice Treasure</name>
+			<value>20000</value>
+		</painting>
+		<painting artID="3">
+			<name>Divorce Notice</name>
+			<value>-30000</value>
+		</painting>
+		<sculpture artID="100">
+			<level value="1" />
+			<direction>EAST</direction>
+			<position>
+				<x value="0" />
+				<y value="0" />
+			</position>
+			<name>Greek Vase</name>
+			<value>10000</value>
+		</sculpture>
+	</art>
+</game>
