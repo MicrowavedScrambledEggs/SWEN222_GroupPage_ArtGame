@@ -482,6 +482,13 @@ public class Floor {
 	public List<Guard> getGuards() {
 		return guards;
 	}
+	
+	/**
+	 * gets all the exits
+	 */
+	public List<ExitTile> getExits(){
+		return exits;
+	}
 
 	@Override
 	public boolean equals(Object o) {
