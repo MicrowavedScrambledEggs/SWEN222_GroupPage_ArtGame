@@ -14,7 +14,7 @@ import artGame.main.Game;
  * @author Vicki
  *
  */
-public final class TileStateCommand implements Command {
+public final class TileStateCommand implements CommandInter {
 	public static final short PLAYER = 0;
 	public static final short GUARD = 1;
 	public static final short STATUE = 2;
@@ -272,5 +272,10 @@ public final class TileStateCommand implements Command {
 	@Override
 	public long time() {
 		return time;
+	}
+
+	@Override
+	public char action() {
+		return '?';
 	}
 }

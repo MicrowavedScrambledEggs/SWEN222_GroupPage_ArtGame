@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import artGame.control.cmds.Command;
+import artGame.control.cmds.CommandInter;
 import artGame.control.cmds.MoveCommand;
 import artGame.control.cmds.TileStateCommand;
 import artGame.game.GameError;
@@ -32,7 +33,7 @@ import artGame.main.Main;
  * Like the ServerThread, it requires a reference to a running game in order to work properly. 
  */
 public class ClientThread extends SocketThread {
-	private final ConcurrentLinkedQueue<Command> cmdQueue = new ConcurrentLinkedQueue<Command>();
+	private final ConcurrentLinkedQueue<CommandInter> cmdQueue = new ConcurrentLinkedQueue<CommandInter>();
 	private static final short TYPE = 120; // TODO in a world with more than one map,
 										 // we'd need to get this from the loaded Game
 										 // so we can only connect to a server running the same map
@@ -43,10 +44,10 @@ public class ClientThread extends SocketThread {
 	private int totalUpdates = 0;
 	
 	/** Testing constructor */
-	protected ClientThread(Socket s, Game g, ConcurrentLinkedQueue<Command> q) {
+	protected ClientThread(Socket s, Game g, ConcurrentLinkedQueue<CommandInter> q) {
 		super(s,g);
 		wait = SocketThread.wait;
-		ConcurrentLinkedQueue<Command> dup = new ConcurrentLinkedQueue<>();
+		ConcurrentLinkedQueue<CommandInter> dup = new ConcurrentLinkedQueue<>();
 		dup.addAll(q);
 		cmdQueue.addAll(dup);
 	}
@@ -133,7 +134,7 @@ public class ClientThread extends SocketThread {
 				// then, read server's command
 				while (then + wait > System.currentTimeMillis() && IN.available() == 0) {}
 				if (IN.available() > 0) {
-					Command c = readSocket(IN);
+					CommandInter c = readSocket(IN);
 					lastUpdateReceived = System.currentTimeMillis();
 					avgTimeBetweenUpdates = ((avgTimeBetweenUpdates * totalUpdates) + (lastUpdateReceived-then)) / (totalUpdates + 1);
 					totalUpdates++;
@@ -197,12 +198,12 @@ public class ClientThread extends SocketThread {
 	}
 	
 	/** Checks the first item in the queue. */
-	synchronized public Command peek() {
+	synchronized public CommandInter peek() {
 		return cmdQueue.peek();
 	}
 	
 	/** Testing method. Gets the queue of commands to be sent. */
-	synchronized protected Collection<Command> getQueue() {
+	synchronized protected Collection<CommandInter> getQueue() {
 		return new LinkedList<>(cmdQueue);
 	}
 	
@@ -223,7 +224,7 @@ public class ClientThread extends SocketThread {
 	 * @param send Command to be send
 	 * @return Command received from client
 	 */
-	protected void writeAndReadParameters(Command send, Command read) {
+	protected void writeAndReadParameters(CommandInter send, CommandInter read) {
 		
 		if (!socket().isClosed()) {
 			try {
@@ -256,7 +257,7 @@ public class ClientThread extends SocketThread {
 	 * @return Command received from server
 	 */
 	@SuppressWarnings("unused")
-	protected Command writeParameterReadQueue(Command send) {
+	protected CommandInter writeParameterReadQueue(CommandInter send) {
 		if (!socket().isClosed()) {
 			try {
 				DataInputStream IN =  new DataInputStream(socket().getInputStream());
@@ -280,15 +281,15 @@ public class ClientThread extends SocketThread {
 	/** Testing method. Writes the parameter command and nothing else. 
 	 * Queue is not changed; nothing is read from socket.
 	 * 
-	 * @param send Command to be sent
+	 * @param toServer Command to be sent
 	 * @return Command received from socket
 	 */
-	protected Command writeParameter(Command send) {
+	protected CommandInter writeParameter(CommandInter toServer) {
 		if (!socket().isClosed()) {
 			try {
 				DataOutputStream OUT = new DataOutputStream(socket().getOutputStream());
-				if (send != null) {
-					writeCommand(OUT, send);
+				if (toServer != null) {
+					writeCommand(OUT, toServer);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

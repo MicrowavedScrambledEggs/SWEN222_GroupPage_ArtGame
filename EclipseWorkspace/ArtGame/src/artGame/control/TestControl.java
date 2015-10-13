@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import artGame.control.cmds.Command;
+import artGame.control.cmds.CommandInter;
 import artGame.control.cmds.MoveCommand;
 import artGame.control.cmds.MoveCommand.Entity;
 import artGame.game.Player;
@@ -248,11 +249,11 @@ public class TestControl {
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 
-			Command toServer = new MoveCommand(Entity.PLAYER, client.getPlayerId(), 'w', 4, 4);
+			CommandInter toServer = new MoveCommand(Entity.PLAYER, client.getPlayerId(), 'w', 4, 4);
 			client.writeParameter(toServer);
-			Command fromClient = server.readFromClient();
-			assertTrue("Command received from client cannot be null",fromClient != null);
-			assertEquals("Command from server and client should be equivalent",fromClient,toServer);
+			CommandInter fromClient = server.readFromClient();
+			assertTrue("CommandInter received from client cannot be null",fromClient != null);
+			assertEquals("CommandInter from server and client should be equivalent",fromClient,toServer);
 		} catch (IOException e) {
 			success = false;
 		} catch (InterruptedException e) {
@@ -282,12 +283,12 @@ public class TestControl {
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 
-			Command toClient = new MoveCommand(Entity.PLAYER, server.getPlayerId(), 'w', 4, 4);
+			CommandInter toClient = new MoveCommand(Entity.PLAYER, server.getPlayerId(), 'w', 4, 4);
 			server.writeCommand(new DataOutputStream(privateSocket.getOutputStream()),toClient);
-			Command fromServer = client.readSocket(new DataInputStream(client.socket().getInputStream()));
-			assertTrue("Command received by client cannot be null",toClient != null);
+			CommandInter fromServer = client.readSocket(new DataInputStream(client.socket().getInputStream()));
+			assertTrue("CommandInter received by client cannot be null",toClient != null);
 			System.out.println(toClient.toString()+", "+fromServer.toString());
-			assertEquals("Command from server and client should be equivalent",toClient,toClient);
+			assertEquals("CommandInter from server and client should be equivalent",toClient,toClient);
 		} catch (IOException | InterruptedException | IncompatiblePacketException e) {
 			fail("Exception thrown");
 		} finally {
@@ -307,7 +308,7 @@ public class TestControl {
 		ServerThread server = null;
 		try {
 			long then = System.currentTimeMillis();
-			ConcurrentLinkedQueue<Command> clntQ = new ConcurrentLinkedQueue<>();
+			ConcurrentLinkedQueue<CommandInter> clntQ = new ConcurrentLinkedQueue<>();
 			clntQ.add(new MoveCommand(Entity.PLAYER, 4, 'w', 4, 4));
 			clntQ.add(new MoveCommand(Entity.PLAYER, 4, '!', 4, 4));
 			clntQ.add(new MoveCommand(Entity.PLAYER, 4, 'a', 3, 4));
@@ -340,7 +341,7 @@ public class TestControl {
 		ServerThread server = null;
 		try {
 			long then = System.currentTimeMillis();
-			Command[] clntQ = { new MoveCommand(Entity.PLAYER, 4, 'w', 4, 4),
+			CommandInter[] clntQ = { new MoveCommand(Entity.PLAYER, 4, 'w', 4, 4),
 					new MoveCommand(Entity.PLAYER, 4, '!', 4, 4), 
 					new MoveCommand(Entity.PLAYER, 4, 'w', 4, 3),
 					new MoveCommand(Entity.PLAYER, 4, '!', 4, 3) };
@@ -356,7 +357,7 @@ public class TestControl {
 			for (int i = 0; i < clntQ.length; i++) {
 				client.sendCommand(clntQ[i]);
 				client.writeQueue();
-				Command servCommand = server.readSocket(new DataInputStream(privateSocket.getInputStream()));
+				CommandInter servCommand = server.readSocket(new DataInputStream(privateSocket.getInputStream()));
 				assertEquals(clntQ[i],servCommand);
 			}
 		} catch (IOException | InterruptedException | IncompatiblePacketException e) {
@@ -379,7 +380,7 @@ public class TestControl {
 		ServerThread server = null;
 		try {
 			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			Command[] clntQ = { new MoveCommand(Entity.PLAYER, 4, 'w', 4, 4),
+			CommandInter[] clntQ = { new MoveCommand(Entity.PLAYER, 4, 'w', 4, 4),
 					new MoveCommand(Entity.PLAYER, 4, '!', 4, 4),
 					new MoveCommand(Entity.PLAYER, 4, 's', 4, 5),
 					new MoveCommand(Entity.PLAYER, 4, '!', 4, 5) };
@@ -405,7 +406,7 @@ public class TestControl {
 				client.doAction(clntQ[i]);
 				client.writeQueue();
 				System.out.println("---------SERVER");
-				Command servCommand = server.readFromClient();
+				CommandInter servCommand = server.readFromClient();
 				assertEquals(clntQ[i],servCommand);
 				server.doAction(servCommand);
 			}

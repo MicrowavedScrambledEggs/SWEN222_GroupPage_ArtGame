@@ -21,6 +21,7 @@ import java.util.concurrent.TimeoutException;
 
 import artGame.control.cmds.Action;
 import artGame.control.cmds.Command;
+import artGame.control.cmds.CommandInter;
 import artGame.control.cmds.MoveCommand;
 import artGame.control.cmds.TileStateCommand;
 import artGame.game.GameError;
@@ -33,7 +34,7 @@ import artGame.main.Game;
  *
  */
 public abstract class SocketThread extends Thread {
-	private final ConcurrentLinkedQueue<Command> cmdQueue = new ConcurrentLinkedQueue<Command>();
+	private final ConcurrentLinkedQueue<CommandInter> cmdQueue = new ConcurrentLinkedQueue<CommandInter>();
 	static final int wait = 1;
 	static final int CONNECTION_TIMEOUT = 10000;
 	static final int LARGE_PACKET_SIZE = 1024; // used for testing
@@ -49,10 +50,10 @@ public abstract class SocketThread extends Thread {
 		game = g;
 	}
 	
-	public SocketThread(Socket s, Game g, ConcurrentLinkedQueue<Command> cmdQ) {
+	public SocketThread(Socket s, Game g, ConcurrentLinkedQueue<CommandInter> cmdQ) {
 		socket = s;
 		game = g;
-		ConcurrentLinkedQueue<Command> dup = new ConcurrentLinkedQueue<Command>();
+		ConcurrentLinkedQueue<CommandInter> dup = new ConcurrentLinkedQueue<>();
 		dup.addAll(cmdQ);
 		cmdQueue.addAll(dup);
 	}
@@ -86,9 +87,9 @@ public abstract class SocketThread extends Thread {
 	}
 	
 	/** Writes the given command to the data stream. */
-	synchronized protected void writeCommand(DataOutputStream out, Command c) throws IOException {
-		out.write(c.byteSize());
-		out.write(c.bytes(), 0, c.byteSize());
+	synchronized protected void writeCommand(DataOutputStream out, CommandInter toServer) throws IOException {
+		out.write(toServer.byteSize());
+		out.write(toServer.bytes(), 0, toServer.byteSize());
 		out.flush();
 	}
 	
@@ -116,7 +117,7 @@ public abstract class SocketThread extends Thread {
 
 	/** Reads next command from socket and returns it.
 	 * @throws IncompatiblePacketException */
-	protected Command readSocket(final DataInputStream IN) throws InterruptedException, IncompatiblePacketException {
+	protected CommandInter readSocket(final DataInputStream IN) throws InterruptedException, IncompatiblePacketException {
 		byte[] arr = readByteCommand(IN);
 		if (arr.length == MoveCommand.bytes) {
 			return new MoveCommand(arr);
@@ -162,12 +163,12 @@ public abstract class SocketThread extends Thread {
 	}
 	
 	/** Gets the queue of commands to be written. */
-	protected Collection<Command> getQueue() {
+	protected Collection<CommandInter> getQueue() {
 		return new LinkedList<>(cmdQueue);
 	}
 	
 	/** Readies a command to be sent */
-	public synchronized boolean sendCommand(Command c) {
+	public synchronized boolean sendCommand(CommandInter c) {
 		if (c != null) {
 			return cmdQueue.add(c);
 		} 
@@ -175,7 +176,7 @@ public abstract class SocketThread extends Thread {
 	}
 	
 	/** Polls the next command to be sent */
-	protected synchronized Command pollCommand() {
+	protected synchronized CommandInter pollCommand() {
 		return cmdQueue.poll();
 	}
 	
@@ -190,7 +191,7 @@ public abstract class SocketThread extends Thread {
 	}
 	
 	/** Checks the first item in the queue. */
-	public synchronized Command peek() {
+	public synchronized CommandInter peek() {
 		return cmdQueue.peek();
 	}
 	
@@ -208,7 +209,7 @@ public abstract class SocketThread extends Thread {
 	synchronized protected void writeQueue() throws IOException {
 		DataOutputStream OUT = new DataOutputStream(socket.getOutputStream());
 		if (hasCommands()) {
-			Command c = pollCommand();
+			CommandInter c = pollCommand();
 			
 			writeCommand(OUT, c);
 		}
@@ -216,10 +217,10 @@ public abstract class SocketThread extends Thread {
 	
 	/** Testing method. 
 	 * Performs action on Game */
-	synchronized protected boolean doAction(Command c) {
+	synchronized protected boolean doAction(CommandInter clientCmd) {
 		try {
 			System.out.println("Do action on "+ game.getName());
-			c.execute(game);
+			clientCmd.execute(game);
 		} catch (GameError e) { }
 		return false;
 	}

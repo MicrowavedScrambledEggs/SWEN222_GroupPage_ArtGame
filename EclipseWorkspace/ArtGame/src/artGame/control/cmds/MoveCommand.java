@@ -9,7 +9,7 @@ import artGame.main.Game;
  * @author Vicki
  *
  */
-public final class MoveCommand implements Command {
+public final class MoveCommand implements CommandInter {
 	public static final short PLAYER = 0;
 	public static final short GUARD = 1;
 	
@@ -156,5 +156,10 @@ public final class MoveCommand implements Command {
 	@Override
 	public long time() {
 		return time;
+	}
+
+	@Override
+	public char action() {
+		return action;
 	}
 }

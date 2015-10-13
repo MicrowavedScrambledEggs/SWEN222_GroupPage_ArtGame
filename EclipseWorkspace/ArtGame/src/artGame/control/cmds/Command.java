@@ -1,5 +1,6 @@
 package artGame.control.cmds;
 
+import artGame.game.Player;
 import artGame.main.Game;
 
 /** TODO
@@ -7,33 +8,108 @@ import artGame.main.Game;
  * @author Vicki
  *
  */
-public interface Command {	
-	public static final int BYTES_BYTE = 1;
-	public static final int BYTES_CHAR = 2;
-	public static final int BYTES_SHORT = 2;
-	public static final int BYTES_INT = 4;
-	public static final int BYTES_LONG = 8;
-	public static final int BYTES_FLOAT = 4;
-	public static final int BYTES_DOUBLE = 8;
-	public static final int BYTES_BOOLEAN = 1;
+public final class Command implements CommandInter {
+	public static final int bytes = BYTES_SHORT + 3*(BYTES_INT) + BYTES_CHAR + BYTES_LONG;
+	public final int id;
+	public final char action;
+	public final long time;
 	
-	public static final String TAIL = "_CMD";
+	private static final String TAG = "MOVE";
 	
-	/** The id of the character (if any) this command modifies */ 
-	public int id();
+	/** Creates a new MoveCommand. */
+	public Command (char action, int id) {
+		this.id = id;
+		this.action = action;
+		this.time = System.currentTimeMillis();
+	}
+
+	/** Creates a new MoveCommand at the specified time. */
+	public Command (char action, int id, long time) {
+		this.id = id;
+		this.action = action;
+		this.time = time;
+	}
 	
-	/** The length of this command as a byte array.  (ie, the number of bytes + 1)*/
-	public int byteSize();
+	/** Creates a new MovePacket from bytes */
+	public Command(byte[] b) { // entity id action x y time
+		//byte[] bytes = new byte[byteSize()];
+		int i = 0;
+		id = (b[i++] << 24) + (b[i++] << 16) + (b[i++] << 8) + b[i++];
+        action = (char)((b[i++] << 8) + (b[i++]));
+		time = (b[i++] << 64) + (b[i++] << 52) + (b[i++] << 48) + (b[i++] << 40)
+				+ (b[i++] << 32) + (b[i++] << 24) + (b[i++] << 16) + (b[i++] << 8) + (b[i++]);
+	}
 	
-	/** Helper method for toString; returns a few characters denoting the command type. */
-	public String tag();
+	public int id() {
+		return id;
+	}
 	
-	/** Returns the command as a stream-writeable array of bytes, of byte() size. */ 
-	public byte[] bytes();
+	public int key() {
+		return action;
+	}
 	
-	/** Performs the action on the game. Returns true if the action was successful. */
-	public boolean execute(Game g);
+	public boolean equals(Object o) {
+		if (o == null) { return false; }
+		if (o instanceof MoveCommand) {
+			MoveCommand m = (MoveCommand)o;
+			return m.id == id && m.action == action;
+		}
+		return false;
+	}
 	
-	/** Returns the time at which the command was created. */
-	public long time();
+	public String toString() {
+		return tag() +" "+TAIL;
+	}
+
+	@Override
+	public int byteSize() {
+		return bytes + 1;
+	}
+
+	@Override
+	public String tag() {
+		return TAG;
+	}
+
+	@Override
+	public byte[] bytes() { // entity id action x y time
+		byte[] bytes = new byte[byteSize()];
+		int i = 0;
+		bytes[i++] = (byte)(id >>> 24); // int
+        bytes[i++] = (byte)(id >>> 16);
+        bytes[i++] = (byte)(id >>> 8);
+        bytes[i++] = (byte)(id);
+        bytes[i++] = (byte)(action >>> 8); // char
+        bytes[i++] = (byte)(action);
+		bytes[i++] = (byte)(time >>> 64); // long
+		bytes[i++] = (byte)(time >>> 52);
+		bytes[i++] = (byte)(time >>> 48);
+		bytes[i++] = (byte)(time >>> 40);
+        bytes[i++] = (byte)(time >>> 32);
+		bytes[i++] = (byte)(time >>> 24);
+        bytes[i++] = (byte)(time >>> 16);
+        bytes[i++] = (byte)(time >>> 8);
+        bytes[i++] = (byte)(time);
+        
+        return bytes;
+	}
+
+	/** Takes the action specified by this command on the Game object. */
+	@Override
+	public boolean execute(Game g) {
+		Player p = g.getPlayer(id);
+		g.doAction(p, action);
+		return true;
+	}
+	
+	@Override
+	public long time() {
+		return time;
+	}
+
+	@Override
+	public char action() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

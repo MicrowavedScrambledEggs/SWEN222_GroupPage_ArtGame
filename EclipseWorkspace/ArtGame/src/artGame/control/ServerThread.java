@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import artGame.control.cmds.Command;
+import artGame.control.cmds.CommandInter;
 import artGame.game.GameError;
 import artGame.game.Player;
 import artGame.main.Game;
@@ -51,13 +52,13 @@ public class ServerThread extends SocketThread {
 	}
 	
 	/** Testing constructor */
-	protected ServerThread(Game g, Socket s, ConcurrentLinkedQueue<Command> q) {
+	protected ServerThread(Game g, Socket s, ConcurrentLinkedQueue<CommandInter> q) {
 		super(s,g,q);
 		wait = SocketThread.wait;
 	}
 
 	/** Test constructor */
-	protected ServerThread(Socket socket, Game game, ConcurrentLinkedQueue<Command> cl) throws IOException {
+	protected ServerThread(Socket socket, Game game, ConcurrentLinkedQueue<CommandInter> cl) throws IOException {
 		super(socket,game, cl);
 		this.wait = Main.WAIT_PERIOD;
 	}
@@ -136,7 +137,7 @@ public class ServerThread extends SocketThread {
 				final DataInputStream IN =  new DataInputStream(socket().getInputStream());
 				final DataOutputStream OUT = new DataOutputStream(socket().getOutputStream());
 				// read first
-		        Command clientCmd = readSocket(IN); // will end() thread if it times out
+		        CommandInter clientCmd = readSocket(IN); // will end() thread if it times out
 		        if (clientCmd == null) break;
 		        
 				// then update sister threads
@@ -157,7 +158,7 @@ public class ServerThread extends SocketThread {
 				long now = System.currentTimeMillis();
 				long time = now + wait;
 				while (System.currentTimeMillis() < time && hasCommands()) {
-					Command serverCmd = pollCommand();
+					CommandInter serverCmd = pollCommand();
 					System.out.println("(In queue: "+queueSize()+")");
 					writeCommand(OUT, serverCmd);
 				}
@@ -254,7 +255,7 @@ public class ServerThread extends SocketThread {
 	 * @param send Command to be send
 	 * @return Command received from client
 	 */
-	protected Command readParameterWriteQueue(Command read) {
+	protected CommandInter readParameterWriteQueue(Command read) {
 		
 		if (!socket().isClosed()) {
 			try {
@@ -272,7 +273,7 @@ public class ServerThread extends SocketThread {
 				}
 				// then do our work!
 				if (hasCommands()) {
-					Command serverCmd = pollCommand();
+					CommandInter serverCmd = pollCommand();
 					System.out.println("(In queue: "+queueSize()+")");
 					writeCommand(OUT, serverCmd);
 					return serverCmd;
@@ -291,7 +292,7 @@ public class ServerThread extends SocketThread {
 	 * @throws IncompatiblePacketException 
 	 * @throws InterruptedException 
 	 */
-	protected Command readFromClient() throws IOException, InterruptedException, IncompatiblePacketException {
+	protected CommandInter readFromClient() throws IOException, InterruptedException, IncompatiblePacketException {
 		DataInputStream IN = new DataInputStream(socket().getInputStream());
 		return readSocket(IN);
 	}
