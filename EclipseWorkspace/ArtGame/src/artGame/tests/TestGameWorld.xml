@@ -1,8 +1,7 @@
-<!-- XML file for level for JUnit tests 
-Author: Badi James-->
-
 <?xml version="1.0" ?>
 <game>
+	<!-- XML file for level for JUnit tests 
+	Author: Badi James-->
 	<floor level = "0">
 		<empty_tile>
 			<position>
@@ -173,13 +172,17 @@ Author: Badi James-->
 			<wall direction = "NORTH" />
 			<wall direction = "EAST" />
 		</empty_tile>
-		<stair_tile>
+		<stair_tile direction = "EAST" up = "FALSE">
 			<position>
 				<x value = "0"/>
 				<y value = "1"/>
 			</position>
+			<linked_tile level = "0">
+				<x value = "0"/>
+				<y value = "1"/>
+			</linked_tile>
 			<wall direction = "WEST" />
-		</empty_tile>
+		</stair_tile>
 		<tile_stretch length = "3">
 			<position>
 				<x value = "1"/>
@@ -257,7 +260,15 @@ Author: Badi James-->
 				</step>
 				<step>
 					<x value = "4"/>
+					<y value = "0"/>
+				</step>
+				<step>
+					<x value = "4"/>
 					<y value = "1"/>
+				</step>
+				<step>
+					<x value = "4"/>
+					<y value = "2"/>
 				</step>
 				<west_east_stretch>
 	        		<start>
@@ -300,7 +311,7 @@ Author: Badi James-->
 		</painting>
 		<painting artID="0">
 			<name>Mona Lisa</name>
-			<value>99999999999</value>
+			<value>99999999</value>
 		</painting>
 		<painting artID="1">
 			<name>Noice Treasure</name>
