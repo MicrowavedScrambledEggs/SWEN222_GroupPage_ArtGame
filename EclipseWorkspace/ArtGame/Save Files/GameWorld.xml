@@ -130,7 +130,7 @@
 				<x value = "1"/>
                 <y value = "1"/>
             </position>
-            <wall direction = "WEST" />            
+            <wall direction = "WEST" />
             <wall direction = "EAST" />
             <wall direction = "SOUTH" />
         </chest>
@@ -140,7 +140,7 @@
                 <y value = "1"/>
             </position>
             <wall direction = "SOUTH" />
-            <wall direction = "WEST" />            
+            <wall direction = "WEST" />
             <wall direction = "EAST" />
             <inventory>
             	<item type = "ART" id = "101"/>
@@ -152,7 +152,7 @@
                 <y value = "1"/>
             </position>
             <wall direction = "SOUTH" />
-            <wall direction = "WEST" />            
+            <wall direction = "WEST" />
             <wall direction = "EAST" />
         </chest>
         <chest id = "20">
@@ -251,7 +251,7 @@
 				<x value = "1"/>
                 <y value = "2"/>
             </position>
-            <wall direction = "WEST" />            
+            <wall direction = "WEST" />
             <wall direction = "EAST" />
             <wall direction = "NORTH" />
         </chest>
@@ -261,7 +261,7 @@
                 <y value = "2"/>
             </position>
             <wall direction = "NORTH" />
-            <wall direction = "WEST" />            
+            <wall direction = "WEST" />
             <wall direction = "EAST" />
 		</chest>
 		<chest id = "5">
@@ -270,7 +270,7 @@
                 <y value = "2"/>
             </position>
             <wall direction = "NORTH" />
-            <wall direction = "WEST" />            
+            <wall direction = "WEST" />
             <wall direction = "EAST" />
         </chest>
         <chest id = "22">
@@ -1824,6 +1824,134 @@
 			<wall direction = "SOUTH"/>
 			<wall direction = "EAST"/>
 		</empty_tile>
+		<room id = "0">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "0"/>
+		        <to_col value = "0"/>
+		        <to_row value = "3"/>
+		    </segment>
+		</room>
+		<room id = "1">
+		    <segment>
+		        <from_col value = "1"/>
+		        <from_row value = "0"/>
+		        <to_col value = "5"/>
+		        <to_row value = "1"/>
+		    </segment>
+		    <square>
+		        <row value = "0"/>
+		        <col value = "6"/>
+		    </square>
+		</room>
+		<room id = "2">
+		    <segment>
+		        <from_col value = "1"/>
+		        <from_row value = "2"/>
+		        <to_col value = "5"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <square>
+		        <row value = "3"/>
+		        <col value = "6"/>
+		    </square>
+		</room>
+		<room id = "3">
+		    <segment>
+		        <from_col value = "13"/>
+		        <from_row value = "0"/>
+		        <to_col value = "15"/>
+		        <to_row value = "3"/>
+		    </segment>
+		</room>
+		<room id = "4">
+		    <segment>
+		        <from_col value = "16"/>
+		        <from_row value = "2"/>
+		        <to_col value = "19"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "18"/>
+		        <from_row value = "0"/>
+		        <to_col value = "19"/>
+		        <to_row value = "1"/>
+		    </segment>
+		    <square>
+		        <row value = "1"/>
+		        <col value = "17"/>
+		    </square>
+		</room>
+		<room id = "5">
+		    <segment>
+		        <from_col value = "7"/>
+		        <from_row value = "0"/>
+		        <to_col value = "12"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "6"/>
+		        <from_row value = "1"/>
+		        <to_col value = "6"/>
+		        <to_row value = "2"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "4"/>
+		        <from_row value = "4"/>
+		        <to_col value = "15"/>
+		        <to_row value = "7"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "4"/>
+		        <from_row value = "8"/>
+		        <to_col value = "7"/>
+		        <to_row value = "15"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "12"/>
+		        <from_row value = "8"/>
+		        <to_col value = "15"/>
+		        <to_row value = "15"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "8"/>
+		        <from_row value = "12"/>
+		        <to_col value = "11"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "6">
+		    <segment>
+		        <from_col value = "8"/>
+		        <from_row value = "8"/>
+		        <to_col value = "11"/>
+		        <to_row value = "11"/>
+		    </segment>
+		</room>
+		<room id = "7">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "4"/>
+		        <to_col value = "3"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "8">
+		    <segment>
+		        <from_col value = "16"/>
+		        <from_row value = "4"/>
+		        <to_col value = "19"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "9">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "16"/>
+		        <to_col value = "19"/>
+		        <to_row value = "18"/>
+		    </segment>
+		</room>
 	</floor>
 	<floor level="1">
 		<empty_tile>
@@ -1960,7 +2088,7 @@
                 <y value = "1"/>
             </position>
             <wall direction = "WEST" />
-            <wall direction = "SOUTH" />          
+            <wall direction = "SOUTH" />
             <wall direction = "EAST" />
         </chest>
         <chest id = "24">
@@ -3174,6 +3302,110 @@
             <wall direction = "EAST"/>
             <wall direction = "SOUTH"/>
         </empty_tile>
+		<room id = "10">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "0"/>
+		        <to_col value = "6"/>
+		        <to_row value = "3"/>
+		    </segment>
+		</room>
+		<room id = "11">
+		    <segment>
+		        <from_col value = "13"/>
+		        <from_row value = "0"/>
+		        <to_col value = "14"/>
+		        <to_row value = "1"/>
+		    </segment>
+		</room>
+		<room id = "12">
+		    <segment>
+		        <from_col value = "13"/>
+		        <from_row value = "2"/>
+		        <to_col value = "14"/>
+		        <to_row value = "3"/>
+		    </segment>
+		</room>
+		<room id = "13">
+		    <segment>
+		        <from_col value = "15"/>
+		        <from_row value = "0"/>
+		        <to_col value = "15"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "16"/>
+		        <from_row value = "2"/>
+		        <to_col value = "19"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "18"/>
+		        <from_row value = "0"/>
+		        <to_col value = "19"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <square>
+		        <row value = "1"/>
+		        <col value = "16"/>
+		    </square>
+		</room>
+		<room id = "14">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "4"/>
+		        <to_col value = "3"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "15">
+		    <segment>
+		        <from_col value = "16"/>
+		        <from_row value = "4"/>
+		        <to_col value = "19"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "16">
+		    <segment>
+		        <from_col value = "16"/>
+		        <from_row value = "0"/>
+		        <to_col value = "19"/>
+		        <to_row value = "18"/>
+		    </segment>
+		</room>
+		<room id = "17">
+		    <segment>
+		        <from_col value = "8"/>
+		        <from_row value = "8"/>
+		        <to_col value = "11"/>
+		        <to_row value = "11"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "9"/>
+		        <from_row value = "12"/>
+		        <to_col value = "10"/>
+		        <to_row value = "13"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "4"/>
+		        <from_row value = "14"/>
+		        <to_col value = "15"/>
+		        <to_row value = "15"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "4"/>
+		        <from_row value = "13"/>
+		        <to_col value = "5"/>
+		        <to_row value = "13"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "14"/>
+		        <from_row value = "13"/>
+		        <to_col value = "15"/>
+		        <to_row value = "13"/>
+		    </segment>
+		</room>
 	</floor>
 	<players>
 		<player id = "1">
@@ -3186,12 +3418,40 @@
 	</players>
 	<art>
 	    <painting artID = "1">
-	    	<name>A Really Good Painting</name>
-	    	<value>1000</value>
+	    	<name>Ghostbusters Car</name>
+	    	<value>2000</value>
 	    </painting>
 	    <painting artID = "2">
-	    	<name>A Really Shit Painting</name>
-	    	<value>10</value>
+	    	<name>Spengler</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "3">
+	    	<name>Stantz</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "4">
+	    	<name>Zeddemore</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "5">
+	    	<name>Slimer</name>
+	    	<value>2000</value>
+	    </painting>
+	    <painting artID = "6">
+	    	<name>Venkman</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "7">
+	    	<name>Predator</name>
+	    	<value>2000</value>
+	    </painting>
+	    <painting artID = "8">
+	    	<name>Dutch</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "9">
+	    	<name>Billy</name>
+	    	<value>1000</value>
 	    </painting>
 	    <painting artID = "58">
 	    	<name>LTSA Nicolas LiftCage</name>
@@ -3962,7 +4222,7 @@
 	        		</finish>
 	        	</west_east_stretch>
 	        </patrol>
-		</guard> 
+		</guard>
 		<guard id = "3">
 		    <level value = "0" />
 		    <direction>EAST</direction>

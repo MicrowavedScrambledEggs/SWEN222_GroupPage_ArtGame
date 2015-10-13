@@ -18,22 +18,18 @@ import artGame.xml.load.ArtGameSaveFileHandler;
 import artGame.xml.save.ArtGameSaver;
 
 /**
- * Class for parsing xml files for saved games and new games 
- * 
+ * Class for parsing xml files for saved games and new games
+ *
  * Static fields match the terms used in the xml files for different elements,
  * attributes and values etc. Typically an element represents an artGame.game class
  * and it's attributes and values it's fields. Exceptions X_COORD_ELEMENT and
  * Y_COORD_ELEMENT which are fields for Coordinate
- * 
+ *
  * @author Badi James
  *
  */
 public class XMLHandler {
-	
-	//TODO: Add a lot more strings for elements etc once artGame.game is more complete
-	//TODO: Add strings for Guards
-	//TODO: Add handling for Art
-	//TODO: Add handling for inventory
+
 	public static final String WALL_ELEMENT = "wall";
 	public static final String DOOR_ELEMENT = "door";
 	public static final String POSITION_ELEMENT = "position";
@@ -63,7 +59,16 @@ public class XMLHandler {
 	public static final String CHEST_ELEMENT = "chest";
 	public static final String FLOOR_ELEMENT = "floor";
 	public static final String ART_ELEMENT = "art";
-	
+	public static final String ROOM_ELEMENT = "room";
+	public static final String SEGMENT_ELEMENT = "segment";
+	public static final String SQUARE_ELEMENT = "square";
+	public static final String ROW_ELEMENT = "row";
+	public static final String COL_ELEMENT = "col";
+	public static final String FROM_ROW_ELEMENT = "from_row";
+	public static final String FROM_COL_ELEMENT = "from_col";
+	public static final String TO_ROW_ELEMENT = "to_row";
+	public static final String TO_COL_ELEMENT = "to_col";
+
 	public static final String LEVEL_ATTRIBUTE = "level";
 	public static final String DIRECTION_ATTRIBUTE = "direction";
 	public static final String VALUE_ATTRIBUTE = "value";
@@ -75,7 +80,7 @@ public class XMLHandler {
 	public static final String EXIT_ATTRIBUTE = "isExit";
 	public static final String TYPE_ATTRIBUTE = "type";
 	public static final String UP_ATTRIBUTE = "up";
-	
+
 	public static final String NORTH_VALUE = "NORTH";
 	public static final String WEST_VALUE = "WEST";
 	public static final String SOUTH_VALUE = "SOUTH";
@@ -84,22 +89,22 @@ public class XMLHandler {
 	public static final String FALSE_VALUE = "FALSE";
 	public static final String ART_VALUE = "ART";
 	public static final String KEY_VALUE = "KEY";
-	
-	
+
+
 	private ArtGameSaveFileHandler xmlHandler;
 	private ArtGameSaver saver;
-	
+
 	/**
 	 * Constructor for class XMLReader. Takes the given xmlFile and parses it
 	 * with a handler designed for the artGame xml format
-	 * 
+	 *
 	 * @param xmlFile artGame xml file to parse
 	 */
 	public XMLHandler(){
 		xmlHandler = new ArtGameSaveFileHandler();
 		saver = new ArtGameSaver();
 	}
-	
+
 	/**
 	 * @return Game built from the handler after parsing xmlFile
 	 */
@@ -121,7 +126,7 @@ public class XMLHandler {
 	    }
 		return xmlHandler.buildGame();
 	}
-	
+
 	public void saveGame(Game game, String fileName){
 		saver.saveGame(game, fileName);
 	}

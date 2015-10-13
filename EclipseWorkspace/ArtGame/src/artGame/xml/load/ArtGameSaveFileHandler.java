@@ -35,7 +35,10 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		//TODO: Add handling for item descriptions
 		if(qName.equals(XMLHandler.FLOOR_ELEMENT)){
 			currentLevel = Integer.parseInt(attributes.getValue(0));
-		} else if(qName.equals(XMLHandler.LEVEL_ATTRIBUTE)){
+		} else if(qName.equals(XMLHandler.LEVEL_ATTRIBUTE) || qName.equals(XMLHandler.ROW_ELEMENT)
+				|| qName.equals(XMLHandler.COL_ELEMENT) || qName.equals(XMLHandler.FROM_COL_ELEMENT)
+				|| qName.equals(XMLHandler.FROM_ROW_ELEMENT) || qName.equals(XMLHandler.TO_ROW_ELEMENT)
+				|| qName.equals(XMLHandler.TO_COL_ELEMENT)){
 			addFieldToCurrentBuilder(qName, attributes.getValue(0));
 		}
 		if(qName.equals(XMLHandler.EMPTY_TILE_ELEMENT)){
@@ -100,6 +103,12 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		} else if(qName.equals(XMLHandler.CHEST_ELEMENT)){
 			buildStack.push(new ObjectBuilder(new ChestBuilder(currentLevel, gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
+		} else if(qName.equals(XMLHandler.ROOM_ELEMENT)){
+			buildStack.push(new ObjectBuilder(new RoomBuilder(gameMaker)));
+		} else if(qName.equals(XMLHandler.SEGMENT_ELEMENT)){
+			buildStack.push(new ObjectBuilder(new SquareArea(currentLevel)));
+		} else if(qName.equals(XMLHandler.SQUARE_ELEMENT)){
+			buildStack.push(new ObjectBuilder(new SingleTile(currentLevel)));
 		}
 	}
 
@@ -134,17 +143,19 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		} else if(qName.equals(XMLHandler.PATROL_STEP_ELEMENT)){
 			addFieldToCurrentBuilder(qName, currentCoord);
 		} else if(qName.equals(XMLHandler.X_PATH_ELEMENT) || qName.equals(XMLHandler.Y_PATH_ELEMENT)
-				|| qName.equals(XMLHandler.PATROL_ELEMENT)){
-			completePatrolSegment(qName);
+				|| qName.equals(XMLHandler.PATROL_ELEMENT) || qName.equals(XMLHandler.SQUARE_ELEMENT)
+				|| qName.equals(XMLHandler.SEGMENT_ELEMENT)){
+			addBuildStrategyAsFeild(qName);
 		} else if(qName.equals(XMLHandler.GUARD_ELEMENT) || qName.equals(XMLHandler.SCULPTURE_ELEMENT)
 				|| qName.equals(XMLHandler.PAINTING_ELEMENT) || qName.equals(XMLHandler.PLAYER_ELEMENT)
 				|| qName.equals(XMLHandler.STAIR_TILE_ELEMENT) || qName.equals(XMLHandler.TILE_STRETCH_ELEMENT)
-				|| qName.equals(XMLHandler.EMPTY_TILE_ELEMENT) || qName.equals(XMLHandler.CHEST_ELEMENT)){
+				|| qName.equals(XMLHandler.EMPTY_TILE_ELEMENT) || qName.equals(XMLHandler.CHEST_ELEMENT)
+				|| qName.equals(XMLHandler.ROOM_ELEMENT)){
 			buildList.add(buildStack.pop());
 		}
 	}
 
-	private void completePatrolSegment(String qName) {
+	private void addBuildStrategyAsFeild(String qName) {
 		ObjectBuilder patrolSegmentBuilder = buildStack.pop();
 		BuildStrategy patrolSegment = patrolSegmentBuilder.getBuildStrategy();
 		addFieldToCurrentBuilder(qName, patrolSegment);
