@@ -11,7 +11,11 @@ import artGame.control.cmds.Action;
 import artGame.game.*;
 import artGame.game.Character.Direction;
 import artGame.xml.XMLHandler;
-
+/**
+ * The game object that contains a game floor as well as all players
+ * associated with it
+ *
+ */
 public class Game {
 
 
@@ -31,8 +35,8 @@ public class Game {
 	}
 	
 	public Game() {
-		// TODO Auto-generated constructor stub
 	}
+	
 	
 	public void setName(String s) {
 		if (s!=null) name = s;
@@ -42,7 +46,9 @@ public class Game {
 		return (name==null) ? "unnamed game" : name;
 	}
 
-	//placeholder for init, will need to read from xml eventually for players' positions
+	/**
+	 * Initialises the game to use the default floor
+	 */
 	public void initialise(){
 		floor = new Floor();
 		//p = new Player(Direction.EAST,1);
@@ -122,16 +128,23 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Returns the game floor
+	 * @return
+	 */
 	public Floor getFloor() {
 		return floor;
 	}
 
+	/**
+	 * Returns the current player(player viewing game)
+	 */
 	public Player getPlayer() {
 		return p;
 	}
 	
 	/**
-	 * TESTING
+	 * TESTING console based game
 	 */
 	public void playGame(){
 		this.initialise();
@@ -173,6 +186,10 @@ public class Game {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Testing console based game
+	 */
 	public static void main(String[] args) {
 		Game game = null;
 		if(args.length == 0){
