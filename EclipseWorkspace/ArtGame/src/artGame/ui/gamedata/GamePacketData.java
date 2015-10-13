@@ -6,6 +6,7 @@ import java.util.List;
 import artGame.game.Art;
 import artGame.game.Guard;
 import artGame.game.Player;
+import artGame.game.Sculpture;
 import artGame.game.Tile;
 import artGame.game.Character.Direction;
 import artGame.main.Game;
@@ -21,13 +22,16 @@ public class GamePacketData {
 	public List<Player> players;
 	public List<Guard> guards;
 	public List<TileData> occupied;
+	
+	public List<Sculpture> sculptures;
+	
 	public int pid;
 	
 	public GamePacketData(int pid, Game game){
 		this.pid = pid;
 		players = new ArrayList<>();
 		guards = new ArrayList<>();
-		
+		sculptures = new ArrayList<>();
 		players = game.getPlayers();
 		guards = game.getFloor().getGuards();
 

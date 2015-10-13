@@ -48,5 +48,17 @@ public class Sculpture extends Character {
 	public boolean isTaken(){
 		return taken;
 	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public int getValue(){
+		return value;
+	}
+
+	public void setTaken(boolean b) {
+		this.taken = b;
+	}
 
 }

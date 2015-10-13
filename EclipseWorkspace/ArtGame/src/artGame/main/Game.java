@@ -274,7 +274,7 @@ public class Game {
 		nl.addAll(players);
 		return nl;
 	}
-
+	
 	public void printGame() {
 		if (getFloor().isOnExit() == null) {
 			floor.printFloor(); // TODO replace with gui display

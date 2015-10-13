@@ -377,7 +377,6 @@ public class GLWindow {
 			return c;
 		}
 		
-		System.out.println(cameraAngle);
 		int[] range = {0, 90, 180, 270, 360};
 		
 		int i = getClosestValue(Math.abs(cameraAngle), range);

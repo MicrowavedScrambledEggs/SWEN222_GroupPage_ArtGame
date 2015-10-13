@@ -8,8 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 
@@ -95,6 +97,15 @@ public class UIRenderer implements Screen {
 
 					icon.setScreenLocation(item.getWidget().getX()+xOff, item.getWidget().getY()+yOff);
 					icon.draw();
+				} else {
+					Widget icon = itemsById.get(-1);
+
+					float xOff = (item.getWidget().getScale() * 64)/wVal;
+					xOff = 0;
+					float yOff = -0.3f*item.getWidget().getScale();
+
+					icon.setScreenLocation(item.getWidget().getX()+xOff, item.getWidget().getY()+yOff);
+					icon.draw();
 				}
 			}
 			count++;
@@ -112,7 +123,16 @@ public class UIRenderer implements Screen {
 	 */
 	private void updateInventory() {
 		resetInventory();
-		for(Item item: GameData.getPlayer().getInventory()){
+		
+		List<Integer> sortedIds = new ArrayList<>();
+		
+		for(Item item : GameData.getPlayer().getInventory()){
+			sortedIds.add(item.ID);
+		}
+		
+		Collections.sort(sortedIds);
+		
+		for(Integer item : sortedIds){
 			int freeSlot = -1;
 			for(int i = 0; i < inventory.size(); i++){
 				ItemSlot slot = inventory.get(i);
@@ -124,7 +144,7 @@ public class UIRenderer implements Screen {
 			}
 
 			if(freeSlot != -1){
-				inventory.get(freeSlot).setItem(item.ID);
+				inventory.get(freeSlot).setItem(item);
 			}
 		}
 	}
@@ -178,10 +198,14 @@ public class UIRenderer implements Screen {
 
 		//test key item id == 2
 		Widget icon2 = loadWidget("res/key.png", 32, 0.8f, 0.8f);
-
+		Widget defIcon = loadWidget("res/default_icon.png", 64, 0.8f, 0.8f);
 		if(icon2 != null){
 			icon2.setScale(scale);
 			itemsById.put(1, icon2);
+		}
+		if(defIcon != null){
+			defIcon.setScale(scale);
+			itemsById.put(-1, defIcon);
 		}
 
 		////Widget square = loadWidget("res/yellow_sq.png", 64, 0.8f, 0.8f);

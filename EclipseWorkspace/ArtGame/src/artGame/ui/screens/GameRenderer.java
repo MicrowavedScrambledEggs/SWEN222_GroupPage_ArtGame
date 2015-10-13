@@ -20,6 +20,7 @@ import artGame.game.Sculpture;
 import artGame.game.StairTile;
 import artGame.game.Tile;
 import artGame.ui.gamedata.GameData;
+import artGame.ui.gamedata.TileData;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Camera;
@@ -30,7 +31,6 @@ import artGame.ui.renderer.animations.TweenFloat;
 import artGame.ui.renderer.animations.TweenVector3f;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
-import artGame.ui.screens.Screen;
 
 public class GameRenderer implements Screen{
 
@@ -183,7 +183,9 @@ public class GameRenderer implements Screen{
 	}
 
 	private void updateCharacters() {
-		List<artGame.game.Character> toRemove = new ArrayList<artGame.game.Character>();
+		
+		List<artGame.game.Character> toRemove = new ArrayList<artGame.game.Character>();	
+		
 		for (artGame.game.Character c : GameData.getCharacters()) {
 			if (c instanceof Player || c instanceof Guard) {
 				//get current tween loc..
@@ -195,6 +197,18 @@ public class GameRenderer implements Screen{
 				if (((Sculpture)c).isTaken()) {
 					toRemove.add(c);
 				}
+			}
+		}
+		
+		for(artGame.game.Character c : characters.keySet()){
+			boolean contains = false;
+			for (artGame.game.Character ch : GameData.getCharacters()) {
+				if(c.equals(ch)){
+					contains = true;
+				}
+			}
+			if(!contains){
+				toRemove.add(c);
 			}
 		}
 		

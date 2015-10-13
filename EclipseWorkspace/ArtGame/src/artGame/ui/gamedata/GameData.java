@@ -14,6 +14,7 @@ import artGame.game.Floor;
 import artGame.game.Guard;
 import artGame.game.Item;
 import artGame.game.Player;
+import artGame.game.Sculpture;
 import artGame.game.Tile;
 import artGame.game.Wall;
 import artGame.main.Game;
@@ -38,6 +39,7 @@ public class GameData {
 	 */
 	public static void updateGame(GamePacketData data) {
 		GameData.data=data;
+		updateGameObjects();
 	}
 
 	/**
@@ -96,17 +98,91 @@ public class GameData {
 	 * @return
 	 */
 	public static synchronized artGame.game.Character[] getCharacters() {
-		artGame.game.Character[] characters = new artGame.game.Character[data.players.size()+data.guards.size()];
-		int index = 0;
-		for(int i = 0; i < data.players.size(); i++){
-			characters[i] = data.players.get(i);
-			index = i;
+		
+		List<artGame.game.Character> chars = new ArrayList<>(); 
+
+		for(Player p : data.players){
+			chars.add(p);
 		}
-		for(int i = 0; i < data.guards.size(); i++){
-			characters[i+index+1] = data.guards.get(i);
+		
+		for(Guard g : data.guards){
+			chars.add(g);
 		}
+		
+		for(Sculpture s : getSculptures()){
+			chars.add(s);
+		}
+		
+		artGame.game.Character[] characters = new artGame.game.Character[chars.size()];
+		
+		for(int i = 0; i < chars.size(); i++){
+			characters[i] = chars.get(i);
+		}
+		
 		return characters;
 
+	}
+	
+	/**
+	 * Gets all current sculptures in game
+	 * @return
+	 */
+	public static synchronized List<Sculpture> getSculptures(){
+		
+		List<Sculpture> sculps = new ArrayList<>();
+		
+		for(TileData t : data.occupied){
+			if(t.itemId != -1){
+				artGame.game.Character c = game.getFloor().getTile(t.row, t.col).getOccupant();
+				if(c != null && c instanceof Sculpture){
+					sculps.add((Sculpture)c);
+				}
+			}
+		}
+		
+		return sculps;
+	}
+	
+	/**
+	 * Checks whether our client side game objects are out of date and alters them if they are.
+	 */
+	public static synchronized void updateGameObjects(){
+		
+		for(int x = 0; x < game.getFloor().getHeight(); x++){
+			for(int y = 0; y < game.getFloor().getWidth(); y++){
+				Tile tile = game.getFloor().getTile(x, y);
+				
+				if(tile == null){
+					continue;
+				}
+				
+				artGame.game.Character ch = tile.getOccupant();
+				if(ch != null){
+					
+					if(ch instanceof Sculpture){
+						Sculpture chS = (Sculpture)ch;
+						if(chS.isTaken()){
+							
+							continue;
+						}
+					}
+					
+					boolean contains = false;
+					for(TileData t : data.occupied){
+						if(t.row == x && t.col == y){
+							contains = true;
+						}
+					}
+					if(!contains){
+						artGame.game.Character occu = game.getFloor().getTile(x, y).getOccupant();
+						if(occu instanceof Sculpture){
+							((Sculpture)occu).setTaken(true);
+						}
+					}
+				}
+			}
+		}
+		
 	}
 
 	/**
@@ -114,6 +190,9 @@ public class GameData {
 	 * @return
 	 */
 	public static synchronized List<TileData> getOccupiedTiles(){
+		if(data.occupied == null){
+			return new ArrayList<TileData>();
+		}
 		return data.occupied;
 	}
 
@@ -175,6 +254,7 @@ public class GameData {
 
 		List<Player> players = new ArrayList<>();
 		List<Guard> guards = new ArrayList<>();
+		List<TileData> tiles = new ArrayList<>();
 
 		int pid = -1;
 
@@ -186,6 +266,15 @@ public class GameData {
 
 		while(sc.hasNext()){
 
+			if(sc.hasNextInt()){
+				int byteCount = sc.nextInt();
+				
+				if(packet.length-3 != byteCount){
+					sc.close();
+					return null;
+				}
+			}
+			
 			if(sc.hasNext("<")){
 				sc.next("<");
 				pid = sc.nextInt();
@@ -270,25 +359,70 @@ public class GameData {
 
 			}
 
-			//Now read any occupied tiles in..
+			//read sculptures.. format:
+			/*for (Sculpture s : data.sculptures) {
+				int id = s.getId();
 
-			/* format
-			for(TileData tileData : data.occupied){
-				build.append(" tile: ");
-				build.append(tileData.row + " ");
-				build.append(tileData.col + " ");
-				build.append(tileData.itemId + " ");
-				build.append(tileData.itemDir + " ");
+				build.append(" guard: " + id + " , ");
 
-				for(int i : tileData.artIds){
-					build.append(i + " ");
+				int row = s.getRow();
+				int col = s.getCol();
+				int dir = s.getDir().ordinal();
+
+				build.append("" + Integer.toString(row) + " , "
+						+ Integer.toString(col) + " , " + Integer.toString(dir) + " , ");
+
+				Set<Item> inventory = s.getInventory();
+				for (Item item : inventory) {
+					int itemID = item.ID;
+					build.append("" + itemID + " , ");
+				}
+				build.deleteCharAt(build.length() - 1);
+				build.append(" ; ");
+			}*/
+			
+			List<Sculpture> sculptures = new ArrayList<>();
+			
+			if(sc.hasNext("sculpture:")){
+
+				List<Integer> items = new ArrayList<>();
+
+				sc.next("sculpture:");
+				int id = sc.nextInt();
+				sc.next(",");
+				String name = sc.next();
+				sc.next(",");
+				int value = sc.nextInt();
+				sc.next(",");
+				int row = sc.nextInt();
+				sc.next(",");
+				int col = sc.nextInt();
+				sc.next(",");
+				int dir = sc.nextInt();
+
+				while(!sc.hasNext(";")){
+
+					if(sc.hasNext(",")){
+						sc.next(",");
+					}
+					if(sc.hasNextInt()){
+						items.add(sc.nextInt());
+					}
+
 				}
 
-				build.append(" ; ");
-			}
-			*/
+				sc.next(";");
 
-			List<TileData> tiles = new ArrayList<>();
+				Sculpture s = new Sculpture(Direction.values()[dir], id, value, name);
+				s.setRow(row);
+				s.setCol(col);
+				for(int i : items){
+					s.addItem(new Item(i));
+				}
+
+				sculptures.add(s);
+
+			}
 
 			if(sc.hasNext("tile:")){
 				sc.next("tile:");
@@ -322,7 +456,7 @@ public class GameData {
 		data.pid = pid;
 		data.guards = guards;
 		data.players = players;
-
+		data.occupied = tiles;
 		return data;
 	}
 
@@ -336,7 +470,7 @@ public class GameData {
 			throws IncompatiblePacketException {
 
 		StringBuilder build = new StringBuilder();
-		build.append("< ");
+		build.append(" < ");
 		build.append(" " + data.pid + " ");
 		for (Player player : data.players) {
 			int id = player.getId();
@@ -379,6 +513,35 @@ public class GameData {
 			build.deleteCharAt(build.length() - 1);
 			build.append(" ; ");
 		}
+		
+		for (Sculpture s : data.sculptures) {
+			int id = s.getId();
+
+			build.append(" sculpture: " + id + " , ");
+
+			int row = s.getRow();
+			int col = s.getCol();
+			int dir = s.getDir().ordinal();
+			
+			//value and name
+			String name = s.getName();
+			int value = s.getValue();
+			
+			build.append(name + " , " + value + " , ");
+
+			build.append("" + Integer.toString(row) + " , "
+					+ Integer.toString(col) + " , " + Integer.toString(dir) + " , ");
+
+			Set<Item> inventory = s.getInventory();
+			for (Item item : inventory) {
+				int itemID = item.ID;
+				build.append("" + itemID + " , ");
+			}
+			build.deleteCharAt(build.length() - 1);
+			build.append(" ; ");
+		}
+		
+		//append sculpture data
 
 		//Now append occupied tile data..
 		for(TileData tileData : data.occupied){
@@ -397,7 +560,10 @@ public class GameData {
 
 		build.append(" > ");
 
-		return build.toString().getBytes(Charset.forName("UTF-8"));
+		byte[] text = build.toString().getBytes(Charset.forName("UTF-8"));
+		build.insert(0, text.length);
+		byte[] bytes = build.toString().getBytes(Charset.forName("UTF-8"));
+		return bytes;
 	}
 
 	public static void addAll(List<Byte> list, byte[] bytes) {
