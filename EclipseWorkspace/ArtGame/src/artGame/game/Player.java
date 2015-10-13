@@ -31,4 +31,5 @@ public class Player extends Character{
 		this.caught = true;
 	}
 
+
 }

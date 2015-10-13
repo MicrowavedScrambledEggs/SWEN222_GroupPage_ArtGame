@@ -96,7 +96,6 @@ public class XMLHandler {
 	 *
 	 */
 	public XMLHandler(){
-		xmlHandler = new ArtGameSaveFileHandler();
 		saver = new ArtGameSaver();
 	}
 
@@ -109,6 +108,7 @@ public class XMLHandler {
 	 * @return Game built from the handler after parsing xmlFile
 	 */
 	public Game loadGame(File xmlFile){
+		xmlHandler = new ArtGameSaveFileHandler();
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 	    factory.setValidating(true);
 	    try {
