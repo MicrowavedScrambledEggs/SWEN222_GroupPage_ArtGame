@@ -20,8 +20,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- *
- * @author Tim King
+ *	Used for running a server for the game
+ * @author Tim King 300282037
  *
  */
 public class ServerGUI extends JPanel {

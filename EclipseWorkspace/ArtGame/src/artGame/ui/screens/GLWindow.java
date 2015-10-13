@@ -61,6 +61,11 @@ import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 import artGame.xml.XMLHandler;
 
+/**
+ * The Main application window for the game - Renders the game/UI and handles key presses etc.
+ * @author Tim King 300282037
+ *
+ */
 public class GLWindow {
 
 	private static GLFWErrorCallback errorCallback = Callbacks
@@ -103,6 +108,9 @@ public class GLWindow {
 	
 	private static Queue<Command> cmds;
 
+	/**
+	 * Loads the basic client-side game world
+	 */
 	static {
 		
 		cmds = new ArrayDeque<Command>();
@@ -112,6 +120,9 @@ public class GLWindow {
 		GameData.updateGame(game);
 	}
 
+	/**
+	 * Connects to the server, initiates the window and screens
+	 */
 	public GLWindow() {
 		try {
 			client = new ClientThread(new Socket("192.168.178.20", 32768), game, 10);
@@ -163,6 +174,9 @@ public class GLWindow {
 		initScreens();
 	}
 
+	/**
+	 * Begins the render loop, updates screens, handles key events
+	 */
 	public void begin() {
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
 
@@ -247,6 +261,9 @@ public class GLWindow {
 
 	}
 
+	/**
+	 * Creates the Render and UI Screens
+	 */
 	private void initScreens() {
 		screens = new ArrayList<Screen>();
 
@@ -258,6 +275,9 @@ public class GLWindow {
 		light = bufferedLight;
 	}
 
+	/**
+	 * Destroys the window
+	 */
 	public void dispose() {
 		client.close();
 		glfwDestroyWindow(window);
@@ -266,36 +286,66 @@ public class GLWindow {
 		errorCallback.release();
 	}
 	
+	/**
+	 * Adds a network command to the commands queue
+	 * @param c
+	 */
 	public static void addCommand(Command c){
 		if(c != null){
 			cmds.offer(c);
 		}
 	}
 
+	/**
+	 * Buffers the desired light for the scene (may be overwritten by individual screens)
+	 * @param light
+	 */
 	public static void setLight(Vector3f light) {
 		GLWindow.bufferedLight = light;
 	}
 
+	/**
+	 * Gets the set light for GLWindow (no obligation for Screens to use this)
+	 * @return
+	 */
 	public static Vector3f getLight() {
 		return light;
 	}
 
+	/**
+	 * Gets the opengl window id
+	 * @return
+	 */
 	public static long getWindow() {
 		return window;
 	}
 
+	/**
+	 * Gets the current camera - Screens may use their own
+	 * @return
+	 */
 	public static Camera getCamera() {
 		return camera;
 	}
 
+	/**
+	 * Buffers a camera to be used
+	 * @param cam
+	 */
 	public static void setCamera(Camera cam) {
 		GLWindow.bufferedCam = cam;
 	}
 
+	/**
+	 * Buffers a camera rotate left 90 degrees
+	 */
 	public static void rotateLeft(){
 		rotateLeft = true;
 	}
 
+	/**
+	 * Buffers a camera rotate right 90 degrees
+	 */
 	public static void rotateRight(){
 		rotateRight = true;
 	}
@@ -305,10 +355,20 @@ public class GLWindow {
 		new GLWindow().begin();
 	}
 
+	/**
+	 * Gets the client-side game world
+	 * @return
+	 */
 	public static Game getGame() {
 		return game;
 	}
 
+	/**
+	 * Transforms the given Command by the current camera angle
+	 *  - Only changes movement commands, will return the passed Command otherwise.
+	 * @param c
+	 * @return
+	 */
 	public static Command applyCameraRotation(Command c) {
 		
 		char a = c.action;

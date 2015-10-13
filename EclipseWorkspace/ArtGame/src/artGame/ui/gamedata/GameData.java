@@ -18,6 +18,11 @@ import artGame.game.Tile;
 import artGame.game.Wall;
 import artGame.main.Game;
 
+/**
+ * Holds the current Game information from the Server
+ * @author Tim King 300282037
+ *
+ */
 public class GameData {
 
 	private static Game game;
@@ -27,11 +32,18 @@ public class GameData {
 	private static List<ArtItem> arts;
 	private static List<artGame.game.Character> chars;
 
+	/**
+	 * Updates the GameData class with an updated set of data from the server
+	 * @param data
+	 */
 	public static void updateGame(GamePacketData data) {
 		GameData.data=data;
 	}
 
-
+	/**
+	 * Updates the actual game contained by GameData =
+	 * @param game
+	 */
 	public static void updateGame(Game game) {
 		GameData.game = game;
 	}
@@ -41,10 +53,18 @@ public class GameData {
 		GameData.game = game;
 	}
 
+	/**
+	 * Gets the floor of the currently held Game in GameData
+	 * @return
+	 */
 	public static Floor getFloor() {
 		return game.getFloor();
 	}
 
+	/**
+	 * Gets the current player information from server (buffered)
+	 * @return
+	 */
 	public static synchronized Player getPlayer() {
 		if(data == null || data.players == null){
 			return null;
@@ -63,10 +83,18 @@ public class GameData {
 				game.getPlayer().getCol());
 	}
 
+	/**
+	 * Gets all player information from server (buffered)
+	 * @return
+	 */
 	public static synchronized List<Player> getPlayers(){
 		return data.players;
 	}
 
+	/**
+	 * Get's the latest Character information from the server (buffered)
+	 * @return
+	 */
 	public static synchronized artGame.game.Character[] getCharacters() {
 		artGame.game.Character[] characters = new artGame.game.Character[data.players.size()+data.guards.size()];
 		int index = 0;
@@ -81,6 +109,10 @@ public class GameData {
 
 	}
 
+	/**
+	 * Gets information about all occupied tiles - Tiles that contain a Character or Art
+	 * @return
+	 */
 	public static synchronized List<TileData> getOccupiedTiles(){
 		return data.occupied;
 	}
@@ -130,6 +162,12 @@ public class GameData {
 
 	}
 
+	/**
+	 * Reads a formatted byte array produced from {@link #toByteArray(GamePacketData)}
+	 * @param packet
+	 * @return
+	 * @throws IncompatiblePacketException
+	 */
 	public synchronized static GamePacketData read(byte[] packet)
 			throws IncompatiblePacketException {
 
@@ -288,6 +326,12 @@ public class GameData {
 		return data;
 	}
 
+	/**
+	 * Writes a GamePacketData object to a byte array for server transmission
+	 * @param data
+	 * @return
+	 * @throws IncompatiblePacketException
+	 */
 	public static synchronized byte[] toByteArray(GamePacketData data)
 			throws IncompatiblePacketException {
 

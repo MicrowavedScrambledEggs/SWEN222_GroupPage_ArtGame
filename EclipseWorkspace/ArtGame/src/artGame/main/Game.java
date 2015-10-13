@@ -86,25 +86,28 @@ public class Game {
 	public void doAction(Player p, char id){
 		if(id=='w'){
 			p.setDir(Direction.NORTH);
-			floor.moveCharacter(p);
+			getFloor().moveCharacter(p);
 		}
 		else if(id=='a'){
 			p.setDir(Direction.WEST);
-			floor.moveCharacter(p);
+			getFloor().moveCharacter(p);
 		}
 		else if(id=='s'){
 			p.setDir(Direction.SOUTH);
-			floor.moveCharacter(p);
+			getFloor().moveCharacter(p);
 		}
 		else if(id=='d'){
 			p.setDir(Direction.EAST);
-			floor.moveCharacter(p);
+			getFloor().moveCharacter(p);
 		}
 		else if(id=='f'){
 			floor.interact(p);
 		}
 		else if(id=='r'){
 			floor.inspect(p);
+		}
+		else if(id=='!'){
+			p.setMoving(false);
 		}
 		else{
 			//do nothing

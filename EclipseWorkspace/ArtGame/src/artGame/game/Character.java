@@ -20,6 +20,8 @@ public class Character {
 	int col;
 	protected Direction dir; // face direction
 	protected Set<Item> inventory;
+	private boolean isMoving;
+	private long lastMove;
 
 	public Character(Direction dir, int ID) {
 		this.dir = dir;
@@ -98,6 +100,22 @@ public class Character {
 	public void setDir(Direction dir) {
 		this.dir = dir;
 	}
+	
+	/**
+	 * Gets whether the character is moving
+	 * @return
+	 */
+	public boolean isMoving(){
+		return isMoving;
+	}
+	
+	/**
+	 * Sets movement flag
+	 * @param moving
+	 */
+	public void setMoving(boolean moving){
+		this.isMoving = moving;
+	}
 
 	/**
 	 *  Returns the unique ID of the character.
@@ -108,6 +126,14 @@ public class Character {
 
 	public void setId(int pid){
 		this.ID=pid;
+	}
+
+	public long getLastMove() {
+		return lastMove;
+	}
+
+	public void setLastMove(long lastMove) {
+		this.lastMove = lastMove;
 	}
 
 }

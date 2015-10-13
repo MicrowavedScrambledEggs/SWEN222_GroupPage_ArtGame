@@ -14,6 +14,11 @@ import artGame.game.Character.Direction;
 import artGame.ui.gamedata.GameData;
 import artGame.ui.screens.GLWindow;
 
+/**
+ * KeyCallback for sending action information across the network
+ * @author Tim King 300282037
+ *
+ */
 public class NetworkKeyCallback extends GLFWKeyCallback {
 	private ClientThread connection;
 

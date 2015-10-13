@@ -27,6 +27,7 @@ import artGame.ui.renderer.Model;
 import artGame.ui.renderer.Sprite;
 import artGame.ui.renderer.animations.Tween;
 import artGame.ui.renderer.animations.TweenFloat;
+import artGame.ui.renderer.animations.TweenVector3f;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 import artGame.ui.screens.Screen;
@@ -61,9 +62,10 @@ public class GameRenderer implements Screen{
 
 	private List<Model> levelCache;
 	private Map<artGame.game.Character, Asset> characters;
+	private Map<artGame.game.Character, Vector3f> entityPositions;
 	
-	Map<Sprite, Tween<Vector3f>> spriteTweens;
-	Tween<Float> cameraTween;
+	private Map<Sprite, Tween<Vector3f>> spriteTweens;
+	private Tween<Float> cameraTween;
 	
 	private float currentTime;
 
@@ -93,26 +95,55 @@ public class GameRenderer implements Screen{
 
 	@Override
 	public void render(float delta) {
-	
 		List<Asset> renderList = getRenderList();
+		
+		for (artGame.game.Character c : entityPositions.keySet()) {
+			if (c.getCol() != entityPositions.get(c).getX() || 
+				c.getRow() != entityPositions.get(c).getZ()) {
+				float distZ = Math.abs(c.getRow()-entityPositions.get(c).getZ());
+				float distX = Math.abs(c.getRow()-entityPositions.get(c).getX());
+				
+				if(distX > 50 || distZ > 50){
+					continue;
+				}
+				
+				//Vector3f start = entityPositions.get(c);
+				Vector3f end = new Vector3f(c.getCol(), 0, c.getRow());
+				entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
+				if (spriteTweens.get((Sprite)characters.get(c)) == null) {
+					spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), 0.05f, end, currentTime));
+				}
+			}
+		}
+			
 		
 		// update tweens
 		currentTime += delta;
 		
+		List<Sprite> stopTweening = new ArrayList<Sprite>();
 		for (Sprite s : spriteTweens.keySet()) {
-			s.setPosition(spriteTweens.get(s).tween(currentTime));
+			if (spriteTweens.get(s).isFinished(currentTime)) {
+				stopTweening.add(s);
+			} else {
+				s.setPosition(spriteTweens.get(s).tween(currentTime));
+			}
+		}
+		
+		for (Sprite s : stopTweening) {
+			s.setPosition(spriteTweens.get(s).getEndValue());
+			spriteTweens.remove(s);
 		}
 		
 		if (cameraTween != null) {
 			if (cameraTween.isFinished(currentTime)) {
 				cameraTween = null;
-				camera.setRotation(new Vector3f(CAMERA_ANGLE, 90*(Math.round(currentCameraAngle/90)), 0));
 			} else {
 				float tween = cameraTween.tween(currentTime);
 				currentCameraAngle = tween;
 				camera.setRotation(new Vector3f(CAMERA_ANGLE, tween, 0));
 			}
 		}
+		
 		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
 
 		for (Asset a : renderList) {
@@ -136,11 +167,16 @@ public class GameRenderer implements Screen{
 
 	private Map<artGame.game.Character, Asset> loadCharacters() {
 		Map<artGame.game.Character, Asset> chars = new HashMap<artGame.game.Character, Asset>();
+		entityPositions = new HashMap<artGame.game.Character, Vector3f>();
 		for (artGame.game.Character c : GameData.getCharacters()) {
 			if (c instanceof Player) {
 				chars.put(c, playerSprite.instantiate());
+				((Sprite)chars.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+				entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
 			} else if (c instanceof Guard) {
 				chars.put(c, guardSprite.instantiate());
+				((Sprite)chars.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+				entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
 			} else if (c instanceof Sculpture) {
 				Matrix4f pos = new Matrix4f();
 				pos = pos.multiply(Matrix4f.translate(new Vector3f(c.getCol(), 0, c.getRow())));
@@ -151,11 +187,14 @@ public class GameRenderer implements Screen{
 	}
 
 	private void updateCharacters() {
-		// replace this with something like game.getCharacters() and iterate over it
 		List<artGame.game.Character> toRemove = new ArrayList<artGame.game.Character>();
 		for (artGame.game.Character c : GameData.getCharacters()) {
 			if (c instanceof Player || c instanceof Guard) {
-				((Sprite)characters.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+				//get current tween loc..
+				Vector3f loc = entityPositions.get(c);
+				entityPositions.remove(c);
+				entityPositions.put(c, loc);
+				//((Sprite)characters.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
 			} else if (c instanceof Sculpture) {
 				if (((Sculpture)c).isTaken()) {
 					toRemove.add(c);
@@ -311,23 +350,23 @@ public class GameRenderer implements Screen{
 	
 	public void rotateLeft() {
 		if (cameraTween == null) {
-			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90, currentTime);
+			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90*(Math.round((currentCameraAngle + 90)/90)), currentTime);
 		}
 	}
 	
 	public void rotateRight() {
 		if (cameraTween == null) {
-			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, -90, currentTime);
+			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90*(Math.round((currentCameraAngle - 90)/90)), currentTime);
 		}
-	}
-	
-	public float getCameraAngle(){
-		return this.currentCameraAngle;
 	}
 
 	@Override
 	public void dispose(){
 
+	}
+
+	public float getCameraAngle() {
+		return currentCameraAngle;
 	}
 
 }

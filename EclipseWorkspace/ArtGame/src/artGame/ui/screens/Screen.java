@@ -1,9 +1,10 @@
 package artGame.ui.screens;
 
-import artGame.ui.renderer.Camera;
-import artGame.ui.renderer.math.Matrix4f;
-import artGame.ui.renderer.math.Vector3f;
-
+/**
+ * Screen class for drawing on GLWindow
+ * @author Tim King 300282037
+ *
+ */
 public interface Screen {
 
 	public void render(float delta);

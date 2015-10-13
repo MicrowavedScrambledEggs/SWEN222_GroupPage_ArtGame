@@ -2,6 +2,7 @@ package artGame.ui.screens;
 
 import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,11 @@ import artGame.ui.renderer.Texture;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 
-
+/**
+ * A Screen implementation for the UI
+ * @author Tim King 300282037
+ *
+ */
 public class UIRenderer implements Screen {
 
 	private long window;
@@ -39,7 +44,6 @@ public class UIRenderer implements Screen {
 
 	private HashMap<Integer, Widget> itemsById;
 
-	private FontHandler fonts;
 	private Widget fontWidget;
 	
 	public UIRenderer(long window){
@@ -49,14 +53,13 @@ public class UIRenderer implements Screen {
 		height = BufferUtils.createIntBuffer(1);
 		createUI();
 		
-		BufferedImage fontImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
-		fontImage = FontHandler.process(fontImage, "looks like a toilet..");
-		
-		fontWidget = this.loadWidgetByImage(fontImage, 256, 0.5f, 0.3f);
-		fontWidget.setScale(1);
+		setPopupText("welcome : - 0");
 		
 	}
 
+	/**
+	 * Renders the UI 
+	 */
 	@Override
 	public void render(float delta) {
 		Camera cam = GLWindow.getCamera();
@@ -104,6 +107,9 @@ public class UIRenderer implements Screen {
 		height.rewind();
 	}
 
+	/**
+	 * Updates the inventory with the latest data from server
+	 */
 	private void updateInventory() {
 		resetInventory();
 		for(Item item: GameData.getPlayer().getInventory()){
@@ -129,10 +135,17 @@ public class UIRenderer implements Screen {
 		}
 	}
 
+	/**
+	 * Called when the screen is destroyed
+	 */
+	@Override
 	public void dispose(){
 
 	}
 
+	/**
+	 * Creates the UI - initiates widgets, loads images
+	 */
 	private void createUI(){
 		assets = new ArrayList<>();
 		inventory = new ArrayList<>();
@@ -175,6 +188,18 @@ public class UIRenderer implements Screen {
 		//if (square != null) {
 		//	assets.add(square);
 		//}
+	}
+	
+	/**
+	 * Sets the popup text to be displayed on screen
+	 * @param string
+	 */
+	public void setPopupText(String string){
+		BufferedImage fontImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+		fontImage = FontHandler.process(fontImage, string, new Color(0f, 0f, 0f, 0.8f));
+		
+		fontWidget = this.loadWidgetByImage(fontImage, 256, 0.5f, -0.3f);
+		fontWidget.setScale(1);
 	}
 
 	private Widget loadWidget(String filepath, int size, float x, float y) {

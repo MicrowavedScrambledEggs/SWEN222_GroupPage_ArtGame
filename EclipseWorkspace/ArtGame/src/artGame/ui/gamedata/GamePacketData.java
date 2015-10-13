@@ -11,6 +11,11 @@ import artGame.game.Character.Direction;
 import artGame.main.Game;
 import artGame.game.Wall;
 
+/**
+ * Class for transferring game information across the network
+ * @author Tim King 300282037
+ *
+ */
 public class GamePacketData {
 
 	public List<Player> players;
