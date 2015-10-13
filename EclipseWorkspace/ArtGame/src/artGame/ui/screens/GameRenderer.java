@@ -102,11 +102,7 @@ public class GameRenderer implements Screen{
 				c.getRow() != entityPositions.get(c).getZ()) {
 				float distZ = Math.abs(c.getRow()-entityPositions.get(c).getZ());
 				float distX = Math.abs(c.getRow()-entityPositions.get(c).getX());
-				
-				if(distX > 50 || distZ > 50){
-					continue;
-				}
-				
+			
 				//Vector3f start = entityPositions.get(c);
 				Vector3f end = new Vector3f(c.getCol(), 0, c.getRow());
 				entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
