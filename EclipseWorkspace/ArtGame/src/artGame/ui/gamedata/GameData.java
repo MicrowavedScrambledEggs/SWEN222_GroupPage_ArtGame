@@ -207,7 +207,10 @@ public class GameData {
 		return data.occupied;
 	}
 
-	@Deprecated
+	/**
+	 * Gets all the art from the starting game map.
+	 * @return
+	 */
 	public static ArtItem[] getAllArt() {
 
 
@@ -250,6 +253,44 @@ public class GameData {
 
 		return array;
 
+	}
+	
+	/**
+	 * Gets all sculptures from the base game map.
+	 * @return
+	 */
+	public static Sculpture[] getStartingSculptures(){
+		
+		List<Sculpture> sculps = new ArrayList<>();
+
+		float width = game.getFloor().getWidth();
+		float height = game.getFloor().getHeight();
+
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+
+				Tile t = game.getFloor().getTile(y, x);
+
+				if (t == null) {
+					continue;
+				}
+
+				if(t.getOccupant() != null){
+					if(t.getOccupant() instanceof Sculpture){
+						sculps.add((Sculpture)t.getOccupant());
+					}
+				}
+
+			}
+		}
+
+		// Put it into an array..
+		Sculpture[] array = new Sculpture[sculps.size()];
+		for (int i = 0; i < sculps.size(); i++) {
+			array[i] = sculps.get(i);
+		}
+
+		return array;
 	}
 
 	/**

@@ -15,6 +15,7 @@ public class Sculpture extends Character {
 
 	public Sculpture(Direction dir, int ID, int value, String name) {
 		super(dir, ID);
+		System.out.println(ID);
 		this.value = value;
 		this.name = name;
 		this.description = "A sculpture. It is " + name +".";
@@ -25,7 +26,7 @@ public class Sculpture extends Character {
 	 * Converts this sculpture to a Art item
 	 */
 	public Art toItem(Floor f) {
-		Art artItem = new Art(name, value, f.nextItemID());
+		Art artItem = new Art(name, value, ID);
 		artItem.setDescription("A sculpture. It is " + name +" worth " + value);
 		this.taken = true;
 		return artItem;

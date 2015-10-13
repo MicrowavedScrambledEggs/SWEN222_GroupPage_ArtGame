@@ -8,6 +8,7 @@ public class ItemSlot {
 
 	private int itemId = -1;
 	private Widget widget;
+	private int value;
 	
 	public ItemSlot(Widget w){
 		this.widget=w;
@@ -15,7 +16,7 @@ public class ItemSlot {
 	
 	public void setItem(int id){
 		this.itemId = id;
-	}
+	}	
 	
 	public int getItem(){
 		return itemId;
@@ -31,6 +32,14 @@ public class ItemSlot {
 
 	public void draw() {
 		widget.draw();
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
 	}
 
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
@@ -18,9 +19,11 @@ import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 
 import artGame.game.Item;
+import artGame.game.Sculpture;
 import artGame.ui.FontHandler;
 import artGame.ui.ItemSlot;
 import artGame.ui.Widget;
+import artGame.ui.gamedata.ArtItem;
 import artGame.ui.gamedata.GameData;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Texture;
@@ -48,8 +51,16 @@ public class UIRenderer implements Screen {
 
 	private Widget fontWidget;
 	
+	//For storing item id -> item value
+	private Map<Integer, Integer> valueById;
+	
 	public UIRenderer(long window){
 		this.window = window;
+		
+		valueById = new HashMap<>();
+		
+		//Load in values..
+		valueById = getItemValues();
 		
 		width = BufferUtils.createIntBuffer(1);
 		height = BufferUtils.createIntBuffer(1);
@@ -69,6 +80,8 @@ public class UIRenderer implements Screen {
 		if(cam != null){
 			view = cam.getView();
 		}
+		
+		setPopupText("art value: "+getInventoryValue());
 		
 		if(GameData.isOut()){
 			setPopupText("YOU ARE OUT");
@@ -123,6 +136,16 @@ public class UIRenderer implements Screen {
 		height.rewind();
 	}
 
+	private int getInventoryValue(){
+		int value = 0;
+		for(ItemSlot s : inventory){
+			if(s != null && s.getItem() > 0 && valueById.containsKey(s.getItem())){
+				value += valueById.get(s.getItem());
+			}
+		}
+		return value;
+	}
+	
 	/**
 	 * Updates the inventory with the latest data from server
 	 */
@@ -233,6 +256,26 @@ public class UIRenderer implements Screen {
 		
 		fontWidget = this.loadWidgetByImage(fontImage, 256, 0.5f, -0.3f);
 		fontWidget.setScale(1);
+	}
+	
+	/**
+	 * Loads in item values from the base game map
+	 * @return
+	 */
+	private Map<Integer, Integer> getItemValues() {
+		Map<Integer, Integer> map = new HashMap<>();
+		
+		for(ArtItem a : GameData.getAllArt()){
+			map.put(a.ID, a.value);
+			System.out.println("Setting art " + a.ID + " to value: " + a.value);
+		}
+		
+		for(Sculpture s : GameData.getStartingSculptures()){
+			map.put(s.getId(), s.getValue());
+			System.out.println("Setting sculp " + s.getId() + " to value: " + s.getValue());
+		}
+		
+		return map;
 	}
 
 	private Widget loadWidget(String filepath, int size, float x, float y) {

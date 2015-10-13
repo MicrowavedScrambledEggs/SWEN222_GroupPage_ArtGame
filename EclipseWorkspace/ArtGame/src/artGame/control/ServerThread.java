@@ -177,6 +177,7 @@ public class ServerThread extends SocketThread {
 								Main.getGame().gameover();
 							}
 							Main.getGame().removePlayer(x.getId());
+							Main.getGame().getFloor().getTile(x.getRow(), x.getCol()).setOccupant(null);
 						}
 						break;
 					}
