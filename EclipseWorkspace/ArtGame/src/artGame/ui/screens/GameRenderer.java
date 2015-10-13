@@ -63,6 +63,7 @@ public class GameRenderer implements Screen{
 	private List<Model> levelCache;
 	private Map<artGame.game.Character, Asset> characters;
 	private Map<artGame.game.Character, Vector3f> entityPositions;
+	private Map<Model, Tile> tiles;
 	
 	private Map<Sprite, Tween<Vector3f>> spriteTweens;
 	private Tween<Float> cameraTween;
@@ -131,13 +132,14 @@ public class GameRenderer implements Screen{
 		if (cameraTween != null) {
 			if (cameraTween.isFinished(currentTime)) {
 				cameraTween = null;
+				currentCameraAngle = 90*(Math.round(currentCameraAngle/90));
 			} else {
 				float tween = cameraTween.tween(currentTime);
 				currentCameraAngle = tween;
-				camera.setRotation(new Vector3f(CAMERA_ANGLE, tween, 0));
 			}
 		}
 		
+		camera.setRotation(new Vector3f(CAMERA_ANGLE, currentCameraAngle, 0));
 		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
 
 		for (Asset a : renderList) {
@@ -151,8 +153,12 @@ public class GameRenderer implements Screen{
 		if (levelCache == null) {
 			levelCache = loadFullLevel();
 		}
-
-		scene.addAll(levelCache);
+		
+		for (Model m : levelCache) {
+			if (tiles.get(m).isViewable()) {
+				scene.add(m);
+			}
+		}
 
 		updateCharacters();
 		scene.addAll(characters.values());
@@ -199,6 +205,7 @@ public class GameRenderer implements Screen{
 
 	private List<Model> loadFullLevel() {
 		List<Model> level = new ArrayList<Model>();
+		tiles = new HashMap<Model, Tile>();
 		Floor world = GameData.getFloor();
 		for (int row = 0; row < world.getHeight(); row++) {
 			for (int col = 0; col < world.getWidth(); col++) {
@@ -213,34 +220,43 @@ public class GameRenderer implements Screen{
 				if (t.getWall(artGame.game.Character.Direction.NORTH) != null){
 					if (t.getWall(artGame.game.Character.Direction.NORTH) instanceof Door) {
 						level.add(topDoor.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					} else {
 						level.add(topWall.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.SOUTH) != null){
 					if (t.getWall(artGame.game.Character.Direction.SOUTH) instanceof Door) {
 						level.add(bottomDoor.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					} else {
 						level.add(bottomWall.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.EAST) != null){
 					if (t.getWall(artGame.game.Character.Direction.EAST) instanceof Door) {
 						level.add(rightDoor.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					} else {
 						level.add(rightWall.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.WEST) != null){
 					if (t.getWall(artGame.game.Character.Direction.WEST) instanceof Door) {
 						level.add(leftDoor.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					} else {
 						level.add(leftWall.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					}
 				}
 
 				if (t instanceof EmptyTile) {
 					level.add(floor.instantiate(pos));
+					tiles.put(level.get(level.size()-1), t);
 				} else if (t instanceof StairTile) {
 					StairTile st = (StairTile) t;
 					switch(st.getDir()) {
@@ -258,10 +274,13 @@ public class GameRenderer implements Screen{
 						break;
 					}
 					level.add(stairs.instantiate(pos));
+					tiles.put(level.get(level.size()-1), t);
 				} else if (t instanceof ExitTile) {
 					level.add(floor.instantiate(pos));
+					tiles.put(level.get(level.size()-1), t);
 				} else if (t instanceof Chest) {
 					level.add(floor.instantiate(pos));
+					tiles.put(level.get(level.size()-1), t);
 					
 					int id = ((Chest) t).id;
 					if (0 <= id && id < 20 ) { // loo
@@ -294,16 +313,20 @@ public class GameRenderer implements Screen{
 							}
 						}
 						level.add(loos.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					} else if (20 <= id && id < 40) {
 						// rotate 180 if there's a wall at the bottom
 						if (t.getWall(artGame.game.Character.Direction.SOUTH) != null) {
 							pos = pos.multiply(Matrix4f.rotate(180, 0, 1, 0));
 						}
 						level.add(sinks.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					} else if (40 <= id && id < 60) {
 						level.add(desks.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					} else { // crate
 						level.add(crates.instantiate(pos));
+						tiles.put(level.get(level.size()-1), t);
 					}
 				}
 			}
