@@ -12,6 +12,14 @@ import artGame.game.GameError;
 import artGame.main.Game;
 import artGame.xml.XMLHandler;
 
+/**
+ * Sax Handler for parsing xml files for game. The 'loader'. Makes ObjectBuilders from data
+ * in the majority of the elements, using a stack to match the xml structure. ObjectBuilders
+ * then make their object and it to a GameMaker, that can then make a Game object
+ *
+ * @author Badi James
+ *
+ */
 public class ArtGameSaveFileHandler extends DefaultHandler {
 
 	private Stack<ObjectBuilder> buildStack = new Stack<ObjectBuilder>();
@@ -31,14 +39,15 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	 */
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes){
-		//TODO: Add a lot more cases once artGame.game is more complete
 		//TODO: Add handling for item descriptions
 		if(qName.equals(XMLHandler.FLOOR_ELEMENT)){
+			//Sets current level for tiles in this floor element
 			currentLevel = Integer.parseInt(attributes.getValue(0));
 		} else if(qName.equals(XMLHandler.LEVEL_ATTRIBUTE) || qName.equals(XMLHandler.ROW_ELEMENT)
 				|| qName.equals(XMLHandler.COL_ELEMENT) || qName.equals(XMLHandler.FROM_COL_ELEMENT)
 				|| qName.equals(XMLHandler.FROM_ROW_ELEMENT) || qName.equals(XMLHandler.TO_ROW_ELEMENT)
 				|| qName.equals(XMLHandler.TO_COL_ELEMENT)){
+			//Empty elements with one attribute, typically elements that only represent a number
 			addFieldToCurrentBuilder(qName, attributes.getValue(0));
 		}
 		if(qName.equals(XMLHandler.EMPTY_TILE_ELEMENT)){
@@ -53,19 +62,26 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 			buildStack.push(new ObjectBuilder(new TileStretchBuilder(currentLevel, gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
 		} else if(qName.equals(XMLHandler.STAIR_TILE_ELEMENT)){
+			//Gets the stair's direction and if its going up/down from the attributes
 			Direction dir = directionFromString(attributes.getValue(0));
 			boolean up = Boolean.parseBoolean(attributes.getValue(1));
 			buildStack.push(new ObjectBuilder(new StairTileBuilder(currentLevel, dir, up, gameMaker)));
 		} else if(qName.equals(XMLHandler.POSITION_ELEMENT) || qName.equals(XMLHandler.START_ELEMENT)
 				|| qName.equals(XMLHandler.FINISH_ELEMENT)){
+			//Creates a coordinate builder, seperate from object builders, to build a coordinate to
+			//add to the object builder at the top of the build stack
 			currentCoord = new CoordinateBuilder();
 		} else if(qName.equals(XMLHandler.PATROL_STEP_ELEMENT)){
 			currentCoord = new PatrolStep();
 		} else if(qName.equals(XMLHandler.LINKED_TILE_ELEMENT)){
+			//If xml file is correctly written, ObjectBuilder on top of stack should be a StairTileBuilder
+			//A coordinate reference for stair tiles that say the position of the stairs the are
+			//linked to. Gets the currently in construction stair builder from the stack and
+			//adds the linked tile's level attribute to the stair builder
 			ObjectBuilder stairBuilder = buildStack.peek();
 			stairBuilder.addField(attributes.getQName(0), attributes.getValue(0));
 			currentCoord = new CoordinateBuilder();
-		} else if(qName.equals(XMLHandler.X_COORD_ELEMENT)){
+		} else if(qName.equals(XMLHandler.X_COORD_ELEMENT)){//adds X or Y value to current coordinate builder
 			currentCoord.setX(Integer.parseInt(attributes.getValue(0)));
 		} else if(qName.equals(XMLHandler.Y_COORD_ELEMENT)){
 			currentCoord.setY(Integer.parseInt(attributes.getValue(0)));
@@ -74,15 +90,17 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 			//if xml file is correctly written, object builder on top of stack should be a tile builder
 			addFieldToCurrentBuilder(qName, attributeStringArray(attributes));
 		} else if(qName.equals(XMLHandler.DOOR_ELEMENT)){
-			String[] doorInfo = attributeStringArray(attributes);
-			addFieldToCurrentBuilder(qName, doorInfo);
-			gameMaker.addDoor(doorInfo);
+			//Another type of wall variable for tiles
+			String[] doorInfo = attributeStringArray(attributes);//gets the data needed to this door to tiles
+			addFieldToCurrentBuilder(qName, doorInfo);//adds a door reference to a tile builder
+			gameMaker.addDoor(doorInfo);//game keeps a collection of doors to match them up with tiles when
+			//building game
 		} else if(qName.equals(XMLHandler.PLAYER_ELEMENT)){
 			buildStack.push(new ObjectBuilder(new PlayerBuilder(gameMaker,
 					Integer.parseInt(attributes.getValue(XMLHandler.ID_ATTRIBUTE)))));
 		} else if(qName.equals(XMLHandler.DIRECTION_ELEMENT) || qName.equals(XMLHandler.NAME_ELEMENT)
 				|| qName.equals(XMLHandler.VALUE_ELEMENT)){
-			currentElement = qName;
+			currentElement = qName;//for xml elements with just character data. "leaf" elements
 		} else if(qName.equals(XMLHandler.PAINTING_ELEMENT)){
 			buildStack.push(new ObjectBuilder(new ArtBuilder(gameMaker,
 					Integer.parseInt(attributes.getValue(0)))));
@@ -112,6 +130,11 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		}
 	}
 
+	/**
+	 * Used to get a Direction object from its representative string
+	 * @param direction String that supposedly represents a direction
+	 * @return Direction object that matches the string
+	 */
 	private Direction directionFromString(String direction) {
 		if(direction.equals(XMLHandler.NORTH_VALUE)){
 			return Direction.NORTH;
@@ -130,9 +153,14 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	/**
 	 * Called when parser comes across an end tag for an element
 	 *
-	 * Completes the object builder relating to the element, as in pops the object builder from
-	 * the stack, uses the object builder to create its object, then adds it to the relevant
-	 * collection
+	 * For elements representing coordinates, builds the coordinate from the currentCoord
+	 * coordinate builder and adds it to the object builder at the top of the stack.
+	 *
+	 * For elements where the build strategy for that element is to be a field for another
+	 * build strategy, i.e with patrols or with room definers, add the build strategy to the
+	 * object builder for the parent element
+	 * 
+	 * Otherwise, pops the top object builder from the stack and adds it to the build list 
 	 */
 	@Override
 	public void endElement(String uri, String localName, String qName){
@@ -154,7 +182,13 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 			buildList.add(buildStack.pop());
 		}
 	}
-
+	
+	/**
+	 * Pops the top object builder from the build stack, gets it's build strategy, and adds it as a field to
+	 * the object builder that is now at the top of the stack (the object builder for the parent element)
+	 * 
+	 * @param qName Name of element being finished, which is the name of the build strategy field
+	 */
 	private void addBuildStrategyAsFeild(String qName) {
 		ObjectBuilder patrolSegmentBuilder = buildStack.pop();
 		BuildStrategy patrolSegment = patrolSegmentBuilder.getBuildStrategy();
@@ -164,10 +198,9 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	@Override
 	/**
 	 * Deals with characters in between tags for an element. Usually a value for a field the element
-	 * represents.
+	 * represents. For "leaf" elements
 	 */
 	public void characters(char[] ch, int start, int length){
-		//TODO: Add a lot more cases once artGame.game is more complete
 		//extracts a string from the section of the character array to parse
 		String elementDat = new String(Arrays.copyOfRange(ch, start, start + length));
 		elementDat = elementDat.trim();//removes whitespace
@@ -190,7 +223,14 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		ObjectBuilder current = buildStack.peek();
 		current.addField(localName, values);
 	}
-
+	
+	/**
+	 * Gets all the values from an attributes object, and puts them in a String array to return
+	 * Preserves the order of the values
+	 * 
+	 * @param attributes Attributes who's values will be put in string array
+	 * @return String array of values from given attributes
+	 */
 	private String[] attributeStringArray(Attributes attributes){
 		String[] attributeStringArray = new String[attributes.getLength()];
 		for(int i = 0; i < attributes.getLength(); i++){
@@ -198,11 +238,19 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		}
 		return attributeStringArray;
 	}
-
+	
+	/**
+	 * Builds game with all it's objects from data collected from parsing xml file
+	 * @return Game represented by XML file
+	 */
 	public Game buildGame(){
+		//Goes through each Object Builder on the build list and gets it to add its
+		//object, data etc to the game maker
 		for(ObjectBuilder objectBuilder : buildList){
 			objectBuilder.addToGame();
 		}
+		//gets gameMaker to build the game after gameMaker has all the objects and
+		//data from the object builders
 		return gameMaker.makeGame();
 	}
 

@@ -2285,6 +2285,7 @@
 				<x value = "15"/>
                 <y value = "3"/>
             </position>
+            <door id = "10" direction = "WEST" locked = "FALSE"/>
             <wall direction = "SOUTH" />
         </empty_tile>
         <chest id = "63">
@@ -3368,8 +3369,8 @@
 		</room>
 		<room id = "16">
 		    <segment>
-		        <from_col value = "16"/>
-		        <from_row value = "0"/>
+		        <from_col value = "0"/>
+		        <from_row value = "16"/>
 		        <to_col value = "19"/>
 		        <to_row value = "18"/>
 		    </segment>
@@ -3838,9 +3839,19 @@
 		    <direction>EAST</direction>
 		    <position>
 	            <x value = "1"/>
-	            <y value = "16"/>
+	            <y value = "18"/>
 	        </position>
 	        <patrol>
+	            <north_south_stretch>
+	        		<start>
+	        			<x value = "1"/>
+	            		<y value = "17"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "1"/>
+	            		<y value = "16"/>
+	        		</finish>
+	        	</north_south_stretch>
 	        	<west_east_stretch>
 	        		<start>
 	        			<x value = "2"/>
@@ -3871,16 +3882,6 @@
 	            		<y value = "18"/>
 	        		</finish>
 	        	</west_east_stretch>
-	        	<north_south_stretch>
-	        		<start>
-	        			<x value = "1"/>
-	            		<y value = "17"/>
-	        		</start>
-	        		<finish>
-	        			<x value = "1"/>
-	            		<y value = "16"/>
-	        		</finish>
-	        	</north_south_stretch>
 	        </patrol>
 		</guard>
 		<guard id = "12">

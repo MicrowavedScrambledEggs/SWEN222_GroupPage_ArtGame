@@ -8,6 +8,16 @@ import artGame.game.Character.Direction;
 import artGame.game.Tile;
 import artGame.xml.XMLHandler;
 
+/**
+ * Super class for build strategies for Tile objects. Stores fields common
+ * to all tile sub classes, like booleans for wall directions
+ * 
+ * Also stores Maps of direction to id values, so that game maker can match
+ * art and doors to tiles' walls when building the Game
+ * 
+ * @author Badi James
+ *
+ */
 public class TileBuilder implements BuildStrategy {
 
 	private GameMaker gameMaker;
@@ -44,14 +54,15 @@ public class TileBuilder implements BuildStrategy {
 			}
 		}
 	}
-
+	
 	private void setDoor(Object[] values) {
 		Direction dir = setWall((String) values[1]);
 		doorReference.put(dir, Integer.parseInt((String) values[0]));
 	}
 
 	/**
-	 * Sets the boolean for wall in the direction given by parameter to true
+	 * Sets the boolean for wall in the direction given by values to true
+	 * If values contain an art reference, adds the art reference to the art reference map
 	 * @param value String representation of border direction
 	 */
 	private void setWall(Object... values) {
