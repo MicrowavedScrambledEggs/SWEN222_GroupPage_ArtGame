@@ -154,8 +154,13 @@ public class GameRenderer implements Screen{
 			levelCache = loadFullLevel();
 		}
 		
+
+		int row = GameData.getPlayer().getRow();
+		int col = GameData.getPlayer().getCol();
+		Tile playerTile = GameData.getFloor().getTile(row, col);
 		for (Model m : levelCache) {
-			if (tiles.get(m).isViewable()) {
+			System.out.println(tiles.get(m).getRoom() == null);
+			if (tiles.get(m).getRoom().getTiles().contains(playerTile)) {
 				scene.add(m);
 			}
 		}
