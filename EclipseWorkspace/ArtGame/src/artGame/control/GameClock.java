@@ -24,6 +24,7 @@ public class GameClock extends Thread {
 				if (game != null) {
 					if(System.currentTimeMillis() - lastGuardMove >= MOVE_TICK){
 						game.getFloor().moveGuards();
+						game.getFloor().checkGuards();
 						lastGuardMove = System.currentTimeMillis();
 					}
 				//	for(Player p : game.getPlayers()){
