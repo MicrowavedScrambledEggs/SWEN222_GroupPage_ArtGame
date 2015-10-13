@@ -8,7 +8,7 @@
             </position>
             <wall direction = "NORTH" />
             <wall direction = "WEST" />
-            <door doorId ="1" direction = "EAST" locked = "TRUE" keyID = "1" />
+            <door doorId ="1" direction = "EAST" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -16,7 +16,7 @@
                 <y value = "0"/>
             </position>
             <wall direction = "NORTH" />
-            <door doorId ="1" direction = "WEST" locked = "TRUE" keyID = "1" />
+            <door doorId ="1" direction = "WEST" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<tile_stretch length = "4">
 			<position>
@@ -78,7 +78,7 @@
             <wall direction = "NORTH" />
             <wall direction = "EAST" />
 		</empty_tile>
-		<chest id = "22">
+		<chest id = "40">
 			<position>
 				<x value = "13"/>
                 <y value = "0"/>
@@ -93,7 +93,7 @@
             </position>
             <wall direction = "NORTH" />
 		</empty_tile>
-		<chest id = "23">
+		<chest id = "41">
 			<position>
 				<x value = "15"/>
                 <y value = "0"/>
@@ -109,7 +109,7 @@
             <wall direction = "NORTH" />
             <wall direction = "WEST" />
 		</empty_tile>
-		<chest id = "24">
+		<chest id = "50">
 			<position>
 				<x value = "19"/>
                 <y value = "0"/>
@@ -125,39 +125,44 @@
             <wall direction = "WEST" />
             <wall direction = "EAST" />
         </empty_tile>
-        <chest id = "25">
+        <chest id = "0">
 			<position>
 				<x value = "1"/>
                 <y value = "1"/>
             </position>
             <wall direction = "WEST" />
+            <wall direction = "EAST" />
             <wall direction = "SOUTH" />
         </chest>
-		<chest id = "26">
+		<chest id = "1">
 			<position>
 				<x value = "2"/>
                 <y value = "1"/>
             </position>
             <wall direction = "SOUTH" />
+            <wall direction = "WEST" />
+            <wall direction = "EAST" />
             <inventory>
-            	<item type = "ART" id = "59"/>
+            	<item type = "ART" id = "101"/>
             </inventory>
 		</chest>
-		<chest id = "27">
+		<chest id = "2">
 			<position>
 				<x value = "3"/>
                 <y value = "1"/>
             </position>
             <wall direction = "SOUTH" />
+            <wall direction = "WEST" />
+            <wall direction = "EAST" />
         </chest>
-        <chest id = "28">
+        <chest id = "20">
 			<position>
 				<x value = "4"/>
                 <y value = "1"/>
             </position>
             <wall direction = "SOUTH" />
         </chest>
-		<chest id = "29">
+		<chest id = "21">
 			<position>
 				<x value = "5"/>
                 <y value = "1"/>
@@ -165,7 +170,7 @@
             <wall direction = "EAST" />
             <wall direction = "SOUTH" />
             <inventory>
-            	<item type = "KEY" id = "1"/>
+            	<item type = "KEY" id = "200"/>
             </inventory>
         </chest>
         <empty_tile>
@@ -189,7 +194,7 @@
             </position>
             <wall direction = "EAST" />
         </empty_tile>
-        <chest id = "30">
+        <chest id = "42">
 			<position>
 				<x value = "13"/>
                 <y value = "1"/>
@@ -202,7 +207,7 @@
                 <y value = "1"/>
             </position>
         </empty_tile>
-        <chest id = "31">
+        <chest id = "43">
 			<position>
 				<x value = "15"/>
                 <y value = "1"/>
@@ -226,7 +231,7 @@
             </position>
             <wall direction = "WEST" />
         </empty_tile>
-        <chest id = "32">
+        <chest id = "51">
 			<position>
 				<x value = "19"/>
                 <y value = "1"/>
@@ -241,36 +246,41 @@
             <wall direction = "WEST" />
             <wall direction = "EAST" />
         </empty_tile>
-        <chest id = "33">
+        <chest id = "3">
 			<position>
 				<x value = "1"/>
                 <y value = "2"/>
             </position>
             <wall direction = "WEST" />
+            <wall direction = "EAST" />
             <wall direction = "NORTH" />
         </chest>
-		<chest id = "34">
+		<chest id = "4">
 			<position>
 				<x value = "2"/>
                 <y value = "2"/>
             </position>
             <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+            <wall direction = "EAST" />
 		</chest>
-		<chest id = "35">
+		<chest id = "5">
 			<position>
 				<x value = "3"/>
                 <y value = "2"/>
             </position>
             <wall direction = "NORTH" />
+            <wall direction = "WEST" />
+            <wall direction = "EAST" />
         </chest>
-        <chest id = "36">
+        <chest id = "22">
 			<position>
 				<x value = "4"/>
                 <y value = "2"/>
             </position>
             <wall direction = "NORTH" />
         </chest>
-		<chest id = "37">
+		<chest id = "23">
 			<position>
 				<x value = "5"/>
                 <y value = "2"/>
@@ -299,7 +309,7 @@
             </position>
             <wall direction = "EAST" />
         </empty_tile>
-        <chest id = "38">
+        <chest id = "44">
 			<position>
 				<x value = "13"/>
                 <y value = "2"/>
@@ -312,13 +322,13 @@
                 <y value = "2"/>
             </position>
         </empty_tile>
-        <empty_tile>
+        <chest id = "45">
 			<position>
 				<x value = "15"/>
                 <y value = "2"/>
             </position>
             <wall direction = "EAST" />
-        </empty_tile>
+        </chest>
        <empty_tile>
 			<position>
 				<x value = "16"/>
@@ -333,7 +343,7 @@
                 <y value = "2"/>
             </position>
 		</tile_stretch>
-        <chest id = "39">
+        <chest id = "52">
 			<position>
 				<x value = "19"/>
                 <y value = "2"/>
@@ -346,8 +356,8 @@
                 <y value = "3"/>
             </position>
             <wall direction = "WEST" />
-            <door doorId ="4" direction = "EAST" locked = "TRUE" keyID = "1" />
-            <door doorId ="5" direction = "SOUTH" locked = "TRUE" keyID = "1" />
+            <door doorId ="4" direction = "EAST" locked = "TRUE" keyID = "200" />
+            <door doorId ="5" direction = "SOUTH" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -355,7 +365,7 @@
                 <y value = "3"/>
             </position>
             <wall direction = "SOUTH" />
-            <door doorId ="4" direction = "WEST" locked = "TRUE" keyID = "1" />
+            <door doorId ="4" direction = "WEST" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<tile_stretch length = "4">
 			<position>
@@ -431,7 +441,7 @@
             </position>
             <wall direction = "SOUTH" />
 		</tile_stretch>
-		<chest id = "40">
+		<chest id = "53">
 			<position>
 				<x value = "19"/>
                 <y value = "3"/>
@@ -445,7 +455,7 @@
                 <y value = "4"/>
 			</position>
 			<wall direction = "WEST" />
-			<door doorId ="5" direction = "NORTH" locked = "TRUE" keyID = "1" />
+			<door doorId ="5" direction = "NORTH" locked = "TRUE" keyID = "200" />
 		</empty_tile>
 		<tile_stretch length = "2">
 			<position>
@@ -779,7 +789,7 @@
 				<x value = "9"/>
                 <y value = "8"/>
 			</position>
-			<wall direction = "NORTH"/>
+			<wall direction = "NORTH" artID = "58"/>
 		</tile_stretch>
 		<empty_tile>
 			<position>
@@ -1051,7 +1061,7 @@
 				<x value = "10"/>
                 <y value = "11"/>
 			</position>
-			<door doorID = "8" direction = "SOUTH" locked = "TRUE" keyID = "2" />
+			<door doorID = "8" direction = "SOUTH" locked = "TRUE" keyID = "202" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -1184,7 +1194,7 @@
 				<x value = "10"/>
                 <y value = "12"/>
 			</position>
-			<door doorID = "8" direction = "NORTH" locked = "TRUE" keyID = "2" />
+			<door doorID = "8" direction = "NORTH" locked = "TRUE" keyID = "202" />
 		</empty_tile>
 		<empty_tile>
 			<position>
@@ -1814,6 +1824,134 @@
 			<wall direction = "SOUTH"/>
 			<wall direction = "EAST"/>
 		</empty_tile>
+		<room id = "0">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "0"/>
+		        <to_col value = "0"/>
+		        <to_row value = "3"/>
+		    </segment>
+		</room>
+		<room id = "1">
+		    <segment>
+		        <from_col value = "1"/>
+		        <from_row value = "0"/>
+		        <to_col value = "5"/>
+		        <to_row value = "1"/>
+		    </segment>
+		    <square>
+		        <row value = "0"/>
+		        <col value = "6"/>
+		    </square>
+		</room>
+		<room id = "2">
+		    <segment>
+		        <from_col value = "1"/>
+		        <from_row value = "2"/>
+		        <to_col value = "5"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <square>
+		        <row value = "3"/>
+		        <col value = "6"/>
+		    </square>
+		</room>
+		<room id = "3">
+		    <segment>
+		        <from_col value = "13"/>
+		        <from_row value = "0"/>
+		        <to_col value = "15"/>
+		        <to_row value = "3"/>
+		    </segment>
+		</room>
+		<room id = "4">
+		    <segment>
+		        <from_col value = "16"/>
+		        <from_row value = "2"/>
+		        <to_col value = "19"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "18"/>
+		        <from_row value = "0"/>
+		        <to_col value = "19"/>
+		        <to_row value = "1"/>
+		    </segment>
+		    <square>
+		        <row value = "1"/>
+		        <col value = "17"/>
+		    </square>
+		</room>
+		<room id = "5">
+		    <segment>
+		        <from_col value = "7"/>
+		        <from_row value = "0"/>
+		        <to_col value = "12"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "6"/>
+		        <from_row value = "1"/>
+		        <to_col value = "6"/>
+		        <to_row value = "2"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "4"/>
+		        <from_row value = "4"/>
+		        <to_col value = "15"/>
+		        <to_row value = "7"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "4"/>
+		        <from_row value = "8"/>
+		        <to_col value = "7"/>
+		        <to_row value = "15"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "12"/>
+		        <from_row value = "8"/>
+		        <to_col value = "15"/>
+		        <to_row value = "15"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "8"/>
+		        <from_row value = "12"/>
+		        <to_col value = "11"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "6">
+		    <segment>
+		        <from_col value = "8"/>
+		        <from_row value = "8"/>
+		        <to_col value = "11"/>
+		        <to_row value = "11"/>
+		    </segment>
+		</room>
+		<room id = "7">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "4"/>
+		        <to_col value = "3"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "8">
+		    <segment>
+		        <from_col value = "16"/>
+		        <from_row value = "4"/>
+		        <to_col value = "19"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "9">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "16"/>
+		        <to_col value = "19"/>
+		        <to_row value = "18"/>
+		    </segment>
+		</room>
 	</floor>
 	<floor level="1">
 		<empty_tile>
@@ -1845,7 +1983,7 @@
             </position>
             <wall direction = "NORTH" artID = "61"/>
 		</tile_stretch>
-		<chest id = "2">
+		<chest id = "70">
 			<position>
 				<x value = "6"/>
                 <y value = "0"/>
@@ -1853,7 +1991,7 @@
             <wall direction = "NORTH" />
             <wall direction = "EAST" />
 	        <inventory>
-	        	<item type = "KEY" id = "2"/>
+	        	<item type = "KEY" id = "202"/>
 	        </inventory>
 		</chest>
 		<empty_tile>
@@ -1889,7 +2027,7 @@
             <wall direction = "NORTH" />
             <wall direction = "WEST" />
 		</empty_tile>
-		<chest id = "5">
+		<chest id = "60">
 			<position>
 				<x value = "19"/>
                 <y value = "0"/>
@@ -1951,8 +2089,9 @@
             </position>
             <wall direction = "WEST" />
             <wall direction = "SOUTH" />
+            <wall direction = "EAST" />
         </chest>
-        <chest id = "7">
+        <chest id = "24">
 			<position>
 				<x value = "14"/>
                 <y value = "1"/>
@@ -1985,7 +2124,7 @@
             </position>
             <wall direction = "WEST" />
         </empty_tile>
-        <chest id ="8">
+        <chest id ="61">
 			<position>
 				<x value = "19"/>
                 <y value = "1"/>
@@ -2039,15 +2178,16 @@
             </position>
             <wall direction = "EAST" artID = "64"/>
         </empty_tile>
-        <chest id = "9">
+        <chest id = "7">
 			<position>
 				<x value = "13"/>
                 <y value = "2"/>
             </position>
             <wall direction = "WEST" />
             <wall direction = "NORTH" />
+            <wall direction = "EAST" />
         </chest>
-        <chest id = "10">
+        <chest id = "25">
 			<position>
 				<x value = "14"/>
                 <y value = "2"/>
@@ -2081,7 +2221,7 @@
                 <y value = "2"/>
             </position>
         </empty_tile>
-        <chest id = "11">
+        <chest id = "62">
 			<position>
 				<x value = "19"/>
                 <y value = "2"/>
@@ -2145,16 +2285,17 @@
 				<x value = "15"/>
                 <y value = "3"/>
             </position>
+            <door id = "10" direction = "WEST" locked = "FALSE"/>
             <wall direction = "SOUTH" />
         </empty_tile>
-        <chest id = "12">
+        <chest id = "63">
             <position>
 				<x value = "16"/>
                 <y value = "3"/>
             </position>
             <wall direction = "SOUTH" />
         </chest>
-        <chest id = "13">
+        <chest id = "26">
             <position>
 				<x value = "17"/>
                 <y value = "3"/>
@@ -2173,7 +2314,7 @@
 				<x value = "19"/>
                 <y value = "3"/>
             </position>
-            <door id = "13" direction = "SOUTH" locked = "TRUE" keyID = "3" />
+            <door id = "13" direction = "SOUTH" locked = "TRUE" keyID = "201" />
             <wall direction = "EAST" />
         </empty_tile>
         <empty_tile>
@@ -2225,7 +2366,7 @@
 				<x value = "19"/>
                 <y value = "4"/>
             </position>
-            <door id = "13" direction = "NORTH" locked = "TRUE" keyID = "3" />
+            <door id = "13" direction = "NORTH" locked = "TRUE" keyID = "201" />
             <wall direction = "EAST" />
         </empty_tile>
         <empty_tile>
@@ -2241,7 +2382,7 @@
                 <y value = "5"/>
             </position>
         </empty_tile>
-        <chest id = "14">
+        <chest id = "71">
             <position>
 				<x value = "2"/>
                 <y value = "5"/>
@@ -2294,7 +2435,7 @@
                 <y value = "6"/>
             </position>
         </empty_tile>
-        <chest id = "15">
+        <chest id = "72">
             <position>
 				<x value = "2"/>
                 <y value = "6"/>
@@ -2348,7 +2489,7 @@
                 <y value = "6"/>
             </position>
         </empty_tile>
-        <chest id = "15">
+        <chest id = "73">
             <position>
 				<x value = "2"/>
                 <y value = "6"/>
@@ -2444,7 +2585,7 @@
             </position>
             <wall direction = "WEST" />
         </empty_tile>
-        <chest id = "16">
+        <chest id = "74">
             <position>
 				<x value = "1"/>
                 <y value = "8"/>
@@ -2504,7 +2645,7 @@
             </position>
             <wall direction = "WEST" />
         </empty_tile>
-        <chest id = "16">
+        <chest id = "75">
             <position>
 				<x value = "2"/>
                 <y value = "9"/>
@@ -2557,7 +2698,7 @@
             </position>
             <wall direction = "EAST" artID = "76"/>
         </empty_tile>
-        <chest id = "17">
+        <chest id = "76">
         	<position>
 				<x value = "0"/>
                 <y value = "10"/>
@@ -2624,7 +2765,7 @@
                 <y value = "11"/>
             </position>
         </empty_tile>
-        <chest id ="18">
+        <chest id ="77">
             <position>
 				<x value = "2"/>
                 <y value = "11"/>
@@ -2684,7 +2825,7 @@
                 <y value = "12"/>
             </position>
         </empty_tile>
-        <chest id ="19">
+        <chest id ="78">
             <position>
 				<x value = "1"/>
                 <y value = "12"/>
@@ -2744,7 +2885,7 @@
                 <y value = "13"/>
             </position>
         </tile_stretch>
-        <chest id ="20">
+        <chest id ="79">
             <position>
 				<x value = "3"/>
                 <y value = "13"/>
@@ -2840,7 +2981,7 @@
                 <y value = "14"/>
             </position>
         </tile_stretch>
-        <chest id ="21">
+        <chest id ="80">
             <position>
 				<x value = "3"/>
                 <y value = "14"/>
@@ -2909,14 +3050,14 @@
                 <y value = "15"/>
             </position>
         </tile_stretch>
-        <chest id ="21">
+        <empty_tile>
             <position>
 				<x value = "3"/>
                 <y value = "15"/>
             </position>
             <wall direction = "EAST" />
             <wall direction = "SOUTH" />
-        </chest>
+        </empty_tile>
         <empty_tile>
             <position>
 				<x value = "4"/>
@@ -3162,6 +3303,110 @@
             <wall direction = "EAST"/>
             <wall direction = "SOUTH"/>
         </empty_tile>
+		<room id = "10">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "0"/>
+		        <to_col value = "6"/>
+		        <to_row value = "3"/>
+		    </segment>
+		</room>
+		<room id = "11">
+		    <segment>
+		        <from_col value = "13"/>
+		        <from_row value = "0"/>
+		        <to_col value = "14"/>
+		        <to_row value = "1"/>
+		    </segment>
+		</room>
+		<room id = "12">
+		    <segment>
+		        <from_col value = "13"/>
+		        <from_row value = "2"/>
+		        <to_col value = "14"/>
+		        <to_row value = "3"/>
+		    </segment>
+		</room>
+		<room id = "13">
+		    <segment>
+		        <from_col value = "15"/>
+		        <from_row value = "0"/>
+		        <to_col value = "15"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "16"/>
+		        <from_row value = "2"/>
+		        <to_col value = "19"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "18"/>
+		        <from_row value = "0"/>
+		        <to_col value = "19"/>
+		        <to_row value = "3"/>
+		    </segment>
+		    <square>
+		        <row value = "1"/>
+		        <col value = "16"/>
+		    </square>
+		</room>
+		<room id = "14">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "4"/>
+		        <to_col value = "3"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "15">
+		    <segment>
+		        <from_col value = "16"/>
+		        <from_row value = "4"/>
+		        <to_col value = "19"/>
+		        <to_row value = "15"/>
+		    </segment>
+		</room>
+		<room id = "16">
+		    <segment>
+		        <from_col value = "0"/>
+		        <from_row value = "16"/>
+		        <to_col value = "19"/>
+		        <to_row value = "18"/>
+		    </segment>
+		</room>
+		<room id = "17">
+		    <segment>
+		        <from_col value = "8"/>
+		        <from_row value = "8"/>
+		        <to_col value = "11"/>
+		        <to_row value = "11"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "9"/>
+		        <from_row value = "12"/>
+		        <to_col value = "10"/>
+		        <to_row value = "13"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "4"/>
+		        <from_row value = "14"/>
+		        <to_col value = "15"/>
+		        <to_row value = "15"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "4"/>
+		        <from_row value = "13"/>
+		        <to_col value = "5"/>
+		        <to_row value = "13"/>
+		    </segment>
+		    <segment>
+		        <from_col value = "14"/>
+		        <from_row value = "13"/>
+		        <to_col value = "15"/>
+		        <to_row value = "13"/>
+		    </segment>
+		</room>
 	</floor>
 	<players>
 		<player id = "1">
@@ -3174,14 +3419,46 @@
 	</players>
 	<art>
 	    <painting artID = "1">
-	    	<name>A Really Good Painting</name>
-	    	<value>1000</value>
+	    	<name>Ghostbusters Car</name>
+	    	<value>2000</value>
 	    </painting>
 	    <painting artID = "2">
-	    	<name>A Really Shit Painting</name>
-	    	<value>10</value>
+	    	<name>Spengler</name>
+	    	<value>1000</value>
 	    </painting>
-	    <sculpture artID = "58">
+	    <painting artID = "3">
+	    	<name>Stantz</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "4">
+	    	<name>Zeddemore</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "5">
+	    	<name>Slimer</name>
+	    	<value>2000</value>
+	    </painting>
+	    <painting artID = "6">
+	    	<name>Venkman</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "7">
+	    	<name>Predator</name>
+	    	<value>2000</value>
+	    </painting>
+	    <painting artID = "8">
+	    	<name>Dutch</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "9">
+	    	<name>Billy</name>
+	    	<value>1000</value>
+	    </painting>
+	    <painting artID = "58">
+	    	<name>LTSA Nicolas LiftCage</name>
+	    	<value>18000000</value>
+	    </painting>
+	    <sculpture artID = "100">
 	        <level value = "0" />
 	    	<direction>EAST</direction>
 	    	<position>
@@ -3191,7 +3468,7 @@
 	    	<name>Michelangelo's David (J Pearce)</name>
 	    	<value>10000</value>
 	    </sculpture>
-	    <painting artID = "59">
+	    <painting artID = "101">
 	    	<name>Someone Forgot to Flush</name>
 	    	<value>-999</value>
 	    </painting>
@@ -3397,6 +3674,556 @@
 	        	</west_east_stretch>
 	        </patrol>
 		</guard>
+		<guard id ="7">
+			<level value = "0" />
+		    <direction>EAST</direction>
+		    <position>
+	            <x value = "4"/>
+	            <y value = "14"/>
+	        </position>
+	        <patrol>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "4"/>
+	            		<y value = "15"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "15"/>
+	            		<y value = "15"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "15"/>
+	            		<y value = "14"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "4"/>
+	            		<y value = "14"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        </patrol>
+		</guard>
+		<guard id = "8">
+			<level value = "0" />
+		    <direction>NORTH</direction>
+		    <position>
+	            <x value = "9"/>
+	            <y value = "18"/>
+	        </position>
+	        <patrol>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "10"/>
+	            		<y value = "18"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "10"/>
+	            		<y value = "13"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "9"/>
+	            		<y value = "13"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "9"/>
+	            		<y value = "18"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        </patrol>
+		</guard>
+		<guard id = "9">
+			<level value = "0" />
+		    <direction>EAST</direction>
+		    <position>
+	            <x value = "0"/>
+	            <y value = "18"/>
+	        </position>
+	        <patrol>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "1"/>
+	            		<y value = "18"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "6"/>
+	            		<y value = "18"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "6"/>
+	            		<y value = "17"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "6"/>
+	            		<y value = "16"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "5"/>
+	            		<y value = "16"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "0"/>
+	            		<y value = "16"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "0"/>
+	            		<y value = "17"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "0"/>
+	            		<y value = "18"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        </patrol>
+		</guard>
+		<guard id = "10">
+			<level value = "0" />
+		    <direction>WEST</direction>
+		    <position>
+	            <x value = "19"/>
+	            <y value = "16"/>
+	        </position>
+	        <patrol>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "18"/>
+	            		<y value = "16"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "13"/>
+	            		<y value = "16"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "13"/>
+	            		<y value = "17"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "13"/>
+	            		<y value = "18"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "14"/>
+	            		<y value = "18"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "19"/>
+	            		<y value = "18"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "19"/>
+	            		<y value = "17"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "19"/>
+	            		<y value = "16"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        </patrol>
+		</guard>
+		<guard id = "11">
+			<level value = "1" />
+		    <direction>EAST</direction>
+		    <position>
+	            <x value = "1"/>
+	            <y value = "18"/>
+	        </position>
+	        <patrol>
+	            <north_south_stretch>
+	        		<start>
+	        			<x value = "1"/>
+	            		<y value = "17"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "1"/>
+	            		<y value = "16"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "2"/>
+	            		<y value = "16"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "18"/>
+	            		<y value = "16"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "18"/>
+	            		<y value = "17"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "18"/>
+	            		<y value = "18"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "17"/>
+	            		<y value = "18"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "1"/>
+	            		<y value = "18"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        </patrol>
+		</guard>
+		<guard id = "12">
+			<level value = "1" />
+		    <direction>EAST</direction>
+		    <position>
+	            <x value = "4"/>
+	            <y value = "14"/>
+	        </position>
+	        <patrol>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "5"/>
+	            		<y value = "14"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "15"/>
+	            		<y value = "14"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "15"/>
+	            		<y value = "15"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "12"/>
+	            		<y value = "15"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "12"/>
+	            		<y value = "16"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "12"/>
+	            		<y value = "18"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "11"/>
+	            		<y value = "18"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "7"/>
+	            		<y value = "18"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "7"/>
+	            		<y value = "17"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "7"/>
+	            		<y value = "15"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "6"/>
+	            		<y value = "15"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "4"/>
+	            		<y value = "15"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        </patrol>
+		</guard>
+		<guard id = "13">
+			<level value = "1" />
+		    <direction>NORTH</direction>
+		    <position>
+	            <x value = "2"/>
+	            <y value = "15"/>
+	        </position>
+	        <patrol>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "2"/>
+	            		<y value = "14"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "2"/>
+	            		<y value = "12"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "3"/>
+	            		<y value = "12"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "3"/>
+	            		<y value = "7"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "2"/>
+	            		<y value = "7"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "1"/>
+	            		<y value = "7"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "1"/>
+	            		<y value = "6"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "0"/>
+	            		<y value = "6"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "0"/>
+	            		<y value = "7"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "0"/>
+	            		<y value = "9"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "1"/>
+	            		<y value = "9"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "1"/>
+	            		<y value = "11"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "0"/>
+	            		<y value = "11"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "0"/>
+	            		<y value = "15"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "1"/>
+	            		<y value = "15"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "2"/>
+	            		<y value = "15"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        </patrol>
+		</guard>
+		<guard id = "14">
+			<level value = "1" />
+		    <direction>EAST</direction>
+		    <position>
+	            <x value = "16"/>
+	            <y value = "4"/>
+	        </position>
+	        <patrol>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "16"/>
+	            		<y value = "5"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "18"/>
+	            		<y value = "5"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "18"/>
+	            		<y value = "6"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "16"/>
+	            		<y value = "6"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "16"/>
+	            		<y value = "7"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "16"/>
+	            		<y value = "9"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "17"/>
+	            		<y value = "9"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "18"/>
+	            		<y value = "9"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "18"/>
+	            		<y value = "10"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "16"/>
+	            		<y value = "10"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "16"/>
+	            		<y value = "11"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "16"/>
+	            		<y value = "13"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "17"/>
+	            		<y value = "13"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "18"/>
+	            		<y value = "13"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "18"/>
+	            		<y value = "14"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "16"/>
+	            		<y value = "14"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "16"/>
+	            		<y value = "15"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "19"/>
+	            		<y value = "15"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "19"/>
+	            		<y value = "14"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "19"/>
+	            		<y value = "12"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "18"/>
+	            		<y value = "12"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "17"/>
+	            		<y value = "12"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "17"/>
+	            		<y value = "11"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "19"/>
+	            		<y value = "11"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "19"/>
+	            		<y value = "10"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "19"/>
+	            		<y value = "8"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "18"/>
+	            		<y value = "8"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "17"/>
+	            		<y value = "8"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "17"/>
+	            		<y value = "7"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "19"/>
+	            		<y value = "7"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        	<north_south_stretch>
+	        		<start>
+	        			<x value = "19"/>
+	            		<y value = "6"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "19"/>
+	            		<y value = "4"/>
+	        		</finish>
+	        	</north_south_stretch>
+	        	<west_east_stretch>
+	        		<start>
+	        			<x value = "18"/>
+	            		<y value = "4"/>
+	        		</start>
+	        		<finish>
+	        			<x value = "16"/>
+	            		<y value = "4"/>
+	        		</finish>
+	        	</west_east_stretch>
+	        </patrol>
+		</guard>
 		<guard id = "3">
 		    <level value = "0" />
 		    <direction>EAST</direction>
@@ -3405,7 +4232,7 @@
 	            <y value = "0"/>
 	        </position>
 	        <inventory>
-	        	<item type = "KEY" id = "3"/>
+	        	<item type = "KEY" id = "201"/>
 	        </inventory>
 		</guard>
 	</guards>

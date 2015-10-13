@@ -1,0 +1,9 @@
+0 - 19 : Toilets 
+20 - 39 : Sinks
+
+(might want to just use the same model for the next three)
+40 - 49 : Office Desks
+50 - 59 : Security Desks
+60 - 69 : Benches
+
+70+ : Crates

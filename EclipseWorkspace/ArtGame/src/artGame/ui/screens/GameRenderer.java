@@ -1,3 +1,4 @@
+
 package artGame.ui.screens;
 
 import java.nio.IntBuffer;
@@ -16,11 +17,11 @@ import artGame.game.ExitTile;
 import artGame.game.Floor;
 import artGame.game.Guard;
 import artGame.game.Player;
+import artGame.game.Room;
 import artGame.game.Sculpture;
 import artGame.game.StairTile;
 import artGame.game.Tile;
 import artGame.ui.gamedata.GameData;
-import artGame.ui.gamedata.TileData;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Camera;
@@ -31,6 +32,7 @@ import artGame.ui.renderer.animations.TweenFloat;
 import artGame.ui.renderer.animations.TweenVector3f;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
+import artGame.ui.screens.Screen;
 
 public class GameRenderer implements Screen{
 
@@ -41,6 +43,8 @@ public class GameRenderer implements Screen{
 
 	private static final float CAMERA_ANGLE = 60f;
 	private float currentCameraAngle;
+	
+	private static final boolean SPRITE_TWEENING = true;
 
 	private Model floor;
 	private Model topWall;
@@ -60,9 +64,10 @@ public class GameRenderer implements Screen{
 	private Sprite playerSprite;
 	private Sprite guardSprite;
 
-	private List<Model> levelCache;
 	private Map<artGame.game.Character, Asset> characters;
 	private Map<artGame.game.Character, Vector3f> entityPositions;
+	private Map<Model, Tile> tiles;
+	private Map<Room, List<Model>> rooms;
 	
 	private Map<Sprite, Tween<Vector3f>> spriteTweens;
 	private Tween<Float> cameraTween;
@@ -71,7 +76,8 @@ public class GameRenderer implements Screen{
 
 	public GameRenderer(){
 		resetAssets();
-		levelCache = loadFullLevel();
+		tiles = loadFullLevel();
+		rooms = createRooms();
 		characters = loadCharacters();
 		
 		spriteTweens = new HashMap<Sprite, Tween<Vector3f>>();
@@ -97,64 +103,92 @@ public class GameRenderer implements Screen{
 	public void render(float delta) {
 		List<Asset> renderList = getRenderList();
 		
-		for (artGame.game.Character c : entityPositions.keySet()) {
-			if (c.getCol() != entityPositions.get(c).getX() || 
-				c.getRow() != entityPositions.get(c).getZ()) {
-				float distZ = Math.abs(c.getRow()-entityPositions.get(c).getZ());
-				float distX = Math.abs(c.getRow()-entityPositions.get(c).getX());
-			
-				//Vector3f start = entityPositions.get(c);
-				Vector3f end = new Vector3f(c.getCol(), 0, c.getRow());
-				entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
-				if (spriteTweens.get((Sprite)characters.get(c)) == null) {
-					spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), 0.05f, end, currentTime));
-				}
-			}
-		}
-			
-		
 		// update tweens
 		currentTime += delta;
 		
-		List<Sprite> stopTweening = new ArrayList<Sprite>();
-		for (Sprite s : spriteTweens.keySet()) {
-			if (spriteTweens.get(s).isFinished(currentTime)) {
-				stopTweening.add(s);
-			} else {
-				s.setPosition(spriteTweens.get(s).tween(currentTime));
+		if (SPRITE_TWEENING) {
+			for (artGame.game.Character c : entityPositions.keySet()) {
+				if (c.getCol() != entityPositions.get(c).getX() || 
+					c.getRow() != entityPositions.get(c).getZ()) {
+					
+					//Vector3f start = entityPositions.get(c);
+					Vector3f end = new Vector3f(c.getCol(), 0, c.getRow());
+					entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
+					if (spriteTweens.get((Sprite)characters.get(c)) == null) {
+						spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), 0.05f, end, currentTime));
+					}
+				}
 			}
-		}
-		
-		for (Sprite s : stopTweening) {
-			s.setPosition(spriteTweens.get(s).getEndValue());
-			spriteTweens.remove(s);
+			
+			List<Sprite> stopTweening = new ArrayList<Sprite>();
+			for (Sprite s : spriteTweens.keySet()) {
+				if (spriteTweens.get(s).isFinished(currentTime)) {
+					stopTweening.add(s);
+					s.setPosition(spriteTweens.get(s).getEndValue());
+				} else {
+					s.setPosition(spriteTweens.get(s).tween(currentTime));
+				}
+			}
+			
+			for (Sprite s : stopTweening) {
+				spriteTweens.remove(s);
+			}
+		} else {
+			for (artGame.game.Character c : characters.keySet()) {
+				if (characters.get(c) instanceof Sprite) {
+					((Sprite) characters.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+				}
+			}
 		}
 		
 		if (cameraTween != null) {
 			if (cameraTween.isFinished(currentTime)) {
 				cameraTween = null;
+				currentCameraAngle = 90*(Math.round(currentCameraAngle/90));
 			} else {
 				float tween = cameraTween.tween(currentTime);
 				currentCameraAngle = tween;
-				camera.setRotation(new Vector3f(CAMERA_ANGLE, tween, 0));
 			}
 		}
 		
+		camera.setRotation(new Vector3f(CAMERA_ANGLE, currentCameraAngle, 0));
 		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
 
 		for (Asset a : renderList) {
 			a.draw(camera, light);
 		}
 	}
+	
+	private Map<Room, List<Model>> createRooms() {
+		Map<Room, List<Model>> temp = new HashMap<Room, List<Model>>();
+		for (Model m : tiles.keySet()) {
+			Room r = tiles.get(m).getRoom();
+			List<Model> ml = temp.get(r);
+			if (ml == null) {
+				ml = new ArrayList<Model>();
+			}
+			if (temp.get(r) == null) {
+				temp.put(r, ml);
+			}
+			ml.add(m);
+		}
+		return temp;
+	}
 
 	private List<Asset> getRenderList() {
 		List<Asset> scene = new ArrayList<Asset>();
 
-		if (levelCache == null) {
-			levelCache = loadFullLevel();
+		if (tiles == null) {
+			tiles = loadFullLevel();
 		}
+		
 
-		scene.addAll(levelCache);
+		int row = GameData.getPlayer().getRow();
+		int col = GameData.getPlayer().getCol();
+		Tile playerTile = GameData.getFloor().getTile(row, col);
+		//System.out.println(rooms == null);
+		//System.out.println(rooms.get(playerTile.getRoom()) == null);
+		scene.addAll(rooms.get(playerTile.getRoom()));
 
 		updateCharacters();
 		scene.addAll(characters.values());
@@ -217,8 +251,8 @@ public class GameRenderer implements Screen{
 		}
 	}
 
-	private List<Model> loadFullLevel() {
-		List<Model> level = new ArrayList<Model>();
+	private Map<Model, Tile> loadFullLevel() {
+		Map<Model, Tile> level = new HashMap<Model, Tile>();
 		Floor world = GameData.getFloor();
 		for (int row = 0; row < world.getHeight(); row++) {
 			for (int col = 0; col < world.getWidth(); col++) {
@@ -232,35 +266,35 @@ public class GameRenderer implements Screen{
 
 				if (t.getWall(artGame.game.Character.Direction.NORTH) != null){
 					if (t.getWall(artGame.game.Character.Direction.NORTH) instanceof Door) {
-						level.add(topDoor.instantiate(pos));
+						level.put(topDoor.instantiate(pos), t);
 					} else {
-						level.add(topWall.instantiate(pos));
+						level.put(topWall.instantiate(pos), t);
 					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.SOUTH) != null){
 					if (t.getWall(artGame.game.Character.Direction.SOUTH) instanceof Door) {
-						level.add(bottomDoor.instantiate(pos));
+						level.put(bottomDoor.instantiate(pos), t);
 					} else {
-						level.add(bottomWall.instantiate(pos));
+						level.put(bottomWall.instantiate(pos), t);
 					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.EAST) != null){
 					if (t.getWall(artGame.game.Character.Direction.EAST) instanceof Door) {
-						level.add(rightDoor.instantiate(pos));
+						level.put(rightDoor.instantiate(pos), t);
 					} else {
-						level.add(rightWall.instantiate(pos));
+						level.put(rightWall.instantiate(pos), t);
 					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.WEST) != null){
 					if (t.getWall(artGame.game.Character.Direction.WEST) instanceof Door) {
-						level.add(leftDoor.instantiate(pos));
+						level.put(leftDoor.instantiate(pos), t);
 					} else {
-						level.add(leftWall.instantiate(pos));
+						level.put(leftWall.instantiate(pos), t);
 					}
 				}
 
 				if (t instanceof EmptyTile) {
-					level.add(floor.instantiate(pos));
+					level.put(floor.instantiate(pos), t);
 				} else if (t instanceof StairTile) {
 					StairTile st = (StairTile) t;
 					switch(st.getDir()) {
@@ -277,11 +311,11 @@ public class GameRenderer implements Screen{
 						pos = pos.multiply(Matrix4f.rotate(90, 0, 1, 0));
 						break;
 					}
-					level.add(stairs.instantiate(pos));
+					level.put(stairs.instantiate(pos), t);
 				} else if (t instanceof ExitTile) {
-					level.add(floor.instantiate(pos));
+					level.put(floor.instantiate(pos), t);
 				} else if (t instanceof Chest) {
-					level.add(floor.instantiate(pos));
+					level.put(floor.instantiate(pos), t);
 					
 					int id = ((Chest) t).id;
 					if (0 <= id && id < 20 ) { // loo
@@ -313,17 +347,17 @@ public class GameRenderer implements Screen{
 								break;
 							}
 						}
-						level.add(loos.instantiate(pos));
+						level.put(loos.instantiate(pos), t);
 					} else if (20 <= id && id < 40) {
 						// rotate 180 if there's a wall at the bottom
 						if (t.getWall(artGame.game.Character.Direction.SOUTH) != null) {
 							pos = pos.multiply(Matrix4f.rotate(180, 0, 1, 0));
 						}
-						level.add(sinks.instantiate(pos));
+						level.put(sinks.instantiate(pos), t);
 					} else if (40 <= id && id < 60) {
-						level.add(desks.instantiate(pos));
+						level.put(desks.instantiate(pos), t);
 					} else { // crate
-						level.add(crates.instantiate(pos));
+						level.put(crates.instantiate(pos), t);
 					}
 				}
 			}
@@ -369,14 +403,14 @@ public class GameRenderer implements Screen{
 			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90*(Math.round((currentCameraAngle - 90)/90)), currentTime);
 		}
 	}
+	
+	public float getCameraAngle(){
+		return currentCameraAngle;
+	}
 
 	@Override
 	public void dispose(){
 
-	}
-
-	public float getCameraAngle() {
-		return currentCameraAngle;
 	}
 
 }

@@ -101,6 +101,10 @@ public class GameData {
 		
 		List<artGame.game.Character> chars = new ArrayList<>(); 
 
+		if(data == null || data.players == null){
+			return new artGame.game.Character[]{};
+		}
+		
 		for(Player p : data.players){
 			chars.add(p);
 		}
@@ -269,7 +273,8 @@ public class GameData {
 			if(sc.hasNextInt()){
 				int byteCount = sc.nextInt();
 				
-				if(packet.length-3 != byteCount){
+				if(Math.abs(packet.length-byteCount) > 10){
+					System.out.println(packet.length + " , " + byteCount);
 					sc.close();
 					return null;
 				}
