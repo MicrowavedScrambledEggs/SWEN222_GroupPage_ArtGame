@@ -483,6 +483,7 @@ public class Floor {
 		return guards;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Floor) {
 			Floor f = (Floor)o;

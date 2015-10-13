@@ -2,28 +2,25 @@ package artGame.xml;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
-import javax.swing.text.Document;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import artGame.main.Game;
 import artGame.xml.load.ArtGameSaveFileHandler;
 import artGame.xml.save.ArtGameSaver;
 
 /**
- * Class for parsing xml files for saved games and new games
+ * Class for loading and saving games in xml format.
  *
  * Static fields match the terms used in the xml files for different elements,
  * attributes and values etc. Typically an element represents an artGame.game class
- * and it's attributes and values it's fields. Exceptions X_COORD_ELEMENT and
- * Y_COORD_ELEMENT which are fields for Coordinate
+ * and it's attributes and values it's fields. Other elements include 'convenience'
+ * elements, such as TILE_STRETCH_ELEMENT that allow for creation of multiple objects
+ * from the one element
  *
  * @author Badi James
  *
@@ -95,10 +92,8 @@ public class XMLHandler {
 	private ArtGameSaver saver;
 
 	/**
-	 * Constructor for class XMLReader. Takes the given xmlFile and parses it
-	 * with a handler designed for the artGame xml format
+	 * Constructor for class XMLReader. Intialises saver and loader
 	 *
-	 * @param xmlFile artGame xml file to parse
 	 */
 	public XMLHandler(){
 		xmlHandler = new ArtGameSaveFileHandler();
@@ -106,6 +101,11 @@ public class XMLHandler {
 	}
 
 	/**
+	 * Loads game from the given xmlFile. Uses a saxParserFactory,
+	 * taking the custom handler ArtGameSaveFileHandler to parse the
+	 * xml file. Then returns the game created by the handler.
+	 *
+	 * @param xmlFile xml file to load game from
 	 * @return Game built from the handler after parsing xmlFile
 	 */
 	public Game loadGame(File xmlFile){
@@ -127,6 +127,13 @@ public class XMLHandler {
 		return xmlHandler.buildGame();
 	}
 
+	/**
+	 * Gets the ArtGameSaver to create an xml file representation of the
+	 * given game with the given file name
+	 *
+	 * @param game Game to save (build file from)
+	 * @param fileName Name to give save file
+	 */
 	public void saveGame(Game game, String fileName){
 		saver.saveGame(game, fileName);
 	}

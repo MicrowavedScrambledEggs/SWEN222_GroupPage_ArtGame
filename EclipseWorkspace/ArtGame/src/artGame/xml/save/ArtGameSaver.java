@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,12 +20,13 @@ import artGame.main.Game;
 import artGame.xml.XMLHandler;
 
 public class ArtGameSaver {
-	
+
 	private ArrayList<Door> doors;
 	private HashSet<Art> paintings;
 	private ArrayList<Player> players;
 	private ArrayList<Guard> guards;
 	private ArrayList<Sculpture> sculptures;
+	private HashMap<Room, ArrayList<Coordinate>> rooms;
 
 	public void saveGame(Game game, String fileName) {
 		this.doors = new ArrayList<Door>();
@@ -32,6 +34,7 @@ public class ArtGameSaver {
 		this.players = new ArrayList<Player>();
 		this.guards = new ArrayList<Guard>();
 		this.sculptures = new ArrayList<Sculpture>();
+		this.rooms = new HashMap<Room, ArrayList<Coordinate>>();
 		FileOutputStream fos = null;
 	    try {
 	        fos = new FileOutputStream(fileName);
@@ -155,10 +158,39 @@ public class ArtGameSaver {
 				}
 			}
 		}
+		writeRooms(writer);
+		writer.writeEndElement();
+	}
+
+	private void writeRooms(XMLStreamWriter writer) throws XMLStreamException {
+		for(Room room : rooms.keySet()){
+			writeRoom(room, writer, rooms.get(room));
+		}
+	}
+
+	private void writeRoom(Room room, XMLStreamWriter writer, ArrayList<Coordinate> roomCoords) throws XMLStreamException {
+		writer.writeStartElement(XMLHandler.ROOM_ELEMENT);
+		for(Coordinate tileCoord : roomCoords){
+			writeSingleTile(tileCoord, writer);
+		}
+		writer.writeEndElement();
+	}
+
+	private void writeSingleTile(Coordinate tileCoord, XMLStreamWriter writer) throws XMLStreamException {
+		writer.writeStartElement(XMLHandler.SQUARE_ELEMENT);
+		writer.writeEmptyElement(XMLHandler.ROW_ELEMENT);
+		writer.writeAttribute(XMLHandler.VALUE_ATTRIBUTE, String.valueOf(tileCoord.getRow()));
+		writer.writeEmptyElement(XMLHandler.COL_ELEMENT);
+		writer.writeAttribute(XMLHandler.VALUE_ATTRIBUTE, String.valueOf(tileCoord.getCol()));
 		writer.writeEndElement();
 	}
 
 	private void writeTile(Tile tile, int r, int c, XMLStreamWriter writer) throws XMLStreamException {
+		Room tileRoom = tile.getRoom();
+		if(rooms.get(tileRoom) == null){
+			rooms.put(tileRoom, new ArrayList<Coordinate>());
+		}
+		rooms.get(tileRoom).add(new Coordinate(c, r));
 		if(tile instanceof EmptyTile || tile instanceof ExitTile){
 			writeEmptyTile(tile, r, c, writer);
 		} else if(tile instanceof StairTile){
@@ -188,7 +220,7 @@ public class ArtGameSaver {
 	}
 
 	private void writeItem(XMLStreamWriter writer, Item storedItem)
-			throws XMLStreamException {		
+			throws XMLStreamException {
 		writer.writeEmptyElement(XMLHandler.ITEM_ELEMENT);
 		String typeValue = "";
 		if(storedItem instanceof Art){
