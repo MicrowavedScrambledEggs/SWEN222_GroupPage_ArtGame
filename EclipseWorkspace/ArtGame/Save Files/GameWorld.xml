@@ -907,13 +907,20 @@
 			</position>
 			<wall direction = "WEST" />
 		</empty_tile>
-		<tile_stretch length = "2">
+		<empty_tile>
 			<position>
 				<x value = "1"/>
                 <y value = "10"/>
 			</position>
 			<wall direction = "NORTH" artID = "21"/>
-		</tile_stretch>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "2"/>
+                <y value = "10"/>
+			</position>
+			<wall direction = "NORTH"/>
+		</empty_tile>
 		<empty_tile>
 			<position>
 				<x value = "3"/>
