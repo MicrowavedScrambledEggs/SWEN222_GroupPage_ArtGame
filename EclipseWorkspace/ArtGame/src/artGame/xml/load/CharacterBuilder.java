@@ -7,25 +7,25 @@ import artGame.game.Character.Direction;
 import artGame.xml.XMLHandler;
 
 /**
- * Super class for build strategies for character objects. Has fields 
+ * Super class for build strategies for character objects. Has fields
  * common to all character objects such as id, direction, inventory references
  * etc.
- * 
- * @author Badi James
+ *
+ * @author Badi James 300156502
  *
  */
 public abstract class CharacterBuilder implements BuildStrategy {
-	
+
 	private Direction d;
 	private Coordinate coord;//holds the row and column of the character
 	private int iD;
 	private GameMaker gameMaker;
 	private HashSet<Integer> artRefs = new HashSet<Integer>();
 	private HashSet<Integer> keyRefs = new HashSet<Integer>();
-	
+
 	/**
 	 * Super constructor for CharacterBuilders
-	 * 
+	 *
 	 * @param gameMaker Game maker to add character to when addToGame() called
 	 * @param id Id of character
 	 */
@@ -62,7 +62,7 @@ public abstract class CharacterBuilder implements BuildStrategy {
 			}
 		}
 	}
-	
+
 	/**
 	 * Sets the direction field to the value represented by the argument string
 	 * @param value String representation of direction value
@@ -122,8 +122,8 @@ public abstract class CharacterBuilder implements BuildStrategy {
 	 */
 	public HashSet<Integer> getKeyRefs() {
 		return keyRefs;
-	} 
-	
-	
+	}
+
+
 
 }

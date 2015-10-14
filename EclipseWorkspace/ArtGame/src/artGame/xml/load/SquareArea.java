@@ -4,6 +4,13 @@ import artGame.game.Floor;
 import artGame.game.Room;
 import artGame.xml.XMLHandler;
 
+/**
+ * Room segment for defining rooms based on a square made with a top left
+ * corner coordinate and a bottom left coordinate tile
+ *
+ * @author Badi James 300156502
+ *
+ */
 public class SquareArea implements RoomSegment {
 
 	private int fromRow;
@@ -40,6 +47,11 @@ public class SquareArea implements RoomSegment {
 	}
 
 	@Override
+	/**
+	 * Uses the room's addTile method that does the "all tiles in square"
+	 * logic
+	 * Thanks Kai for the handy method!
+	 */
 	public void addTilesToRoom(Room room, Floor floor) {
 		room.addTiles(floor, fromRow, fromCol, toRow, toCol, floorLevel);
 	}

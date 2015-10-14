@@ -17,7 +17,7 @@ import artGame.xml.XMLHandler;
  * in the majority of the elements, using a stack to match the xml structure. ObjectBuilders
  * then make their object and it to a GameMaker, that can then make a Game object
  *
- * @author Badi James
+ * @author Badi James 300156502
  *
  */
 public class ArtGameSaveFileHandler extends DefaultHandler {
@@ -164,7 +164,6 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	 */
 	@Override
 	public void endElement(String uri, String localName, String qName){
-		//TODO: Add a lot more cases once artGame.game is more complete
 		if(qName.equals(XMLHandler.POSITION_ELEMENT) || qName.equals(XMLHandler.START_ELEMENT)
 				|| qName.equals(XMLHandler.FINISH_ELEMENT) || qName.equals(XMLHandler.LINKED_TILE_ELEMENT)){
 			addFieldToCurrentBuilder(qName, currentCoord.buildCoordinate());

@@ -2,6 +2,13 @@ package artGame.xml.load;
 
 import artGame.game.Coordinate;
 
+/**
+ * Convenience class that adds a length of identical empty tiles to be put along a
+ * row in the floor of the game to be built
+ *
+ * @author Badi James 300156502
+ *
+ */
 public class TileStretchBuilder extends TileBuilder {
 
 	private int length;

@@ -457,13 +457,20 @@
 			<wall direction = "WEST" />
 			<door doorId ="5" direction = "NORTH" locked = "TRUE" keyID = "200" />
 		</empty_tile>
-		<tile_stretch length = "2">
+		<empty_tile>
 			<position>
 				<x value = "1"/>
                 <y value = "4"/>
 			</position>
 			<wall direction = "NORTH" artID = "1"/>
-		</tile_stretch>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "2"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "NORTH"/>
+		</empty_tile>
 		<empty_tile>
 			<position>
 				<x value = "3"/>

@@ -1,6 +1,5 @@
 package artGame.xml.save;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +18,12 @@ import artGame.game.Character.Direction;
 import artGame.main.Game;
 import artGame.xml.XMLHandler;
 
+/**
+ * Class for creating xml save files for the game
+ *
+ * @author Badi James 300156502
+ *
+ */
 public class ArtGameSaver {
 
 	private ArrayList<Door> doors;
@@ -28,6 +33,38 @@ public class ArtGameSaver {
 	private ArrayList<Sculpture> sculptures;
 	private HashMap<Room, ArrayList<Coordinate>> rooms;
 
+	/**
+	 * Uses the Game and all its objects to write a save file for the
+	 * game with the path/name of the given string.
+	 *
+	 * Uses an XMLOutPutFactory and a XMLStreamWriter to write the file
+	 *
+	 * Writes in the format of:
+	 * - An overall game element
+	 * - floor element. Just one of level 0 like implemented in game logic
+	 * 		- elements for tiles such as empty tile, stair tile and chest
+	 * 			- has position and wall elements
+	 * 			- Stair tiles have location of linked stair tile
+	 * 			- chests have inventory references
+	 * 		- elements for defining rooms
+	 * 			- Just has 'square' elements for each tile in room
+	 * - players element
+	 * 		- player elements with id attribute
+	 * 			-has direction, inventory and position elements
+	 * - guards element
+	 * 		- guard elements with id attribute
+	 * 			-has direction, inventory and position elements
+	 * 			-has patrol (if guard object has patrol)
+	 * 				-just has 'step' elements for each coordinate in patrol path
+	 * - art element
+	 * 		- painting element with id attribute
+	 * 			-has name and value elements
+	 * 		- sculpture element with id attribute
+	 * 			-has direction and position elements
+	 *
+	 * @param game Game to save
+	 * @param fileName string representation of file name path
+	 */
 	public void saveGame(Game game, String fileName) {
 		this.doors = new ArrayList<Door>();
 		this.paintings = new HashSet<Art>();
@@ -42,6 +79,7 @@ public class ArtGameSaver {
 	        XMLStreamWriter writer = xmlOutFact.createXMLStreamWriter(fos);
 	        writer.writeStartDocument();
 	        writer.writeStartElement("game");
+	        //writes the element containing all the floor data, with all tiles
 	        writeFloor(game, writer);
 	        writePlayers(writer);
 	        writeGuards(writer);
@@ -60,6 +98,7 @@ public class ArtGameSaver {
 	}
 
 	private void writeGuards(XMLStreamWriter writer) throws XMLStreamException {
+		//writes a "guards" element
 		writer.writeStartElement(XMLHandler.GUARDS_ELEMENT);
 		for(Guard guard : guards){
 			writer.writeStartElement(XMLHandler.GUARD_ELEMENT);
@@ -187,6 +226,7 @@ public class ArtGameSaver {
 
 	private void writeTile(Tile tile, int r, int c, XMLStreamWriter writer) throws XMLStreamException {
 		Room tileRoom = tile.getRoom();
+		//Collects rooms to write for later
 		if(rooms.get(tileRoom) == null){
 			rooms.put(tileRoom, new ArrayList<Coordinate>());
 		}
@@ -243,7 +283,7 @@ public class ArtGameSaver {
 		StairTile linkedTile = stairs.getLinkedTile();
 		writeLinkedTile(writer, linkedTile);
 		writeWalls(stairs, writer);
-		storeCharacter(stairs.getOccupant());
+		storeCharacter(stairs.getOccupant());//collects characters to write later
 		writer.writeEndElement();
 	}
 
@@ -278,7 +318,7 @@ public class ArtGameSaver {
 		String coordType = XMLHandler.POSITION_ELEMENT;
 		writeCoordinate(r, c, writer, coordType);
 		writeWalls(tile, writer);
-		storeCharacter(tile.getOccupant());
+		storeCharacter(tile.getOccupant());//collect characters to write for later
 		writer.writeEndElement();
 	}
 
@@ -300,7 +340,7 @@ public class ArtGameSaver {
 			writer.writeAttribute(XMLHandler.DIRECTION_ATTRIBUTE, dir.toString());
 			Art wallArt = wall.getArt();
 			if(wallArt != null){
-				paintings.add(wallArt);
+				paintings.add(wallArt);//collect art to write for later
 				writer.writeAttribute(XMLHandler.ART_ID_ATTRIBUTE, String.valueOf(wallArt.ID));
 			}
 		}
