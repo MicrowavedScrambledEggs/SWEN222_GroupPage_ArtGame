@@ -7,6 +7,13 @@ import artGame.game.StairTile;
 import artGame.game.Tile;
 import artGame.xml.XMLHandler;
 
+/**
+ * Build strategy for building stair tiles. In addition to the fields for a tile,
+ * stores position information for a linked stair tile
+ *
+ * @author Badi James 300156502
+ *
+ */
 public class StairTileBuilder extends TileBuilder {
 
 	private int linkedLevel;
@@ -44,7 +51,7 @@ public class StairTileBuilder extends TileBuilder {
 		getGameMaker().addTile(getLevel(), getCoord(), tile);
 		getGameMaker().addDoorMap(getLevel(), getCoord(), getDoorReference());
 		getGameMaker().addArtMap(getLevel(), getCoord(), getArtReference());
-		getGameMaker().addLinkedTileReference(tile, getLevel(), linkedLevel, getCoord(), linkedCoord);
+		getGameMaker().addLinkedTileReference(getLevel(), linkedLevel, getCoord(), linkedCoord);
 	}
 
 }

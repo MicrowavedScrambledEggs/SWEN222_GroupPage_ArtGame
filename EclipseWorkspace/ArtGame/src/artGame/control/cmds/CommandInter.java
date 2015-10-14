@@ -2,7 +2,9 @@ package artGame.control.cmds;
 
 import artGame.main.Game;
 
-/** TODO
+/** The Command interface is used for creating commands that
+ * can be sent and received by the Client and Server Threads, 
+ * for the purposes of executing on a Game. 
  * 
  * @author Vicki
  *
@@ -22,13 +24,16 @@ public interface CommandInter {
 	/** The id of the character (if any) this command modifies */ 
 	public int id();
 	
-	/** The length of this command as a byte array.  (ie, the number of bytes + 1)*/
+	/**<p>The length of this command as a byte array.  (ie, the number of bytes + 1)</p>
+	 * <p>REQUIRES: All CommandInter objects of the same class type must have exactly the same
+	 * byteSize(). </p>*/
 	public int byteSize();
 	
 	/** Helper method for toString; returns a few characters denoting the command type. */
 	public String tag();
 	
-	/** Returns the command as a stream-writeable array of bytes, of byte() size. */ 
+	/** <p>Returns the command as a stream-writeable array of bytes, of byteSize() size.</p>
+	 */ 
 	public byte[] bytes();
 	
 	/** Performs the action on the game. Returns true if the action was successful. */

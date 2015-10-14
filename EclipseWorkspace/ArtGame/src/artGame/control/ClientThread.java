@@ -7,25 +7,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.RunnableFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import artGame.control.cmds.Command;
 import artGame.control.cmds.CommandInter;
-import artGame.control.cmds.MoveCommand;
-import artGame.control.cmds.TileStateCommand;
-import artGame.game.GameError;
 import artGame.game.Player;
-import artGame.game.Tile;
 import artGame.main.Game;
 import artGame.main.Main;
 
@@ -46,10 +30,10 @@ public class ClientThread extends SocketThread {
 	/** Testing constructor */
 	protected ClientThread(Socket s, Game g, ConcurrentLinkedQueue<CommandInter> q) {
 		super(s,g);
-		wait = SocketThread.wait;
+		wait = SocketThread.WAIT;
 		ConcurrentLinkedQueue<CommandInter> dup = new ConcurrentLinkedQueue<>();
 		dup.addAll(q);
-		cmdQueue.addAll(dup);
+		this.cmdQueue.addAll(dup);
 	}
 
 	/** Creates a new ClientThread that listens to the given socket().
@@ -241,7 +225,7 @@ public class ClientThread extends SocketThread {
 				}
 				// then write from our queue as normal
 				if (send != null) {
-					writeCommand(OUT, send);
+					write(OUT, send);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -265,7 +249,7 @@ public class ClientThread extends SocketThread {
 				long then = System.currentTimeMillis();
 				// first, write our parameter to server
 				if (send != null) {
-					writeCommand(OUT, send);
+					write(OUT, send);
 				}
 				// then, read server's command
 				if (hasCommands()) {
@@ -289,7 +273,7 @@ public class ClientThread extends SocketThread {
 			try {
 				DataOutputStream OUT = new DataOutputStream(socket().getOutputStream());
 				if (toServer != null) {
-					writeCommand(OUT, toServer);
+					write(OUT, toServer);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

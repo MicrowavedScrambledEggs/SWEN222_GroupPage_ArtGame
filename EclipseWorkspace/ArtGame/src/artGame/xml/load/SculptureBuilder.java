@@ -3,6 +3,13 @@ package artGame.xml.load;
 import artGame.game.Sculpture;
 import artGame.xml.XMLHandler;
 
+/**
+ * Build strategy for building sculpture objects. In addition to the usual
+ * character fields, it also stores fields relating to art objects
+ *
+ * @author Badi James 300156502
+ *
+ */
 public class SculptureBuilder extends CharacterBuilder {
 
 	private String artName;
@@ -35,6 +42,9 @@ public class SculptureBuilder extends CharacterBuilder {
 	}
 
 	@Override
+	/**
+	 * Builds sculpture and adds it to the game maker
+	 */
 	public void addToGame() {
 		Sculpture sculpture = new Sculpture(super.getDirection(), super.getiD(), value, artName);
 		sculpture.setCol(super.getCoord().getCol());

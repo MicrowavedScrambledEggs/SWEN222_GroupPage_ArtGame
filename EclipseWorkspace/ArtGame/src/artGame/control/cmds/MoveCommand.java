@@ -4,18 +4,21 @@ import artGame.game.Player;
 import artGame.game.Tile;
 import artGame.main.Game;
 
-/** TODO
+/** MoveCommands are shared between clients and servers to instruct
+ * movable entities to change their positions.
+ * 
+ * The given x and y are the position of the character at the time
+ * of the movement request, and the action designates the 
+ * direction in which the player should move. 
  * 
  * @author Vicki
- *
  */
 public final class MoveCommand implements CommandInter {
 	public static final short PLAYER = 0;
 	public static final short GUARD = 1;
-	
 	public static enum Entity { PLAYER, GUARD };
-	
 	public static final int bytes = BYTES_SHORT + 3*(BYTES_INT) + BYTES_CHAR + BYTES_LONG;
+	public static final char DO_NOTHING = '-';
 
 	public final MoveCommand.Entity entity; // represented as a short
 	public final int id;
@@ -48,7 +51,6 @@ public final class MoveCommand implements CommandInter {
 	
 	/** Creates a new MovePacket from bytes */
 	public MoveCommand(byte[] b) { // entity id action x y time
-		byte[] bytes = new byte[byteSize()];
 		int i = 0;
 		short entity = (short)((b[i++] << 8) + b[i++]);
 		if (entity == PLAYER) {
@@ -131,6 +133,8 @@ public final class MoveCommand implements CommandInter {
         return bytes;
 	}
 	
+	/** Returns the value of an entity as an integer.  
+	 * Returns -1 if the entity cannot be found. */ 
 	public short valueOf(MoveCommand.Entity e) {
 		for (int i = 0; i < Entity.values().length; i++) {
 			if (Entity.values()[i] == e) {

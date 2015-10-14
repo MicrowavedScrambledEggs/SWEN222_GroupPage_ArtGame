@@ -22,7 +22,7 @@ import artGame.xml.save.ArtGameSaver;
  * elements, such as TILE_STRETCH_ELEMENT that allow for creation of multiple objects
  * from the one element
  *
- * @author Badi James
+ * @author Badi James 300156502
  *
  */
 public class XMLHandler {

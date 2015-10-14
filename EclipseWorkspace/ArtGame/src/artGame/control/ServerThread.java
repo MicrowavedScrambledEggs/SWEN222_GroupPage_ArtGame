@@ -52,21 +52,21 @@ public class ServerThread extends SocketThread {
 	}
 	
 	/** Testing constructor */
-	protected ServerThread(Game g, Socket s, ConcurrentLinkedQueue<CommandInter> q) {
-		super(s,g,q);
-		wait = SocketThread.wait;
+	protected ServerThread(Game game, Socket socket, ConcurrentLinkedQueue<CommandInter> queue) {
+		super(socket,game,queue);
+		wait = SocketThread.WAIT;
 	}
 
 	/** Test constructor */
-	protected ServerThread(Socket socket, Game game, ConcurrentLinkedQueue<CommandInter> cl) throws IOException {
-		super(socket,game, cl);
-		this.wait = Main.WAIT_PERIOD;
+	protected ServerThread(Socket socket, Game game, ConcurrentLinkedQueue<CommandInter> queue) throws IOException {
+		super(socket,game,queue);
+		this.wait = SocketThread.WAIT;
 	}
 	
 	/** Constructor for testing */
 	protected ServerThread(Socket s) throws IOException {
 		super(s,null);
-		this.wait = Main.WAIT_PERIOD;
+		this.wait = SocketThread.WAIT;
 	}
 
 	/** Does the work of setting up the client/server's shared player ID. */
@@ -77,7 +77,6 @@ public class ServerThread extends SocketThread {
 			// first, send the game type
 			boolean ok = validateGameType(IN, OUT); // kills connection if not true
 			
-			// TODO server game isn't being updated with player IDs
 			// get the next player ID
 			pid = getNextPlayerId(PID_START);
 			OUT.writeInt(pid);
@@ -160,7 +159,7 @@ public class ServerThread extends SocketThread {
 				while (System.currentTimeMillis() < time && hasCommands()) {
 					CommandInter serverCmd = pollCommand();
 					System.out.println("(In queue: "+queueSize()+")");
-					writeCommand(OUT, serverCmd);
+					write(OUT, serverCmd);
 				}
 			} catch (IOException | InterruptedException | IncompatiblePacketException e) {
 				// TODO Auto-generated catch block
@@ -241,7 +240,7 @@ public class ServerThread extends SocketThread {
 				}
 				// then write from our queue as normal
 				if (send != null) {
-					writeCommand(OUT, send);
+					write(OUT, send);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -275,7 +274,7 @@ public class ServerThread extends SocketThread {
 				if (hasCommands()) {
 					CommandInter serverCmd = pollCommand();
 					System.out.println("(In queue: "+queueSize()+")");
-					writeCommand(OUT, serverCmd);
+					write(OUT, serverCmd);
 					return serverCmd;
 				}
 			} catch (IOException e) {

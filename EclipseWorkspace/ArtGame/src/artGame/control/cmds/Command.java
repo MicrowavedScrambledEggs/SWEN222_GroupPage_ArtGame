@@ -3,7 +3,8 @@ package artGame.control.cmds;
 import artGame.game.Player;
 import artGame.main.Game;
 
-/** TODO
+/** The Command models a generic command that can be represented
+ * by a single character and a player id. 
  * 
  * @author Vicki
  *
@@ -61,6 +62,7 @@ public final class Command implements CommandInter {
 		return tag() +" "+TAIL;
 	}
 
+	/** Returns the length of this packet as a byte array. */
 	@Override
 	public int byteSize() {
 		return bytes + 1;

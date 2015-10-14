@@ -122,4 +122,8 @@ public class Model implements Asset {
 		vertBufferObject.delete();
 		uvBufferObject.delete();
 	}
+	
+	public void setColor(Vector3f color) {
+		this.color = color;
+	}
 }

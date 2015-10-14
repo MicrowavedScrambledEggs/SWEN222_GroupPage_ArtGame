@@ -3,12 +3,10 @@ package artGame.control;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -19,13 +17,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import artGame.control.cmds.Action;
-import artGame.control.cmds.Command;
 import artGame.control.cmds.CommandInter;
 import artGame.control.cmds.MoveCommand;
 import artGame.control.cmds.TileStateCommand;
 import artGame.game.GameError;
-import artGame.game.Player;
 import artGame.main.Game;
 
 /** TODO
@@ -34,28 +29,29 @@ import artGame.main.Game;
  *
  */
 public abstract class SocketThread extends Thread {
-	private final ConcurrentLinkedQueue<CommandInter> cmdQueue = new ConcurrentLinkedQueue<CommandInter>();
-	static final int wait = 1;
+	static final int WAIT = 1;
 	static final int CONNECTION_TIMEOUT = 10000;
 	static final int LARGE_PACKET_SIZE = 1024; // used for testing
-	boolean isRunning = true;
-	private long timeOutAt = 0;
+	
+	private final ConcurrentLinkedQueue<CommandInter> cmdQueue = new ConcurrentLinkedQueue<CommandInter>();
 	private final Socket socket;
-	private Game game;
 
+	private Game game;
 	private boolean isTimedOut = false;
+	private long timeOutAt = 0;
+	private boolean isRunning = true;
 	
 	public SocketThread(Socket s, Game g) {
 		socket = s;
 		game = g;
 	}
 	
-	public SocketThread(Socket s, Game g, ConcurrentLinkedQueue<CommandInter> cmdQ) {
+	public SocketThread(Socket s, Game g, ConcurrentLinkedQueue<CommandInter> q) {
 		socket = s;
 		game = g;
 		ConcurrentLinkedQueue<CommandInter> dup = new ConcurrentLinkedQueue<>();
-		dup.addAll(cmdQ);
-		cmdQueue.addAll(dup);
+		dup.addAll(q);
+		this.cmdQueue.addAll(dup);
 	}
 	
 	protected Socket socket() {
@@ -87,7 +83,7 @@ public abstract class SocketThread extends Thread {
 	}
 	
 	/** Writes the given command to the data stream. */
-	synchronized protected void writeCommand(DataOutputStream out, CommandInter toServer) throws IOException {
+	synchronized protected void write(DataOutputStream out, CommandInter toServer) throws IOException {
 		out.write(toServer.byteSize());
 		out.write(toServer.bytes(), 0, toServer.byteSize());
 		out.flush();
@@ -180,7 +176,7 @@ public abstract class SocketThread extends Thread {
 		return cmdQueue.poll();
 	}
 	
-	/** Returns true if there are commands to be sent. */
+	/** Returns true if there are commands to be sent from the queue. */
 	protected synchronized boolean hasCommands() {
 		return (cmdQueue.size() > 0);
 	}
@@ -190,12 +186,13 @@ public abstract class SocketThread extends Thread {
 		return cmdQueue.size();
 	}
 	
-	/** Checks the first item in the queue. */
+	/** Checks the next item in the queue. */
 	public synchronized CommandInter peek() {
 		return cmdQueue.peek();
 	}
 	
-	/** Prevents the thread from running without closing the socket. */
+	/** Stops the server from updating and sending messages, without closing the socket. 
+	 * Messages in the buffer will still be sent. */
 	protected void end() {
 		isRunning = false;
 	}
@@ -211,7 +208,7 @@ public abstract class SocketThread extends Thread {
 		if (hasCommands()) {
 			CommandInter c = pollCommand();
 			
-			writeCommand(OUT, c);
+			write(OUT, c);
 		}
 	}
 	
