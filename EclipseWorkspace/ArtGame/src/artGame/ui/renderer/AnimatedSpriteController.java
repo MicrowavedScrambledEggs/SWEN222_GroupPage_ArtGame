@@ -9,12 +9,26 @@ import java.util.Scanner;
 import artGame.ui.renderer.math.Vector2f;
 import artGame.ui.renderer.math.Vector3f;
 
-public class HumanSpriteController implements Asset {
+/**
+ * A controller for an animated sprite that is viewable from all directions,
+ * based off a config file. The chosen sprite will change depending on the
+ * camera angle and the direction the sprite is meant to be facing.
+ * 
+ * @author Reiker v. Motschelnitz 300326917
+ *
+ */
+public class AnimatedSpriteController implements Asset {
 	private Sprite sprite;
-	
+
 	private List<List<Vector2f>> animations;
-	
-	public HumanSpriteController(Sprite sprite) {
+
+	/**
+	 * {@link AnimatedSpriteController} Constructor.
+	 * 
+	 * @param sprite
+	 *            The sprite to control.
+	 */
+	public AnimatedSpriteController(Sprite sprite) {
 		this.sprite = sprite.instantiate();
 		animations = new ArrayList<List<Vector2f>>();
 		Scanner scan = null;
@@ -39,8 +53,9 @@ public class HumanSpriteController implements Asset {
 			}
 		}
 	}
-	
-	private HumanSpriteController(Sprite sprite, List<List<Vector2f>> animations) {
+
+	private AnimatedSpriteController(Sprite sprite,
+			List<List<Vector2f>> animations) {
 		this.sprite = sprite;
 		this.animations = animations;
 	}
@@ -54,11 +69,23 @@ public class HumanSpriteController implements Asset {
 	public void delete() {
 		sprite.delete();
 	}
-	
-	public void updateImage(artGame.game.Character.Direction dir, float angle, Float tweenValue) {
+
+	/**
+	 * Updates the sprite's texture. Should be called before drawing.
+	 * 
+	 * @param dir
+	 *            The direction the sprite is facing.
+	 * @param angle
+	 *            The angle of the camera.
+	 * @param tweenValue
+	 *            A value between 0 and 1 used for animating the controller
+	 *            during movement.
+	 */
+	public void updateImage(artGame.game.Character.Direction dir, float angle,
+			Float tweenValue) {
 		float relativeAngle = angle;
-		
-		switch(dir) {
+
+		switch (dir) {
 		case NORTH:
 			relativeAngle += 180;
 			break;
@@ -73,42 +100,46 @@ public class HumanSpriteController implements Asset {
 			break;
 		default:
 			break;
-		
+
 		}
-		
+
 		relativeAngle = relativeAngle % 360;
-		if (relativeAngle < 0)
-		{
-		    relativeAngle += 360;
+		if (relativeAngle < 0) {
+			relativeAngle += 360;
 		}
-		
+
 		int index = 0;
 		if (45 <= relativeAngle && relativeAngle < 135) {
 			index = 1;
-		} else if (135 <= relativeAngle && relativeAngle < 225){
+		} else if (135 <= relativeAngle && relativeAngle < 225) {
 			index = 2;
 		} else if (225 <= relativeAngle && relativeAngle < 315) {
 			index = 3;
 		}
-		
+
 		if (tweenValue == null) {
-			int row = (int)(animations.get(index).get(0).getY());
-			int col = (int)(animations.get(index).get(0).getX());
+			int row = (int) (animations.get(index).get(0).getY());
+			int col = (int) (animations.get(index).get(0).getX());
 			sprite.setRow(row);
 			sprite.setCol(col);
 		} else {
 			int frame = (int) (tweenValue * animations.get(index).size());
-			int row = (int)(animations.get(index).get(frame).getY());
-			int col = (int)(animations.get(index).get(frame).getX());
+			int row = (int) (animations.get(index).get(frame).getY());
+			int col = (int) (animations.get(index).get(frame).getX());
 			sprite.setRow(row);
 			sprite.setCol(col);
 		}
-		
+
 	}
-	
-	public HumanSpriteController instantiate() {
+
+	/**
+	 * Creates a copy of the {@link AnimatedSpriteController}.
+	 * 
+	 * @return
+	 */
+	public AnimatedSpriteController instantiate() {
 		List<List<Vector2f>> animationsCopy = new ArrayList<List<Vector2f>>();
-		
+
 		for (int i = 0; i < animations.size(); i++) {
 			animationsCopy.add(new ArrayList<Vector2f>());
 			for (int j = 0; j < animations.get(i).size(); j++) {
@@ -117,14 +148,26 @@ public class HumanSpriteController implements Asset {
 				animationsCopy.get(i).add(new Vector2f(x, y));
 			}
 		}
-		
-		return new HumanSpriteController(sprite.instantiate(), animationsCopy);
+
+		return new AnimatedSpriteController(sprite.instantiate(),
+				animationsCopy);
 	}
-	
+
+	/**
+	 * Sets the {@link AnimatedSpriteController}'s position.
+	 * 
+	 * @param position
+	 *            The new position vector.
+	 */
 	public void setPosition(Vector3f position) {
 		sprite.setPosition(position);
 	}
-	
+
+	/**
+	 * Gets the {@link AnimatedSpriteController}'s position.
+	 * 
+	 * @return The position of the {@link AnimatedSpriteController}.
+	 */
 	public Vector3f getPosition() {
 		return sprite.getPosition();
 	}

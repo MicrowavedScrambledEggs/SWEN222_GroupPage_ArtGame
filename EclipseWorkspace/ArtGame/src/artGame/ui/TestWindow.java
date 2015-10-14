@@ -26,6 +26,12 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 
+/**
+ * A stand-alone application for testing new rendering features.
+ * 
+ * @author Reiker v. Motschelnitz 300326917
+ *
+ */
 public class TestWindow {
 	
 	private static GLFWErrorCallback errorCallback = Callbacks.errorCallbackPrint(System.err);

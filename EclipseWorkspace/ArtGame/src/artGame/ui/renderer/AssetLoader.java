@@ -23,7 +23,7 @@ import artGame.ui.renderer.math.Vector3f;
  * Loads assets from file, with a couple helpful asset processing methods.
  * Structured as a singleton so that the methods can be accessed anywhere, and c
  * 
- * @author [MOOT] (R.v. Motschelnitz)
+ * @author Reiker v. Motschelnitz 300326917
  *
  */
 public class AssetLoader {
@@ -44,6 +44,15 @@ public class AssetLoader {
 
 	}
 
+	/**
+	 * Creates a {@link Model} from a .obj file.
+	 * 
+	 * @param filepath
+	 *            The location of the .obj file to read from
+	 * @param color
+	 *            A vector in RGB colorspace representing the model's color
+	 * @return A new model using the data from the .obj file
+	 */
 	public Model loadOBJ(String filepath, Vector3f color) {
 		List<Vector3f> vertList = new ArrayList<Vector3f>();
 		List<Vector2f> uvList = new ArrayList<Vector2f>();
@@ -112,6 +121,13 @@ public class AssetLoader {
 		}
 	}
 
+	/**
+	 * Creates a string from a file containing the source code of a shader.
+	 * 
+	 * @param filepath
+	 *            The location of the .vert or .frag file to read from
+	 * @return A CharSequence containing the source code
+	 */
 	public CharSequence loadShaderSource(String filepath) {
 		Scanner scan = null;
 		try {
@@ -129,6 +145,15 @@ public class AssetLoader {
 		}
 	}
 
+	/**
+	 * Loads a {@link Sprite} from a spritesheet.
+	 * 
+	 * @param filepath
+	 *            The location of the spritesheet to read from.
+	 * @param size
+	 *            The size of each sprite. Must be square, powers of 2 ideal.
+	 * @return
+	 */
 	public Sprite loadSpritesheet(String filepath, int size) {
 		BufferedImage sheet;
 		try {
@@ -137,7 +162,7 @@ public class AssetLoader {
 			e.printStackTrace();
 			return null;
 		}
-		// TODO Fix spritesheet bug
+
 		BufferedImage[][] sprites = new BufferedImage[sheet.getWidth() / size][sheet
 				.getHeight() / size];
 		Texture[][] textures = new Texture[sheet.getWidth() / size][sheet
@@ -152,6 +177,14 @@ public class AssetLoader {
 		return new Sprite(textures, new Vector3f(0, 0.5f, 0));
 	}
 
+	/**
+	 * A helper method for converting BufferedImages to ByteBuffers for ease of
+	 * use with OpenGL. Adapted from LWJGL GitHub Wiki.
+	 * 
+	 * @param image
+	 *            An image to be converted
+	 * @return A ByteBuffer
+	 */
 	public ByteBuffer imageToBuffer(BufferedImage image) {
 		if (image != null) {
 
@@ -172,15 +205,15 @@ public class AssetLoader {
 					.createByteBuffer(width * height * 4);
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
-					/* Pixel as RGBA: 0xAARRGGBB */
+
 					int pixel = pixels[y * width + x];
-					/* Red component 0xAARRGGBB >> 16 = 0x0000AARR */
+					// Red component
 					buffer.put((byte) ((pixel >> 16) & 0xFF));
-					/* Green component 0xAARRGGBB >> 8 = 0x00AARRGG */
+					// Green component
 					buffer.put((byte) ((pixel >> 8) & 0xFF));
-					/* Blue component 0xAARRGGBB >> 0 = 0xAARRGGBB */
+					// Blue component
 					buffer.put((byte) (pixel & 0xFF));
-					/* Alpha component 0xAARRGGBB >> 24 = 0x000000AA */
+					// Alpha component
 					buffer.put((byte) ((pixel >> 24) & 0xFF));
 				}
 			}
@@ -192,6 +225,15 @@ public class AssetLoader {
 		return null;
 	}
 
+	/**
+	 * Creates a {@link Painting} from an image.
+	 * 
+	 * @param filepath
+	 *            The location of the image to read from.
+	 * @param size
+	 *            The size of the image. Must be square, powers of 2 ideal.
+	 * @return A Painting made using the specified image.
+	 */
 	public Painting loadPainting(String filepath, int size) {
 		BufferedImage sheet;
 		try {
