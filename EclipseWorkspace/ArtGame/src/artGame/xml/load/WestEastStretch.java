@@ -5,11 +5,18 @@ import java.util.ArrayList;
 import artGame.game.Coordinate;
 import artGame.xml.XMLHandler;
 
+/**
+ * Build strategy for building a straight line of coordinates across a row of tiles
+ * for use in defining a guard's patrol path
+ *
+ * @author Badi James 300156502
+ *
+ */
 public class WestEastStretch implements Stretch {
-	
+
 	private Coordinate start;
 	private Coordinate finish;
-	
+
 	@Override
 	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
@@ -39,6 +46,11 @@ public class WestEastStretch implements Stretch {
 	}
 
 	@Override
+	/**
+	 * Builds an ordered arraylist of the coordinates from the start coordinate
+	 * to the finish coordinate inclusive.
+	 * @return List of coordinates for patrol path
+	 */
 	public ArrayList<Coordinate> getSteps() {
 		int xStart = start.getCol();
 		int xFinish = finish.getCol();

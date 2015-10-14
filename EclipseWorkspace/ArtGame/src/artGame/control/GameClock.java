@@ -6,9 +6,11 @@ import artGame.ui.TestWindow;
 public class GameClock extends Thread {
 	public static int TICK_MS = 1000;
 	private final Game game;
+	private final ServerThread[] threads;
 	
-	public GameClock(Game game) {
+	public GameClock(Game game, ServerThread[] st) {
 		this.game = game;
+		threads = st;
 	}
 	
 	public void run() {

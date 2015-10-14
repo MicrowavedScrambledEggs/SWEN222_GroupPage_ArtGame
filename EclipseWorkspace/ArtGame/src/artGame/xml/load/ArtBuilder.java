@@ -6,20 +6,20 @@ import artGame.xml.XMLHandler;
 /**
  * Build strategy for storing data related to an art object and building
  * an art object from that data to add to a GameMaker
- * 
- * @author Badi James
+ *
+ * @author Badi James 300156502
  *
  */
 public class ArtBuilder implements BuildStrategy {
-	
+
 	private String artName;
 	private int value;
 	private int artID;
 	private GameMaker gameMaker;
-	
+
 	/**
 	 * Constructor for class ArtBuilder.
-	 * 
+	 *
 	 * @param gameMaker Game maker it can add it's built art object to when addToGame() is called
 	 * @param artID Id for the art object
 	 */
@@ -27,7 +27,7 @@ public class ArtBuilder implements BuildStrategy {
 		this.artID = artID;
 		this.gameMaker = gameMaker;
 	}
-	
+
 	@Override
 	public void addField(String name, Object... values)
 			throws IllegalArgumentException {
@@ -40,7 +40,7 @@ public class ArtBuilder implements BuildStrategy {
 
 	@Override
 	/**
-	 * Builds an art object from the fields and adds it to the gameMaker's list of 
+	 * Builds an art object from the fields and adds it to the gameMaker's list of
 	 * paintings
 	 */
 	public void addToGame() {

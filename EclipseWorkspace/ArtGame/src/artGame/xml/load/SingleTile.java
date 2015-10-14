@@ -5,6 +5,12 @@ import artGame.game.Room;
 import artGame.game.Tile;
 import artGame.xml.XMLHandler;
 
+/**
+ * Room segment for a single tile to add to a room
+ *
+ * @author Badi James 300156502
+ *
+ */
 public class SingleTile implements RoomSegment {
 
 	private int floorLevel;
@@ -34,6 +40,10 @@ public class SingleTile implements RoomSegment {
 	}
 
 	@Override
+	/**
+	 * Gets the tile from the given floor using the stored row and col value
+	 * and add it to the given room
+	 */
 	public void addTilesToRoom(Room room, Floor floor) {
 		Tile toAdd = floor.getTile(row, col, floorLevel);
 		room.addTile(toAdd);

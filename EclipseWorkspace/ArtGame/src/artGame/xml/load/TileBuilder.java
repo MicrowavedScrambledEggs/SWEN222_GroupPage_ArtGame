@@ -11,10 +11,10 @@ import artGame.xml.XMLHandler;
 /**
  * Super class for build strategies for Tile objects. Stores fields common
  * to all tile sub classes, like booleans for wall directions
- * 
+ *
  * Also stores Maps of direction to id values, so that game maker can match
  * art and doors to tiles' walls when building the Game
- * 
+ *
  * @author Badi James
  *
  */
@@ -54,7 +54,7 @@ public class TileBuilder implements BuildStrategy {
 			}
 		}
 	}
-	
+
 	private void setDoor(Object[] values) {
 		Direction dir = setWall((String) values[1]);
 		doorReference.put(dir, Integer.parseInt((String) values[0]));
@@ -92,6 +92,12 @@ public class TileBuilder implements BuildStrategy {
 	}
 
 	@Override
+	/**
+	 * Creates a new tile from the wall booleans. Adds the tile with it's position
+	 * info to the game maker, and adds the art references and door references to
+	 * game maker so that game maker can match the artwork and doors to the tile's
+	 * walls when building a new game
+	 */
 	public void addToGame() {
 		Tile tile = new EmptyTile(northWall, westWall, southWall, eastWall);
 		gameMaker.addTile(level, coord, tile);

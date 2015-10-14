@@ -1,5 +1,7 @@
 package artGame.game;
 
+import java.util.Arrays;
+
 import artGame.game.Character.Direction;
 /**
  * The base class for all other tiles
@@ -104,16 +106,45 @@ public abstract class Tile {
 			return null;
 	}
 	
-	public boolean equals(Object o) {
-		if (o instanceof Tile) {
-			Tile t = (Tile)o;
-			if ((walls[0] != null) == (t.walls[0] != null)
-					&& (walls[1] != null) == (t.walls[1] != null)
-					&& (walls[2] != null) == (t.walls[2] != null)
-					&& (walls[3] != null) == (t.walls[3] != null)) {
-				return true;
+	public String toPrintString() {
+		return "N: "+ (wallArt(0))
+				+" W: "+ (wallArt(1))
+				+" S: "+ (wallArt(2))
+				+" E: "+ (wallArt(3));
+	}
+	
+	private String wallArt(int i) {
+		if (walls[i] != null) {
+			if (walls[i].getArt() != null) {
+				return "\'"+walls[i].getArt().name+"\'";
 			}
+			return "W";
 		}
-		return false;
+		return " ";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (viewable ? 1231 : 1237);
+		result = prime * result + Arrays.hashCode(walls);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tile other = (Tile) obj;
+		if (viewable != other.viewable)
+			return false;
+		if (!Arrays.equals(walls, other.walls))
+			return false;
+		return true;
 	}
 }

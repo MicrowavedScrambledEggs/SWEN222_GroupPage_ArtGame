@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- The file for the Museum aka the Game World
+	 to be loaded up with each new game that's not
+	 using a save file
+	 
+	 Author: Badi James 300156502 -->
 <game>
 	<floor level="0">
 		<empty_tile>
@@ -457,13 +462,20 @@
 			<wall direction = "WEST" />
 			<door doorId ="5" direction = "NORTH" locked = "TRUE" keyID = "200" />
 		</empty_tile>
-		<tile_stretch length = "2">
+		<empty_tile>
 			<position>
 				<x value = "1"/>
                 <y value = "4"/>
 			</position>
 			<wall direction = "NORTH" artID = "1"/>
-		</tile_stretch>
+		</empty_tile>
+		<empty_tile>
+			<position>
+				<x value = "2"/>
+                <y value = "4"/>
+			</position>
+			<wall direction = "NORTH"/>
+		</empty_tile>
 		<empty_tile>
 			<position>
 				<x value = "3"/>
@@ -2501,6 +2513,9 @@
 				<x value = "2"/>
                 <y value = "6"/>
             </position>
+            <inventory>
+                <item type = "ART" id = "130"/>
+            </inventory>
         </chest>
         <empty_tile>
             <position>
@@ -2657,6 +2672,9 @@
 				<x value = "2"/>
                 <y value = "9"/>
             </position>
+            <inventory>
+                <item type = "ART" id = "131"/>
+            </inventory>
         </chest>
         <empty_tile>
             <position>
@@ -2711,6 +2729,9 @@
                 <y value = "10"/>
             </position>
             <wall direction = "WEST" />
+            <inventory>
+                <item type = "ART" id = "132"/>
+            </inventory>
         </chest>
         <tile_stretch length = "2">
             <position>
@@ -2994,6 +3015,9 @@
                 <y value = "14"/>
             </position>
             <wall direction = "EAST" />
+            <inventory>
+                <item type = "ART" id = "133"/>
+            </inventory>
         </chest>
         <empty_tile>
             <position>
@@ -3475,9 +3499,630 @@
 	    	<name>Michelangelo's David (J Pearce)</name>
 	    	<value>10000</value>
 	    </sculpture>
+	    <sculpture artID = "102">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "13"/>
+	            <y value = "6"/>
+	        </position>
+	    	<name>Da Thanker</name>
+	    	<value>10001</value>
+	    </sculpture>
+	    <sculpture artID = "103">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "6"/>
+	            <y value = "6"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "104">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "2"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "105">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "3"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "106">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "5"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "107">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "7"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "108">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "8"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "109">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "11"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "110">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "12"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "111">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "14"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "112">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "16"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "113">
+	        <level value = "0" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "17"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "114">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "8"/>
+	            <y value = "8"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "115">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "11"/>
+	            <y value = "8"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "116">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "8"/>
+	            <y value = "11"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "117">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "11"/>
+	            <y value = "11"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "118">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "2"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "119">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "3"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "120">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "4"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "121">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "5"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "122">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "14"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "123">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "15"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "124">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "16"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "125">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "17"/>
+	            <y value = "17"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+
+	    <sculpture artID = "126">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "1"/>
+	            <y value = "14"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "127">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "2"/>
+	            <y value = "10"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "128">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "1"/>
+	            <y value = "5"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <sculpture artID = "129">
+	        <level value = "1" />
+	    	<direction>EAST</direction>
+	    	<position>
+	            <x value = "3"/>
+	            <y value = "4"/>
+	        </position>
+	    	<name>Vase</name>
+	    	<value>5000</value>
+	    </sculpture>
+	    <painting artID = "130">
+	    	<name>What's in the Box?</name>
+	    	<value>7500</value>
+	    </painting>
+	    <painting artID = "131">
+	    	<name>What's in the Box?</name>
+	    	<value>7500</value>
+	    </painting>
+	    <painting artID = "132">
+	    	<name>What's in the Box?</name>
+	    	<value>7500</value>
+	    </painting>
+	    <painting artID = "133">
+	    	<name>What's in the Box?</name>
+	    	<value>7500</value>
+	    </painting>
 	    <painting artID = "101">
 	    	<name>Someone Forgot to Flush</name>
 	    	<value>-999</value>
+	    </painting>
+	    <painting artID = "10">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "11">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "12">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "13">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "14">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "15">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "16">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "17">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "18">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "19">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "20">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "21">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "22">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "23">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "24">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "25">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "26">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "27">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "28">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "29">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "30">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "31">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "32">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "33">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "34">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "35">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "36">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "37">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "38">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "40">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "41">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "42">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "43">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "44">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "45">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "46">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "47">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "49">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "50">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "51">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "52">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "53">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "54">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "55">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "56">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "57">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "60">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "61">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "62">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "63">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "64">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "65">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "66">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "67">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "68">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "69">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "70">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "71">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "72">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "73">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "74">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "75">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "76">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "77">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "78">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "79">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "80">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "81">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "82">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "83">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "84">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "85">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "86">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "87">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "88">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "89">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "94">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "90">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "91">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "92">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
+	    </painting>
+	    <painting artID = "93">
+	        <name>Generic Painting</name>
+	        <value>1500</value>
 	    </painting>
 	</art>
 	<guards>

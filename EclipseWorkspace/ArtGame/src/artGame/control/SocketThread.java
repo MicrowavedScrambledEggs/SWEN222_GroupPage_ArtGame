@@ -3,11 +3,10 @@ package artGame.control;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -18,9 +17,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import artGame.control.cmds.Action;
-import artGame.control.cmds.Command;
-import artGame.game.Player;
+import artGame.control.cmds.CommandInter;
+import artGame.control.cmds.MoveCommand;
+import artGame.control.cmds.TileStateCommand;
+import artGame.game.GameError;
 import artGame.main.Game;
 
 /** TODO
@@ -29,19 +29,39 @@ import artGame.main.Game;
  *
  */
 public abstract class SocketThread extends Thread {
-	static final int wait = 1;
+	static final int WAIT = 1;
 	static final int CONNECTION_TIMEOUT = 10000;
 	static final int LARGE_PACKET_SIZE = 1024; // used for testing
-	boolean isRunning = true;
-	private long timeOutAt = 0;
+	
+	private final ConcurrentLinkedQueue<CommandInter> cmdQueue = new ConcurrentLinkedQueue<CommandInter>();
+	private final Socket socket;
 
+	private Game game;
 	private boolean isTimedOut = false;
+	private long timeOutAt = 0;
+	private boolean isRunning = true;
 	
-	public SocketThread() {}
+	public SocketThread(Socket s, Game g) {
+		socket = s;
+		game = g;
+	}
 	
-	/** Returns the maximum length of time the SocketThread will wait when waitFor() is called. */
-	public abstract int maxWait();
-
+	public SocketThread(Socket s, Game g, ConcurrentLinkedQueue<CommandInter> q) {
+		socket = s;
+		game = g;
+		ConcurrentLinkedQueue<CommandInter> dup = new ConcurrentLinkedQueue<>();
+		dup.addAll(q);
+		this.cmdQueue.addAll(dup);
+	}
+	
+	protected Socket socket() {
+		return socket;
+	}
+	
+	protected Game game() {
+		return game;
+	}
+	
 	/** Returns the address of the machine this SocketThread is connected to. */
 	public abstract InetAddress getInetAddress();
 	
@@ -55,6 +75,18 @@ public abstract class SocketThread extends Thread {
 	/** Returns whether the socket has timed out. */
 	public boolean isTimedOut() {
 		return isTimedOut;
+	}
+	
+	/** Returns the maximum length of time the SocketThread will wait when waitFor() is called. */
+	public int maxWait() {
+		return SocketThread.CONNECTION_TIMEOUT;
+	}
+	
+	/** Writes the given command to the data stream. */
+	synchronized protected void write(DataOutputStream out, CommandInter toServer) throws IOException {
+		out.write(toServer.byteSize());
+		out.write(toServer.bytes(), 0, toServer.byteSize());
+		out.flush();
 	}
 	
 	/** Updates the time at which the client connection is considered timed out and should be killed. */
@@ -79,26 +111,40 @@ public abstract class SocketThread extends Thread {
 	/** Returns the ID of the player connected to this socket.*/
 	public abstract int getPlayerId();
 
-
-	/** TODO documentation
-	 * 
-	 * @param in Data stream to read from
-	 * @return Next command to be read from socket
-	 * @throws InterruptedException 
-	 */
-	protected Command readCommand(final DataInputStream in) {
-		Command clientCmd = null;
+	/** Reads next command from socket and returns it.
+	 * @throws IncompatiblePacketException */
+	protected CommandInter readSocket(final DataInputStream IN) throws InterruptedException, IncompatiblePacketException {
+		byte[] arr = readByteCommand(IN);
+		if (arr.length == MoveCommand.bytes) {
+			return new MoveCommand(arr);
+		} else if (arr.length == TileStateCommand.bytes) {
+			return new TileStateCommand(arr);
+		}
+		throw new IncompatiblePacketException("Cannot parse this packet size!");
+	}
+	
+	/** Reads the next array of bytes from the input stream. */
+	protected byte[] readByteCommand(final DataInputStream in) throws IncompatiblePacketException {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
-		Future<Command> read = executor.submit(new Callable<Command>() {
+		Future<byte[]> read = executor.submit(new Callable<byte[]>() {
 			@Override
-			public Command call() throws Exception { 
+			public byte[] call() throws Exception { 
+				while (in.available() <= 0) {}
 				updateTimeOut();
-				return new Command(in.readChar(), in.readInt());
+				int size = in.readInt();
+				if (size <= Integer.MAX_VALUE) {
+					byte[] b = new byte[size];
+					System.out.println(size+",\n\t"+Arrays.toString(b));
+					in.read(b, 0, size);
+					return b;
+				} else {
+					return new byte[0];
+				}
 			}
 		});
 		
 		try {
-			clientCmd = read.get(SocketThread.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
+			return read.get(SocketThread.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
 		} catch (ExecutionException e) {
 			System.err.println("ExecutionException occurred; returning a null command.");
 			e.printStackTrace();
@@ -109,30 +155,44 @@ public abstract class SocketThread extends Thread {
 			System.err.println("Reading was interrupted; returning a null command.");
 			e.printStackTrace();
 		}
-		return clientCmd;
+		throw new IncompatiblePacketException("Cannot parse a packet of this size!");
+	}
+	
+	/** Gets the queue of commands to be written. */
+	protected Collection<CommandInter> getQueue() {
+		return new LinkedList<>(cmdQueue);
 	}
 	
 	/** Readies a command to be sent */
-	public abstract boolean sendCommand(Command c);
+	public synchronized boolean sendCommand(CommandInter c) {
+		if (c != null) {
+			return cmdQueue.add(c);
+		} 
+		return false;
+	}
 	
 	/** Polls the next command to be sent */
-	protected abstract Command pollCommand();
+	protected synchronized CommandInter pollCommand() {
+		return cmdQueue.poll();
+	}
 	
-	/** Returns true if there are commands to be sent. */
-	protected abstract boolean hasCommands();
-		
-	/** Writes the given command to the data stream. */
-	protected abstract void writeCommand(DataOutputStream out, Command c) throws IOException;
+	/** Returns true if there are commands to be sent from the queue. */
+	protected synchronized boolean hasCommands() {
+		return (cmdQueue.size() > 0);
+	}
 	
 	/** Returns the number of elements in the queue, waiting to be processed. */
-	protected abstract int queueSize();
+	protected int queueSize() {
+		return cmdQueue.size();
+	}
 	
-	/** Returns the first item in the queue. */
-	public abstract Command peek();
+	/** Checks the next item in the queue. */
+	public synchronized CommandInter peek() {
+		return cmdQueue.peek();
+	}
 	
-	protected abstract Collection<Command> getQueue();
-	
-	/** Prevents the thread from running without closing the socket. */
+	/** Stops the server from updating and sending messages, without closing the socket. 
+	 * Messages in the buffer will still be sent. */
 	protected void end() {
 		isRunning = false;
 	}
@@ -140,5 +200,25 @@ public abstract class SocketThread extends Thread {
 	/** Checks whether the thread is running. */
 	protected boolean isRunning() {
 		return isRunning;
+	}
+	
+	/** If the queue has at least one command to send, writes it to the server. */
+	synchronized protected void writeQueue() throws IOException {
+		DataOutputStream OUT = new DataOutputStream(socket.getOutputStream());
+		if (hasCommands()) {
+			CommandInter c = pollCommand();
+			
+			write(OUT, c);
+		}
+	}
+	
+	/** Testing method. 
+	 * Performs action on Game */
+	synchronized protected boolean doAction(CommandInter clientCmd) {
+		try {
+			System.out.println("Do action on "+ game.getName());
+			clientCmd.execute(game);
+		} catch (GameError e) { }
+		return false;
 	}
 }
