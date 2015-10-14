@@ -50,8 +50,9 @@ public class GameRenderer implements Screen{
 
 	private static final float CAMERA_ANGLE = 60f;
 	private float currentCameraAngle;
-	
+
 	private static final boolean SPRITE_TWEENING = true;
+	private float spriteTweenSpeed = 0.05f;
 
 	private Model floor;
 	private Model topWall;
@@ -77,10 +78,10 @@ public class GameRenderer implements Screen{
 	private Map<Model, Tile> tiles;
 	private Map<Room, List<Model>> rooms;
 	private Map<Wall, Painting> paintings;
-	
+
 	private Map<Sprite, Tween<Vector3f>> spriteTweens;
 	private Tween<Float> cameraTween;
-	
+
 	private float currentTime;
 
 	private int playerCount;
@@ -92,12 +93,12 @@ public class GameRenderer implements Screen{
 		tiles = loadFullLevel();
 		rooms = createRooms();
 		characters = loadCharacters();
-		
+
 		spriteTweens = new HashMap<Sprite, Tween<Vector3f>>();
 		cameraTween = null;
-		
+
 		currentCameraAngle = 0;
-		
+
 		currentTime = 0;
 
 		window = GLFW.glfwGetCurrentContext();
@@ -115,28 +116,28 @@ public class GameRenderer implements Screen{
 	@Override
 	public void render(float delta) {
 		List<Asset> renderList = getRenderList();
-		
+
 		// update tweens
 		currentTime += delta;
-		
+
 		if (SPRITE_TWEENING) {
 			for (artGame.game.Character c : entityPositions.keySet()) {
-	
+
 				if(c == null || entityPositions == null || entityPositions.get(c) == null){
 					continue;
 				}
-				if (c.getCol() != entityPositions.get(c).getX() || 
+				if (c.getCol() != entityPositions.get(c).getX() ||
 					c.getRow() != entityPositions.get(c).getZ()) {
-					
+
 					//Vector3f start = entityPositions.get(c);
 					Vector3f end = new Vector3f(c.getCol(), 0, c.getRow());
 					entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
 					if (spriteTweens.get((Sprite)characters.get(c)) == null && characters.get(c) != null) {
-						spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), 0.05f, end, currentTime));
+						spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), spriteTweenSpeed, end, currentTime));
 					}
 				}
 			}
-			
+
 			List<Sprite> stopTweening = new ArrayList<Sprite>();
 			for (Sprite s : spriteTweens.keySet()) {
 				if (spriteTweens.get(s).isFinished(currentTime)) {
@@ -146,7 +147,7 @@ public class GameRenderer implements Screen{
 					s.setPosition(spriteTweens.get(s).tween(currentTime));
 				}
 			}
-			
+
 			for (Sprite s : stopTweening) {
 				spriteTweens.remove(s);
 			}
@@ -157,7 +158,7 @@ public class GameRenderer implements Screen{
 				}
 			}
 		}
-		
+
 		if (cameraTween != null) {
 			if (cameraTween.isFinished(currentTime)) {
 				cameraTween = null;
@@ -167,9 +168,9 @@ public class GameRenderer implements Screen{
 				currentCameraAngle = tween;
 			}
 		}
-		
+
 		camera.setRotation(new Vector3f(CAMERA_ANGLE, currentCameraAngle, 0));
-		
+
 		if(GameData.getPlayer() != null){
 			camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
 		}
@@ -178,7 +179,7 @@ public class GameRenderer implements Screen{
 			a.draw(camera, light);
 		}
 	}
-	
+
 	private Map<Room, List<Model>> createRooms() {
 		Map<Room, List<Model>> temp = new HashMap<Room, List<Model>>();
 		for (Model m : tiles.keySet()) {
@@ -194,14 +195,14 @@ public class GameRenderer implements Screen{
 		}
 		return temp;
 	}
- 
+
 	private List<Asset> getRenderList() {
 		List<Asset> scene = new ArrayList<Asset>();
 
 		if (tiles == null) {
 			tiles = loadFullLevel();
 		}
-		
+
 		if(GameData.getPlayer() == null){
 			for(List<Model> models : rooms.values()){
 				scene.addAll(models);
@@ -215,7 +216,7 @@ public class GameRenderer implements Screen{
 			scene.addAll(characters.values());
 			return scene;
 		}
-		
+
 		int row = GameData.getPlayer().getRow();
 		int col = GameData.getPlayer().getCol();
 		Tile playerTile = GameData.getFloor().getTile(row, col);
@@ -233,11 +234,11 @@ public class GameRenderer implements Screen{
 
 		updatePaintings();
 		scene.addAll(paintings.values());
-		
+
 		scene.addAll(characters.values());
 		return scene;
 	}
-	
+
 	private void updatePaintings() {
 		List<Wall> toRemove = new ArrayList<Wall>();
 		for (Wall w : paintings.keySet()) {
@@ -245,22 +246,22 @@ public class GameRenderer implements Screen{
 				toRemove.add(w);
 			}
 		}
-		
+
 		for (Wall w: toRemove) {
 			paintings.remove(w);
 		}
 	}
-	
+
 	private Map<Integer, Painting> loadPaintings(String idFilePath) {
 		Map<Integer, Painting> temp = new HashMap<Integer, Painting>();
-		
+
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(idFilePath));
 			while(scan.hasNext()) {
 				temp.put(scan.nextInt(), AssetLoader.instance().loadPainting("res/paintings/" + scan.next(), 64));
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} finally {
@@ -268,7 +269,7 @@ public class GameRenderer implements Screen{
 				scan.close();
 			}
 		}
-		
+
 		return temp;
 	}
 
@@ -295,9 +296,9 @@ public class GameRenderer implements Screen{
 	}
 
 	private void updateCharacters() {
-		
-		List<artGame.game.Character> toRemove = new ArrayList<artGame.game.Character>();	
-		
+
+		List<artGame.game.Character> toRemove = new ArrayList<artGame.game.Character>();
+
 		for (artGame.game.Character c : GameData.getCharacters()) {
 			if (c instanceof Player || c instanceof Guard) {
 				//get current tween loc..
@@ -311,7 +312,7 @@ public class GameRenderer implements Screen{
 				}
 			}
 		}
-		
+
 		for(artGame.game.Character c : characters.keySet()){
 			boolean contains = false;
 			for (artGame.game.Character ch : GameData.getCharacters()) {
@@ -323,7 +324,7 @@ public class GameRenderer implements Screen{
 				toRemove.add(c);
 			}
 		}
-		
+
 		for (artGame.game.Character c : toRemove) {
 			characters.remove(c);
 		}
@@ -399,7 +400,7 @@ public class GameRenderer implements Screen{
 						pos = pos.multiply(Matrix4f.rotate(270, 0, 1, 0));
 						break;
 					case SOUTH:
-						
+
 						break;
 					case WEST:
 						pos = pos.multiply(Matrix4f.rotate(90, 0, 1, 0));
@@ -410,7 +411,7 @@ public class GameRenderer implements Screen{
 					level.put(floor.instantiate(pos), t);
 				} else if (t instanceof Chest) {
 					level.put(floor.instantiate(pos), t);
-					
+
 					int id = ((Chest) t).id;
 					if (0 <= id && id < 20 ) { // loo
 						forloop:
@@ -459,20 +460,20 @@ public class GameRenderer implements Screen{
 
 		return level;
 	}
-	
+
 
 	private void resetAssets() {
 		floor = AssetLoader.instance().loadOBJ("res/floor.obj", new Vector3f(0.9f, 0.9f, 0.9f));
-		topWall = AssetLoader.instance().loadOBJ("res/top_wall.obj", new Vector3f(1,1,1));
-		bottomWall = AssetLoader.instance().loadOBJ("res/bottom_wall.obj", new Vector3f(1,1,1));
-		leftWall = AssetLoader.instance().loadOBJ("res/left_wall.obj", new Vector3f(1,1,1));
-		rightWall = AssetLoader.instance().loadOBJ("res/right_wall.obj", new Vector3f(1,1,1));
-		
+		topWall = AssetLoader.instance().loadOBJ("res/top_wall.obj", new Vector3f(1,0,1));
+		bottomWall = AssetLoader.instance().loadOBJ("res/bottom_wall.obj", new Vector3f(0,1,1));
+		leftWall = AssetLoader.instance().loadOBJ("res/left_wall.obj", new Vector3f(1,1,0));
+		rightWall = AssetLoader.instance().loadOBJ("res/right_wall.obj", new Vector3f(0.5f,1,0.5f));
+
 		topDoor = AssetLoader.instance().loadOBJ("res/top_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));
 		bottomDoor = AssetLoader.instance().loadOBJ("res/bottom_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));
 		leftDoor = AssetLoader.instance().loadOBJ("res/left_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));
 		rightDoor = AssetLoader.instance().loadOBJ("res/right_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));
-		
+
 		stairs = AssetLoader.instance().loadOBJ("res/stair.obj",new Vector3f(1,1,1));
 		sculpture1 = AssetLoader.instance().loadOBJ("res/sculpture_david.obj", new Vector3f(1,1,1));
 		crates = AssetLoader.instance().loadOBJ("res/crates.obj", new Vector3f(0.45f, 0.29f, 0.16f));
@@ -486,19 +487,19 @@ public class GameRenderer implements Screen{
 	public Camera getCamera(){
 		return camera;
 	}
-	
+
 	public void rotateLeft() {
 		if (cameraTween == null) {
 			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90*(Math.round((currentCameraAngle + 90)/90)), currentTime);
 		}
 	}
-	
+
 	public void rotateRight() {
 		if (cameraTween == null) {
 			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90*(Math.round((currentCameraAngle - 90)/90)), currentTime);
 		}
 	}
-	
+
 	public float getCameraAngle(){
 		return currentCameraAngle;
 	}

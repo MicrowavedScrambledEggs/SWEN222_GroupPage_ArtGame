@@ -105,16 +105,16 @@ public class GLWindow {
 
 	private static boolean rotateLeft = false;
 	private static boolean rotateRight = false;
-	
+
 	private static Queue<Command> cmds;
 
 	/**
 	 * Loads the basic client-side game world
 	 */
 	static {
-		
+
 		cmds = new ArrayDeque<Command>();
-		
+
 		XMLHandler gameLoader = new XMLHandler();
 		game = gameLoader.loadGame(new File("Save Files/GameWorld.xml"));
 		GameData.updateGame(game);
@@ -125,7 +125,7 @@ public class GLWindow {
 	 */
 	public GLWindow() {
 		try {
-			client = new ClientThread(new Socket("192.168.178.20", 32768), game, 10);
+			client = new ClientThread(new Socket("130.195.6.193", 32768), game, 10);
 			client.start();
 
 			keyCallback = new NetworkKeyCallback(client);
@@ -196,9 +196,9 @@ public class GLWindow {
 				gameRender.rotateRight();
 				rotateRight = false;
 			}
-			
+
 			cameraAngle = gameRender.getCameraAngle()%360;
-			
+
 			//Send any key presses to server..
 			while(!cmds.isEmpty()){
 				client.sendCommand(cmds.poll());
@@ -214,6 +214,8 @@ public class GLWindow {
 	}
 
 	private void loop() {
+
+
 		/* Get width and height to calcualte the ratio */
 		glfwGetFramebufferSize(window, width, height);
 
@@ -228,13 +230,13 @@ public class GLWindow {
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 
+		glfwPollEvents();
+
 		render();
 
 		/* Swap buffers and poll Events */
 		glfwSwapBuffers(window);
 
-		glfwPollEvents();
-		
 		/* Flip buffers for next loop */
 		width.flip();
 		height.flip();
@@ -253,7 +255,7 @@ public class GLWindow {
 
 	private void render() {
 		if(GameData.getPlayer() == null){
-			
+
 		}
 
 		for (Screen screen : screens) {
@@ -286,7 +288,7 @@ public class GLWindow {
 		glfwTerminate();
 		errorCallback.release();
 	}
-	
+
 	/**
 	 * Adds a network command to the commands queue
 	 * @param c
@@ -371,33 +373,33 @@ public class GLWindow {
 	 * @return
 	 */
 	public static Command applyCameraRotation(Command c) {
-		
+
 		char a = c.action;
-		
+
 		if(!(a == 'w' || a == 'a' || a =='d' || a == 's')){
 			return c;
 		}
-		
+
 		int[] range = {0, 90, 180, 270, 360};
-		
+
 		int i = getClosestValue(Math.abs(cameraAngle), range);
-	
+
 		Command newC = new Command(c.action, c.id);
-		
+
 		switch(i){
-		case 0 : 
-			
+		case 0 :
+
 			switch(c.action){
 			case 'w' : newC = new Command('w', c.id); break;
 			case 'a' : newC = new Command('a', c.id); break;
 			case 's' : newC = new Command('s', c.id); break;
 			case 'd' : newC = new Command('d', c.id); break;
 			}
-			
+
 			;break;
-			
-		case 90: 
-			
+
+		case 90:
+
 			if(cameraAngle > 0){
 				switch(c.action){
 				case 'w' : newC = new Command('d', c.id); break;
@@ -413,22 +415,22 @@ public class GLWindow {
 				case 'a' : newC = new Command('s', c.id); break;
 				}
 			}
-			
+
 			;break;
-			
-		case 180: 
-			
+
+		case 180:
+
 			switch(c.action){
 			case 'w' : newC = new Command('s', c.id); break;
 			case 'a' : newC = new Command('d', c.id); break;
 			case 's' : newC = new Command('w', c.id); break;
 			case 'd' : newC = new Command('a', c.id); break;
 			}
-			
+
 			;break;
-			
+
 		case 270:
-			
+
 			if(cameraAngle > 0){
 				switch(c.action){
 				case 'w' : newC = new Command('a', c.id); break;
@@ -444,27 +446,27 @@ public class GLWindow {
 				case 'a' : newC = new Command('w', c.id); break;
 				}
 			}
-			
-			
-			
+
+
+
 			break;
-			
-		case 360: 
-			
+
+		case 360:
+
 			switch(c.action){
 			case 'w' : newC = new Command('w', c.id); break;
 			case 'a' : newC = new Command('a', c.id); break;
 			case 's' : newC = new Command('s', c.id); break;
 			case 'd' : newC = new Command('d', c.id); break;
 			}
-			
+
 			;break;
-			
+
 		}
-		
+
 		return newC;
 	}
-	
+
 	/**
 	 * Gets the closest value to val in array compare.
 	 * @param val The value you want to check
