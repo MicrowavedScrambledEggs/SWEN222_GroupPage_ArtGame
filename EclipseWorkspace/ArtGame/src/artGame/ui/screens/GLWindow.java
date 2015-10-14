@@ -151,7 +151,7 @@ public class GLWindow {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		window = glfwCreateWindow(640, 480, "Renderer Demo Window", NULL, NULL);
+		window = glfwCreateWindow(640, 480, "What'd we call this again?", NULL, NULL);
 		if (window == NULL) {
 			glfwTerminate();
 			throw new RuntimeException("Failed to create the GLFW window");

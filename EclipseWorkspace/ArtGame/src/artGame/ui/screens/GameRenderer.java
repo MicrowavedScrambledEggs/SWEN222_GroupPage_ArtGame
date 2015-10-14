@@ -210,7 +210,7 @@ public class GameRenderer implements Screen{
 		//System.out.println(rooms == null);
 		//System.out.println(rooms.get(playerTile.getRoom()) == null);
 		scene.addAll(rooms.get(playerTile.getRoom()));
-
+		characters = loadCharacters();
 		updateSculptures();
 		for (artGame.game.Character c : characters.keySet()) {
 			if (playerTile.getRoom().getTiles().contains(GameData.getFloor().getTile(c.getRow(), c.getCol()))) {
