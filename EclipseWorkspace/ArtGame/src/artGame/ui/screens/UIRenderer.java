@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
@@ -25,7 +27,9 @@ import artGame.ui.ItemSlot;
 import artGame.ui.Widget;
 import artGame.ui.gamedata.ArtItem;
 import artGame.ui.gamedata.GameData;
+import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Camera;
+import artGame.ui.renderer.Painting;
 import artGame.ui.renderer.Texture;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
@@ -47,7 +51,7 @@ public class UIRenderer implements Screen {
 
 	private Vector3f testLoc = new Vector3f(0f, 0f, 0f);
 
-	private HashMap<Integer, Widget> itemsById;
+	private Map<Integer, Widget> itemsById;
 
 	private Widget fontWidget;
 	
@@ -205,7 +209,7 @@ public class UIRenderer implements Screen {
 
 		float y = -0.2f;
 
-		float invSlotCount = 8;
+		float invSlotCount = 10;
 		float startX = 0.1f;
 		float endX = 0.913f;
 		float gap = 0.01f;
@@ -231,6 +235,16 @@ public class UIRenderer implements Screen {
 		//test key item id == 2
 		Widget icon2 = loadWidget("res/key.png", 32, 0.8f, 0.8f);
 		Widget defIcon = loadWidget("res/default_icon.png", 64, 0.8f, 0.8f);
+		
+		Map<Integer, Widget> paintings = loadPaintings("res/paintings.txt");
+		for(int i : paintings.keySet()){
+			if(paintings.get(i) != null){
+				paintings.get(i).setScale(scale*0.6f);
+				itemsById.put(i, paintings.get(i));
+			}
+		}
+		
+		
 		if(icon2 != null){
 			icon2.setScale(scale);
 			itemsById.put(1, icon2);
@@ -256,6 +270,32 @@ public class UIRenderer implements Screen {
 		
 		fontWidget = this.loadWidgetByImage(fontImage, 256, 0.5f, -0.3f);
 		fontWidget.setScale(1);
+	}
+	
+	/**
+	 * Loads in paintings for use with icons
+	 * @param idFilePath
+	 * @return
+	 */
+	private Map<Integer, Widget> loadPaintings(String idFilePath) {
+		Map<Integer, Widget> temp = new HashMap<Integer, Widget>();
+		
+		Scanner scan = null;
+		try {
+			scan = new Scanner(new File(idFilePath));
+			while(scan.hasNext()) {
+				temp.put(scan.nextInt(), loadWidget("res/paintings/" + scan.next(), 64, 1f, 1f));
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (scan != null) {
+				scan.close();
+			}
+		}
+		
+		return temp;
 	}
 	
 	/**

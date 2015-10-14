@@ -156,7 +156,11 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	 * For elements representing coordinates, builds the coordinate from the currentCoord
 	 * coordinate builder and adds it to the object builder at the top of the stack.
 	 *
-	 * For elements where
+	 * For elements where the build strategy for that element is to be a field for another
+	 * build strategy, i.e with patrols or with room definers, add the build strategy to the
+	 * object builder for the parent element
+	 *
+	 * Otherwise, pops the top object builder from the stack and adds it to the build list
 	 */
 	@Override
 	public void endElement(String uri, String localName, String qName){
@@ -179,6 +183,12 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		}
 	}
 
+	/**
+	 * Pops the top object builder from the build stack, gets it's build strategy, and adds it as a field to
+	 * the object builder that is now at the top of the stack (the object builder for the parent element)
+	 *
+	 * @param qName Name of element being finished, which is the name of the build strategy field
+	 */
 	private void addBuildStrategyAsFeild(String qName) {
 		ObjectBuilder patrolSegmentBuilder = buildStack.pop();
 		BuildStrategy patrolSegment = patrolSegmentBuilder.getBuildStrategy();
@@ -188,10 +198,9 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	@Override
 	/**
 	 * Deals with characters in between tags for an element. Usually a value for a field the element
-	 * represents.
+	 * represents. For "leaf" elements
 	 */
 	public void characters(char[] ch, int start, int length){
-		//TODO: Add a lot more cases once artGame.game is more complete
 		//extracts a string from the section of the character array to parse
 		String elementDat = new String(Arrays.copyOfRange(ch, start, start + length));
 		elementDat = elementDat.trim();//removes whitespace
@@ -215,6 +224,13 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		current.addField(localName, values);
 	}
 
+	/**
+	 * Gets all the values from an attributes object, and puts them in a String array to return
+	 * Preserves the order of the values
+	 *
+	 * @param attributes Attributes who's values will be put in string array
+	 * @return String array of values from given attributes
+	 */
 	private String[] attributeStringArray(Attributes attributes){
 		String[] attributeStringArray = new String[attributes.getLength()];
 		for(int i = 0; i < attributes.getLength(); i++){
@@ -223,10 +239,18 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		return attributeStringArray;
 	}
 
+	/**
+	 * Builds game with all it's objects from data collected from parsing xml file
+	 * @return Game represented by XML file
+	 */
 	public Game buildGame(){
+		//Goes through each Object Builder on the build list and gets it to add its
+		//object, data etc to the game maker
 		for(ObjectBuilder objectBuilder : buildList){
 			objectBuilder.addToGame();
 		}
+		//gets gameMaker to build the game after gameMaker has all the objects and
+		//data from the object builders
 		return gameMaker.makeGame();
 	}
 

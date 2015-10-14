@@ -212,7 +212,7 @@ public class GameRenderer implements Screen{
 			} else {
 				updateCharacters();
 			}
-
+			scene.addAll(characters.values());
 			return scene;
 		}
 		

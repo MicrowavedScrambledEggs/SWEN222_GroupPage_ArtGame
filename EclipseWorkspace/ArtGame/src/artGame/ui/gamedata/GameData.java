@@ -164,13 +164,13 @@ public class GameData {
 	 * Checks whether our client side game objects are out of date and alters them if they are.
 	 */
 	public static synchronized void updateGameObjects(){
-		
-		
+				
 		//Check artworks..	
-		System.out.println(data.occupied.size());
-		System.out.println("base art count = " + getAllArt().length);
-		for(ArtItem i : getAllArt()){
-			
+		
+		ArtItem[] art = getAllArt();
+		
+		for(ArtItem i : art){
+
 			boolean contains = false;
 			
 			for(TileData t : data.occupied){
@@ -178,16 +178,23 @@ public class GameData {
 					continue;
 				}
 				Direction artDir = directionValues[t.itemDir];
-				//TODO
+		
 				if(t.row == i.getRow() && t.col == i.getCol() && i.getDirection() == artDir){
-					
-					contains = true;
+					boolean isId = false;
+					for(int artId : t.artIds){
+						if(artId == i.ID){
+							isId = true;
+						}
+					}
+					if(isId){
+						contains = true;
+					}
 				}
 				
 			}
 			
 			if(!contains){
-			
+				game.getFloor().getTile(i.getRow(), i.getCol()).getWall(i.getDirection()).setArt(null);
 			}
 		}
 		

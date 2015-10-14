@@ -42,6 +42,9 @@ public class NetworkKeyCallback extends GLFWKeyCallback {
 		}
 
 		Player p = GameData.getPlayer(); // we want our player, not someone else's
+		if(p == null){
+			return;
+		}
 		Command c = null;
 		//Send press commands..
 

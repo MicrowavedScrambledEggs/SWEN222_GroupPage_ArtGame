@@ -76,6 +76,7 @@ public class GamePacketData {
 				for (Direction dir : Direction.values()) {
 					if (t.getWall(dir) != null) {
 						if (t.getWall(dir).getArt() != null) {
+							dirOrd = dir.ordinal();
 							contains = true;
 							break;
 						}

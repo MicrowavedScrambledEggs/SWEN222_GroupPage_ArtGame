@@ -397,7 +397,7 @@ public class Floor {
 		}
 		// cycle through offset tiles and check for players
 		// using distance = 3, straight line
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 3; i++) {
 			// target coords. works because only one of
 			// row or col offset will be nonzero
 			int tarRow = g.getRow() + i * rOff;
