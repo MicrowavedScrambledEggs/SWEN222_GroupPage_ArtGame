@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import artGame.control.cmds.Action;
 import artGame.game.*;
 import artGame.game.Character.Direction;
 import artGame.xml.XMLHandler;

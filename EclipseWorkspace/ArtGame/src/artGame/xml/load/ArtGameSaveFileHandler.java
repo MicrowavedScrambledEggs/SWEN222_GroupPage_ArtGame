@@ -40,6 +40,7 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes){
 		//TODO: Add handling for item descriptions
+		try{
 		if(qName.equals(XMLHandler.FLOOR_ELEMENT)){
 			//Sets current level for tiles in this floor element
 			currentLevel = Integer.parseInt(attributes.getValue(0));
@@ -127,6 +128,12 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 			buildStack.push(new ObjectBuilder(new SquareArea(currentLevel)));
 		} else if(qName.equals(XMLHandler.SQUARE_ELEMENT)){
 			buildStack.push(new ObjectBuilder(new SingleTile(currentLevel)));
+		}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			throw new LoadError("Missing attributes in " + qName + " element");
+		} catch (NumberFormatException e) {
+			throw new LoadError("Problem with attribute in " +  qName + " element. Can not be formated to a string");
 		}
 	}
 
@@ -245,8 +252,14 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	public Game buildGame(){
 		//Goes through each Object Builder on the build list and gets it to add its
 		//object, data etc to the game maker
-		for(ObjectBuilder objectBuilder : buildList){
-			objectBuilder.addToGame();
+		try{
+			for(ObjectBuilder objectBuilder : buildList){
+				objectBuilder.addToGame();
+			}
+		}
+		catch(NullPointerException e){
+			e.printStackTrace();
+			throw new LoadError("Elements missing from elements! Can not build associated object");
 		}
 		//gets gameMaker to build the game after gameMaker has all the objects and
 		//data from the object builders

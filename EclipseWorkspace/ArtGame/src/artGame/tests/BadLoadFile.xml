@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<game>
+	<!-- XML file for level for JUnit tests designed to fail tests
+	Author: Badi James-->
+	<floor>
+	<empty_tile>
+		<wall direction = "WEST" />
+	</empty_tile>
+	</floor>
+	<art>
+		<painting>
+			
+			<name>Stary Night</name>
+			<value>30000</value>
+		
+		</painting>
+	</art>
+</game>

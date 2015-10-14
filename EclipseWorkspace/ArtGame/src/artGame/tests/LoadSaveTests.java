@@ -16,11 +16,13 @@ import artGame.game.Player;
 import artGame.game.Character;
 import artGame.main.Game;
 import artGame.xml.XMLHandler;
+import artGame.xml.load.LoadError;
 
 public class LoadSaveTests {
 
 	private XMLHandler loadSaver = new XMLHandler();
 	private File testGameWorldFile = new File("src/artGame/tests/TestGameWorld.xml");
+	private File badFile = new File("src/artGame/tests/BadLoadFile.xml");
 	private String testSaveFile = "src/artGame/tests/TestSaveFile.xml";
 	private Game testGame = loadTestGame();
 
@@ -71,6 +73,16 @@ public class LoadSaveTests {
 		expectedGuard.addItem(new Art("Divorce Notice", -30000, 3));
 		testCharactersAreEqual(expectedGuard, actualGuard);
 		assertEquals(expectedGuard.getPath(), actualGuard.getPath());
+	}
+	
+	@Test
+	public void testBadFile() {
+		try{
+			loadSaver.loadGame(badFile);
+			fail();
+		} catch (LoadError e){
+			
+		}
 	}
 
 	private void testCharactersAreEqual(Character expectedCharacter,

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- The file for the Museum aka the Game World
+	 to be loaded up with each new game that's not
+	 using a save file
+	 
+	 Author: Badi James 300156502 -->
 <game>
 	<floor level="0">
 		<empty_tile>
