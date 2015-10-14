@@ -8,7 +8,7 @@ import java.util.Set;
  * Represents a character in the game represented by a id, position and face
  * direction
  * 
- * @author Kaishuo
+ *@author Kaishuo Yang 300335418
  *
  */
 public class Character {

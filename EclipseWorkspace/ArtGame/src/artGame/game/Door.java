@@ -4,7 +4,7 @@ package artGame.game;
  * Represents a (possibly) locked door in the game world. Once a player unlocks
  * the door, it remains unlocked for the rest of the game
  * 
- * @author Kaishuo
+ * @author Kaishuo Yang 300335418
  *
  */
 public class Door extends Wall {

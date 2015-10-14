@@ -2,7 +2,7 @@ package artGame.game;
 
 /**
  * Represents a player character in the game
- * @author Kaishuo
+ * @author Kaishuo Yang 300335418
  *
  */
 public class Player extends Character{

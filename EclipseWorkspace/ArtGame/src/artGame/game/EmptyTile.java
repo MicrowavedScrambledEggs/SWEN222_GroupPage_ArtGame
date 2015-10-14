@@ -5,7 +5,7 @@ import artGame.game.Character.Direction;
 /**
  * A empty tile representing general places players can walk on. Can hold a 
  * occupant character and has four positions for walls
- * @author Kaishuo
+ * @author Kaishuo Yang 300335418
  *
  */
 public class EmptyTile extends Tile{

@@ -139,6 +139,9 @@ public class GameData {
 	 * @return
 	 */
 	public static synchronized List<Player> getPlayers(){
+		if(data == null){
+			return new ArrayList<>();
+		}
 		return data.players;
 	}
 

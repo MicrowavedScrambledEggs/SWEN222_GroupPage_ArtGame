@@ -4,7 +4,7 @@ package artGame.game;
  * Represents a sculpture on the game floor(as opposed to one in a players
  * inventory)
  *
- * @author Kaishuo
+ * @author Kaishuo Yang 300335418
  *
  */
 public class Sculpture extends Character {
@@ -53,6 +53,10 @@ public class Sculpture extends Character {
 		return name;
 	}
 
+	/**
+	 * 
+	 * @return the value
+	 */
 	public int getValue(){
 		return value;
 	}

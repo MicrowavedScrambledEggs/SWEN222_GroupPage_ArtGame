@@ -7,7 +7,7 @@ import java.util.List;
  * Represents a guard who will catch Players he sees. Can either path or move in
  * a predetermined path
  * 
- * @author Kaishuo
+ *@author Kaishuo Yang 300335418
  *
  */
 public class Guard extends Character {

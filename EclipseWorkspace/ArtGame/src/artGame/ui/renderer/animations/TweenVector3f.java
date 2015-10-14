@@ -46,4 +46,11 @@ public class TweenVector3f implements Tween<Vector3f> {
 		return startValue.add(valueRange);
 	}
 
+	@Override
+	public float completion(float time) {
+		float currentTime = (time - startTime)/1000.0f;
+	    float t = currentTime / duration;
+	    return Math.max(0, Math.min(1, t));
+	}
+
 }

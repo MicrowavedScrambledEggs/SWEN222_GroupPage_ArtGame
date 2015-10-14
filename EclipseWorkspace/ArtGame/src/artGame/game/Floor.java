@@ -11,8 +11,8 @@ import artGame.game.Character.Direction;
 /**
  * Represents the entire game Floor/world where the action is taking place. Most
  * of the logic happens here
- * 
- * @author Kaishuo
+ *
+ *@author Kaishuo Yang 300335418
  *
  */
 public class Floor {
@@ -397,14 +397,14 @@ public class Floor {
 		}
 		// cycle through offset tiles and check for players
 		// using distance = 3, straight line
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			// target coords. works because only one of
 			// row or col offset will be nonzero
 			int tarRow = g.getRow() + i * rOff;
 			int tarCol = g.getCol() + i * cOff;
 			if(tarRow<0 || tarRow>maxR || tarCol<0 || tarCol>maxC) return null;
 			if(floor[tarRow][tarCol] == null){
-				return null; //Badi: Balcony was causing problems, no walls to 
+				return null; //Badi: Balcony was causing problems, no walls to
 							 //stop guards looking at null tiles
 			}
 			if (floor[tarRow][tarCol].getOccupant() instanceof Player) {
@@ -468,7 +468,7 @@ public class Floor {
 	public int getHeight() {
 		return floor.length;
 	}
-	
+
 	/**
 	 * returns the width of the entire floor array(number of cols)
 	 */
@@ -482,13 +482,6 @@ public class Floor {
 	public List<Guard> getGuards() {
 		return guards;
 	}
-	
-	/**
-	 * gets all the exits
-	 */
-	public List<ExitTile> getExits(){
-		return exits;
-	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -500,13 +493,23 @@ public class Floor {
 			}
 			for (int x = 0; x < floor.length; x++) {
 				for (int y = 0; y < floor[0].length; y++) {
-					if (  ( (floor[x][y] == null) == (f.getTile(x, y) == null) )
-							|| !floor[x][y].equals(f.getTile(x, y))  ) {
-						System.out.println(floor[x][y] +" and "+ f.getTile(x,y));
+					if ( (floor[x][y] == null) && (f.getTile(x, y) == null) ){
+						continue;
+					}
+					if ( (floor[x][y] == null) != (f.getTile(x, y) == null) ){
+						return false;
+					}
+					if(!floor[x][y].equals(f.getTile(x, y))  ) {
+						Tile hereTile = floor[x][y];
+						Tile thereTile = f.getTile(x, y);
+						System.out.println(String.format("Tiles at row %d, col %d not"
+								+ " equal:\nThis: %s Other: %s", x, y, floor[x][y],
+								f.getTile(x, y)));
 						return false;
 					}
 				}
 			}
+			return true;
 		}
 		return false;
 	}

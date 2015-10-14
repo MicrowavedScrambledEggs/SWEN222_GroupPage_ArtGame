@@ -5,7 +5,7 @@ import artGame.game.Character.Direction;
 /**
  * Represents a set of stairs connecting different floors in the game
  * 
- * @author Kaishuo
+ * @author Kaishuo Yang 300335418
  *
  */
 public class StairTile extends Tile {

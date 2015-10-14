@@ -3,7 +3,7 @@ package artGame.game;
 @SuppressWarnings("serial")
 /**
  * Game error thrown when something goes wrong
- * @author Kaishuo
+ * @author Kaishuo Yang 300335418
  *
  */
 public class GameError extends RuntimeException {

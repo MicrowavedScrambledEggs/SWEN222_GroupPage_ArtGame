@@ -2,7 +2,7 @@ package artGame.game;
 
 /**
  * Represents a key used to open locked doors
- * @author Kaishuo
+ * @author Kaishuo Yang 300335418
  *
  */
 public class Key extends Item {

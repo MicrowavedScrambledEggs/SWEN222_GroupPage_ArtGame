@@ -117,6 +117,8 @@ public class Main {
 
 			} else if (serverURL != null) {
 				// Run as client
+				System.out.println(serverURL);
+				System.out.println(port);
 				new GLWindow(serverURL, port).begin();
 			} else {
 				// single user game

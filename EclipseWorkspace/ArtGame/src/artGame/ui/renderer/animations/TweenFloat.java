@@ -5,7 +5,7 @@ public class TweenFloat implements Tween<Float> {
 	private float duration;
 	private float valueRange;
 	private float startTime;
-
+	
 	public TweenFloat(float startValue, float duration, float endValue, float startTime) {
 		this.startValue = startValue;
 	    this.duration = duration;
@@ -16,13 +16,9 @@ public class TweenFloat implements Tween<Float> {
 	@Override
 	public Float tween(float time) {
 		float currentTime = (time - startTime)/1000.0f;
-
-
-
 	    float t = currentTime / duration;
-
 	    t = Math.max(0, Math.min(1, t));
-
+	    
 	    float val = startValue + t * valueRange;
 	    if (t >= 1) {
 	    	return startValue + valueRange;
@@ -46,5 +42,12 @@ public class TweenFloat implements Tween<Float> {
 	@Override
 	public Float getEndValue() {
 		return startValue + duration;
+	}
+
+	@Override
+	public float completion(float time) {
+		float currentTime = (time - startTime)/1000.0f;
+	    float t = currentTime / duration;
+	    return Math.max(0, Math.min(1, t));
 	}
 }

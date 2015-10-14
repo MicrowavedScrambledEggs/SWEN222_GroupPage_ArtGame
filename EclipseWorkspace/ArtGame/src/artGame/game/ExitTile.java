@@ -2,7 +2,7 @@ package artGame.game;
 
 /**
  * The exit where the player can flee to safety
- * @author Kaishuo
+ *@author Kaishuo Yang 300335418
  *
  */
 public class ExitTile extends Tile{

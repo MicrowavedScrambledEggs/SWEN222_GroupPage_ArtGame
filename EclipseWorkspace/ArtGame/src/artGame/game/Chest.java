@@ -1,7 +1,7 @@
 package artGame.game;
 /**
  * Represents a chest which can contain a single item
- * @author Kaishuo
+ * @author Kaishuo Yang 300335418
  *
  */
 public class Chest extends Tile {

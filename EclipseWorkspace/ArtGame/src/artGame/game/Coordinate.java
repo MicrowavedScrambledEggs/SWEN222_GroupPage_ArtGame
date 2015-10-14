@@ -2,7 +2,7 @@ package artGame.game;
 
 /**
  * Basic co-ordinate class. Stores an x value and a y value
- * @author Badi James
+ * @author Badi James 300156502
  *
  */
 public class Coordinate implements Comparable<Coordinate>{
