@@ -10,6 +10,7 @@ public class ArtItem extends Art {
 	private Tile location;
 	private Wall wall;
 	private Direction dir;
+	private int row, col;
 
 	public ArtItem(String name,int value,int ID, Tile location, Wall wall, Direction dir) {
 		super(name, value, ID);
@@ -18,6 +19,11 @@ public class ArtItem extends Art {
 		this.dir=dir;
 	}
 
+	public void setWorldLocation(int row, int col){
+		this.row=row;
+		this.col=col;
+	}
+	
 	public Wall getWall(){
 		return wall;
 	}
@@ -28,6 +34,14 @@ public class ArtItem extends Art {
 
 	public Direction getDirection(){
 		return dir;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public int getCol() {
+		return col;
 	}
 
 }

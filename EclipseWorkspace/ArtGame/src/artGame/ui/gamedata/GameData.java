@@ -19,6 +19,8 @@ import artGame.game.Tile;
 import artGame.game.Wall;
 import artGame.main.Game;
 
+import static artGame.game.Character.Direction.*;
+
 /**
  * Holds the current Game information from the Server
  * @author Tim King 300282037
@@ -34,6 +36,10 @@ public class GameData {
 	private static List<artGame.game.Character> chars;
 
 	private static boolean out;
+	
+	private static Direction[] directionValues = Direction.values();
+	
+	
 	
 	/**
 	 * Updates the GameData class with an updated set of data from the server
@@ -159,13 +165,39 @@ public class GameData {
 	 */
 	public static synchronized void updateGameObjects(){
 		
+		
+		//Check artworks..	
+		System.out.println(data.occupied.size());
+		System.out.println("base art count = " + getAllArt().length);
+		for(ArtItem i : getAllArt()){
+			
+			boolean contains = false;
+			
+			for(TileData t : data.occupied){
+				if(t.itemDir == -1){
+					continue;
+				}
+				Direction artDir = directionValues[t.itemDir];
+				//TODO
+				if(t.row == i.getRow() && t.col == i.getCol() && i.getDirection() == artDir){
+					
+					contains = true;
+				}
+				
+			}
+			
+			if(!contains){
+			
+			}
+		}
+		
 		for(int x = 0; x < game.getFloor().getHeight(); x++){
 			for(int y = 0; y < game.getFloor().getWidth(); y++){
 				Tile tile = game.getFloor().getTile(x, y);
 				
 				if(tile == null){
 					continue;
-				}
+				}					
 				
 				artGame.game.Character ch = tile.getOccupant();
 				if(ch != null){
@@ -236,6 +268,8 @@ public class GameData {
 
 							ArtItem artItem = new ArtItem(a.name, a.value,
 									a.ID, t, t.getWall(dir), dir);
+							
+							artItem.setWorldLocation(y, x);
 
 							arts.add(artItem);
 						}

@@ -1,11 +1,14 @@
 
 package artGame.ui.screens;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
@@ -21,18 +24,22 @@ import artGame.game.Room;
 import artGame.game.Sculpture;
 import artGame.game.StairTile;
 import artGame.game.Tile;
+import artGame.game.Wall;
+
 import artGame.ui.gamedata.GameData;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.Model;
+import artGame.ui.renderer.Painting;
 import artGame.ui.renderer.Sprite;
 import artGame.ui.renderer.animations.Tween;
 import artGame.ui.renderer.animations.TweenFloat;
 import artGame.ui.renderer.animations.TweenVector3f;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
-import artGame.ui.screens.Screen;
+
+import static artGame.game.Character.Direction.*;
 
 public class GameRenderer implements Screen{
 
@@ -63,11 +70,13 @@ public class GameRenderer implements Screen{
 	private Model desks;
 	private Sprite playerSprite;
 	private Sprite guardSprite;
+	private Map<Integer, Painting> paintingCatalogue;
 
 	private Map<artGame.game.Character, Asset> characters;
 	private Map<artGame.game.Character, Vector3f> entityPositions;
 	private Map<Model, Tile> tiles;
 	private Map<Room, List<Model>> rooms;
+	private Map<Wall, Painting> paintings;
 	
 	private Map<Sprite, Tween<Vector3f>> spriteTweens;
 	private Tween<Float> cameraTween;
@@ -78,6 +87,8 @@ public class GameRenderer implements Screen{
 
 	public GameRenderer(){
 		resetAssets();
+		paintings = new HashMap<Wall, Painting>();
+		paintingCatalogue = loadPaintings("res/paintings.txt");
 		tiles = loadFullLevel();
 		rooms = createRooms();
 		characters = loadCharacters();
@@ -183,7 +194,7 @@ public class GameRenderer implements Screen{
 		}
 		return temp;
 	}
-
+ 
 	private List<Asset> getRenderList() {
 		List<Asset> scene = new ArrayList<Asset>();
 
@@ -220,9 +231,47 @@ public class GameRenderer implements Screen{
 			updateCharacters();
 		}
 
+		updatePaintings();
+		scene.addAll(paintings.values());
+		
 		scene.addAll(characters.values());
 		return scene;
 	}
+	
+	private void updatePaintings() {
+		List<Wall> toRemove = new ArrayList<Wall>();
+		for (Wall w : paintings.keySet()) {
+			if (w.getArt() == null) {
+				toRemove.add(w);
+			}
+		}
+		
+		for (Wall w: toRemove) {
+			paintings.remove(w);
+		}
+	}
+	
+	private Map<Integer, Painting> loadPaintings(String idFilePath) {
+		Map<Integer, Painting> temp = new HashMap<Integer, Painting>();
+		
+		Scanner scan = null;
+		try {
+			scan = new Scanner(new File(idFilePath));
+			while(scan.hasNext()) {
+				temp.put(scan.nextInt(), AssetLoader.instance().loadPainting("res/paintings/" + scan.next(), 64));
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (scan != null) {
+				scan.close();
+			}
+		}
+		
+		return temp;
+	}
+
 
 	private Map<artGame.game.Character, Asset> loadCharacters() {
 		Map<artGame.game.Character, Asset> chars = new HashMap<artGame.game.Character, Asset>();
@@ -280,6 +329,7 @@ public class GameRenderer implements Screen{
 		}
 	}
 
+
 	private Map<Model, Tile> loadFullLevel() {
 		Map<Model, Tile> level = new HashMap<Model, Tile>();
 		Floor world = GameData.getFloor();
@@ -293,11 +343,14 @@ public class GameRenderer implements Screen{
 					continue;
 				}
 
-				if (t.getWall(artGame.game.Character.Direction.NORTH) != null){
-					if (t.getWall(artGame.game.Character.Direction.NORTH) instanceof Door) {
+				if (t.getWall(NORTH) != null){
+					if (t.getWall(NORTH) instanceof Door) {
 						level.put(topDoor.instantiate(pos), t);
 					} else {
 						level.put(topWall.instantiate(pos), t);
+						if (t.getWall(NORTH).getArt() != null) {
+							paintings.put(t.getWall(NORTH), paintingCatalogue.get(1).instantiate(pos));
+						}
 					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.SOUTH) != null){
@@ -305,6 +358,10 @@ public class GameRenderer implements Screen{
 						level.put(bottomDoor.instantiate(pos), t);
 					} else {
 						level.put(bottomWall.instantiate(pos), t);
+						pos = pos.multiply(Matrix4f.rotate(180, 0, 1, 0));
+						if (t.getWall(SOUTH).getArt() != null) {
+							paintings.put(t.getWall(SOUTH), paintingCatalogue.get(1).instantiate(pos));
+						}
 					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.EAST) != null){
@@ -312,6 +369,10 @@ public class GameRenderer implements Screen{
 						level.put(rightDoor.instantiate(pos), t);
 					} else {
 						level.put(rightWall.instantiate(pos), t);
+						pos = pos.multiply(Matrix4f.rotate(270, 0, 1, 0));
+						if (t.getWall(EAST).getArt() != null) {
+							paintings.put(t.getWall(EAST), paintingCatalogue.get(1).instantiate(pos));
+						}
 					}
 				}
 				if (t.getWall(artGame.game.Character.Direction.WEST) != null){
@@ -319,6 +380,10 @@ public class GameRenderer implements Screen{
 						level.put(leftDoor.instantiate(pos), t);
 					} else {
 						level.put(leftWall.instantiate(pos), t);
+						pos = pos.multiply(Matrix4f.rotate(90, 0, 1, 0));
+						if (t.getWall(WEST).getArt() != null) {
+							paintings.put(t.getWall(WEST), paintingCatalogue.get(1).instantiate(pos));
+						}
 					}
 				}
 
@@ -394,6 +459,7 @@ public class GameRenderer implements Screen{
 
 		return level;
 	}
+	
 
 	private void resetAssets() {
 		floor = AssetLoader.instance().loadOBJ("res/floor.obj", new Vector3f(0.9f, 0.9f, 0.9f));

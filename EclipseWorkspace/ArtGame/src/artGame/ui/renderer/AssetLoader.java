@@ -14,6 +14,7 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
+
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector2f;
 import artGame.ui.renderer.math.Vector3f;
@@ -173,5 +174,16 @@ public class AssetLoader {
             return buffer;
 		}
 		return null;
+	}
+
+	public Painting loadPainting(String filepath, int size) {
+		BufferedImage sheet;
+		try {
+			sheet = ImageIO.read(new File(filepath));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return new Painting(new Texture(sheet, size), new Matrix4f());
 	}
 }
