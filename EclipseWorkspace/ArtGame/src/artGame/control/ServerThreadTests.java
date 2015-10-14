@@ -25,7 +25,7 @@ import artGame.xml.XMLHandler;
  * @author Vicki
  *
  */
-public class ServerThreadTest {
+public class ServerThreadTests {
 	private static final String BASIC = "Save Files/BasicBoard.xml";
 	private static final String WORLD = "Save Files/GameWorld.xml";
 	private static final int D_PORT = 8080;

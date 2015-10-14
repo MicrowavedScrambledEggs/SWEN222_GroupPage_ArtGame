@@ -27,15 +27,15 @@ import artGame.game.Wall;
 import artGame.main.Game;
 import artGame.xml.XMLHandler;
 
-public class TestCommand {
+public class CommandTests {
 
 	/** Tests the MoveCommand, given that we already know how long it is. */
 	@Test
 	public void testMoveCommand() {
 		MoveCommand m = new MoveCommand(Entity.PLAYER, 2, 'w', 2, 2);
 		try {
-			ServerSocket openSocket = new ServerSocket(TestControl.D_PORT, 1, InetAddress.getLocalHost());
-			Socket client = new Socket(InetAddress.getLocalHost(), TestControl.D_PORT);
+			ServerSocket openSocket = new ServerSocket(NetworkTests.D_PORT, 1, InetAddress.getLocalHost());
+			Socket client = new Socket(InetAddress.getLocalHost(), NetworkTests.D_PORT);
 			Socket server = openSocket.accept();
 			byte[] mArr = m.bytes();
 			DataOutputStream out = new DataOutputStream(server.getOutputStream());
@@ -65,8 +65,8 @@ public class TestCommand {
 	public void testMoveCommand1() {
 		MoveCommand m = new MoveCommand(Entity.GUARD, 6, 's', 2, 2);
 		try {
-			ServerSocket openSocket = new ServerSocket(TestControl.D_PORT, 1, InetAddress.getLocalHost());
-			Socket client = new Socket(InetAddress.getLocalHost(), TestControl.D_PORT);
+			ServerSocket openSocket = new ServerSocket(NetworkTests.D_PORT, 1, InetAddress.getLocalHost());
+			Socket client = new Socket(InetAddress.getLocalHost(), NetworkTests.D_PORT);
 			Socket server = openSocket.accept();
 			byte[] mArr = m.bytes();
 			DataOutputStream out = new DataOutputStream(server.getOutputStream());
@@ -97,8 +97,8 @@ public class TestCommand {
 	public void testMoveCommand2() {
 		MoveCommand m = new MoveCommand(Entity.GUARD, 6, 's', 2, 2);
 		try {
-			ServerSocket openSocket = new ServerSocket(TestControl.D_PORT, 1, InetAddress.getLocalHost());
-			Socket client = new Socket(InetAddress.getLocalHost(), TestControl.D_PORT);
+			ServerSocket openSocket = new ServerSocket(NetworkTests.D_PORT, 1, InetAddress.getLocalHost());
+			Socket client = new Socket(InetAddress.getLocalHost(), NetworkTests.D_PORT);
 			Socket server = openSocket.accept();
 			byte[] mArr = m.bytes();
 			DataOutputStream out = new DataOutputStream(server.getOutputStream());
@@ -228,8 +228,8 @@ public class TestCommand {
 		boolean[] wallBools = { false, false, true, false };
 		TileStateCommand cmd = new TileStateCommand(Occupant.GUARD, 3, wallIds, wallBools, 2, 2, 2);
 		try {
-			ServerSocket openSocket = new ServerSocket(TestControl.D_PORT, 1, InetAddress.getLocalHost());
-			Socket client = new Socket(InetAddress.getLocalHost(), TestControl.D_PORT);
+			ServerSocket openSocket = new ServerSocket(NetworkTests.D_PORT, 1, InetAddress.getLocalHost());
+			Socket client = new Socket(InetAddress.getLocalHost(), NetworkTests.D_PORT);
 			Socket server = openSocket.accept();
 			byte[] cmdArr = cmd.bytes();
 			DataOutputStream out = new DataOutputStream(server.getOutputStream());
@@ -261,8 +261,8 @@ public class TestCommand {
 		Tile t = new EmptyTile(true,false,false,false);
 		TileStateCommand cmd = new TileStateCommand(t, 3, 3, 1);
 		try {
-			ServerSocket openSocket = new ServerSocket(TestControl.D_PORT, 1, InetAddress.getLocalHost());
-			Socket client = new Socket(InetAddress.getLocalHost(), TestControl.D_PORT);
+			ServerSocket openSocket = new ServerSocket(NetworkTests.D_PORT, 1, InetAddress.getLocalHost());
+			Socket client = new Socket(InetAddress.getLocalHost(), NetworkTests.D_PORT);
 			Socket server = openSocket.accept();
 			byte[] cmdArr = cmd.bytes();
 			DataOutputStream out = new DataOutputStream(server.getOutputStream());
@@ -295,8 +295,8 @@ public class TestCommand {
 		t.setOccupant(new artGame.game.Character(Direction.NORTH, 34));
 		TileStateCommand cmd = new TileStateCommand(t, 2, 1, 1);
 		try {
-			ServerSocket openSocket = new ServerSocket(TestControl.D_PORT, 1, InetAddress.getLocalHost());
-			Socket client = new Socket(InetAddress.getLocalHost(), TestControl.D_PORT);
+			ServerSocket openSocket = new ServerSocket(NetworkTests.D_PORT, 1, InetAddress.getLocalHost());
+			Socket client = new Socket(InetAddress.getLocalHost(), NetworkTests.D_PORT);
 			Socket server = openSocket.accept();
 			byte[] cmdArr = cmd.bytes();
 			DataOutputStream out = new DataOutputStream(server.getOutputStream());
@@ -384,8 +384,8 @@ public class TestCommand {
 		System.out.println("new tile: "+newTile.toPrintString());
 		TileStateCommand cmd = new TileStateCommand(newTile, row, col, floor);
 		try {
-			openSocket = new ServerSocket(TestControl.D_PORT, 1, InetAddress.getLocalHost());
-			client = new Socket(InetAddress.getLocalHost(), TestControl.D_PORT);
+			openSocket = new ServerSocket(NetworkTests.D_PORT, 1, InetAddress.getLocalHost());
+			client = new Socket(InetAddress.getLocalHost(), NetworkTests.D_PORT);
 			server = openSocket.accept();
 			byte[] cmdArr = cmd.bytes();
 			System.out.println("old before write "+oldTile.toPrintString());

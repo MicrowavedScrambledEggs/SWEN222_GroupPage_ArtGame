@@ -28,13 +28,16 @@ import artGame.main.Game;
 import artGame.main.Main;
 import artGame.xml.XMLHandler;
 
-/** Note: all tests pass if you run them individually, but due to the joys of threading,
+/** Tests for the network package. 
+ * 
+ * Note: all tests pass if you run them individually, but due to the joys of threading,
  * running them all together will make some throw exceptions (that is, a server won't 
- * always close before a new one is opened, and since they all use the same IP, problems!) 
+ * always close before a new one is opened, and since they all use the same IP/port, problems!) 
+ * 
  * @author Vicki
  *
  */
-public class TestControl {
+public class NetworkTests {
 	private static final String BASIC = "Save Files/BasicBoard.xml";
 	private static final String WORLD = "Save Files/GameWorld.xml";
 	static final int D_PORT = 8080;
@@ -82,11 +85,12 @@ public class TestControl {
 			// players getting added in different orders.
 		} catch (IOException e) {
 			fail("Exception!");
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
 		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
 	}
 	
 	private Game getGame() {
@@ -108,11 +112,12 @@ public class TestControl {
 			assertEquals("The ServerThread must return the address its socket is connected to.",privateSocket.getInetAddress(), server.getInetAddress());
 		} catch (IOException e) {
 			fail("Threw IO exception.");
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
 		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
 	}
 
 	@Test
@@ -123,19 +128,19 @@ public class TestControl {
 		ClientThread client = null;
 		ServerThread server = null;
 		try {
-			openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, Main.WAIT_PERIOD);
+			openSocket = new ServerSocket(D_PORT+2, 1, InetAddress.getLocalHost());
+			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+2), g_c, Main.WAIT_PERIOD);
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
-			assertTrue(client.getPort() == D_PORT);
+			assertTrue(client.getPort() == D_PORT+2);
 		} catch (IOException e) {
 			fail("Threw IOException");
-		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
-		
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
+		}		
 	}
 
 	@Test
@@ -146,8 +151,8 @@ public class TestControl {
 		ClientThread client = null;
 		ServerThread server = null;
 		try {
-			openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, Main.WAIT_PERIOD);
+			openSocket = new ServerSocket(D_PORT+3, 1, InetAddress.getLocalHost());
+			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+3), g_c, Main.WAIT_PERIOD);
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 
@@ -157,11 +162,12 @@ public class TestControl {
 			assertTrue(server.isTimedOut());
 		} catch (IOException e) {
 			fail("IOException");
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
 		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
 	}
 
 	@Test
@@ -172,8 +178,8 @@ public class TestControl {
 		ClientThread client = null;
 		ServerThread server = null;
 		try {
-			openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, Main.WAIT_PERIOD);
+			openSocket = new ServerSocket(D_PORT+4, 1, InetAddress.getLocalHost());
+			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+4), g_c, Main.WAIT_PERIOD);
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 
@@ -185,11 +191,12 @@ public class TestControl {
 			assertTrue(server.isTimedOut());
 		} catch (IOException | InterruptedException e) {
 			fail("threw exception");
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
 		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
 	}
 
 	@Test
@@ -199,18 +206,19 @@ public class TestControl {
 		ClientThread client = null;
 		ServerThread server = null;
 		try {
-			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, Main.WAIT_PERIOD);
+			ServerSocket openSocket = new ServerSocket(D_PORT+4, 1, InetAddress.getLocalHost());
+			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+4), g_c, Main.WAIT_PERIOD);
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 			assertTrue(server.isSocketSafe());
 		} catch (IOException e) {
 			fail("Threw IO exception.");
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
 		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
 	}
 	
 	@Test
@@ -220,8 +228,8 @@ public class TestControl {
 		ClientThread client = null;
 		ServerThread server = null;
 		try {
-			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, Main.WAIT_PERIOD);
+			ServerSocket openSocket = new ServerSocket(D_PORT+5, 1, InetAddress.getLocalHost());
+			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+5), g_c, Main.WAIT_PERIOD);
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 
@@ -229,23 +237,23 @@ public class TestControl {
 			client.start();
 		} catch (IOException e) {
 			fail("Threw IO exception.");
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
 		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
 	}
 	
 	@Test
 	public void testCommandsToServer() {
-		boolean success = true;
 		Game g_c = new XMLHandler().loadGame(new File(WORLD));
 		Game g_s = new XMLHandler().loadGame(new File(WORLD));
 		ClientThread client = null;
 		ServerThread server = null;
 		try {
-			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, Main.WAIT_PERIOD);
+			ServerSocket openSocket = new ServerSocket(D_PORT+6, 1, InetAddress.getLocalHost());
+			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+6), g_c, Main.WAIT_PERIOD);
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 
@@ -254,21 +262,14 @@ public class TestControl {
 			CommandInter fromClient = server.readFromClient();
 			assertTrue("CommandInter received from client cannot be null",fromClient != null);
 			assertEquals("CommandInter from server and client should be equivalent",fromClient,toServer);
-		} catch (IOException e) {
-			success = false;
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IncompatiblePacketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IOException | InterruptedException | IncompatiblePacketException e) {
+			fail("Exception");
 		} finally {
 			if (server!= null)
 				server.close();
 			if (client != null) 
 				client.close();
 		}
-		assertTrue(success);
 	}
 	
 	@Test
@@ -278,13 +279,13 @@ public class TestControl {
 		ClientThread client = null;
 		ServerThread server = null;
 		try {
-			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, Main.WAIT_PERIOD);
+			ServerSocket openSocket = new ServerSocket(D_PORT+7, 1, InetAddress.getLocalHost());
+			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+7), g_c, Main.WAIT_PERIOD);
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 
 			CommandInter toClient = new MoveCommand(Entity.PLAYER, server.getPlayerId(), 'w', 4, 4);
-			server.writeCommand(new DataOutputStream(privateSocket.getOutputStream()),toClient);
+			server.write(new DataOutputStream(privateSocket.getOutputStream()),toClient);
 			CommandInter fromServer = client.readSocket(new DataInputStream(client.socket().getInputStream()));
 			assertTrue("CommandInter received by client cannot be null",toClient != null);
 			System.out.println(toClient.toString()+", "+fromServer.toString());
@@ -314,23 +315,30 @@ public class TestControl {
 			clntQ.add(new MoveCommand(Entity.PLAYER, 4, 'a', 3, 4));
 			clntQ.add(new MoveCommand(Entity.PLAYER, 4, '!', 3, 4));
 			
-			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
-			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, clntQ);
+			ServerSocket openSocket = new ServerSocket(D_PORT+8, 1, InetAddress.getLocalHost());
+			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+8), g_c, clntQ);
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 			System.out.println("CLIENT  = "+ client.getQueue().toString());
 			System.out.println("CLIENTC = "+ clntQ.toString());
-			assertEquals("first client cmd should equal the one passed as parameter", clntQ.poll(),client.pollCommand());
+			CommandInter myCmd = clntQ.poll();
+			CommandInter clientCmd = client.pollCommand();
+			System.out.println("size of "+ clntQ.size());
+			System.out.println("size of "+ client.queueSize());
+			assertEquals("first client cmd should equal the one passed as parameter\n"
+					+ myCmd.toString() +" vs "+ clientCmd.toString(), 
+					myCmd,clientCmd);
 			assertEquals("2nd cmd not equal",clntQ.poll(),client.pollCommand());
 			assertEquals("3rd cmd not equal",clntQ.poll(),client.pollCommand());
 			assertEquals("last cmd not equal",clntQ.poll(),client.pollCommand());
 		} catch (IOException e) {
 			fail("Ioexception");
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
 		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
 	}
 	
 	@Test
@@ -346,9 +354,9 @@ public class TestControl {
 					new MoveCommand(Entity.PLAYER, 4, 'w', 4, 3),
 					new MoveCommand(Entity.PLAYER, 4, '!', 4, 3) };
 			
-			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
+			ServerSocket openSocket = new ServerSocket(D_PORT+9, 1, InetAddress.getLocalHost());
 			// create a new basic client, with empty queue
-			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, 2);
+			client = new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+9), g_c, 2);
 			Socket privateSocket = openSocket.accept();
 			server = new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
 			// now that server/client are linked
@@ -363,15 +371,16 @@ public class TestControl {
 		} catch (IOException | InterruptedException | IncompatiblePacketException e) {
 			fail("Exception");
 			e.printStackTrace();
+		} finally {
+			if (server!= null)
+				server.close();
+			if (client != null) 
+				client.close();
 		}
-		if (server!= null)
-			server.close();
-		if (client != null) 
-			client.close();
 	}
 	
 	@Test
-	public void testClientAction_MOVE() { // FIXME FAILING. 
+	public void testClientAction_MOVE_fromQueue() { // FIXME FAILING. 
 		Game g_c = new XMLHandler().loadGame(new File(WORLD));
 		g_c.setName("clientName");
 		Game g_s = new XMLHandler().loadGame(new File(WORLD));
@@ -379,12 +388,12 @@ public class TestControl {
 		ClientThread client = null;
 		ServerThread server = null;
 		try {
-			ServerSocket openSocket = new ServerSocket(D_PORT, 1, InetAddress.getLocalHost());
+			ServerSocket openSocket = new ServerSocket(D_PORT+10, 1, InetAddress.getLocalHost());
 			CommandInter[] clntQ = { new MoveCommand(Entity.PLAYER, 4, 'w', 4, 4),
 					new MoveCommand(Entity.PLAYER, 4, '!', 4, 4),
 					new MoveCommand(Entity.PLAYER, 4, 's', 4, 5),
 					new MoveCommand(Entity.PLAYER, 4, '!', 4, 5) };
-			client =  new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT), g_c, 2);
+			client =  new ClientThread(new Socket(InetAddress.getLocalHost(), D_PORT+10), g_c, 2);
 			// create a new basic client, with empty queue
 			Socket privateSocket = openSocket.accept();
 			server =  new ServerThread(privateSocket, g_s, Main.WAIT_PERIOD);
@@ -403,6 +412,7 @@ public class TestControl {
 			for (int i = 0; i < clntQ.length; i++) {
 				System.out.println("---------CLIENT");
 				client.sendCommand(clntQ[i]);
+				assertTrue(client.queueSize() > 0);
 				client.doAction(clntQ[i]);
 				client.writeQueue();
 				System.out.println("---------SERVER");
