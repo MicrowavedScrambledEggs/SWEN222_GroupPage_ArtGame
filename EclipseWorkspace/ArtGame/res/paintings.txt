@@ -1,11 +1,1 @@
 1 painting_1.png
-2 Ghostbusters/Spengler.png
-3 Ghostbusters/Stantz.png
-4 Ghostbusters/Zeddemore.png
-5 Ghostbusters/Slimer.png
-6 Ghostbusters/Venkman.png
-7 Predator/Predator.png
-8 Predator/Dutch.png
-9 Predator/Billy.png
-58 Misc/NZuminati.png
-101 Pokemon/Bulbasaur.png

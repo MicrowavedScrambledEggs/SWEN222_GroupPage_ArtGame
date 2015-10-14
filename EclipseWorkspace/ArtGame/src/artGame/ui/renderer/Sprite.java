@@ -118,8 +118,9 @@ public class Sprite implements Asset {
 		program.setUniform(textureUniform, 0);
 
         //System.out.println(cameraUp.toString());
-		
-        spritesheet[row][col].bind();
+		if(row < spritesheet.length && col < spritesheet[row].length){
+			spritesheet[row][col].bind();
+		}
 
         vao.bind();
         //System.out.println(GL11.glGetError());
