@@ -1,15 +1,15 @@
 package artGame.game;
 
 /**
- * Basic co-ordinate class. Stores an x value and a y value
- * @author Badi James
+ * Basic co-ordinate class. Stores an row value and a col value
+ * @author Badi James 300156502
  *
  */
 public class Coordinate implements Comparable<Coordinate>{
-	
+
 	private int col;
 	private int row;
-	
+
 	public Coordinate(int col, int row) {
 		this.col = col;
 		this.row = row;
@@ -57,6 +57,6 @@ public class Coordinate implements Comparable<Coordinate>{
 	public int compareTo(Coordinate o) {
 		return (int) (Math.hypot(o.getCol(), o.getRow()) - Math.hypot(this.getCol(), this.getRow()) + 0.5);
 	}
-	
-	
+
+
 }

@@ -61,6 +61,7 @@ public class ArtGameSaver {
 	 * 			-has name and value elements
 	 * 		- sculpture element with id attribute
 	 * 			-has direction and position elements
+	 * 			-has name and value elements
 	 *
 	 * @param game Game to save
 	 * @param fileName string representation of file name path
