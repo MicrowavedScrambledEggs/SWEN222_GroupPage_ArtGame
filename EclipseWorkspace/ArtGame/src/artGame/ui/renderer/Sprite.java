@@ -30,6 +30,8 @@ public class Sprite implements Asset {
     private int textureUniform;
     
     private Texture[][] spritesheet;
+    private int row;
+    private int col;
 
 	private Shader vert;
 	private Shader frag;
@@ -39,7 +41,8 @@ public class Sprite implements Asset {
 		position = pos;
 		this.spritesheet = spritesheet;
 		
-		//spritesheet[0][0].bind();
+		row = 0;
+		col = 0;
 		
 		vao = new VertexArrayObject();
 		vao.bind();
@@ -116,7 +119,7 @@ public class Sprite implements Asset {
 
         //System.out.println(cameraUp.toString());
 		
-        spritesheet[0][0].bind();
+        spritesheet[row][col].bind();
 
         vao.bind();
         //System.out.println(GL11.glGetError());
@@ -154,5 +157,21 @@ public class Sprite implements Asset {
 
 	public Sprite instantiate() {
 		return new Sprite(spritesheet, position);
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
 	}
 }

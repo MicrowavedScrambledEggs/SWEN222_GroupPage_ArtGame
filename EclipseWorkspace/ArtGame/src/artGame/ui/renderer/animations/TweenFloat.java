@@ -43,4 +43,11 @@ public class TweenFloat implements Tween<Float> {
 	public Float getEndValue() {
 		return startValue + duration;
 	}
+
+	@Override
+	public float completion(float time) {
+		float currentTime = (time - startTime)/1000.0f;
+	    float t = currentTime / duration;
+	    return Math.max(0, Math.min(1, t));
+	}
 }

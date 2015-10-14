@@ -150,9 +150,9 @@ public class TestWindow {
 			scene.add(floor);
 		}
 		
-		Painting djp = AssetLoader.instance().loadPainting("res/paintings/painting_1.png", 64);
+		Sprite djp = AssetLoader.instance().loadSpritesheet("res/paintings/painting_1.png", 32);
 		if (djp != null) {
-			scene.add(djp.instantiate(Matrix4f.rotate(90, 0, 1, 0)));
+			scene.add(djp.instantiate());
 		}
 		return scene;
 	}

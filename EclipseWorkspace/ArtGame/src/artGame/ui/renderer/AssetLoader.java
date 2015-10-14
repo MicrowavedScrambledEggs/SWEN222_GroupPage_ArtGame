@@ -19,24 +19,36 @@ import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector2f;
 import artGame.ui.renderer.math.Vector3f;
 
+/**
+ * Loads assets from file, with a couple helpful asset processing methods.
+ * Structured as a singleton so that the methods can be accessed anywhere, and c
+ * 
+ * @author [MOOT] (R.v. Motschelnitz)
+ *
+ */
 public class AssetLoader {
 
 	// singleton
 	private static AssetLoader instance = new AssetLoader();
 
+	/**
+	 * Accesses the singleton object
+	 * 
+	 * @return The singleton object
+	 */
 	public static AssetLoader instance() {
 		return instance;
 	}
 
 	private AssetLoader() {
-		
+
 	}
 
 	public Model loadOBJ(String filepath, Vector3f color) {
 		List<Vector3f> vertList = new ArrayList<Vector3f>();
 		List<Vector2f> uvList = new ArrayList<Vector2f>();
 		List<Vector3f> normList = new ArrayList<Vector3f>();
-		
+
 		List<Integer> vertIndices = new ArrayList<Integer>();
 		List<Integer> uvIndices = new ArrayList<Integer>();
 		List<Integer> normIndices = new ArrayList<Integer>();
@@ -53,15 +65,17 @@ public class AssetLoader {
 					scan.nextLine();
 				} else if (next.equals("v")) {
 					// add a vertex
-					vertList.add(new Vector3f(scan.nextFloat(), scan.nextFloat(), scan.nextFloat()));
+					vertList.add(new Vector3f(scan.nextFloat(), scan
+							.nextFloat(), scan.nextFloat()));
 				} else if (next.equals("vt")) {
 					uvList.add(new Vector2f(scan.nextFloat(), scan.nextFloat()));
 				} else if (next.equals("vn")) {
-					normList.add(new Vector3f(scan.nextFloat(), scan.nextFloat(), scan.nextFloat()));
+					normList.add(new Vector3f(scan.nextFloat(), scan
+							.nextFloat(), scan.nextFloat()));
 				} else if (next.equals("f")) {
 					String nextLine = scan.nextLine().trim();
 					String[] indexTriples = nextLine.split(" ");
-					
+
 					for (int i = 0; i < indexTriples.length; i++) {
 						String[] indices = indexTriples[i].split("\\/");
 						vertIndices.add(Integer.parseInt(indices[0]));
@@ -70,24 +84,24 @@ public class AssetLoader {
 					}
 				}
 			}
-			
+
 			List<Vector3f> outVerts = new ArrayList<Vector3f>();
 			List<Vector2f> outUVs = new ArrayList<Vector2f>();
 			List<Vector3f> outNorms = new ArrayList<Vector3f>();
-			
+
 			// vertex indexing
-			for (int i = 0; i < vertIndices.size(); i++){
+			for (int i = 0; i < vertIndices.size(); i++) {
 				int vertexIndex = vertIndices.get(i);
 				int uvIndex = uvIndices.get(i);
 				int normIndex = normIndices.get(i);
-				
+
 				outVerts.add(vertList.get(vertexIndex - 1));
 				outUVs.add(uvList.get(uvIndex - 1));
 				outNorms.add(normList.get(normIndex - 1));
 			}
-			
+
 			return new Model(outVerts, outUVs, outNorms, color, new Matrix4f());
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -97,15 +111,15 @@ public class AssetLoader {
 			}
 		}
 	}
-	
+
 	public CharSequence loadShaderSource(String filepath) {
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(filepath));
 			scan.useDelimiter("\\Z");
 			return scan.next();
-			
-		} catch(FileNotFoundException e) {
+
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
 		} finally {
@@ -124,54 +138,56 @@ public class AssetLoader {
 			return null;
 		}
 		// TODO Fix spritesheet bug
-		BufferedImage[][] sprites = new BufferedImage[sheet.getWidth() / size][sheet.getHeight() / size];
-		Texture[][] textures = new Texture[sheet.getWidth() / size][sheet.getHeight() / size];
+		BufferedImage[][] sprites = new BufferedImage[sheet.getWidth() / size][sheet
+				.getHeight() / size];
+		Texture[][] textures = new Texture[sheet.getWidth() / size][sheet
+				.getHeight() / size];
 		for (int col = 0; col < sprites.length; col++) {
-			for(int row = 0; row < sprites[col].length; row++) {
-				sprites[col][row] = sheet.getSubimage(col * size, row * size, size, size);
-				textures[row][col] = new Texture(sprites[col][row], size);
+			for (int row = 0; row < sprites[col].length; row++) {
+				sprites[col][row] = sheet.getSubimage(col * size, row * size,
+						size, size);
+				textures[col][row] = new Texture(sprites[col][row], size);
 			}
 		}
 		return new Sprite(textures, new Vector3f(0, 0.5f, 0));
 	}
-	
+
 	public ByteBuffer imageToBuffer(BufferedImage image) {
 		if (image != null) {
-            
-            AffineTransform transform = AffineTransform.getScaleInstance(1f, -1f);
-            transform.translate(0, -image.getHeight());
-            AffineTransformOp operation = new AffineTransformOp(transform,
-                    AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-            image = operation.filter(image, null);
 
-            
-            int width = image.getWidth();
-            int height = image.getHeight();
+			AffineTransform transform = AffineTransform.getScaleInstance(1f,
+					-1f);
+			transform.translate(0, -image.getHeight());
+			AffineTransformOp operation = new AffineTransformOp(transform,
+					AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			image = operation.filter(image, null);
 
-            
-            int[] pixels = new int[width * height];
-            image.getRGB(0, 0, width, height, pixels, 0, width);
+			int width = image.getWidth();
+			int height = image.getHeight();
 
-            
-            ByteBuffer buffer = BufferUtils.createByteBuffer(width * height * 4);
-            for (int y = 0; y < height; y++) {
-                for (int x = 0; x < width; x++) {
-                    /* Pixel as RGBA: 0xAARRGGBB */
-                    int pixel = pixels[y * width + x];
-                    /* Red component 0xAARRGGBB >> 16 = 0x0000AARR */
-                    buffer.put((byte) ((pixel >> 16) & 0xFF));
-                    /* Green component 0xAARRGGBB >> 8 = 0x00AARRGG */
-                    buffer.put((byte) ((pixel >> 8) & 0xFF));
-                    /* Blue component 0xAARRGGBB >> 0 = 0xAARRGGBB */
-                    buffer.put((byte) (pixel & 0xFF));
-                    /* Alpha component 0xAARRGGBB >> 24 = 0x000000AA */
-                    buffer.put((byte) ((pixel >> 24) & 0xFF));
-                }
-            }
-            
-            buffer.flip();
-            
-            return buffer;
+			int[] pixels = new int[width * height];
+			image.getRGB(0, 0, width, height, pixels, 0, width);
+
+			ByteBuffer buffer = BufferUtils
+					.createByteBuffer(width * height * 4);
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					/* Pixel as RGBA: 0xAARRGGBB */
+					int pixel = pixels[y * width + x];
+					/* Red component 0xAARRGGBB >> 16 = 0x0000AARR */
+					buffer.put((byte) ((pixel >> 16) & 0xFF));
+					/* Green component 0xAARRGGBB >> 8 = 0x00AARRGG */
+					buffer.put((byte) ((pixel >> 8) & 0xFF));
+					/* Blue component 0xAARRGGBB >> 0 = 0xAARRGGBB */
+					buffer.put((byte) (pixel & 0xFF));
+					/* Alpha component 0xAARRGGBB >> 24 = 0x000000AA */
+					buffer.put((byte) ((pixel >> 24) & 0xFF));
+				}
+			}
+
+			buffer.flip();
+
+			return buffer;
 		}
 		return null;
 	}

@@ -28,18 +28,22 @@ import artGame.ui.gamedata.GameData;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
 import artGame.ui.renderer.Camera;
+import artGame.ui.renderer.HumanSpriteController;
 import artGame.ui.renderer.Model;
 import artGame.ui.renderer.Painting;
-import artGame.ui.renderer.Sprite;
 import artGame.ui.renderer.animations.Tween;
 import artGame.ui.renderer.animations.TweenFloat;
 import artGame.ui.renderer.animations.TweenVector3f;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
 import artGame.ui.screens.Screen;
-
 import static artGame.game.Character.Direction.*;
 
+/**
+ * A class for rendering the current
+ * @author [MOOT] (R. v. Motschelnitz)
+ *
+ */
 public class GameRenderer implements Screen{
 
 	private long window;
@@ -67,30 +71,35 @@ public class GameRenderer implements Screen{
 	private Model loos;
 	private Model sinks;
 	private Model desks;
-	private Sprite playerSprite;
-	private Sprite guardSprite;
+	private HumanSpriteController playerSprite;
+	private HumanSpriteController guardSprite;
 	private Map<Integer, Painting> paintingCatalogue;
 
 	private Map<artGame.game.Character, Asset> characters;
+	private Map<HumanSpriteController, artGame.game.Character> controllerToCharacter;
 	private Map<artGame.game.Character, Vector3f> entityPositions;
 	private Map<Model, Tile> tiles;
 	private Map<Room, List<Model>> rooms;
 	private Map<Wall, Painting> paintings;
 	
-	private Map<Sprite, Tween<Vector3f>> spriteTweens;
+	private Map<HumanSpriteController, Tween<Vector3f>> spriteTweens;
 	private Tween<Float> cameraTween;
 	
 	private float currentTime;
 
+	/**
+	 * GameRenderer Constructor
+	 */
 	public GameRenderer(){
 		resetAssets();
+		controllerToCharacter = new HashMap<HumanSpriteController, artGame.game.Character>();
 		paintings = new HashMap<Wall, Painting>();
 		paintingCatalogue = loadPaintings("res/paintings.txt");
 		tiles = loadFullLevel();
 		rooms = createRooms();
 		characters = loadCharacters();
 		
-		spriteTweens = new HashMap<Sprite, Tween<Vector3f>>();
+		spriteTweens = new HashMap<HumanSpriteController, Tween<Vector3f>>();
 		cameraTween = null;
 		
 		currentCameraAngle = 0;
@@ -124,29 +133,32 @@ public class GameRenderer implements Screen{
 					//Vector3f start = entityPositions.get(c);
 					Vector3f end = new Vector3f(c.getCol(), 0, c.getRow());
 					entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
-					if (spriteTweens.get((Sprite)characters.get(c)) == null) {
-						spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), 0.5f, end, currentTime));
+					if (spriteTweens.get((HumanSpriteController)characters.get(c)) == null) {
+						spriteTweens.put((HumanSpriteController)characters.get(c), new TweenVector3f(((HumanSpriteController)characters.get(c)).getPosition(), 0.5f, end, currentTime));
 					}
 				}
 			}
 			
-			List<Sprite> stopTweening = new ArrayList<Sprite>();
-			for (Sprite s : spriteTweens.keySet()) {
+			List<HumanSpriteController> stopTweening = new ArrayList<HumanSpriteController>();
+			for (HumanSpriteController s : spriteTweens.keySet()) {
 				if (spriteTweens.get(s).isFinished(currentTime)) {
 					stopTweening.add(s);
 					s.setPosition(spriteTweens.get(s).getEndValue());
+					s.updateImage(controllerToCharacter.get(s).getDir(), currentCameraAngle, null);
 				} else {
 					s.setPosition(spriteTweens.get(s).tween(currentTime));
+					s.updateImage(controllerToCharacter.get(s).getDir(), currentCameraAngle, spriteTweens.get(s).completion(currentTime));
 				}
 			}
 			
-			for (Sprite s : stopTweening) {
+			for (HumanSpriteController s : stopTweening) {
 				spriteTweens.remove(s);
 			}
 		} else {
 			for (artGame.game.Character c : characters.keySet()) {
-				if (characters.get(c) instanceof Sprite) {
-					((Sprite) characters.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+				if (characters.get(c) instanceof HumanSpriteController) {
+					((HumanSpriteController) characters.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+					((HumanSpriteController) characters.get(c)).updateImage(c.getDir(), currentCameraAngle, null);
 				}
 			}
 		}
@@ -162,7 +174,7 @@ public class GameRenderer implements Screen{
 		}
 		
 		camera.setRotation(new Vector3f(CAMERA_ANGLE, currentCameraAngle, 0));
-		camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
+		camera.setPosition(((HumanSpriteController)characters.get(GameData.getPlayer())).getPosition().scale(-1));
 
 		for (Asset a : renderList) {
 			a.draw(camera, light);
@@ -199,10 +211,19 @@ public class GameRenderer implements Screen{
 		//System.out.println(rooms.get(playerTile.getRoom()) == null);
 		scene.addAll(rooms.get(playerTile.getRoom()));
 
-		updateCharacters();
-		scene.addAll(characters.values());
+		updateSculptures();
+		for (artGame.game.Character c : characters.keySet()) {
+			if (playerTile.getRoom().getTiles().contains(GameData.getFloor().getTile(c.getRow(), c.getCol()))) {
+				scene.add(characters.get(c));
+			}
+		}
 		
 		updatePaintings();
+		//for (Wall w : paintings.keySet()) {
+		//	if (w.) {
+		//		
+		//	}
+		//}
 		scene.addAll(paintings.values());
 		return scene;
 	}
@@ -226,11 +247,13 @@ public class GameRenderer implements Screen{
 		for (artGame.game.Character c : GameData.getCharacters()) {
 			if (c instanceof Player) {
 				chars.put(c, playerSprite.instantiate());
-				((Sprite)chars.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+				controllerToCharacter.put((HumanSpriteController)chars.get(c), c);
+				((HumanSpriteController)chars.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
 				entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
 			} else if (c instanceof Guard) {
 				chars.put(c, guardSprite.instantiate());
-				((Sprite)chars.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+				controllerToCharacter.put((HumanSpriteController)chars.get(c), c);
+				((HumanSpriteController)chars.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
 				entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
 			} else if (c instanceof Sculpture) {
 				Matrix4f pos = new Matrix4f();
@@ -241,12 +264,10 @@ public class GameRenderer implements Screen{
 		return chars;
 	}
 
-	private void updateCharacters() {
+	private void updateSculptures() {
 		List<artGame.game.Character> toRemove = new ArrayList<artGame.game.Character>();
 		for (artGame.game.Character c : characters.keySet()) {
-			if (c instanceof Player || c instanceof Guard) {
-				//((Sprite)characters.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
-			} else if (c instanceof Sculpture) {
+			if (c instanceof Sculpture) {
 				if (((Sculpture)c).isTaken()) {
 					toRemove.add(c);
 				}
@@ -307,9 +328,9 @@ public class GameRenderer implements Screen{
 						level.put(bottomDoor.instantiate(pos), t);
 					} else {
 						level.put(bottomWall.instantiate(pos), t);
-						pos = pos.multiply(Matrix4f.rotate(180, 0, 1, 0));
+						Matrix4f paintingPos = pos.multiply(Matrix4f.rotate(180, 0, 1, 0));
 						if (t.getWall(SOUTH).getArt() != null) {
-							paintings.put(t.getWall(SOUTH), paintingCatalogue.get(1).instantiate(pos));
+							paintings.put(t.getWall(SOUTH), paintingCatalogue.get(1).instantiate(paintingPos));
 						}
 					}
 				}
@@ -318,9 +339,9 @@ public class GameRenderer implements Screen{
 						level.put(rightDoor.instantiate(pos), t);
 					} else {
 						level.put(rightWall.instantiate(pos), t);
-						pos = pos.multiply(Matrix4f.rotate(270, 0, 1, 0));
+						Matrix4f paintingPos = pos.multiply(Matrix4f.rotate(270, 0, 1, 0));
 						if (t.getWall(EAST).getArt() != null) {
-							paintings.put(t.getWall(EAST), paintingCatalogue.get(1).instantiate(pos));
+							paintings.put(t.getWall(EAST), paintingCatalogue.get(1).instantiate(paintingPos));
 						}
 					}
 				}
@@ -329,9 +350,9 @@ public class GameRenderer implements Screen{
 						level.put(leftDoor.instantiate(pos), t);
 					} else {
 						level.put(leftWall.instantiate(pos), t);
-						pos = pos.multiply(Matrix4f.rotate(90, 0, 1, 0));
+						Matrix4f paintingPos = pos.multiply(Matrix4f.rotate(90, 0, 1, 0));
 						if (t.getWall(WEST).getArt() != null) {
-							paintings.put(t.getWall(WEST), paintingCatalogue.get(1).instantiate(pos));
+							paintings.put(t.getWall(WEST), paintingCatalogue.get(1).instantiate(paintingPos));
 						}
 					}
 				}
@@ -427,20 +448,32 @@ public class GameRenderer implements Screen{
 		loos = AssetLoader.instance().loadOBJ("res/loo.obj", new Vector3f(1,1,1));
 		sinks = AssetLoader.instance().loadOBJ("res/sink.obj", new Vector3f(1,1,1));
 		desks = AssetLoader.instance().loadOBJ("res/desk.obj", new Vector3f(0.95f, 0.95f, 0.95f));
-		playerSprite = AssetLoader.instance().loadSpritesheet("res/red_player.png", 32);
-		guardSprite = AssetLoader.instance().loadSpritesheet("res/guard.png", 32);
+		
+		
+		playerSprite = new HumanSpriteController(AssetLoader.instance().loadSpritesheet("res/red_player.png", 32));
+		guardSprite = new HumanSpriteController(AssetLoader.instance().loadSpritesheet("res/guard.png", 32));
 	}
 
+	/**
+	 * Gets the renderer's camera.
+	 * @return The renderer's camera
+	 */
 	public Camera getCamera(){
 		return camera;
 	}
 	
+	/**
+	 * Rotates the renderer's camera 90 degrees to the left.
+	 */
 	public void rotateLeft() {
 		if (cameraTween == null) {
 			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90*(Math.round((currentCameraAngle + 90)/90)), currentTime);
 		}
 	}
 	
+	/**
+	 * Rotates the renderer's camera 90 degrees to the right.
+	 */
 	public void rotateRight() {
 		if (cameraTween == null) {
 			cameraTween = new TweenFloat(currentCameraAngle, 0.5f, 90*(Math.round((currentCameraAngle - 90)/90)), currentTime);
