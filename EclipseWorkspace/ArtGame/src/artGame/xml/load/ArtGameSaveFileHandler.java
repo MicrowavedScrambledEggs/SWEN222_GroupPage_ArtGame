@@ -159,8 +159,8 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 	 * For elements where the build strategy for that element is to be a field for another
 	 * build strategy, i.e with patrols or with room definers, add the build strategy to the
 	 * object builder for the parent element
-	 * 
-	 * Otherwise, pops the top object builder from the stack and adds it to the build list 
+	 *
+	 * Otherwise, pops the top object builder from the stack and adds it to the build list
 	 */
 	@Override
 	public void endElement(String uri, String localName, String qName){
@@ -182,11 +182,11 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 			buildList.add(buildStack.pop());
 		}
 	}
-	
+
 	/**
 	 * Pops the top object builder from the build stack, gets it's build strategy, and adds it as a field to
 	 * the object builder that is now at the top of the stack (the object builder for the parent element)
-	 * 
+	 *
 	 * @param qName Name of element being finished, which is the name of the build strategy field
 	 */
 	private void addBuildStrategyAsFeild(String qName) {
@@ -223,11 +223,11 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		ObjectBuilder current = buildStack.peek();
 		current.addField(localName, values);
 	}
-	
+
 	/**
 	 * Gets all the values from an attributes object, and puts them in a String array to return
 	 * Preserves the order of the values
-	 * 
+	 *
 	 * @param attributes Attributes who's values will be put in string array
 	 * @return String array of values from given attributes
 	 */
@@ -238,7 +238,7 @@ public class ArtGameSaveFileHandler extends DefaultHandler {
 		}
 		return attributeStringArray;
 	}
-	
+
 	/**
 	 * Builds game with all it's objects from data collected from parsing xml file
 	 * @return Game represented by XML file
