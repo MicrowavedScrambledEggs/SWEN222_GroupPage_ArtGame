@@ -25,7 +25,7 @@ import artGame.game.Sculpture;
 import artGame.game.StairTile;
 import artGame.game.Tile;
 import artGame.game.Wall;
-
+import artGame.ui.gamedata.ArtItem;
 import artGame.ui.gamedata.GameData;
 import artGame.ui.renderer.Asset;
 import artGame.ui.renderer.AssetLoader;
@@ -38,7 +38,6 @@ import artGame.ui.renderer.animations.TweenFloat;
 import artGame.ui.renderer.animations.TweenVector3f;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
-
 import static artGame.game.Character.Direction.*;
 
 public class GameRenderer implements Screen{
@@ -51,7 +50,7 @@ public class GameRenderer implements Screen{
 	private static final float CAMERA_ANGLE = 60f;
 	private float currentCameraAngle;
 
-	private static final boolean SPRITE_TWEENING = true;
+	private static final boolean SPRITE_TWEENING = false;
 	private float spriteTweenSpeed = 0.05f;
 
 	private Model floor;
@@ -122,18 +121,14 @@ public class GameRenderer implements Screen{
 
 		if (SPRITE_TWEENING) {
 			for (artGame.game.Character c : entityPositions.keySet()) {
-
-				if(c == null || entityPositions == null || entityPositions.get(c) == null){
-					continue;
-				}
 				if (c.getCol() != entityPositions.get(c).getX() ||
 					c.getRow() != entityPositions.get(c).getZ()) {
 
 					//Vector3f start = entityPositions.get(c);
 					Vector3f end = new Vector3f(c.getCol(), 0, c.getRow());
 					entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
-					if (spriteTweens.get((Sprite)characters.get(c)) == null && characters.get(c) != null) {
-						spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), spriteTweenSpeed, end, currentTime));
+					if (spriteTweens.get((Sprite)characters.get(c)) == null) {
+						spriteTweens.put((Sprite)characters.get(c), new TweenVector3f(((Sprite)characters.get(c)).getPosition(), 0.1f, end, currentTime));
 					}
 				}
 			}
@@ -152,11 +147,22 @@ public class GameRenderer implements Screen{
 				spriteTweens.remove(s);
 			}
 		} else {
-			for (artGame.game.Character c : characters.keySet()) {
-				if (characters.get(c) instanceof Sprite) {
+			for (artGame.game.Character c : entityPositions.keySet()) {
+				if (c.getCol() != entityPositions.get(c).getX() ||
+					c.getRow() != entityPositions.get(c).getZ()) {
+
+					entityPositions.put(c, new Vector3f(c.getCol(), 0, c.getRow()));
 					((Sprite) characters.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+
 				}
 			}
+			//for (artGame.game.Character c : characters.keySet()) {
+			//	if (characters.get(c) instanceof Sprite) {
+			//		if(c instanceof Player)
+			//			System.out.println("settings to  " + c.getCol() + " , " + c.getRow());
+			//		((Sprite) characters.get(c)).setPosition(new Vector3f(c.getCol(), 0, c.getRow()));
+			//	}
+			//}
 		}
 
 		if (cameraTween != null) {
@@ -170,7 +176,6 @@ public class GameRenderer implements Screen{
 		}
 
 		camera.setRotation(new Vector3f(CAMERA_ANGLE, currentCameraAngle, 0));
-
 		if(GameData.getPlayer() != null){
 			camera.setPosition(((Sprite)characters.get(GameData.getPlayer())).getPosition().scale(-1));
 		}
@@ -240,9 +245,17 @@ public class GameRenderer implements Screen{
 	}
 
 	private void updatePaintings() {
+
+
 		List<Wall> toRemove = new ArrayList<Wall>();
 		for (Wall w : paintings.keySet()) {
-			if (w.getArt() == null) {
+			boolean contains = false;
+			for(ArtItem item : GameData.getAllArt()){
+				if(w.getArt() != null && item.ID == w.getArt().ID){
+					contains = true;
+				}
+			}
+			if (!contains) {
 				toRemove.add(w);
 			}
 		}
@@ -463,11 +476,11 @@ public class GameRenderer implements Screen{
 
 
 	private void resetAssets() {
-		floor = AssetLoader.instance().loadOBJ("res/floor.obj", new Vector3f(0.9f, 0.9f, 0.9f));
-		topWall = AssetLoader.instance().loadOBJ("res/top_wall.obj", new Vector3f(1,0,1));
-		bottomWall = AssetLoader.instance().loadOBJ("res/bottom_wall.obj", new Vector3f(0,1,1));
-		leftWall = AssetLoader.instance().loadOBJ("res/left_wall.obj", new Vector3f(1,1,0));
-		rightWall = AssetLoader.instance().loadOBJ("res/right_wall.obj", new Vector3f(0.5f,1,0.5f));
+		floor = AssetLoader.instance().loadOBJ("res/floor.obj", new Vector3f(0.8f, 0.8f, 0.8f));
+		topWall = AssetLoader.instance().loadOBJ("res/top_wall.obj", new Vector3f(1,1,1));
+		bottomWall = AssetLoader.instance().loadOBJ("res/bottom_wall.obj", new Vector3f(1,1,1));
+		leftWall = AssetLoader.instance().loadOBJ("res/left_wall.obj", new Vector3f(1,1,1));
+		rightWall = AssetLoader.instance().loadOBJ("res/right_wall.obj", new Vector3f(1f,1,1f));
 
 		topDoor = AssetLoader.instance().loadOBJ("res/top_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));
 		bottomDoor = AssetLoader.instance().loadOBJ("res/bottom_door.obj", new Vector3f(0.45f, 0.29f, 0.16f));

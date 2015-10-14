@@ -27,25 +27,25 @@ public class Painting implements Asset {
 	private VertexArrayObject vao;
 	private VertexBufferObject verts;
 	private ShaderProgram program;
-	
+
 	private Matrix4f model;
-	
+
 	private int modelUniform;
 	private int viewUniform;
 	private int projUniform;
     private int textureUniform;
-    
+
     private Texture sprite;
 
 	private Shader vert;
 	private Shader frag;
-    
+
 	public Painting(Texture sprite, Matrix4f modelMatrix) {
 
 		model = modelMatrix;
 		this.sprite = sprite;
-		
-		
+
+
 		vao = new VertexArrayObject();
 		vao.bind();
 
@@ -62,7 +62,7 @@ public class Painting implements Asset {
 		verts.bind(GL_ARRAY_BUFFER);
 		verts.uploadBufferData(GL_ARRAY_BUFFER, vertBuffer,
 				GL_STATIC_DRAW);
-		
+
 		vert = new Shader(GL_VERTEX_SHADER, AssetLoader.instance().loadShaderSource("res/painting.vert"));
         frag = new Shader(GL_FRAGMENT_SHADER, AssetLoader.instance().loadShaderSource("res/sprite.frag"));
 
@@ -70,13 +70,13 @@ public class Painting implements Asset {
         program.attachShader(vert);
         program.attachShader(frag);
         program.bindFragmentDataLocation(0, "fragColor");
-        
+
 
         program.bindAttributeLocation("squareVerts", 0);
         program.enableVertexAttribute(0);
         verts.bind(GL_ARRAY_BUFFER);
         program.setVertexAttributePointer(0, 3, 0, 0);
-        
+
         program.link();
 		program.use();
 
@@ -97,24 +97,24 @@ public class Painting implements Asset {
         verts.unbind(GL_ARRAY_BUFFER);
         vao.unbind();
 	}
-	
+
 	@Override
 	public void draw(Camera camera, Vector3f light) {
 		Matrix4f view = camera.getView();
-		
+
 		program.use();
 		program.setUniform(modelUniform, model);
 		program.setUniform(viewUniform, view);
 		program.setUniform(textureUniform, 0);
 
         //System.out.println(cameraUp.toString());
-		
+
         sprite.bind();
 
         vao.bind();
         //System.out.println(GL11.glGetError());
         verts.bind(GL_ARRAY_BUFFER);
-        
+
         //glDepthMask(GL_FALSE);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -127,7 +127,6 @@ public class Painting implements Asset {
         //System.out.println(GL11.glGetError());
         verts.unbind(GL_ARRAY_BUFFER);
         vao.unbind();
-        System.out.println();
 	}
 
 	@Override

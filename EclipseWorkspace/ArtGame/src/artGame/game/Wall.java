@@ -43,31 +43,4 @@ public class Wall{
 	public boolean passable() {
 		return false; //no you cant walk through solid walls
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((art == null) ? 0 : art.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Wall other = (Wall) obj;
-		if (art == null) {
-			if (other.art != null)
-				return false;
-		} else if (!art.equals(other.art))
-			return false;
-		return true;
-	}
-
-
 }

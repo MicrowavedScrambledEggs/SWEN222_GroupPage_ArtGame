@@ -3,7 +3,7 @@ package artGame.game;
 /**
  * Represents a sculpture on the game floor(as opposed to one in a players
  * inventory)
- * 
+ *
  * @author Kaishuo
  *
  */
@@ -15,7 +15,6 @@ public class Sculpture extends Character {
 
 	public Sculpture(Direction dir, int ID, int value, String name) {
 		super(dir, ID);
-		System.out.println(ID);
 		this.value = value;
 		this.name = name;
 		this.description = "A sculpture. It is " + name +".";
@@ -45,15 +44,15 @@ public class Sculpture extends Character {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public boolean isTaken(){
 		return taken;
 	}
-	
+
 	public String getName(){
 		return name;
 	}
-	
+
 	public int getValue(){
 		return value;
 	}

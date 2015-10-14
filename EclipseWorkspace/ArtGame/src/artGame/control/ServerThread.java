@@ -164,9 +164,9 @@ public class ServerThread extends SocketThread {
 													// gets this command
 					}
 				}
-				
+
 				boolean out = false;
-				
+
 				for (Player x : game.getPlayers()) {
 					if (x.getId() == clientCmd.id) {
 						game.doAction(x, clientCmd.action); // now make sure we
@@ -190,7 +190,7 @@ public class ServerThread extends SocketThread {
 				}
 
 				try {
-					
+
 					byte[] bytes = GameData
 							.toByteArray(new GamePacketData(pid, game, out));
 					if(bytes != null){
@@ -202,12 +202,12 @@ public class ServerThread extends SocketThread {
 
 				OUT.flush();
 				long now = System.currentTimeMillis();
-			
+
 				if (now < then + Main.BROADCAST_PERIOD
 						&& 0 > then + Main.BROADCAST_PERIOD - now) {
 					sleep(then + Main.BROADCAST_PERIOD - now);
 				}
-	
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

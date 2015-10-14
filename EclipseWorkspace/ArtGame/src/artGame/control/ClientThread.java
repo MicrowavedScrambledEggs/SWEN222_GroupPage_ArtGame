@@ -50,7 +50,7 @@ public class ClientThread extends SocketThread {
 
 	private long lastPing;
 	private static int PING_DELAY = 50;
-	
+
 	/**
 	 * @deprecated Use {@link #ClientThread(Socket,Game,int)} instead
 	 */
@@ -142,15 +142,15 @@ public class ClientThread extends SocketThread {
 			try {
 				long then = System.currentTimeMillis();
 				// first, write to server
-				
+
 				if(then - lastPing >= PING_DELAY){
 					super.sendCommand(new Command('x', pid));
 					lastPing = then;
-				}	
-				
+				}
+
 				//flush any commands to the server
 				write();
-				
+
 				//super.waitFor(IN);
 				// System.out.println(IN.available());
 				if (IN.available() > 0) {
@@ -164,17 +164,19 @@ public class ClientThread extends SocketThread {
 					} catch (IncompatiblePacketException e) {
 						e.printStackTrace();
 					}
-					// Command c = super.readCommand(IN);
+
+
+					// Command c = super.readCommand(IN);l
 					// System.out.print("command: " + c.toString());
 					// TODO read game data input and any other commands ########
-	
+
 				}
 				long now = System.currentTimeMillis();
 				if (now < then + Main.BROADCAST_PERIOD
 						&& 0 > then + Main.BROADCAST_PERIOD - now) {
 					sleep(then + Main.BROADCAST_PERIOD - now);
 				}
-				
+
 			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

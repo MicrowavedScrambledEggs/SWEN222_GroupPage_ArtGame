@@ -54,7 +54,7 @@ public class ServerGUI extends JPanel {
 	private boolean serverRunning = false;
 	private boolean running = true;
 
-	public ServerGUI(int width, int height) {
+	public ServerGUI(int width, int height, int portNum) {
 
 		 try {
 			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
@@ -119,7 +119,7 @@ public class ServerGUI extends JPanel {
 		//gameClock.setHorizontalAlignment(JTextField.CENTER);
 
 		port = new JTextField(10);
-		port.setText("32768");
+		port.setText(portNum+"");
 		portLabel = new JLabel("Port");
 		//port.setHorizontalAlignment(JTextField.CENTER);
 
@@ -177,7 +177,7 @@ public class ServerGUI extends JPanel {
 				}
 				frame.getContentPane().repaint();
 			}
-			
+
 		});
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -238,11 +238,11 @@ public class ServerGUI extends JPanel {
 
 			@Override
 			public void run() {
-				ServerGUI gui = new ServerGUI(400, 200);
+				ServerGUI gui = new ServerGUI(400, 200, 32658);
 			}
-			
+
 		});
-		
+
 	}
 
 }

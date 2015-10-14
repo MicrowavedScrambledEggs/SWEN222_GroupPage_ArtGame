@@ -50,13 +50,11 @@ public class GameData {
 	 */
 	public static void updateGame(GamePacketData data) {
 		GameData.data=data;
+		updateGameObjects();
 		if(data.out){
 			out = true;
 		}
-		if(!loadedTileWallData){
-			updateGameObjects();
-			loadedTileWallData = true;
-		}
+
 	}
 
 	/**
@@ -65,9 +63,9 @@ public class GameData {
 	 */
 	public static void updateGame(Game game) {
 		GameData.game = game;
-		updateWallData();
 	}
 
+	/*
 	private static void updateWallData() {
 
 		tilesByWalls = new HashMap<>();
@@ -90,15 +88,15 @@ public class GameData {
 
 			}
 		}
-	}
-
+	}*/
+	/*
 	public static Tile getTileFromWall(Wall wall){
 		if(tilesByWalls.containsKey(wall)){
 			return tilesByWalls.get(tilesByWalls.get(wall));
 		}
 		return null;
 	}
-
+	*/
 	@Deprecated
 	public static void setGame(Game game) {
 		GameData.game = game;
@@ -118,7 +116,7 @@ public class GameData {
 	 * Gets the current player information from server (buffered)
 	 * @return
 	 */
-	public static synchronized Player getPlayer() {
+	public static Player getPlayer() {
 		if(data == null || data.players == null){
 			return null;
 		}

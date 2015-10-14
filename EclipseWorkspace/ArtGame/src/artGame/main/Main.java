@@ -15,6 +15,8 @@ import artGame.control.GameClock;
 import artGame.control.ServerThread;
 import artGame.control.SocketThread;
 import artGame.game.Player;
+import artGame.ui.screens.GLWindow;
+import artGame.ui.server.ServerGUI;
 import artGame.xml.XMLHandler;
 
 public class Main {
@@ -31,8 +33,6 @@ public class Main {
 	private static volatile ServerThread[] children = new ServerThread[0];
 	private static Game GAME;
 
-	/** For testing only */
-	@Deprecated
 	public static void main(String[] args) {
 		// logic mostly stolen from Dave's PacMan code.
 		String filename = null;
@@ -103,23 +103,24 @@ public class Main {
 			System.exit(-1);
 		}
 
-		try {
 			if (server) {
 				// Run as server
-				runPublicSocket(port, gameClock, maxClients);
+				final int p = port;
+				SwingUtilities.invokeLater(new Runnable(){
+
+					@Override
+					public void run() {
+						ServerGUI gui = new ServerGUI(400, 200, p);
+					}
+
+				});
+
 			} else if (serverURL != null) {
 				// Run as client
-				runClient(serverURL, port);
+				new GLWindow(serverURL, port).begin();
 			} else {
 				// single user game
 			}
-		} catch (IOException ioe) {
-			System.out.println("I/O error: " + ioe.getMessage());
-			ioe.printStackTrace();
-			System.exit(1);
-		}
-
-		System.exit(0);
 	}
 
 	public static synchronized Game getGame() {

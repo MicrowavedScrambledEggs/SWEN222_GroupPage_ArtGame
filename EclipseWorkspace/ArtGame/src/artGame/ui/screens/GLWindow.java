@@ -59,6 +59,7 @@ import artGame.ui.gamedata.GamePacketData;
 import artGame.ui.renderer.Camera;
 import artGame.ui.renderer.math.Matrix4f;
 import artGame.ui.renderer.math.Vector3f;
+import artGame.ui.server.ServerGUI;
 import artGame.xml.XMLHandler;
 
 /**
@@ -106,7 +107,10 @@ public class GLWindow {
 	private static boolean rotateLeft = false;
 	private static boolean rotateRight = false;
 
+	private int lastX;
+
 	private static Queue<Command> cmds;
+
 
 	/**
 	 * Loads the basic client-side game world
@@ -123,9 +127,10 @@ public class GLWindow {
 	/**
 	 * Connects to the server, initiates the window and screens
 	 */
-	public GLWindow() {
+	public GLWindow(String ip, int port) {
+
 		try {
-			client = new ClientThread(new Socket("130.195.6.193", 32768), game, 10);
+			client = new ClientThread(new Socket(ip, port), game, 10);
 			client.start();
 
 			keyCallback = new NetworkKeyCallback(client);
@@ -178,9 +183,8 @@ public class GLWindow {
 	 * Begins the render loop, updates screens, handles key events
 	 */
 	public void begin() {
+		lastRender = System.nanoTime();
 		while (glfwWindowShouldClose(window) != GL_TRUE) {
-
-
 
 			if(!out && GameData.isOut()){
 				this.keyCallback = debugKeys;
@@ -230,13 +234,11 @@ public class GLWindow {
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
 
-		glfwPollEvents();
-
 		render();
 
 		/* Swap buffers and poll Events */
 		glfwSwapBuffers(window);
-
+		glfwPollEvents();
 		/* Flip buffers for next loop */
 		width.flip();
 		height.flip();
@@ -351,11 +353,6 @@ public class GLWindow {
 	 */
 	public static void rotateRight(){
 		rotateRight = true;
-	}
-
-	public static void main(String[] args) {
-		// this is for testing the new renderer
-		new GLWindow().begin();
 	}
 
 	/**
