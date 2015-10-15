@@ -3,7 +3,7 @@ package artGame.game;
 /**
  * Represents a (possibly) locked door in the game world. Once a player unlocks
  * the door, it remains unlocked for the rest of the game
- * 
+ *
  * @author Kaishuo
  *
  */
@@ -55,11 +55,38 @@ public class Door extends Wall {
 		else
 			return "A unlocked door";
 	}
-	
+
 	/**
 	 * @return the id of the key for this door
 	 */
 	public int getKeyID(){
 		return this.keyID;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + keyID;
+		result = prime * result + (locked ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Door other = (Door) obj;
+		if (keyID != other.keyID)
+			return false;
+		if (locked != other.locked)
+			return false;
+		return true;
+	}
+
+
 }

@@ -350,7 +350,8 @@ public class Floor {
 				((Door) wall).unlock(p);
 			} else if (wall.getArt() != null) {
 				p.addItem(wall.getArt());
-				for(Wall w:wall.getArt().getWalls()){
+				Set<Wall> wallsWithArt = wall.getArt().getWalls();
+				for(Wall w:wallsWithArt){
 					w.setArt(null);
 				}
 			}

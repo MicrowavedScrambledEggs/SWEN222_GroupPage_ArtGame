@@ -45,7 +45,7 @@ public class Wall{
 			hadArt = true;
 		}
 	}
-	
+
 	public boolean hadArt() {
 		return hadArt;
 	}

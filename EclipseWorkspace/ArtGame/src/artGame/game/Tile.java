@@ -105,14 +105,14 @@ public abstract class Tile {
 		} else
 			return null;
 	}
-	
+
 	public String toPrintString() {
 		return "N: "+ (wallArt(0))
 				+" W: "+ (wallArt(1))
 				+" S: "+ (wallArt(2))
 				+" E: "+ (wallArt(3));
 	}
-	
+
 	private String wallArt(int i) {
 		if (walls[i] != null) {
 			if (walls[i].getArt() != null) {
@@ -128,7 +128,16 @@ public abstract class Tile {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (viewable ? 1231 : 1237);
-		result = prime * result + Arrays.hashCode(walls);
+		int[] wallPrimes = {211,223,227, 229};
+		for(int i = 0; i < walls.length; i++){
+			if(walls[i] != null){
+				if(walls[i] instanceof Door){
+					result = prime * result + ((Door) walls[i]).hashCode();
+				} else {
+					result = prime * result + wallPrimes[i];
+				}
+			}
+		}
 		return result;
 	}
 
@@ -143,8 +152,19 @@ public abstract class Tile {
 		Tile other = (Tile) obj;
 		if (viewable != other.viewable)
 			return false;
-		if (!Arrays.equals(walls, other.walls))
-			return false;
+		for(int i = 0; i < walls.length; i++){
+			if(walls[i] == null && other.walls[i] == null){
+				continue;
+			} else if(walls[i] != null && other.walls[i] != null){
+				if(walls[i] instanceof Door){
+					if(!walls[i].equals(other.walls[i])){
+						return false;
+					}
+				}
+			} else {
+				return false;
+			}
+		}
 		return true;
 	}
 }
